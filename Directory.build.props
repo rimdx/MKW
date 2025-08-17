@@ -1,7 +1,7 @@
 <Project>
  <PropertyGroup>
    <BaseOutputPath>$(SolutionDir)\bin\</BaseOutputPath>
-   <BaseIntermediateOutputPath>$(SolutionDir)\obj\</BaseIntermediateOutputPath>
+   <BaseIntermediateOutputPath>$(SolutionDir)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
  </PropertyGroup>
 </Project>
