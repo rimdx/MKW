@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36202.13 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core", "MKW.Core\MKW.Core.csproj", "{17A9D532-7B27-4923-8D8D-35964A5D125D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW", "MKW\MKW.csproj", "{F8191070-A372-4AC6-8E2B-344C84B800D2}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
