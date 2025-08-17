@@ -6,8 +6,12 @@ namespace MKW.Tests
 {
     public class SandBox : IDisposable
     {
+        public string DatabasePath { get; }
+
         public SandBox()
         {
+            DatabasePath = Path.GetFullPath("./test.json");
+
             // todo: safer way?
             File.Delete("./test.json");
         }

@@ -14,6 +14,8 @@ namespace MKW
 
             string path = args[0];
 
+            path = Path.GetFullPath(path);
+
             Database database = EnsureDatabase(path);
 
             Console.WriteLine($"[Verbose] Successfully opened database file.");
@@ -25,13 +27,13 @@ namespace MKW
 
             if (File.Exists(path))
             {
-                Console.WriteLine($"[Verbose] Opening database file: {path}.");
+                Console.WriteLine($"[Verbose] Opening database file: '{path}'.");
 
                 return service.Open(path);
             }
             else
             {
-                Console.WriteLine($"[Verbose] Initializing database file at {path}.");
+                Console.WriteLine($"[Verbose] Initializing database file: '{path}'.");
 
                 Database database = new Database
                 {
