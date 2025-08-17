@@ -11,4 +11,8 @@
     <ProjectReference Include="..\MKW.Core\MKW.Core.csproj" />
   </ItemGroup>
 
+  <Target Name="AfterBuild">
+    <MSBuild Condition="'$(DeployOnBuild)'!='true'" Projects="$(MSBuildProjectFullPath)" Properties="DeployOnBuild=true;PublishProfile=Local;BuildingInsideVisualStudio=False"/>
+  </Target>
+
 </Project>
