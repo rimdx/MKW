@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.build.targets = Directory.build.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Tests", "MKW.Tests\MKW.Tests.csproj", "{DE1CDADB-243C-41E5-84BA-11A721525FC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,12 +29,16 @@ Global
 		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 	EndGlobalSection
 EndGlobal
