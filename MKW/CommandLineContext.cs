@@ -34,27 +34,11 @@ namespace MKW
             cmdAddUser.Arguments.Add(argFile);
             cmdAddUser.Options.Add(optPassword);
 
-            cmdAddUser.SetAction(argv =>
-            {
-                string path = argv.GetRequiredValue(argFile);
-                string password = argv.GetRequiredValue(optPassword);
-
-                using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
-                ClientSession session = new ClientSession(database);
-
-                session.AddUser(password);
-            });
+            cmdAddUser.SetAction(AddUserAction);
 
             cmdTouch = new Command("touch", "initializes empty database");
             cmdTouch.Arguments.Add(argFile);
-
-            cmdTouch.SetAction(argv =>
-            {
-                string path = argv.GetRequiredValue(argFile);
-
-                using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
-                ClientSession session = new ClientSession(database);
-            });
+            cmdTouch.SetAction(TouchAction);
 
             rootCommand.Subcommands.Add(cmdAddUser);
             rootCommand.Subcommands.Add(cmdTouch);
@@ -64,6 +48,25 @@ namespace MKW
         {
             ParseResult parsed = rootCommand.Parse(args);
             return parsed.Invoke();
+        }
+
+        private void AddUserAction(ParseResult argv)
+        {
+            string path = argv.GetRequiredValue(argFile);
+            string password = argv.GetRequiredValue(optPassword);
+
+            using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
+            ClientSession session = new ClientSession(database);
+
+            session.AddUser(password);
+        }
+
+        private void TouchAction(ParseResult argv)
+        {
+            string path = argv.GetRequiredValue(argFile);
+
+            using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
+            ClientSession session = new ClientSession(database);
         }
     }
 }
