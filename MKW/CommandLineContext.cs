@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client;
+using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using System.CommandLine;
 
@@ -65,7 +66,9 @@ namespace MKW
 
             ClientSession session = new ClientSession(database);
 
-            session.AddUser(password);
+            UserInfo user = session.AddUser(password);
+
+            Console.WriteLine($"User added with ID: {user.Id}");
         }
 
         private void TouchAction(ParseResult argv)
