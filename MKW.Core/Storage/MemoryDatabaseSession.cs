@@ -1,4 +1,5 @@
-﻿namespace MKW.Core.Storage
+﻿
+namespace MKW.Core.Storage
 {
     public class MemoryDatabaseSession : IDatabaseSession, IDisposable
     {
@@ -23,6 +24,11 @@
         public User GetUser(Guid id)
         {
             return Database.Users.First(u => u.Id == id);
+        }
+
+        public IEnumerable<User> EnumerateUsers()
+        {
+            return Database.Users;
         }
 
         public void UpdateEntry(Guid id, Entry? entry)
