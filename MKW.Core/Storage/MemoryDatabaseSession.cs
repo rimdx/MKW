@@ -45,7 +45,7 @@ namespace MKW.Core.Storage
             Save();
         }
 
-        public DatabaseSecretEntry QueryEntry(Guid id)
+        public DatabaseSecretEntry? QueryEntry(Guid id)
         {
             if (Database.Entries.TryGetValue(id, out DatabaseSecretEntry? entry))
             {
@@ -53,7 +53,7 @@ namespace MKW.Core.Storage
             }
             else
             {
-                throw new Exception($"Entry with ID {id} not found.");
+                return null;
             }
         }
 

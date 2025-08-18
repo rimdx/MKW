@@ -77,6 +77,8 @@ namespace MKW.Core.Client
             }
             else
             {
+                DatabaseSecretEntry? oldEntry = db.QueryEntry(id);
+
                 using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
 
                 byte[] data = payloadEncoder.Encrypt(entry.Data);
@@ -107,7 +109,7 @@ namespace MKW.Core.Client
                 return new EntryInfo
                 {
                     Id = id,
-                    Action = ActionInfo.Updated,
+                    Action = oldEntry == null ? ActionInfo.Added : ActionInfo.Updated,
                     EncodedForUsers = encodedForUsers
                 };
             }
