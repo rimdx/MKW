@@ -11,19 +11,18 @@ namespace MKW
 
         private readonly Command cmdAddUser;
         private readonly Command cmdTouch;
-        private readonly Command cmdEntries;
 
-        private readonly Argument<string> argFile = new("file")
+        private readonly Argument<string> argFile = new Argument<string>("file")
         {
             Description = "path to the database file",
         };
 
-        private readonly Option<string> optPassword = new("--password")
+        private readonly Option<string> optPassword = new Option<string>("--password")
         {
             Description = "password to perform operation with",
         };
 
-        private readonly Option<Guid> optUserId = new("--user")
+        private readonly Option<string> optUserId = new Option<string>("--user")
         {
             Description = "user ID",
         };
@@ -41,12 +40,6 @@ namespace MKW
             cmdTouch = new Command("touch", "initializes empty database");
             cmdTouch.Arguments.Add(argFile);
             cmdTouch.SetAction(TouchAction);
-
-            cmdEntries = new Command("entries", "list all entries in the database");
-            cmdTouch.Arguments.Add(argFile);
-            cmdTouch.Options.Add(optPassword);
-            cmdTouch.Options.Add(optUserId);
-            cmdTouch.SetAction(EntriesAction);
 
             rootCommand.Subcommands.Add(cmdAddUser);
             rootCommand.Subcommands.Add(cmdTouch);
@@ -81,17 +74,6 @@ namespace MKW
         private void TouchAction(ParseResult argv)
         {
             using IDatabaseSession database = OpenDatabase(argv);
-        }
-
-        private void EntriesAction(ParseResult argv)
-        {
-            using IDatabaseSession database = OpenDatabase(argv);
-            ClientSession session = new ClientSession(database);
-
-            UserSession userSession = session.OpenUser(argv.GetRequiredValue(optUserId),
-                                                       argv.GetRequiredValue(optPassword));
-
-            //userSession.
         }
     }
 }
