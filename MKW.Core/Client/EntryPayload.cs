@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using MKW.Core.Cryptography;
+using System.Text;
 
 namespace MKW.Core.Client
 {
@@ -13,12 +14,12 @@ namespace MKW.Core.Client
 
         public EntryPayload(string data)
         {
-            Data = Encoding.Unicode.GetBytes(data);
+            Data = EncodingConverter.GetBytes(data);
         }
 
         public override string ToString()
         {
-            return Encoding.Unicode.GetString(Data);
+            return EncodingConverter.GetString(Data);
         }
 
         // Not for production use. Probably...

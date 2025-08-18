@@ -45,7 +45,7 @@ namespace MKW.Core.Cryptography
 
         private byte[] GetPasswordBytes(string password)
         {
-            return Encoding.Unicode.GetBytes(password);
+            return EncodingConverter.GetBytes(password);
         }
     }
 }
