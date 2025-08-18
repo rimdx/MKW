@@ -90,7 +90,15 @@ namespace MKW
             foreach (var entry in userSession.EnumerateEntries())
             {
                 Console.WriteLine($"-- {entry.Id}:");
-                Console.WriteLine($"{entry.Payload}");
+
+                if (entry.Payload == null)
+                {
+                    Console.WriteLine($"[hidden]");
+                }
+                else
+                {
+                    Console.WriteLine($"{entry.Payload}");
+                }
             }
         }
 
