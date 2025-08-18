@@ -55,6 +55,8 @@ namespace MKW.Tests
                 result.AppendLine(stdout);
             }
 
+            Console.WriteLine(result.ToString());
+
             return result.ToString();
         }
 
