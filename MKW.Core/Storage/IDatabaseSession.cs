@@ -7,7 +7,7 @@
         IEnumerable<DatabaseUser> EnumerateUsers();
 
         void UpdateEntry(Guid id, DatabaseSecretEntry? entry);
-        DatabaseSecretEntry QueryEntry(Guid id);
+        DatabaseSecretEntry? QueryEntry(Guid id);
 
         void Save();
     }

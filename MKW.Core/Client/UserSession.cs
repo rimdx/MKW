@@ -20,6 +20,11 @@ namespace MKW.Core.Client
         {
             DatabaseSecretEntry entry = db.QueryEntry(id);
 
+            if (entry == null)
+            {
+                throw new Exception($"No entry found for ID: {id}");
+            }
+
             byte[] encodedKey = entry.Keys[user.Id];
 
             using AsymmetricTransformer keyDecoder = AsymmetricTransformer.Open(user.PublicKey, decryptedPrivateKey);
