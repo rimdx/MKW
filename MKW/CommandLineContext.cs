@@ -11,18 +11,19 @@ namespace MKW
 
         private readonly Command cmdAddUser;
         private readonly Command cmdTouch;
+        private readonly Command cmdEntries;
 
-        private readonly Argument<string> argFile = new Argument<string>("file")
+        private readonly Argument<string> argFile = new("file")
         {
             Description = "path to the database file",
         };
 
-        private readonly Option<string> optPassword = new Option<string>("--password")
+        private readonly Option<string> optPassword = new("--password")
         {
             Description = "password to perform operation with",
         };
 
-        private readonly Option<string> optUserId = new Option<string>("--user")
+        private readonly Option<Guid> optUserId = new("--user")
         {
             Description = "user ID",
         };
@@ -41,8 +42,15 @@ namespace MKW
             cmdTouch.Arguments.Add(argFile);
             cmdTouch.SetAction(TouchAction);
 
+            cmdEntries = new Command("entries", "list all entries in the database");
+            cmdEntries.Arguments.Add(argFile);
+            cmdEntries.Options.Add(optPassword);
+            cmdEntries.Options.Add(optUserId);
+            cmdEntries.SetAction(ListEntriesAction);
+
             rootCommand.Subcommands.Add(cmdAddUser);
             rootCommand.Subcommands.Add(cmdTouch);
+            rootCommand.Subcommands.Add(cmdEntries);
         }
 
         public int Execute(IReadOnlyList<string> args)
@@ -74,6 +82,21 @@ namespace MKW
         private void TouchAction(ParseResult argv)
         {
             using IDatabaseSession database = OpenDatabase(argv);
+        }
+
+        private void ListEntriesAction(ParseResult argv)
+        {
+            using IDatabaseSession database = OpenDatabase(argv);
+            ClientSession session = new ClientSession(database);
+
+            UserSession userSession = session.OpenUser(argv.GetRequiredValue(optUserId),
+                                                       argv.GetRequiredValue(optPassword));
+
+            foreach (var entry in userSession.EnumerateEntries())
+            {
+                Console.WriteLine($"-- {entry.Id}:");
+                Console.WriteLine($"{entry.Payload}");
+            }
         }
     }
 }

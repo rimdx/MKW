@@ -32,6 +32,18 @@ namespace MKW.Core.Client
             };
         }
 
+        public IEnumerable<KeyedEntry> EnumerateEntries()
+        {
+            foreach (DatabaseSecretKeyedEntry entry in db.EnumerateEntries())
+            {
+                yield return new KeyedEntry
+                {
+                    Id = entry.Id,
+                    Payload = DecodeEntry(entry)
+                };
+            }
+        }
+
         public EntryPayload DecodeEntry(DatabaseSecretEntry entry)
         {
             byte[] encodedKey = entry.Keys[user.Id];
