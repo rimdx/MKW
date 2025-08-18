@@ -28,9 +28,9 @@ namespace MKW.Core.Cryptography
         {
             return Rfc2898DeriveBytes.Pbkdf2(GetPasswordBytes(password),
                                              salt,
-                                             16,
-                                             HashAlgorithmName.SHA256,
-                                             16);
+                                             CryptographicConstants.DerivePassword.Iterations,
+                                             CryptographicConstants.DerivePassword.HashAlgorithm,
+                                             CryptographicConstants.DerivePassword.KeySize);
         }
 
         public byte[] ExportSalt()
@@ -40,7 +40,7 @@ namespace MKW.Core.Cryptography
 
         private static byte[] GenerateSalt()
         {
-            return RandomNumberGenerator.GetBytes(32); // ah?
+            return RandomNumberGenerator.GetBytes(CryptographicConstants.DerivePassword.SaltSize);
         }
 
         private byte[] GetPasswordBytes(string password)
