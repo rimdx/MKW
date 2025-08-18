@@ -21,7 +21,7 @@ namespace MKW.Tests
         {
         }
 
-        public string Run(string cmd)
+        public string Run(string cmd, string stdin = "")
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -29,11 +29,15 @@ namespace MKW.Tests
                 Arguments = $"/c {cmd}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                RedirectStandardInput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
 
             using Process process = Process.Start(startInfo)!;
+
+            process.StandardInput.Write(stdin);
+            process.StandardInput.Close();
 
             process.WaitForExit();
 
