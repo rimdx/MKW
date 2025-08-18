@@ -2,6 +2,11 @@
 {
     public class Database
     {
-        public required IList<User> Users { get; set; }
+        public IList<User> Users { get; set; }
+
+        public Database()
+        {
+            Users = new List<User>();
+        }
     }
 }
