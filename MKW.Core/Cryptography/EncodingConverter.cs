@@ -6,12 +6,12 @@ namespace MKW.Core.Cryptography
     {
         public static byte[] GetBytes(string data)
         {
-            return Encoding.Unicode.GetBytes(data);
+            return Encoding.UTF8.GetBytes(data);
         }
 
         public static string GetString(byte[] data)
         {
-            return Encoding.Unicode.GetString(data);
+            return Encoding.UTF8.GetString(data);
         }
     }
 }
