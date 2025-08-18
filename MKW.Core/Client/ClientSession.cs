@@ -32,7 +32,7 @@ namespace MKW.Core.Client
             {
                 Id = Guid.NewGuid(),
                 PublicKey = publicKeyBytes,
-                EncryptedPrivateKey = privateKeyEncrypted,
+                PrivateKey = privateKeyEncrypted,
                 Salt = creds.ExportSalt(),
             };
 
@@ -79,7 +79,7 @@ namespace MKW.Core.Client
 
             // Let's try'N decode the private key. We could potentially fail here. So
             // some validation may be required.
-            byte[] privateKeyBytes = decoder.Decrypt(user.EncryptedPrivateKey);
+            byte[] privateKeyBytes = decoder.Decrypt(user.PrivateKey);
 
             return new UserSession(db, user, privateKeyBytes);
         }
