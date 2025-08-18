@@ -7,6 +7,7 @@
         IEnumerable<User> EnumerateUsers();
 
         void UpdateEntry(Guid id, Entry? entry);
+        Entry QueryEntry(Guid id);
 
         void Save();
     }

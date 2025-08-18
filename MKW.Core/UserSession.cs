@@ -14,5 +14,22 @@ namespace MKW.Core
             this.user = user;
             this.decryptedPrivateKey = decryptedPrivateKey;
         }
+
+        public EntryPayload GetEntry(Guid id)
+        {
+            Entry entry = db.QueryEntry(id);
+
+            byte[] encodedKey = entry.Keys[user.Id];
+
+            using AsymmetricTransformer keyDecoder = AsymmetricTransformer.Open(user.PublicKey, decryptedPrivateKey);
+
+            byte[] decryptedKey = keyDecoder.Decrypt(encodedKey);
+
+            using SymmetricTransformer dataDecoder = SymmetricTransformer.Open(decryptedKey, entry.Salt);
+
+            byte[] decryptedData = dataDecoder.Decrypt(entry.Data);
+
+            return new EntryPayload(decryptedData);
+        }
     }
 }

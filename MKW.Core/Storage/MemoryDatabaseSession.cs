@@ -45,6 +45,18 @@ namespace MKW.Core.Storage
             Save();
         }
 
+        public Entry QueryEntry(Guid id)
+        {
+            if (Database.Entries.TryGetValue(id, out Entry? entry))
+            {
+                return entry;
+            }
+            else
+            {
+                throw new Exception($"Entry with ID {id} not found.");
+            }
+        }
+
         public virtual void Save()
         {
         }
