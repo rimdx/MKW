@@ -2,14 +2,13 @@
 
 namespace MKW.Core.Storage
 {
-    public class JSONDatabaseSession : IDatabaseSession, IDisposable
+    public class JSONDatabaseSession : MemoryDatabaseSession, IDatabaseSession, IDisposable
     {
-        private readonly Database db;
         private readonly FileStream file;
 
         protected JSONDatabaseSession(Database db, FileStream file)
+            : base(db)
         {
-            this.db = db;
             this.file = file;
         }
 
@@ -40,25 +39,15 @@ namespace MKW.Core.Storage
             }
         }
 
-        public void AddUser(Guid id, User user)
-        {
-            db.Users.Add(user);
-            Save();
-        }
-
-        public User GetUser(Guid id)
-        {
-            return db.Users.First(u => u.Id == id);
-        }
-
-        public void Save()
+        public override void Save()
         {
             file.Seek(0, SeekOrigin.Begin);
-            JsonSerializer.Serialize(file, db);
+            JsonSerializer.Serialize(file, Database);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
+            base.Dispose();
             file.Dispose();
         }
     }
