@@ -25,6 +25,20 @@
             return Database.Users.First(u => u.Id == id);
         }
 
+        public void UpdateEntry(Guid id, Entry? entry)
+        {
+            if (entry == null)
+            {
+                Database.Entries.Remove(id);
+            }
+            else
+            {
+                Database.Entries[id] = entry;
+            }
+
+            Save();
+        }
+
         public virtual void Save()
         {
         }
