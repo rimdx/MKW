@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Client
 {
-    public record class EntryPayload
+    public class EntryPayload
     {
         public byte[] Data { get; }
 
@@ -19,6 +19,17 @@ namespace MKW.Core.Client
         public override string ToString()
         {
             return Encoding.Unicode.GetString(Data);
+        }
+
+        // Not for production use. Probably...
+        public override bool Equals(object? obj)
+        {
+            return obj is EntryPayload payload && Enumerable.SequenceEqual(Data, payload.Data);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Data);
         }
     }
 }
