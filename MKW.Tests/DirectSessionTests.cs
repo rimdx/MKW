@@ -91,7 +91,13 @@ namespace MKW.Tests
                 },
                 entry.EncodedForUsers);
 
-            ClassicAssert.AreEqual("balls", userSession.GetEntry(entry.Id).Payload.ToString());
+            ClassicAssert.AreEqual(
+                new KeyedEntry
+                {
+                    Id = entry.Id,
+                    Payload = new EntryPayload("balls")
+                },
+                userSession.GetEntry(entry.Id));
         }
     }
 }
