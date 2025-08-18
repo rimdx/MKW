@@ -3,7 +3,7 @@ using System.Text;
 
 namespace MKW.Core.Cryptography
 {
-     public class UserCredentials
+    public class UserCredentials
     {
         private readonly string password;
         private readonly byte[] salt;
