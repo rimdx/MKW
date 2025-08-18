@@ -28,7 +28,6 @@ namespace MKW
         private readonly Option<string> optPassword = new("--password")
         {
             Description = "password to perform operation with",
-            DefaultValueFactory = PasswordDefaultValueFactory,
         };
 
         public CommandLineContext()
@@ -75,13 +74,11 @@ namespace MKW
 
         private void AddUserAction(ParseResult argv)
         {
-            string password = argv.GetRequiredValue(optPassword);
-
             using IDatabaseSession database = OpenDatabase(argv);
 
             ClientSession session = new ClientSession(database);
 
-            UserInfo user = session.AddUser(password);
+            UserInfo user = session.AddUser(GetPassword(argv));
 
             Console.WriteLine($"User added with ID: {user.Id}");
         }
@@ -108,7 +105,7 @@ namespace MKW
             using IDatabaseSession database = OpenDatabase(argv);
             ClientSession session = new ClientSession(database);
 
-            UserSession userSession = session.OpenUser(argv.GetRequiredValue(optPassword));
+            UserSession userSession = session.OpenUser(GetPassword(argv));
 
             foreach (var entry in userSession.EnumerateEntries())
             {
@@ -125,20 +122,23 @@ namespace MKW
             }
         }
 
-        private static string PasswordDefaultValueFactory(ArgumentResult result)
+        private string GetPassword(ParseResult argv)
         {
-            Console.Write("Enter password: ");
+            string? password = argv.GetValue(optPassword);
 
-            string? password = Console.ReadLine();
+            if (password == null)
+            {
+                Console.Write("Enter password: ");
 
-            if (string.IsNullOrEmpty(password))
-            {
-                throw new ArgumentException("Password cannot be empty.");
+                password = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(password))
+                {
+                    throw new ArgumentException("Password cannot be empty.");
+                }
             }
-            else
-            {
-                return password;
-            }
+
+            return password;
         }
     }
 }
