@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace MKW.Core
+namespace MKW.Core.Cryptography
 {
      public class UserCredentials
     {
