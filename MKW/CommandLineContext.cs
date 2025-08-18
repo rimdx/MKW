@@ -83,7 +83,7 @@ namespace MKW
             return parsed.Invoke();
         }
 
-        public IDatabaseSession OpenDatabase(ParseResult argv)
+        public IDatabase OpenDatabase(ParseResult argv)
         {
             string path = argv.GetRequiredValue(argFile);
 
@@ -92,7 +92,7 @@ namespace MKW
 
         private void AddUserAction(ParseResult argv)
         {
-            using IDatabaseSession database = OpenDatabase(argv);
+            using IDatabase database = OpenDatabase(argv);
 
             ClientSession session = new ClientSession(database);
 
@@ -105,7 +105,7 @@ namespace MKW
         {
             string payload = argv.GetRequiredValue(argPayload);
 
-            using IDatabaseSession database = OpenDatabase(argv);
+            using IDatabase database = OpenDatabase(argv);
             ClientSession session = new ClientSession(database);
 
             EntryInfo entry = session.UpdateEntry(Guid.NewGuid(), new EntryPayload(payload));
@@ -115,12 +115,12 @@ namespace MKW
 
         private void TouchAction(ParseResult argv)
         {
-            using IDatabaseSession database = OpenDatabase(argv);
+            using IDatabase database = OpenDatabase(argv);
         }
 
         private void ListEntriesAction(ParseResult argv)
         {
-            using IDatabaseSession database = OpenDatabase(argv);
+            using IDatabase database = OpenDatabase(argv);
             ClientSession session = new ClientSession(database);
 
             UserSession userSession = session.OpenUser(GetPassword(argv));

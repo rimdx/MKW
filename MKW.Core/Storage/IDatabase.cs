@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface IDatabaseSession : IDisposable
+    public interface IDatabase : IDisposable
     {
         void AddUser(Guid id, DatabaseUser user);
         DatabaseUser GetUser(Guid id);

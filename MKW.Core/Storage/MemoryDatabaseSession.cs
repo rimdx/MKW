@@ -1,7 +1,7 @@
 ﻿
 namespace MKW.Core.Storage
 {
-    public class MemoryDatabaseSession : IDatabaseSession, IDisposable
+    public class MemoryDatabaseSession : IDatabase, IDisposable
     {
         public readonly Database Database;
 

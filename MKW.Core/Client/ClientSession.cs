@@ -7,9 +7,9 @@ namespace MKW.Core.Client
 {
     public class ClientSession
     {
-        private readonly IDatabaseSession db;
+        private readonly IDatabase db;
 
-        public ClientSession(IDatabaseSession db)
+        public ClientSession(IDatabase db)
         {
             this.db = db;
         }
