@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace MKW.Core
+namespace MKW.Core.Cryptography
 {
     public class SymmetricTransformer : IDisposable
     {
