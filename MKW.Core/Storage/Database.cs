@@ -2,6 +2,6 @@
 {
     public class Database
     {
-        public required IReadOnlyList<User> Users { get; set; }
+        public required IList<User> Users { get; set; }
     }
 }
