@@ -8,10 +8,7 @@ namespace MKW.Core.Storage
 
         public MemoryDatabaseSession()
         {
-            Database = new Database
-            {
-                Users = new List<User>()
-            };
+            Database = new Database();
         }
 
         public void AddUser(Guid id, User user)
@@ -59,10 +56,7 @@ namespace MKW.Core.Storage
             {
                 FileStream file = new FileStream(path, FileMode.OpenOrCreate);
 
-                Database database = new Database
-                {
-                    Users = new List<User>()
-                };
+                Database database = new Database();
 
                 DatabaseSession session = new DatabaseSession(database,
                                                               file /* move */);
