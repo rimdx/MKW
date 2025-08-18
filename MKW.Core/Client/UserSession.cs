@@ -1,7 +1,7 @@
 ﻿using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
-namespace MKW.Core
+namespace MKW.Core.Client
 {
     public class UserSession
     {
