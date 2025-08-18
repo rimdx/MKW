@@ -1,3 +1,4 @@
+using MKW.Core.Client;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
@@ -46,6 +47,38 @@ namespace MKW.Tests
             using var sbox = new SandBox();
 
             sbox.Run("mkw --help");
+        }
+
+        [Test]
+        public void ListEntriesTest()
+        {
+            using var sbox = new SandBox();
+
+            using var db = sbox.OpenDatabase();
+
+            var session = new ClientSession(db);
+
+            var user1 = session.AddUser("amogus");
+            var user2 = session.AddUser("r34");
+
+            session.UpdateEntry(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}"), new EntryPayload("sus1"));
+            session.UpdateEntry(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}"), new EntryPayload("sus2"));
+
+            db.Dispose();
+
+            var output = sbox.Run($"mkw entries {sbox.DatabasePath} --password amogus --user {user1.Id}");
+
+            ClassicAssert.AreEqual(
+                """
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                -- 9fc58c78-005d-47b6-82da-4054d079b536:
+                sus1
+                -- a909cb08-25ef-4c3c-8913-959140e86bda:
+                sus2
+
+                """,
+                output);
         }
     }
 }
