@@ -20,21 +20,10 @@ namespace MKW.Core
 
             //
 
-            using Aes aes = Aes.Create();
-
-            aes.GenerateIV();
-            aes.Key = creds.GetEncodingHash();
-
-            using MemoryStream msEncrypt = new MemoryStream();
-            using ICryptoTransform encryptor = aes.CreateEncryptor();
-            using CryptoStream csEncrypt = new CryptoStream(msEncrypt, aes.CreateEncryptor(), CryptoStreamMode.Write);
+            using SymmetricTransformer encoder = SymmetricTransformer.Create(creds.GetEncodingHash());
 
             byte[] privateKeyBytes = userKey.ExportRSAPrivateKey();
-
-            csEncrypt.Write(privateKeyBytes);
-            csEncrypt.Flush();
-
-            byte[] privateKeyEncrypted = msEncrypt.ToArray();
+            byte[] privateKeyEncrypted = encoder.Encrypt(privateKeyBytes);
 
             //
 
@@ -46,7 +35,7 @@ namespace MKW.Core
                 PublicKey = publicKeyBytes,
                 EncryptedPrivateKey = privateKeyEncrypted,
                 Salt = creds.ExportSalt(),
-                IV = aes.IV,
+                IV = encoder.ExportIV(),
             };
 
             db.Users.Add(user);
