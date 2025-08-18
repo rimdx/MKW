@@ -12,22 +12,14 @@ namespace MKW.Tests
 
             // create a test database file
             ClassicAssert.AreEqual(
-                $"  -- EXIT CODE: 0\r\n" +
-                $"  -- STDOUT:\r\n" +
-                $"[Verbose] Opening database file: '{sbox.DatabasePath}'.\r\n" +
-                $"[Verbose] Successfully opened database file.\r\n" +
-                $"[Verbose] Successfully closed database file.\r\n",
-                sbox.Run($"mkw {sbox.DatabasePath}")
+                $"  -- EXIT CODE: 0\r\n",
+                sbox.Run($"mkw touch {sbox.DatabasePath}")
             );
 
             // run the command again to ensure it opens the existing file
             ClassicAssert.AreEqual(
-                $"  -- EXIT CODE: 0\r\n" +
-                $"  -- STDOUT:\r\n" +
-                $"[Verbose] Opening database file: '{sbox.DatabasePath}'.\r\n" +
-                $"[Verbose] Successfully opened database file.\r\n" +
-                $"[Verbose] Successfully closed database file.\r\n",
-                sbox.Run($"mkw {sbox.DatabasePath}")
+                $"  -- EXIT CODE: 0\r\n",
+                sbox.Run($"mkw touch {sbox.DatabasePath}")
             );
         }
 
@@ -37,15 +29,17 @@ namespace MKW.Tests
             using var sbox = new SandBox();
             // add a user to the database
             ClassicAssert.AreEqual(
-                $"  -- EXIT CODE: 0\r\n" +
-                $"  -- STDOUT:\r\n" +
-                $"[Verbose] Opening database file: '{sbox.DatabasePath}'.\r\n" +
-                $"[Verbose] Successfully opened database file.\r\n" +
-                $"[Verbose] Adding user with password: 'lifeishard'.\r\n" +
-                $"[Verbose] User added successfully.\r\n" +
-                $"[Verbose] Successfully closed database file.\r\n",
-                sbox.Run($"mkw {sbox.DatabasePath} --add-user lifeishard")
+                $"  -- EXIT CODE: 0\r\n",
+                sbox.Run($"mkw add-user {sbox.DatabasePath} --password lifeishard")
             );
+        }
+
+        [Test]
+        public void HelpTest()
+        {
+            using var sbox = new SandBox();
+
+            sbox.Run("mkw --help");
         }
     }
 }

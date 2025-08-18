@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Storage;
+using System.CommandLine;
 
 namespace MKW
 {
@@ -7,45 +8,54 @@ namespace MKW
     {
         public static void Main(string[] args)
         {
-            if (args.Length == 0)
+            Argument<string> fileArgument = new Argument<string>("file")
             {
-                Console.Error.WriteLine("Please provide the path to the database file.");
-                return;
-            }
+                Description = "path to the database file",
+            };
 
-            string path = args[0];
-
-            path = Path.GetFullPath(path);
-
-            Console.WriteLine($"[Verbose] Opening database file: '{path}'.");
-
-            using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
-            ClientSession session = new ClientSession(database);
-
-            Console.WriteLine($"[Verbose] Successfully opened database file.");
-
-            // [path, "--add-user", "password123"] $= 3
-            if (args.Length >= 3)
+            Option<string> passwordOption = new Option<string>("--password")
             {
-                string command = args[1].ToLowerInvariant();
-                string value = args[2];
+                Description = "password to perform operation with",
+            };
 
-                if (command == "--add-user")
-                {
-                    Console.WriteLine($"[Verbose] Adding user with password: '{value}'.");
-                    session.AddUser(value);
-                    Console.WriteLine($"[Verbose] User added successfully.");
-                }
-                else
-                {
-                    Console.Error.WriteLine($"mkw.exe: invalid option: '{command}'");
-                    Console.Error.WriteLine($"Type 'mkw --help' for usage.");
-                    return;
-                }
-            }
+            Option<string> userId = new Option<string>("--user")
+            {
+                Description = "user ID",
+            };
 
-            database.Save();
-            Console.WriteLine($"[Verbose] Successfully closed database file.");
+            RootCommand rootCommand = new RootCommand("Multi-Key Wallet");
+
+            Command addUserCommand = new Command("add-user", "adds a user to the database");
+            addUserCommand.Arguments.Add(fileArgument);
+            addUserCommand.Options.Add(passwordOption);
+
+            addUserCommand.SetAction(argv =>
+            {
+                string path = argv.GetRequiredValue(fileArgument);
+                string password = argv.GetRequiredValue(passwordOption);
+
+                using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
+                ClientSession session = new ClientSession(database);
+
+                session.AddUser(password);
+            });
+
+            Command touchCommand = new Command("touch", "initializes empty database");
+            touchCommand.Arguments.Add(fileArgument);
+
+            touchCommand.SetAction(argv =>
+            {
+                string path = argv.GetRequiredValue(fileArgument);
+
+                using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
+                ClientSession session = new ClientSession(database);
+            });
+
+            rootCommand.Subcommands.Add(addUserCommand);
+            rootCommand.Subcommands.Add(touchCommand);
+
+            ParseResult parsed = rootCommand.Parse(args);
+            int code = parsed.Invoke();
         }
     }
 }
