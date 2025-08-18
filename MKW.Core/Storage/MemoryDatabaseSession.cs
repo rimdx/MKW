@@ -57,6 +57,20 @@ namespace MKW.Core.Storage
             }
         }
 
+        public IEnumerable<DatabaseSecretKeyedEntry> EnumerateEntries()
+        {
+            foreach (KeyValuePair<Guid, DatabaseSecretEntry> entry in Database.Entries)
+            {
+                yield return new DatabaseSecretKeyedEntry
+                {
+                    Id = entry.Key,
+                    Keys = entry.Value.Keys,
+                    Data = entry.Value.Data,
+                    Salt = entry.Value.Salt
+                };
+            }
+        }
+
         public virtual void Save()
         {
         }
