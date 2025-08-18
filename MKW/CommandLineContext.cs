@@ -2,6 +2,7 @@
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 
 namespace MKW
 {
@@ -21,6 +22,7 @@ namespace MKW
         private readonly Option<string> optPassword = new("--password")
         {
             Description = "password to perform operation with",
+            DefaultValueFactory = PasswordDefaultValueFactory,
         };
 
         public CommandLineContext()
@@ -89,6 +91,22 @@ namespace MKW
             {
                 Console.WriteLine($"-- {entry.Id}:");
                 Console.WriteLine($"{entry.Payload}");
+            }
+        }
+
+        private static string PasswordDefaultValueFactory(ArgumentResult result)
+        {
+            Console.Write("Enter password: ");
+
+            string? password = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new ArgumentException("Password cannot be empty.");
+            }
+            else
+            {
+                return password;
             }
         }
     }
