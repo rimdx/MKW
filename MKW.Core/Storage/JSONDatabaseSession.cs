@@ -2,18 +2,18 @@
 
 namespace MKW.Core.Storage
 {
-    public class DatabaseSession : IDatabaseSession, IDisposable
+    public class JSONDatabaseSession : IDatabaseSession, IDisposable
     {
         private readonly Database db;
         private readonly FileStream file;
 
-        protected DatabaseSession(Database db, FileStream file)
+        protected JSONDatabaseSession(Database db, FileStream file)
         {
             this.db = db;
             this.file = file;
         }
 
-        public static DatabaseSession Open(string path)
+        public static JSONDatabaseSession Open(string path)
         {
             if (File.Exists(path))
             {
@@ -21,7 +21,7 @@ namespace MKW.Core.Storage
 
                 Database database = JsonSerializer.Deserialize<Database>(file)!;
 
-                return new DatabaseSession(database,
+                return new JSONDatabaseSession(database,
                                            file /* move */);
             }
             else
@@ -30,7 +30,7 @@ namespace MKW.Core.Storage
 
                 Database database = new Database();
 
-                DatabaseSession session = new DatabaseSession(database,
+                JSONDatabaseSession session = new JSONDatabaseSession(database,
                                                               file /* move */);
 
                 // Writes empty database to file to the disk
