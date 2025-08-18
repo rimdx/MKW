@@ -11,12 +11,18 @@ namespace MKW
         private readonly RootCommand rootCommand;
 
         private readonly Command cmdAddUser;
+        private readonly Command cmdAddEntry;
         private readonly Command cmdTouch;
         private readonly Command cmdEntries;
 
         private readonly Argument<string> argFile = new("file")
         {
             Description = "path to the database file",
+        };
+
+        private readonly Argument<string> argPayload = new("payload")
+        {
+            Description = "secret payload of the entry",
         };
 
         private readonly Option<string> optPassword = new("--password")
@@ -32,8 +38,12 @@ namespace MKW
             cmdAddUser = new Command("add-user", "adds a user to the database");
             cmdAddUser.Arguments.Add(argFile);
             cmdAddUser.Options.Add(optPassword);
-
             cmdAddUser.SetAction(AddUserAction);
+
+            cmdAddEntry = new Command("add-entry", "adds an encrypted entry to the database");
+            cmdAddEntry.Arguments.Add(argFile);
+            cmdAddEntry.Arguments.Add(argPayload);
+            cmdAddEntry.SetAction(AddEntryAction);
 
             cmdTouch = new Command("touch", "initializes empty database");
             cmdTouch.Arguments.Add(argFile);
@@ -45,6 +55,7 @@ namespace MKW
             cmdEntries.SetAction(ListEntriesAction);
 
             rootCommand.Subcommands.Add(cmdAddUser);
+            rootCommand.Subcommands.Add(cmdAddEntry);
             rootCommand.Subcommands.Add(cmdTouch);
             rootCommand.Subcommands.Add(cmdEntries);
         }
@@ -73,6 +84,18 @@ namespace MKW
             UserInfo user = session.AddUser(password);
 
             Console.WriteLine($"User added with ID: {user.Id}");
+        }
+
+        private void AddEntryAction(ParseResult argv)
+        {
+            string payload = argv.GetRequiredValue(argPayload);
+
+            using IDatabaseSession database = OpenDatabase(argv);
+            ClientSession session = new ClientSession(database);
+
+            EntryInfo entry = session.UpdateEntry(Guid.NewGuid(), new EntryPayload(payload));
+
+            Console.WriteLine($"{entry.Action}: {entry.Id} for {entry.EncodedForUsers.Count} users");
         }
 
         private void TouchAction(ParseResult argv)

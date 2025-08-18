@@ -39,7 +39,7 @@ namespace MKW.Tests
                 $"  -- EXIT CODE: 0\r\n" +
                 $"  -- STDOUT:\r\n" +
                 $"User added with ID: {db.EnumerateUsers().First().Id}\r\n",
-                output 
+                output
             );
         }
 
@@ -137,6 +137,28 @@ namespace MKW.Tests
                     """,
                     output);
             }
+        }
+
+        [Test]
+        public void AddEntryTest()
+        {
+            using var sbox = new SandBox();
+
+            sbox.Run($"mkw add-user {sbox.DatabasePath} --password test1");
+            sbox.Run($"mkw add-user {sbox.DatabasePath} --password test2");
+
+            var output1 = sbox.Run($"mkw add-entry {sbox.DatabasePath} \"secret entry no1\"");
+
+            using var db = sbox.OpenDatabase();
+
+            ClassicAssert.AreEqual(
+                $"""
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                Added: {db.EnumerateEntries().First().Id} for 2 users
+
+                """,
+                output1);
         }
     }
 }
