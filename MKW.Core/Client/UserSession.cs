@@ -16,7 +16,7 @@ namespace MKW.Core.Client
             this.decryptedPrivateKey = decryptedPrivateKey;
         }
 
-        public EntryPayload GetEntry(Guid id)
+        public KeyedEntry GetEntry(Guid id)
         {
             DatabaseSecretEntry entry = db.QueryEntry(id);
 
@@ -35,7 +35,11 @@ namespace MKW.Core.Client
 
             byte[] decryptedData = dataDecoder.Decrypt(entry.Data);
 
-            return new EntryPayload(decryptedData);
+            return new KeyedEntry
+            {
+                Id = id,
+                Payload = new EntryPayload(decryptedData)
+            };
         }
     }
 }

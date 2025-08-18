@@ -71,7 +71,7 @@ namespace MKW.Tests
                 },
                 entry.EncodedForUsers);
 
-            ClassicAssert.AreEqual("balls", userSession.GetEntry(entry.Id).ToString());
+            ClassicAssert.AreEqual("balls", userSession.GetEntry(entry.Id).Payload.ToString());
         }
     }
 }
