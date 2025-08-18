@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using MKW.Core.Storage;
+using NUnit.Framework;
 using System.Diagnostics;
 using System.Text;
 
@@ -58,6 +59,11 @@ namespace MKW.Tests
             Console.WriteLine(result.ToString());
 
             return result.ToString();
+        }
+
+        public IDatabaseSession OpenDatabase()
+        {
+            return JSONDatabaseSession.Open(DatabasePath);
         }
 
         private string TrimString(string str)

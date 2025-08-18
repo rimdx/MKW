@@ -30,12 +30,14 @@ namespace MKW.Tests
 
             string output = sbox.Run($"mkw add-user {sbox.DatabasePath} --password lifeishard");
 
-            // todo:
-            //ClassicAssert.AreEqual(
-            //    $"  -- EXIT CODE: 0\r\n" +
-            //    $"User added with ID: 1b7f31e6-347c-4a34-b8a6-8f43cf6dcf22\r\n",
-            //    output 
-            //);
+            using var db = sbox.OpenDatabase();
+
+            ClassicAssert.AreEqual(
+                $"  -- EXIT CODE: 0\r\n" +
+                $"  -- STDOUT:\r\n" +
+                $"User added with ID: {db.EnumerateUsers().First().Id}\r\n",
+                output 
+            );
         }
 
         [Test]
