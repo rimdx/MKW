@@ -25,6 +25,15 @@ namespace MKW.Core.Client
                 throw new Exception($"No entry found for ID: {id}");
             }
 
+            return new KeyedEntry
+            {
+                Id = id,
+                Payload = DecodeEntry(entry)
+            };
+        }
+
+        public EntryPayload DecodeEntry(DatabaseSecretEntry entry)
+        {
             byte[] encodedKey = entry.Keys[user.Id];
 
             using AsymmetricTransformer keyDecoder = AsymmetricTransformer.Open(user.PublicKey, decryptedPrivateKey);
@@ -35,11 +44,7 @@ namespace MKW.Core.Client
 
             byte[] decryptedData = dataDecoder.Decrypt(entry.Data);
 
-            return new KeyedEntry
-            {
-                Id = id,
-                Payload = new EntryPayload(decryptedData)
-            };
+            return new EntryPayload(decryptedData);
         }
     }
 }
