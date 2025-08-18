@@ -1,6 +1,5 @@
 ﻿using MKW.Core.Storage;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace MKW.Core
 {
@@ -17,20 +16,14 @@ namespace MKW.Core
         {
             var userKey = RSA.Create();
 
-            byte[] salt = RandomNumberGenerator.GetBytes(32); // ah?
-
-            byte[] passwordHash = Rfc2898DeriveBytes.Pbkdf2(Encoding.Unicode.GetBytes(password),
-                                                            salt,
-                                                            16,
-                                                            HashAlgorithmName.SHA256,
-                                                            16);
+            var creds = UserCredentials.Create(password);
 
             //
 
             using Aes aes = Aes.Create();
 
             aes.GenerateIV();
-            aes.Key = passwordHash;
+            aes.Key = creds.GetEncodingHash();
 
             using MemoryStream msEncrypt = new MemoryStream();
             using ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -52,7 +45,7 @@ namespace MKW.Core
                 Id = Guid.NewGuid(),
                 PublicKey = publicKeyBytes,
                 EncryptedPrivateKey = privateKeyEncrypted,
-                Salt = salt,
+                Salt = creds.ExportSalt(),
                 IV = aes.IV,
             };
 
