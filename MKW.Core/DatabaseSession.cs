@@ -1,4 +1,6 @@
 ﻿using MKW.Core.Storage;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MKW.Core
 {
@@ -13,6 +15,48 @@ namespace MKW.Core
 
         public void AddUser(string password)
         {
+            var userKey = RSA.Create();
+
+            byte[] salt = RandomNumberGenerator.GetBytes(32); // ah?
+
+            byte[] passwordHash = Rfc2898DeriveBytes.Pbkdf2(Encoding.Unicode.GetBytes(password),
+                                                            salt,
+                                                            16,
+                                                            HashAlgorithmName.SHA256,
+                                                            16);
+
+            //
+
+            using Aes aes = Aes.Create();
+
+            aes.GenerateIV();
+            aes.Key = passwordHash;
+
+            using MemoryStream msEncrypt = new MemoryStream();
+            using ICryptoTransform encryptor = aes.CreateEncryptor();
+            using CryptoStream csEncrypt = new CryptoStream(msEncrypt, aes.CreateEncryptor(), CryptoStreamMode.Write);
+
+            byte[] privateKeyBytes = userKey.ExportRSAPrivateKey();
+
+            csEncrypt.Write(privateKeyBytes);
+            csEncrypt.Flush();
+
+            byte[] privateKeyEncrypted = msEncrypt.ToArray();
+
+            //
+
+            byte[] publicKeyBytes = userKey.ExportRSAPublicKey();
+
+            User user = new User
+            {
+                Id = Guid.NewGuid(),
+                PublicKey = publicKeyBytes,
+                EncryptedPrivateKey = privateKeyEncrypted,
+                Salt = salt,
+                IV = aes.IV,
+            };
+
+            db.Users.Add(user);
         }
     }
 }
