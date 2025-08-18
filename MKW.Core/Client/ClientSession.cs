@@ -102,34 +102,18 @@ namespace MKW.Core.Client
             }
             else
             {
-                DatabaseSecretEntry? oldEntry = db.QueryEntry(id);
+                DatabaseUser[] users = db.EnumerateUsers().ToArray();
 
-                using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
+                DatabaseSecretEntry encodedEntry = EncodeEntry(entry, users);
 
-                byte[] data = payloadEncoder.Encrypt(entry.Data);
-
-                var keys = new Dictionary<Guid, byte[]>();
-                var encodedForUsers = new List<UserInfo>();
-
-                foreach (DatabaseUser user in db.EnumerateUsers())
+                List<UserInfo> encodedForUsers = [];
+                foreach (DatabaseUser user in users)
                 {
-                    using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey);
-
-                    byte[] encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey());
-
-                    keys.Add(user.Id, encyptedKey);
-
                     encodedForUsers.Add(UserInfo.FromDatabaseUser(user));
                 }
 
-                DatabaseSecretEntry newEntry = new DatabaseSecretEntry
-                {
-                    Keys = keys,
-                    Data = data,
-                    Salt = payloadEncoder.ExportIV(),
-                };
-
-                db.UpdateEntry(id, newEntry);
+                DatabaseSecretEntry? oldEntry = db.QueryEntry(id);
+                db.UpdateEntry(id, encodedEntry);
 
                 return new EntryInfo
                 {
@@ -138,6 +122,33 @@ namespace MKW.Core.Client
                     EncodedForUsers = encodedForUsers
                 };
             }
+        }
+
+        public DatabaseSecretEntry EncodeEntry(EntryPayload payload, IEnumerable<DatabaseUser> users)
+        {
+            using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
+
+            byte[] data = payloadEncoder.Encrypt(payload.Data);
+
+            var keys = new Dictionary<Guid, byte[]>();
+
+            foreach (DatabaseUser user in db.EnumerateUsers())
+            {
+                using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey);
+
+                byte[] encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey());
+
+                keys.Add(user.Id, encyptedKey);
+            }
+
+            DatabaseSecretEntry entry = new DatabaseSecretEntry
+            {
+                Keys = keys,
+                Data = data,
+                Salt = payloadEncoder.ExportIV(),
+            };
+
+            return entry;
         }
     }
 }
