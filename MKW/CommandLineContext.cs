@@ -50,12 +50,19 @@ namespace MKW
             return parsed.Invoke();
         }
 
-        private void AddUserAction(ParseResult argv)
+        public IDatabaseSession OpenDatabase(ParseResult argv)
         {
             string path = argv.GetRequiredValue(argFile);
+
+            return JSONDatabaseSession.Open(path);
+        }
+
+        private void AddUserAction(ParseResult argv)
+        {
             string password = argv.GetRequiredValue(optPassword);
 
-            using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
+            using IDatabaseSession database = OpenDatabase(argv);
+
             ClientSession session = new ClientSession(database);
 
             session.AddUser(password);
@@ -63,10 +70,7 @@ namespace MKW
 
         private void TouchAction(ParseResult argv)
         {
-            string path = argv.GetRequiredValue(argFile);
-
-            using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
-            ClientSession session = new ClientSession(database);
+            using IDatabaseSession database = OpenDatabase(argv);
         }
     }
 }
