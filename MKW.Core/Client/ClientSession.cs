@@ -20,15 +20,11 @@ namespace MKW.Core.Client
 
             var creds = UserCredentials.Create(password);
 
-            //
-
             using SymmetricTransformer encoder = SymmetricTransformer.Open(creds.GetEncodingHash(),
                                                                            creds.ExportSalt());
 
             byte[] privateKeyBytes = userKey.ExportPrivateKey();
             byte[] privateKeyEncrypted = encoder.Encrypt(privateKeyBytes);
-
-            //
 
             byte[] publicKeyBytes = userKey.ExportPublicKey();
 
