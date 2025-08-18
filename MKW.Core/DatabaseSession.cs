@@ -39,5 +39,26 @@ namespace MKW.Core
 
             db.Users.Add(user);
         }
+
+        public UserSession OpenUser(Guid id, string password)
+        {
+            // Let's first find the user in the database
+            // TODO: reject if one wasn't found
+            // TODO: move to another service
+            User user = db.Users.First(u => u.Id == id);
+
+            // Credentials can be opened within the entered password and the public salt
+            UserCredentials creds = UserCredentials.Open(password, user.Salt);
+
+            // Private data of the user is encrypted symmetrically using our creds (decoder
+            // also needs some data stored in the public section of the object).
+            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash(), user.IV);
+
+            // Let's try'N decode the private key. We could potentially fail here. So
+            // some validation may be required.
+            byte[] privateKeyBytes = decoder.Decrypt(user.EncryptedPrivateKey);
+
+            return new UserSession(db, user, privateKeyBytes);
+        }
     }
 }
