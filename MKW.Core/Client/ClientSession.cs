@@ -1,6 +1,7 @@
 ﻿using MKW.Core.Client.Notify;
 using MKW.Core.Cryptography;
 using MKW.Core.Storage;
+using System.Security.Cryptography;
 
 namespace MKW.Core.Client
 {
@@ -51,6 +52,30 @@ namespace MKW.Core.Client
             // Credentials can be opened within the entered password and the public salt
             UserCredentials creds = UserCredentials.Open(password, user.Salt);
 
+            return OpenUser(user, creds);
+        }
+
+        public UserSession OpenUser(string password)
+        {
+            foreach (DatabaseUser user in db.EnumerateUsers())
+            {
+                try
+                {
+                    UserCredentials creds = UserCredentials.Open(password, user.Salt);
+
+                    return OpenUser(user, creds);
+                }
+                catch (CryptographicException)
+                {
+                    // Ignore this user if the credentials are invalid
+                }
+            }
+
+            throw new Exception("No valid user found with the provided password.");
+        }
+
+        public UserSession OpenUser(DatabaseUser user, UserCredentials creds)
+        {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).
             using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash(), user.IV);

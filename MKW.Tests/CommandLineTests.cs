@@ -66,7 +66,7 @@ namespace MKW.Tests
 
             db.Dispose();
 
-            var output = sbox.Run($"mkw entries {sbox.DatabasePath} --password amogus --user {user1.Id}");
+            var output = sbox.Run($"mkw entries {sbox.DatabasePath} --password amogus");
 
             ClassicAssert.AreEqual(
                 """

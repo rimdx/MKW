@@ -46,6 +46,26 @@ namespace MKW.Tests
         }
 
         [Test]
+        public void OpenUserTestNoId()
+        {
+            MemoryDatabaseSession db = new MemoryDatabaseSession();
+
+            ClientSession session = new ClientSession(db);
+
+            var user1 = session.AddUser("cred1");
+            var user2 = session.AddUser("cred2");
+            var user3 = session.AddUser("cred3");
+
+            UserSession userSession1 = session.OpenUser("cred1");
+            UserSession userSession2 = session.OpenUser("cred2");
+            UserSession userSession3 = session.OpenUser("cred3");
+
+            Assert.Throws<Exception>(
+                () => session.OpenUser("nonexistingpassword")
+            );
+        }
+
+        [Test]
         public void AddEntryTests()
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();

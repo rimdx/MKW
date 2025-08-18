@@ -23,11 +23,6 @@ namespace MKW
             Description = "password to perform operation with",
         };
 
-        private readonly Option<Guid> optUserId = new("--user")
-        {
-            Description = "user ID",
-        };
-
         public CommandLineContext()
         {
             rootCommand = new RootCommand("Multi-Key Wallet");
@@ -45,7 +40,6 @@ namespace MKW
             cmdEntries = new Command("entries", "list all entries in the database");
             cmdEntries.Arguments.Add(argFile);
             cmdEntries.Options.Add(optPassword);
-            cmdEntries.Options.Add(optUserId);
             cmdEntries.SetAction(ListEntriesAction);
 
             rootCommand.Subcommands.Add(cmdAddUser);
@@ -89,8 +83,7 @@ namespace MKW
             using IDatabaseSession database = OpenDatabase(argv);
             ClientSession session = new ClientSession(database);
 
-            UserSession userSession = session.OpenUser(argv.GetRequiredValue(optUserId),
-                                                       argv.GetRequiredValue(optPassword));
+            UserSession userSession = session.OpenUser(argv.GetRequiredValue(optPassword));
 
             foreach (var entry in userSession.EnumerateEntries())
             {
