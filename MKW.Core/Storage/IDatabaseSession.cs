@@ -5,6 +5,8 @@
         void AddUser(Guid id, User user);
         User GetUser(Guid id);
 
+        void UpdateEntry(Guid id, Entry? entry);
+
         void Save();
     }
 }
