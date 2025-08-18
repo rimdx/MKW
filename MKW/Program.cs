@@ -19,7 +19,7 @@ namespace MKW
 
             Console.WriteLine($"[Verbose] Opening database file: '{path}'.");
 
-            using DatabaseSession database = DatabaseSession.Open(path);
+            using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
             ClientSession session = new ClientSession(database);
 
             Console.WriteLine($"[Verbose] Successfully opened database file.");
