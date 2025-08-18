@@ -99,5 +99,69 @@ namespace MKW.Tests
                 },
                 userSession.GetEntry(entry.Id));
         }
+
+        [Test]
+        public void HiddenEntriesTests()
+        {
+            MemoryDatabaseSession db = new MemoryDatabaseSession();
+            ClientSession session = new ClientSession(db);
+
+            UserInfo oldUser = session.AddUser("iamanoldman");
+
+            session.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
+            session.UpdateEntry(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"), new EntryPayload("entry2"));
+
+            UserInfo newUser = session.AddUser("ihatehimbutcantseehisstuff");
+
+            session.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
+
+            UserSession oldSession = session.OpenUser("iamanoldman");
+
+            CollectionAssert.AreEqual(
+                new KeyedEntry[]
+                {
+                    new KeyedEntry
+                    {
+                        Id = new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"),
+                        Payload = new EntryPayload("entry1")
+                    },
+                    new KeyedEntry
+                    {
+                        Id = new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"),
+                        Payload = new EntryPayload("entry2")
+                    },
+                    new KeyedEntry
+                    {
+                        Id = new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"),
+                        Payload = new EntryPayload("entry3")
+                    },
+                },
+                oldSession.EnumerateEntries()
+            );
+
+            UserSession newSession = session.OpenUser("ihatehimbutcantseehisstuff");
+
+            CollectionAssert.AreEqual(
+                new KeyedEntry[]
+                {
+                    new KeyedEntry
+                    {
+                        Id = new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"),
+                        Payload = null
+                    },
+                    new KeyedEntry
+                    {
+                        Id = new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"),
+                        Payload = null
+                    },
+                    new KeyedEntry
+                    {
+                        Id = new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"),
+                        Payload = new EntryPayload("entry3")
+                    },
+                },
+                newSession.EnumerateEntries()
+            );
+        }
     }
 }
