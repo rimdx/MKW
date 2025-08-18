@@ -5,6 +5,9 @@
         // User -> Payload
         public required IDictionary<Guid, byte[]> Keys { get; set; }
 
+        // Salt used within [decoded]key to encode Data
+        public required byte[] Salt { get; set; }
+
         // The payload, symmetrically encoded using a key, available by encoding
         // one of Keys using user's private key. The Salt is required to operate
         // (internally states as IV).

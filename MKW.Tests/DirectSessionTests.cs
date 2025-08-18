@@ -41,5 +41,22 @@ namespace MKW.Tests
                 () => session.OpenUser(user.Id, "randomheckerpwdhaha")
             );
         }
+
+        [Test]
+        public void AddEntryTests()
+        {
+            MemoryDatabaseSession db = new MemoryDatabaseSession();
+
+            ClientSession session = new ClientSession(db);
+            session.AddUser("protectmyballs");
+            UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
+
+            session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
+                                new EntryPayload("balls"));
+
+            ClassicAssert.AreEqual(1, db.Database.Users.Count);
+            ClassicAssert.AreEqual(1, db.Database.Entries.Count);
+            ClassicAssert.AreEqual(1, db.Database.Entries.First().Value.Keys.Count);
+        }
     }
 }

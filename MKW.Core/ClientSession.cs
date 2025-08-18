@@ -57,5 +57,39 @@ namespace MKW.Core
 
             return new UserSession(db, user, privateKeyBytes);
         }
+
+        public void UpdateEntry(Guid id, EntryPayload? entry)
+        {
+            if (entry == null)
+            {
+                db.UpdateEntry(id, null);
+            }
+            else
+            {
+                using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
+
+                byte[] data = payloadEncoder.Encrypt(entry.Data);
+
+                var keys = new Dictionary<Guid, byte[]>();
+
+                foreach (User user in db.EnumerateUsers())
+                {
+                    using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey);
+
+                    byte[] encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey());
+
+                    keys.Add(user.Id, encyptedKey);
+                }
+
+                Entry newEntry = new Entry
+                {
+                    Keys = keys,
+                    Data = data,
+                    Salt = payloadEncoder.ExportIV(),
+                };
+
+                db.UpdateEntry(id, newEntry);
+            }
+        }
     }
 }
