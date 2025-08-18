@@ -6,16 +6,24 @@ namespace MKW.Core
     {
         private readonly Aes aes;
 
-        protected SymmetricTransformer(byte[] key, byte[]? iv)
+        protected SymmetricTransformer(byte[]? key, byte[]? iv)
         {
             aes = Aes.Create();
 
-            aes.Key = key;
+            if (key == null)
+                aes.GenerateKey();
+            else
+                aes.Key = key;
 
             if (iv == null)
                 aes.GenerateIV();
             else
                 aes.IV = iv;
+        }
+
+        public static SymmetricTransformer Create()
+        {
+            return new SymmetricTransformer(null, null);
         }
 
         public static SymmetricTransformer Create(byte[] key)
