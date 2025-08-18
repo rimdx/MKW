@@ -160,5 +160,23 @@ namespace MKW.Tests
                 """,
                 output1);
         }
+
+        [Test]
+        public void InteractivePromptTest()
+        {
+            using var sbox = new SandBox();
+
+            sbox.Run($"mkw add-user {sbox.DatabasePath}");
+            sbox.Run($"mkw add-user {sbox.DatabasePath} --non-interactive");
+            sbox.Run($"mkw add-user {sbox.DatabasePath} --force-interactive", "test3");
+
+            using var db = sbox.OpenDatabase();
+
+            ClassicAssert.AreEqual(1, db.EnumerateUsers().Count());
+
+            var session = new ClientSession(db);
+
+            var user = session.OpenUser("test3");
+        }
     }
 }
