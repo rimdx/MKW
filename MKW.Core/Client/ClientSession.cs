@@ -22,7 +22,8 @@ namespace MKW.Core.Client
 
             //
 
-            using SymmetricTransformer encoder = SymmetricTransformer.Create(creds.GetEncodingHash());
+            using SymmetricTransformer encoder = SymmetricTransformer.Open(creds.GetEncodingHash(),
+                                                                           creds.ExportSalt());
 
             byte[] privateKeyBytes = userKey.ExportPrivateKey();
             byte[] privateKeyEncrypted = encoder.Encrypt(privateKeyBytes);
@@ -37,7 +38,6 @@ namespace MKW.Core.Client
                 PublicKey = publicKeyBytes,
                 EncryptedPrivateKey = privateKeyEncrypted,
                 Salt = creds.ExportSalt(),
-                IV = encoder.ExportIV(),
             };
 
             db.AddUser(user.Id, user);
@@ -78,7 +78,8 @@ namespace MKW.Core.Client
         {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).
-            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash(), user.IV);
+            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash(),
+                                                                           creds.ExportSalt());
 
             // Let's try'N decode the private key. We could potentially fail here. So
             // some validation may be required.

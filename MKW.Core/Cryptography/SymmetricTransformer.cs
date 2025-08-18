@@ -26,11 +26,6 @@ namespace MKW.Core.Cryptography
             return new SymmetricTransformer(null, null);
         }
 
-        public static SymmetricTransformer Create(byte[] key)
-        {
-            return new SymmetricTransformer(key, null);
-        }
-
         public static SymmetricTransformer Open(byte[] key, byte[] iv)
         {
             return new SymmetricTransformer(key, iv);
