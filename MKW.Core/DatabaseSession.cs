@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Storage;
-using System.Security.Cryptography;
 
 namespace MKW.Core
 {
@@ -14,7 +13,7 @@ namespace MKW.Core
 
         public void AddUser(string password)
         {
-            var userKey = RSA.Create();
+            using var userKey = AsymmetricTransformer.Create();
 
             var creds = UserCredentials.Create(password);
 
@@ -22,12 +21,12 @@ namespace MKW.Core
 
             using SymmetricTransformer encoder = SymmetricTransformer.Create(creds.GetEncodingHash());
 
-            byte[] privateKeyBytes = userKey.ExportRSAPrivateKey();
+            byte[] privateKeyBytes = userKey.ExportPrivateKey();
             byte[] privateKeyEncrypted = encoder.Encrypt(privateKeyBytes);
 
             //
 
-            byte[] publicKeyBytes = userKey.ExportRSAPublicKey();
+            byte[] publicKeyBytes = userKey.ExportPublicKey();
 
             User user = new User
             {
