@@ -9,6 +9,11 @@
             Database = new Database();
         }
 
+        public MemoryDatabaseSession(Database database)
+        {
+            Database = database;
+        }
+
         public void AddUser(Guid id, User user)
         {
             Database.Users.Add(user);
