@@ -65,6 +65,11 @@ namespace MKW.Core
             return aes.IV;
         }
 
+        public byte[] ExportKey()
+        {
+            return aes.Key;
+        }
+
         public void Dispose()
         {
             aes.Dispose();
