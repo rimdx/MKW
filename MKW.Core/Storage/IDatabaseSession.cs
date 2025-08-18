@@ -4,6 +4,7 @@
     {
         void AddUser(Guid id, User user);
         User GetUser(Guid id);
+        IEnumerable<User> EnumerateUsers();
 
         void UpdateEntry(Guid id, Entry? entry);
 
