@@ -17,6 +17,7 @@
         public void AddUser(Guid id, User user)
         {
             Database.Users.Add(user);
+            Save();
         }
 
         public User GetUser(Guid id)
@@ -24,11 +25,11 @@
             return Database.Users.First(u => u.Id == id);
         }
 
-        public void Save()
+        public virtual void Save()
         {
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
         }
     }
