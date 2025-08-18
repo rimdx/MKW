@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace MKW.Core
+namespace MKW.Core.Client
 {
     public record class EntryPayload
     {
