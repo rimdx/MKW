@@ -8,6 +8,7 @@
 
         void UpdateEntry(Guid id, DatabaseSecretEntry? entry);
         DatabaseSecretEntry? QueryEntry(Guid id);
+        IEnumerable<DatabaseSecretKeyedEntry> EnumerateEntries();
 
         void Save();
     }
