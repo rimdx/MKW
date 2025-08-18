@@ -17,9 +17,10 @@ namespace MKW
 
             path = Path.GetFullPath(path);
 
-            DatabaseFileService databaseFileService = new DatabaseFileService();
-            Database database = EnsureDatabase(databaseFileService, path);
-            DatabaseSession session = new DatabaseSession(database);
+            Console.WriteLine($"[Verbose] Opening database file: '{path}'.");
+
+            using DatabaseSession database = DatabaseSession.Open(path);
+            ClientSession session = new ClientSession(database);
 
             Console.WriteLine($"[Verbose] Successfully opened database file.");
 
@@ -43,31 +44,8 @@ namespace MKW
                 }
             }
 
-            databaseFileService.Save(database, path);
+            database.Save();
             Console.WriteLine($"[Verbose] Successfully closed database file.");
-        }
-
-        private static Database EnsureDatabase(DatabaseFileService databaseFileService, string path)
-        {
-            if (File.Exists(path))
-            {
-                Console.WriteLine($"[Verbose] Opening database file: '{path}'.");
-
-                return databaseFileService.Open(path);
-            }
-            else
-            {
-                Console.WriteLine($"[Verbose] Initializing database file: '{path}'.");
-
-                Database database = new Database
-                {
-                    Users = new List<User>()
-                };
-
-                databaseFileService.Save(database, path);
-
-                return database;
-            }
         }
     }
 }

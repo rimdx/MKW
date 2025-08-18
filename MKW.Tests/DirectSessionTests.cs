@@ -10,31 +10,25 @@ namespace MKW.Tests
         [Test]
         public void SimpleAddUserTest()
         {
-            Database db = new Database()
-            {
-                Users = new List<User>()
-            };
+            MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            DatabaseSession session = new DatabaseSession(db);
+            ClientSession session = new ClientSession(db);
 
             session.AddUser("whattheheckamidoing");
 
-            ClassicAssert.AreEqual(1, db.Users.Count);
+            ClassicAssert.AreEqual(1, db.Database.Users.Count);
         }
 
         [Test]
         public void OpenUserTest()
         {
-            Database db = new Database()
-            {
-                Users = new List<User>()
-            };
+            MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            DatabaseSession session = new DatabaseSession(db);
+            ClientSession session = new ClientSession(db);
 
             session.AddUser("awesomesecretno1willeverguess");
 
-            User user = db.Users[0];
+            User user = db.Database.Users[0];
 
             UserSession userSession = session.OpenUser(user.Id, "awesomesecretno1willeverguess");
 

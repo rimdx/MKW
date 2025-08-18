@@ -2,11 +2,11 @@
 
 namespace MKW.Core
 {
-    public class DatabaseSession
+    public class ClientSession
     {
-        private readonly Database db;
+        private readonly IDatabaseSession db;
 
-        public DatabaseSession(Database db)
+        public ClientSession(IDatabaseSession db)
         {
             this.db = db;
         }
@@ -37,15 +37,12 @@ namespace MKW.Core
                 IV = encoder.ExportIV(),
             };
 
-            db.Users.Add(user);
+            db.AddUser(user.Id, user);
         }
 
         public UserSession OpenUser(Guid id, string password)
         {
-            // Let's first find the user in the database
-            // TODO: reject if one wasn't found
-            // TODO: move to another service
-            User user = db.Users.First(u => u.Id == id);
+            User user = db.GetUser(id);
 
             // Credentials can be opened within the entered password and the public salt
             UserCredentials creds = UserCredentials.Open(password, user.Salt);

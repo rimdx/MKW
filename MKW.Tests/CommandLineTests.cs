@@ -14,7 +14,7 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n" +
                 $"  -- STDOUT:\r\n" +
-                $"[Verbose] Initializing database file: '{sbox.DatabasePath}'.\r\n" +
+                $"[Verbose] Opening database file: '{sbox.DatabasePath}'.\r\n" +
                 $"[Verbose] Successfully opened database file.\r\n" +
                 $"[Verbose] Successfully closed database file.\r\n",
                 sbox.Run($"mkw {sbox.DatabasePath}")
@@ -39,7 +39,7 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n" +
                 $"  -- STDOUT:\r\n" +
-                $"[Verbose] Initializing database file: '{sbox.DatabasePath}'.\r\n" +
+                $"[Verbose] Opening database file: '{sbox.DatabasePath}'.\r\n" +
                 $"[Verbose] Successfully opened database file.\r\n" +
                 $"[Verbose] Adding user with password: 'lifeishard'.\r\n" +
                 $"[Verbose] User added successfully.\r\n" +
