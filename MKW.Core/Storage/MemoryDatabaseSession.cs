@@ -15,23 +15,23 @@ namespace MKW.Core.Storage
             Database = database;
         }
 
-        public void AddUser(Guid id, User user)
+        public void AddUser(Guid id, DatabaseUser user)
         {
             Database.Users.Add(user);
             Save();
         }
 
-        public User GetUser(Guid id)
+        public DatabaseUser GetUser(Guid id)
         {
             return Database.Users.First(u => u.Id == id);
         }
 
-        public IEnumerable<User> EnumerateUsers()
+        public IEnumerable<DatabaseUser> EnumerateUsers()
         {
             return Database.Users;
         }
 
-        public void UpdateEntry(Guid id, Entry? entry)
+        public void UpdateEntry(Guid id, DatabaseSecretEntry? entry)
         {
             if (entry == null)
             {
@@ -45,9 +45,9 @@ namespace MKW.Core.Storage
             Save();
         }
 
-        public Entry QueryEntry(Guid id)
+        public DatabaseSecretEntry QueryEntry(Guid id)
         {
-            if (Database.Entries.TryGetValue(id, out Entry? entry))
+            if (Database.Entries.TryGetValue(id, out DatabaseSecretEntry? entry))
             {
                 return entry;
             }

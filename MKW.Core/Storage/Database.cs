@@ -2,15 +2,15 @@
 {
     public class Database
     {
-        public IList<User> Users { get; set; }
+        public IList<DatabaseUser> Users { get; set; }
 
         // EntryId -> Entry
-        public IDictionary<Guid, Entry> Entries { get; set; }
+        public IDictionary<Guid, DatabaseSecretEntry> Entries { get; set; }
 
         public Database()
         {
-            Users = new List<User>();
-            Entries = new Dictionary<Guid, Entry>();
+            Users = new List<DatabaseUser>();
+            Entries = new Dictionary<Guid, DatabaseSecretEntry>();
         }
     }
 }

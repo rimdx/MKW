@@ -28,7 +28,7 @@ namespace MKW.Core
 
             byte[] publicKeyBytes = userKey.ExportPublicKey();
 
-            User user = new User
+            DatabaseUser user = new DatabaseUser
             {
                 Id = Guid.NewGuid(),
                 PublicKey = publicKeyBytes,
@@ -42,7 +42,7 @@ namespace MKW.Core
 
         public UserSession OpenUser(Guid id, string password)
         {
-            User user = db.GetUser(id);
+            DatabaseUser user = db.GetUser(id);
 
             // Credentials can be opened within the entered password and the public salt
             UserCredentials creds = UserCredentials.Open(password, user.Salt);
@@ -72,7 +72,7 @@ namespace MKW.Core
 
                 var keys = new Dictionary<Guid, byte[]>();
 
-                foreach (User user in db.EnumerateUsers())
+                foreach (DatabaseUser user in db.EnumerateUsers())
                 {
                     using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey);
 
@@ -81,7 +81,7 @@ namespace MKW.Core
                     keys.Add(user.Id, encyptedKey);
                 }
 
-                Entry newEntry = new Entry
+                DatabaseSecretEntry newEntry = new DatabaseSecretEntry
                 {
                     Keys = keys,
                     Data = data,

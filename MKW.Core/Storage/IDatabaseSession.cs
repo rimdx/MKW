@@ -2,12 +2,12 @@
 {
     public interface IDatabaseSession : IDisposable
     {
-        void AddUser(Guid id, User user);
-        User GetUser(Guid id);
-        IEnumerable<User> EnumerateUsers();
+        void AddUser(Guid id, DatabaseUser user);
+        DatabaseUser GetUser(Guid id);
+        IEnumerable<DatabaseUser> EnumerateUsers();
 
-        void UpdateEntry(Guid id, Entry? entry);
-        Entry QueryEntry(Guid id);
+        void UpdateEntry(Guid id, DatabaseSecretEntry? entry);
+        DatabaseSecretEntry QueryEntry(Guid id);
 
         void Save();
     }
