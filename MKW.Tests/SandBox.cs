@@ -65,7 +65,7 @@ namespace MKW.Tests
             return result.ToString();
         }
 
-        public IDatabaseSession OpenDatabase()
+        public IDatabase OpenDatabase()
         {
             return JSONDatabaseSession.Open(DatabasePath);
         }

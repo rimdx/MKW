@@ -5,11 +5,11 @@ namespace MKW.Core.Client
 {
     public class UserSession
     {
-        private readonly IDatabaseSession db;
+        private readonly IDatabase db;
         private readonly DatabaseUser user;
         private readonly byte[] decryptedPrivateKey;
 
-        public UserSession(IDatabaseSession db, DatabaseUser user, byte[] decryptedPrivateKey)
+        public UserSession(IDatabase db, DatabaseUser user, byte[] decryptedPrivateKey)
         {
             this.db = db;
             this.user = user;
