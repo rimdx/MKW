@@ -1,4 +1,5 @@
-﻿using MKW.Core.Cryptography;
+﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -12,7 +13,7 @@ namespace MKW.Core.Client
             this.db = db;
         }
 
-        public void AddUser(string password)
+        public UserInfo AddUser(string password)
         {
             using var userKey = AsymmetricTransformer.Create();
 
@@ -39,6 +40,8 @@ namespace MKW.Core.Client
             };
 
             db.AddUser(user.Id, user);
+
+            return UserInfo.FromDatabaseUser(user);
         }
 
         public UserSession OpenUser(Guid id, string password)
@@ -59,11 +62,18 @@ namespace MKW.Core.Client
             return new UserSession(db, user, privateKeyBytes);
         }
 
-        public void UpdateEntry(Guid id, EntryPayload? entry)
+        public EntryInfo UpdateEntry(Guid id, EntryPayload? entry)
         {
             if (entry == null)
             {
                 db.UpdateEntry(id, null);
+
+                return new EntryInfo
+                {
+                    Id = id,
+                    Action = ActionInfo.Deleted,
+                    EncodedForUsers = []
+                };
             }
             else
             {
@@ -72,6 +82,7 @@ namespace MKW.Core.Client
                 byte[] data = payloadEncoder.Encrypt(entry.Data);
 
                 var keys = new Dictionary<Guid, byte[]>();
+                var encodedForUsers = new List<UserInfo>();
 
                 foreach (DatabaseUser user in db.EnumerateUsers())
                 {
@@ -80,6 +91,8 @@ namespace MKW.Core.Client
                     byte[] encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey());
 
                     keys.Add(user.Id, encyptedKey);
+
+                    encodedForUsers.Add(UserInfo.FromDatabaseUser(user));
                 }
 
                 DatabaseSecretEntry newEntry = new DatabaseSecretEntry
@@ -90,6 +103,13 @@ namespace MKW.Core.Client
                 };
 
                 db.UpdateEntry(id, newEntry);
+
+                return new EntryInfo
+                {
+                    Id = id,
+                    Action = ActionInfo.Updated,
+                    EncodedForUsers = encodedForUsers
+                };
             }
         }
     }
