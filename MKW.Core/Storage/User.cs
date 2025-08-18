@@ -9,5 +9,7 @@
         public required byte[] PublicKey { get; set; }
 
         public required byte[] EncryptedPrivateKey { get; set; }
+
+        public required byte[] IV { get; set; }
     }
 }
