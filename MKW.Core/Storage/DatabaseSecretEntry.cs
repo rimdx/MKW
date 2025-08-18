@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage
 {
-    public record class Entry
+    public record class DatabaseSecretEntry
     {
         // User -> Payload
         public required IDictionary<Guid, byte[]> Keys { get; set; }

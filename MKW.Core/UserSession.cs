@@ -5,10 +5,10 @@ namespace MKW.Core
     public class UserSession
     {
         private readonly IDatabaseSession db;
-        private readonly User user;
+        private readonly DatabaseUser user;
         private readonly byte[] decryptedPrivateKey;
 
-        public UserSession(IDatabaseSession db, User user, byte[] decryptedPrivateKey)
+        public UserSession(IDatabaseSession db, DatabaseUser user, byte[] decryptedPrivateKey)
         {
             this.db = db;
             this.user = user;
@@ -17,7 +17,7 @@ namespace MKW.Core
 
         public EntryPayload GetEntry(Guid id)
         {
-            Entry entry = db.QueryEntry(id);
+            DatabaseSecretEntry entry = db.QueryEntry(id);
 
             byte[] encodedKey = entry.Keys[user.Id];
 

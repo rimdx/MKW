@@ -28,7 +28,7 @@ namespace MKW.Tests
 
             session.AddUser("awesomesecretno1willeverguess");
 
-            User user = db.Database.Users[0];
+            DatabaseUser user = db.Database.Users[0];
 
             UserSession userSession = session.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
