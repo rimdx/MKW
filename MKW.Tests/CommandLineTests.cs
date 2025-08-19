@@ -58,7 +58,7 @@ namespace MKW.Tests
 
             using var db = sbox.OpenDatabase();
 
-            var session = new ClientSession(db);
+            using var session = new ClientSession(db);
 
             var user1 = session.PromoteUser("amogus");
             var user2 = session.PromoteUser("r34");
@@ -90,7 +90,7 @@ namespace MKW.Tests
 
             using (var db = sbox.OpenDatabase())
             {
-                ClientSession session = new ClientSession(db);
+                using ClientSession session = new ClientSession(db);
 
                 UserInfo oldUser = session.PromoteUser("iamanoldman");
 
@@ -174,7 +174,7 @@ namespace MKW.Tests
 
             ClassicAssert.AreEqual(1, db.EnumerateUsers().Count());
 
-            var session = new ClientSession(db);
+            using var session = new ClientSession(db);
 
             var user = session.OpenUser("test3");
         }

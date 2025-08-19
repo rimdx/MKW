@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace MKW.Core.Client
 {
-    public class ClientSession
+    public class ClientSession : IDisposable
     {
         private readonly IDatabase db;
 
@@ -173,6 +173,10 @@ namespace MKW.Core.Client
             };
 
             return entry;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
