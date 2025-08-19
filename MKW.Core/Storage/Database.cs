@@ -2,6 +2,8 @@
 {
     public class Database
     {
+        public AdminUser? Admin { get; set; }
+
         public IList<DatabaseUser> Users { get; set; }
 
         // EntryId -> Entry
