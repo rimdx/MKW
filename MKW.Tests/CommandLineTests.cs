@@ -55,10 +55,7 @@ namespace MKW.Tests
         public void ListEntriesTest()
         {
             using var sbox = new SandBox();
-
-            using var db = sbox.OpenDatabase();
-
-            using var session = ClientSession.Open(db);
+            using var session = sbox.OpenSession();
 
             var user1 = session.PromoteUser("amogus");
             var user2 = session.PromoteUser("r34");
@@ -66,7 +63,7 @@ namespace MKW.Tests
             session.UpdateEntry(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}"), new EntryPayload("sus1"));
             session.UpdateEntry(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}"), new EntryPayload("sus2"));
 
-            db.Dispose();
+            session.Dispose();
 
             var output = sbox.Run($"mkw entries {sbox.DatabasePath} --password amogus");
 
@@ -88,10 +85,8 @@ namespace MKW.Tests
         {
             using var sbox = new SandBox();
 
-            using (var db = sbox.OpenDatabase())
+            using ClientSession session = sbox.OpenSession();
             {
-                using ClientSession session = ClientSession.Open(db);
-
                 UserInfo oldUser = session.PromoteUser("iamanoldman");
 
                 session.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
