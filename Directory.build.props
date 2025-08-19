@@ -11,6 +11,11 @@
     <Platforms>$(RuntimeIdentifiers)</Platforms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Platform)' == ''">
+    <Platform Condition="'$(RuntimeIdentifier)' == ''">win-x64</Platform>
+    <Platform Condition="'$(RuntimeIdentifier)' != ''">$(RuntimeIdentifier)</Platform>
+  </PropertyGroup>
+
   <PropertyGroup>
     <RuntimeIdentifier>$(Platform)</RuntimeIdentifier>
   </PropertyGroup>
