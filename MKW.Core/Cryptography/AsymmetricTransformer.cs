@@ -46,6 +46,21 @@ namespace MKW.Core.Cryptography
             return rsa.Decrypt(data, RSAEncryptionPadding.Pkcs1);
         }
 
+        public byte[] Sign(byte[] data)
+        {
+            return rsa.SignData(data,
+                                HashAlgorithmName.SHA256,
+                                RSASignaturePadding.Pkcs1);
+        }
+
+        public bool Verify(byte[] data, byte[] signature)
+        {
+            return rsa.VerifyData(data,
+                                  signature,
+                                  HashAlgorithmName.SHA256,
+                                  RSASignaturePadding.Pkcs1);
+        }
+
         public byte[] ExportPublicKey()
         {
             return rsa.ExportRSAPublicKey();
