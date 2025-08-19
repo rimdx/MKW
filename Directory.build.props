@@ -2,6 +2,7 @@
  <PropertyGroup>
    <BaseOutputPath>$(SolutionDir)\bin\</BaseOutputPath>
    <BaseIntermediateOutputPath>$(SolutionDir)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+   <PublishDir>$(BaseOutputPath)/publish</PublishDir>
    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
  </PropertyGroup>
 
