@@ -94,7 +94,7 @@ namespace MKW
         {
             using IDatabase database = OpenDatabase(argv);
 
-            ClientSession session = new ClientSession(database);
+            using ClientSession session = new ClientSession(database);
 
             UserInfo user = session.PromoteUser(GetPassword(argv));
 
@@ -106,7 +106,7 @@ namespace MKW
             string payload = argv.GetRequiredValue(argPayload);
 
             using IDatabase database = OpenDatabase(argv);
-            ClientSession session = new ClientSession(database);
+            using ClientSession session = new ClientSession(database);
 
             EntryInfo entry = session.UpdateEntry(Guid.NewGuid(), new EntryPayload(payload));
 
@@ -121,9 +121,9 @@ namespace MKW
         private void ListEntriesAction(ParseResult argv)
         {
             using IDatabase database = OpenDatabase(argv);
-            ClientSession session = new ClientSession(database);
+            using ClientSession session = new ClientSession(database);
 
-            UserSession userSession = session.OpenUser(GetPassword(argv));
+            using UserSession userSession = session.OpenUser(GetPassword(argv));
 
             foreach (var entry in userSession.EnumerateEntries())
             {

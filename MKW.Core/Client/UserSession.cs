@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserSession
+    public class UserSession : IDisposable
     {
         private readonly IDatabase db;
         private readonly DatabaseUser user;
@@ -68,6 +68,10 @@ namespace MKW.Core.Client
             byte[] decryptedData = dataDecoder.Decrypt(entry.Data);
 
             return new EntryPayload(decryptedData);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

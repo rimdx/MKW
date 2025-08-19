@@ -14,7 +14,7 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            ClientSession session = new ClientSession(db);
+            using ClientSession session = new ClientSession(db);
 
             var user = session.PromoteUser("whattheheckamidoing");
 
@@ -29,11 +29,11 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            ClientSession session = new ClientSession(db);
+            using ClientSession session = new ClientSession(db);
 
             var user = session.PromoteUser("awesomesecretno1willeverguess");
 
-            UserSession userSession = session.OpenUser(user.Id, "awesomesecretno1willeverguess");
+            using UserSession userSession = session.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
             Assert.Throws<InvalidOperationException>(
                 () => session.OpenUser(new Guid("{DEADCCCE-69CF-3242-810A-C54B3D490797}"),
@@ -50,15 +50,15 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            ClientSession session = new ClientSession(db);
+            using ClientSession session = new ClientSession(db);
 
             var user1 = session.PromoteUser("cred1");
             var user2 = session.PromoteUser("cred2");
             var user3 = session.PromoteUser("cred3");
 
-            UserSession userSession1 = session.OpenUser("cred1");
-            UserSession userSession2 = session.OpenUser("cred2");
-            UserSession userSession3 = session.OpenUser("cred3");
+            using UserSession userSession1 = session.OpenUser("cred1");
+            using UserSession userSession2 = session.OpenUser("cred2");
+            using UserSession userSession3 = session.OpenUser("cred3");
 
             Assert.Throws<Exception>(
                 () => session.OpenUser("nonexistingpassword")
@@ -70,9 +70,9 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            ClientSession session = new ClientSession(db);
+            using ClientSession session = new ClientSession(db);
             var user = session.PromoteUser("protectmyballs");
-            UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
+            using UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
 
             var entry = session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
                                             new EntryPayload("balls"));
@@ -104,7 +104,7 @@ namespace MKW.Tests
         public void HiddenEntriesTests()
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
-            ClientSession session = new ClientSession(db);
+            using ClientSession session = new ClientSession(db);
 
             UserInfo oldUser = session.PromoteUser("iamanoldman");
 
@@ -115,7 +115,7 @@ namespace MKW.Tests
 
             session.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
 
-            UserSession oldSession = session.OpenUser("iamanoldman");
+            using UserSession oldSession = session.OpenUser("iamanoldman");
 
             CollectionAssert.AreEqual(
                 new KeyedEntry[]
@@ -139,7 +139,7 @@ namespace MKW.Tests
                 oldSession.EnumerateEntries()
             );
 
-            UserSession newSession = session.OpenUser("ihatehimbutcantseehisstuff");
+            using UserSession newSession = session.OpenUser("ihatehimbutcantseehisstuff");
 
             CollectionAssert.AreEqual(
                 new KeyedEntry[]
