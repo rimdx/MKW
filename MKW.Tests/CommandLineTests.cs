@@ -85,7 +85,7 @@ namespace MKW.Tests
         {
             using var sbox = new SandBox();
 
-            using ClientSession client = sbox.OpenSession();
+            using (ClientSession client = sbox.OpenSession())
             {
                 UserInfo oldUser = client.PromoteUser("iamanoldman");
 
