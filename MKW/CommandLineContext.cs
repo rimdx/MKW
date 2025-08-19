@@ -96,7 +96,7 @@ namespace MKW
 
             ClientSession session = new ClientSession(database);
 
-            UserInfo user = session.AddUser(GetPassword(argv));
+            UserInfo user = session.PromoteUser(GetPassword(argv));
 
             Console.WriteLine($"User added with ID: {user.Id}");
         }

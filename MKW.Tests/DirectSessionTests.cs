@@ -16,7 +16,7 @@ namespace MKW.Tests
 
             ClientSession session = new ClientSession(db);
 
-            var user = session.AddUser("whattheheckamidoing");
+            var user = session.PromoteUser("whattheheckamidoing");
 
             ClassicAssert.AreEqual(1, db.Database.Users.Count);
 
@@ -31,7 +31,7 @@ namespace MKW.Tests
 
             ClientSession session = new ClientSession(db);
 
-            var user = session.AddUser("awesomesecretno1willeverguess");
+            var user = session.PromoteUser("awesomesecretno1willeverguess");
 
             UserSession userSession = session.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
@@ -52,9 +52,9 @@ namespace MKW.Tests
 
             ClientSession session = new ClientSession(db);
 
-            var user1 = session.AddUser("cred1");
-            var user2 = session.AddUser("cred2");
-            var user3 = session.AddUser("cred3");
+            var user1 = session.PromoteUser("cred1");
+            var user2 = session.PromoteUser("cred2");
+            var user3 = session.PromoteUser("cred3");
 
             UserSession userSession1 = session.OpenUser("cred1");
             UserSession userSession2 = session.OpenUser("cred2");
@@ -71,7 +71,7 @@ namespace MKW.Tests
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
             ClientSession session = new ClientSession(db);
-            var user = session.AddUser("protectmyballs");
+            var user = session.PromoteUser("protectmyballs");
             UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
 
             var entry = session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
@@ -106,12 +106,12 @@ namespace MKW.Tests
             MemoryDatabaseSession db = new MemoryDatabaseSession();
             ClientSession session = new ClientSession(db);
 
-            UserInfo oldUser = session.AddUser("iamanoldman");
+            UserInfo oldUser = session.PromoteUser("iamanoldman");
 
             session.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
             session.UpdateEntry(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"), new EntryPayload("entry2"));
 
-            UserInfo newUser = session.AddUser("ihatehimbutcantseehisstuff");
+            UserInfo newUser = session.PromoteUser("ihatehimbutcantseehisstuff");
 
             session.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
 

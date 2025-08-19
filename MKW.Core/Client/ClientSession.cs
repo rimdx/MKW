@@ -14,7 +14,7 @@ namespace MKW.Core.Client
             this.db = db;
         }
 
-        public UserInfo AddUser(string password)
+        public UserInfo PromoteUser(string password)
         {
             SystemCredentialsManager credManager = new SystemCredentialsManager();
 
