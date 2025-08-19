@@ -13,7 +13,7 @@ namespace MKW.Tests
             using var sbox = new SandBox();
             using var db = sbox.OpenDatabase();
 
-            using var client = new ClientSession(db);
+            using var client = ClientSession.Open(db);
 
             var admin = client.PromoteAdmin("adminsecret");
 
@@ -26,7 +26,7 @@ namespace MKW.Tests
             using var sbox = new SandBox();
             using var db = sbox.OpenDatabase();
 
-            using var client = new ClientSession(db);
+            using var client = ClientSession.Open(db);
 
             var admin = client.PromoteAdmin("adminsecret");
             var adminSession = client.OpenAdmin("adminsecret");

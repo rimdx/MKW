@@ -14,7 +14,7 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            using ClientSession session = new ClientSession(db);
+            using ClientSession session = ClientSession.Open(db);
 
             var user = session.PromoteUser("whattheheckamidoing");
 
@@ -29,7 +29,7 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            using ClientSession session = new ClientSession(db);
+            using ClientSession session = ClientSession.Open(db);
 
             var user = session.PromoteUser("awesomesecretno1willeverguess");
 
@@ -50,7 +50,7 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            using ClientSession session = new ClientSession(db);
+            using ClientSession session = ClientSession.Open(db);
 
             var user1 = session.PromoteUser("cred1");
             var user2 = session.PromoteUser("cred2");
@@ -70,7 +70,7 @@ namespace MKW.Tests
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
 
-            using ClientSession session = new ClientSession(db);
+            using ClientSession session = ClientSession.Open(db);
             var user = session.PromoteUser("protectmyballs");
             using UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
 
@@ -104,7 +104,7 @@ namespace MKW.Tests
         public void HiddenEntriesTests()
         {
             MemoryDatabaseSession db = new MemoryDatabaseSession();
-            using ClientSession session = new ClientSession(db);
+            using ClientSession session = ClientSession.Open(db);
 
             UserInfo oldUser = session.PromoteUser("iamanoldman");
 
