@@ -22,5 +22,16 @@ namespace MKW.Core.Cryptography
             // bytes
             public const int KeySize = 16;
         }
+
+        public static class RSA
+        {
+            public static RSAEncryptionPadding EncryptionPadding = RSAEncryptionPadding.Pkcs1;
+
+            public static RSASignaturePadding SignaturePadding = RSASignaturePadding.Pkcs1;
+
+            public static HashAlgorithmName SignHashAlgorithm = HashAlgorithmName.SHA256;
+
+
+        }
     }
 }
