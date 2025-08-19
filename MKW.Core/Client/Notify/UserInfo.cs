@@ -7,6 +7,8 @@ namespace MKW.Core.Client.Notify
         public required Guid Id { get; init; }
         public required byte[] PublicKey { get; init; }
 
+        public Trust Trust { get; set; } = Trust.Unknown;
+
         public UserInfo()
         {
         }
