@@ -7,15 +7,15 @@ namespace MKW.Core.Client
     {
         private readonly IDatabase db;
         private readonly DatabaseUser user;
-        private readonly byte[] decryptedPrivateKey;
+        private readonly AsymmetricTransformer transformer;
 
         public UserSession(IDatabase db /* reference */,
                            DatabaseUser user /* reference */,
-                           byte[] decryptedPrivateKey)
+                           byte[] privateKey)
         {
             this.db = db;
             this.user = user;
-            this.decryptedPrivateKey = decryptedPrivateKey;
+            transformer = AsymmetricTransformer.Open(user.PublicKey, privateKey);
         }
 
         public KeyedEntry GetEntry(Guid id)
@@ -61,9 +61,7 @@ namespace MKW.Core.Client
                 return null;
             }
 
-            using AsymmetricTransformer keyDecoder = AsymmetricTransformer.Open(user.PublicKey, decryptedPrivateKey);
-
-            byte[] decryptedKey = keyDecoder.Decrypt(encodedKey);
+            byte[] decryptedKey = transformer.Decrypt(encodedKey);
 
             using SymmetricTransformer dataDecoder = SymmetricTransformer.Open(decryptedKey, entry.Salt);
 
@@ -74,6 +72,7 @@ namespace MKW.Core.Client
 
         public void Dispose()
         {
+            transformer.Dispose();
         }
     }
 }
