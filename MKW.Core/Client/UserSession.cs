@@ -9,7 +9,9 @@ namespace MKW.Core.Client
         private readonly DatabaseUser user;
         private readonly byte[] decryptedPrivateKey;
 
-        public UserSession(IDatabase db, DatabaseUser user, byte[] decryptedPrivateKey)
+        public UserSession(IDatabase db /* reference */,
+                           DatabaseUser user /* reference */,
+                           byte[] decryptedPrivateKey)
         {
             this.db = db;
             this.user = user;

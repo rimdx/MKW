@@ -11,7 +11,9 @@ namespace MKW.Core.Client
 
         private readonly AsymmetricTransformer transformer;
 
-        public AdminSession(IDatabase db, AdminUser admin, byte[] privateKey)
+        public AdminSession(IDatabase db /* reference */,
+                            AdminUser admin /* reference */,
+                            byte[] privateKey)
         {
             this.db = db;
             this.admin = admin;
