@@ -3,11 +3,12 @@
     public record class AdminUser : DatabaseUser
     {
         // Signed Public Keys of each trusted users by admin's private credentials.
-        public IList<byte[]> Trust { get; set; }
+        // FIXME: comparable signature instead of byte[]!!!
+        public HashSet<byte[]> Trust { get; set; }
 
         public AdminUser()
         {
-            Trust = new List<byte[]>();
+            Trust = new HashSet<byte[]>();
         }
     }
 }
