@@ -36,6 +36,7 @@ namespace MKW.Core.Storage
         public void UpdateAdmin(AdminUser user)
         {
             Database.Admin = user;
+            Save();
         }
 
         public AdminUser GetAdmin()
