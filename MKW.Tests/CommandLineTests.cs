@@ -55,15 +55,15 @@ namespace MKW.Tests
         public void ListEntriesTest()
         {
             using var sbox = new SandBox();
-            using var session = sbox.OpenSession();
+            using var client = sbox.OpenSession();
 
-            var user1 = session.PromoteUser("amogus");
-            var user2 = session.PromoteUser("r34");
+            var user1 = client.PromoteUser("amogus");
+            var user2 = client.PromoteUser("r34");
 
-            session.UpdateEntry(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}"), new EntryPayload("sus1"));
-            session.UpdateEntry(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}"), new EntryPayload("sus2"));
+            client.UpdateEntry(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}"), new EntryPayload("sus1"));
+            client.UpdateEntry(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}"), new EntryPayload("sus2"));
 
-            session.Dispose();
+            client.Dispose();
 
             var output = sbox.Run($"mkw entries {sbox.DatabasePath} --password amogus");
 
@@ -85,16 +85,16 @@ namespace MKW.Tests
         {
             using var sbox = new SandBox();
 
-            using ClientSession session = sbox.OpenSession();
+            using ClientSession client = sbox.OpenSession();
             {
-                UserInfo oldUser = session.PromoteUser("iamanoldman");
+                UserInfo oldUser = client.PromoteUser("iamanoldman");
 
-                session.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
-                session.UpdateEntry(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"), new EntryPayload("entry2"));
+                client.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
+                client.UpdateEntry(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"), new EntryPayload("entry2"));
 
-                UserInfo newUser = session.PromoteUser("ihatehimbutcantseehisstuff");
+                UserInfo newUser = client.PromoteUser("ihatehimbutcantseehisstuff");
 
-                session.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
+                client.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
             }
 
             {

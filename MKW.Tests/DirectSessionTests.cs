@@ -27,19 +27,19 @@ namespace MKW.Tests
         public void OpenUserTest()
         {
             using var sbox = new SandBox();
-            using var session = sbox.OpenSession();
+            using var client = sbox.OpenSession();
 
-            var user = session.PromoteUser("awesomesecretno1willeverguess");
+            var user = client.PromoteUser("awesomesecretno1willeverguess");
 
-            using UserSession userSession = session.OpenUser(user.Id, "awesomesecretno1willeverguess");
+            using UserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
             Assert.Throws<InvalidOperationException>(
-                () => session.OpenUser(new Guid("{DEADCCCE-69CF-3242-810A-C54B3D490797}"),
+                () => client.OpenUser(new Guid("{DEADCCCE-69CF-3242-810A-C54B3D490797}"),
                                        "awesomesecretno1willeverguess")
             );
 
             Assert.Throws<CryptographicException>(
-                () => session.OpenUser(user.Id, "randomheckerpwdhaha")
+                () => client.OpenUser(user.Id, "randomheckerpwdhaha")
             );
         }
 
@@ -47,18 +47,18 @@ namespace MKW.Tests
         public void OpenUserTestNoId()
         {
             using var sbox = new SandBox();
-            using var session = sbox.OpenSession();
+            using var client = sbox.OpenSession();
 
-            var user1 = session.PromoteUser("cred1");
-            var user2 = session.PromoteUser("cred2");
-            var user3 = session.PromoteUser("cred3");
+            var user1 = client.PromoteUser("cred1");
+            var user2 = client.PromoteUser("cred2");
+            var user3 = client.PromoteUser("cred3");
 
-            using UserSession userSession1 = session.OpenUser("cred1");
-            using UserSession userSession2 = session.OpenUser("cred2");
-            using UserSession userSession3 = session.OpenUser("cred3");
+            using UserSession userSession1 = client.OpenUser("cred1");
+            using UserSession userSession2 = client.OpenUser("cred2");
+            using UserSession userSession3 = client.OpenUser("cred3");
 
             Assert.Throws<Exception>(
-                () => session.OpenUser("nonexistingpassword")
+                () => client.OpenUser("nonexistingpassword")
             );
         }
 
