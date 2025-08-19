@@ -60,8 +60,8 @@ namespace MKW.Tests
 
             var session = new ClientSession(db);
 
-            var user1 = session.AddUser("amogus");
-            var user2 = session.AddUser("r34");
+            var user1 = session.PromoteUser("amogus");
+            var user2 = session.PromoteUser("r34");
 
             session.UpdateEntry(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}"), new EntryPayload("sus1"));
             session.UpdateEntry(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}"), new EntryPayload("sus2"));
@@ -92,12 +92,12 @@ namespace MKW.Tests
             {
                 ClientSession session = new ClientSession(db);
 
-                UserInfo oldUser = session.AddUser("iamanoldman");
+                UserInfo oldUser = session.PromoteUser("iamanoldman");
 
                 session.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
                 session.UpdateEntry(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"), new EntryPayload("entry2"));
 
-                UserInfo newUser = session.AddUser("ihatehimbutcantseehisstuff");
+                UserInfo newUser = session.PromoteUser("ihatehimbutcantseehisstuff");
 
                 session.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
             }
