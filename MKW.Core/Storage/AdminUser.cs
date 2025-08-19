@@ -3,7 +3,7 @@
     public record class AdminUser : DatabaseUser
     {
         // Signed Public Keys of each trusted users by admin's private credentials.
-        public required IList<byte[]> Trust { get; set; }
+        public IList<byte[]> Trust { get; set; }
 
         public AdminUser()
         {

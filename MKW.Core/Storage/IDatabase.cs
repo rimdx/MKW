@@ -6,6 +6,9 @@
         DatabaseUser GetUser(Guid id);
         IEnumerable<DatabaseUser> EnumerateUsers();
 
+        void UpdateAdmin(AdminUser user);
+        AdminUser GetAdmin();
+
         void UpdateEntry(Guid id, DatabaseSecretEntry? entry);
         DatabaseSecretEntry? QueryEntry(Guid id);
         IEnumerable<DatabaseSecretKeyedEntry> EnumerateEntries();

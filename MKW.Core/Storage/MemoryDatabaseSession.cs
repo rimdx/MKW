@@ -31,6 +31,23 @@ namespace MKW.Core.Storage
             return Database.Users;
         }
 
+        // Admin
+
+        public void UpdateAdmin(AdminUser user)
+        {
+            Database.Admin = user;
+        }
+
+        public AdminUser GetAdmin()
+        {
+            if (Database.Admin == null)
+            {
+                throw new Exception("Admin user is not set in the database.");
+            }
+
+            return Database.Admin;
+        }
+
         public void UpdateEntry(Guid id, DatabaseSecretEntry? entry)
         {
             if (entry == null)

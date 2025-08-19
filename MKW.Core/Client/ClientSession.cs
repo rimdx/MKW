@@ -34,6 +34,26 @@ namespace MKW.Core.Client
             return UserInfo.FromDatabaseUser(user);
         }
 
+        public UserInfo PromoteAdmin(string password)
+        {
+            SystemCredentialsManager credManager = new SystemCredentialsManager();
+
+            UserCredentials userCreds = UserCredentials.Create(password);
+            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
+
+            AdminUser user = new AdminUser
+            {
+                Id = Guid.NewGuid(),
+                PublicKey = systemCreds.PublicKey,
+                PrivateKey = systemCreds.PrivateKey,
+                Salt = systemCreds.Salt,
+            };
+
+            db.UpdateAdmin(user);
+
+            return UserInfo.FromDatabaseUser(user);
+        }
+
         public UserSession OpenUser(Guid id, string password)
         {
             DatabaseUser user = db.GetUser(id);
