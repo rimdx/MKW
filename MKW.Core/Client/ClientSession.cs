@@ -16,24 +16,17 @@ namespace MKW.Core.Client
 
         public UserInfo AddUser(string password)
         {
-            using var userKey = AsymmetricTransformer.Create();
+            SystemCredentialsManager credManager = new SystemCredentialsManager();
 
-            var creds = UserCredentials.Create(password);
-
-            using SymmetricTransformer encoder = SymmetricTransformer.Open(creds.GetEncodingHash(),
-                                                                           creds.ExportSalt());
-
-            byte[] privateKeyBytes = userKey.ExportPrivateKey();
-            byte[] privateKeyEncrypted = encoder.Encrypt(privateKeyBytes);
-
-            byte[] publicKeyBytes = userKey.ExportPublicKey();
+            UserCredentials userCreds = UserCredentials.Create(password);
+            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             DatabaseUser user = new DatabaseUser
             {
                 Id = Guid.NewGuid(),
-                PublicKey = publicKeyBytes,
-                PrivateKey = privateKeyEncrypted,
-                Salt = creds.ExportSalt(),
+                PublicKey = systemCreds.PublicKey,
+                PrivateKey = systemCreds.PrivateKey,
+                Salt = systemCreds.Salt,
             };
 
             db.AddUser(user.Id, user);
