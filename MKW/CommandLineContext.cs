@@ -90,11 +90,16 @@ namespace MKW
             return JSONDatabaseSession.Open(path);
         }
 
+        public ClientSession OpenSession(ParseResult argv)
+        {
+            string path = argv.GetRequiredValue(argFile);
+
+            return ClientSession.Open(path);
+        }
+
         private void AddUserAction(ParseResult argv)
         {
-            using IDatabase database = OpenDatabase(argv);
-
-            using ClientSession session = ClientSession.Open(database);
+            using ClientSession session = OpenSession(argv);
 
             UserInfo user = session.PromoteUser(GetPassword(argv));
 
@@ -105,8 +110,7 @@ namespace MKW
         {
             string payload = argv.GetRequiredValue(argPayload);
 
-            using IDatabase database = OpenDatabase(argv);
-            using ClientSession session = ClientSession.Open(database);
+            using ClientSession session = OpenSession(argv);
 
             EntryInfo entry = session.UpdateEntry(Guid.NewGuid(), new EntryPayload(payload));
 
@@ -115,14 +119,12 @@ namespace MKW
 
         private void TouchAction(ParseResult argv)
         {
-            using IDatabase database = OpenDatabase(argv);
+            using ClientSession session = OpenSession(argv);
         }
 
         private void ListEntriesAction(ParseResult argv)
         {
-            using IDatabase database = OpenDatabase(argv);
-            using ClientSession session = ClientSession.Open(database);
-
+            using ClientSession session = OpenSession(argv);
             using UserSession userSession = session.OpenUser(GetPassword(argv));
 
             foreach (var entry in userSession.EnumerateEntries())

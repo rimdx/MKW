@@ -12,8 +12,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleAddUserTest()
         {
-            MemoryDatabaseSession db = new MemoryDatabaseSession();
-
+            using MemoryDatabaseSession db = new MemoryDatabaseSession();
             using ClientSession session = ClientSession.Open(db);
 
             var user = session.PromoteUser("whattheheckamidoing");
@@ -27,9 +26,8 @@ namespace MKW.Tests
         [Test]
         public void OpenUserTest()
         {
-            MemoryDatabaseSession db = new MemoryDatabaseSession();
-
-            using ClientSession session = ClientSession.Open(db);
+            using var sbox = new SandBox();
+            using var session = sbox.OpenSession();
 
             var user = session.PromoteUser("awesomesecretno1willeverguess");
 
@@ -48,9 +46,8 @@ namespace MKW.Tests
         [Test]
         public void OpenUserTestNoId()
         {
-            MemoryDatabaseSession db = new MemoryDatabaseSession();
-
-            using ClientSession session = ClientSession.Open(db);
+            using var sbox = new SandBox();
+            using var session = sbox.OpenSession();
 
             var user1 = session.PromoteUser("cred1");
             var user2 = session.PromoteUser("cred2");
@@ -68,9 +65,9 @@ namespace MKW.Tests
         [Test]
         public void AddEntryTests()
         {
-            MemoryDatabaseSession db = new MemoryDatabaseSession();
-
+            using MemoryDatabaseSession db = new MemoryDatabaseSession();
             using ClientSession session = ClientSession.Open(db);
+
             var user = session.PromoteUser("protectmyballs");
             using UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
 
@@ -103,7 +100,7 @@ namespace MKW.Tests
         [Test]
         public void HiddenEntriesTests()
         {
-            MemoryDatabaseSession db = new MemoryDatabaseSession();
+            using MemoryDatabaseSession db = new MemoryDatabaseSession();
             using ClientSession session = ClientSession.Open(db);
 
             UserInfo oldUser = session.PromoteUser("iamanoldman");

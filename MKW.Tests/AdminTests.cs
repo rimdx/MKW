@@ -11,9 +11,7 @@ namespace MKW.Tests
         public void AddOpenSimpleTest()
         {
             using var sbox = new SandBox();
-            using var db = sbox.OpenDatabase();
-
-            using var client = ClientSession.Open(db);
+            using var client = sbox.OpenSession();
 
             var admin = client.PromoteAdmin("adminsecret");
 
@@ -24,9 +22,7 @@ namespace MKW.Tests
         public void UpdateTrustTest()
         {
             using var sbox = new SandBox();
-            using var db = sbox.OpenDatabase();
-
-            using var client = ClientSession.Open(db);
+            using var client = sbox.OpenSession();
 
             var admin = client.PromoteAdmin("adminsecret");
             var adminSession = client.OpenAdmin("adminsecret");
