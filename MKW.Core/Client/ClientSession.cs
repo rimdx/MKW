@@ -97,6 +97,20 @@ namespace MKW.Core.Client
             return new UserSession(db, user, privateKeyBytes);
         }
 
+        public AdminSession OpenAdmin(string password)
+        {
+            AdminUser admin = db.GetAdmin();
+
+            UserCredentials creds = UserCredentials.Open(password, admin.Salt);
+
+            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash(),
+                                                                           creds.ExportSalt());
+
+            byte[] privateKeyBytes = decoder.Decrypt(admin.PrivateKey);
+
+            return new AdminSession(db, admin, privateKeyBytes);
+        }
+
         public EntryInfo UpdateEntry(Guid id, EntryPayload? entry)
         {
             if (entry == null)
