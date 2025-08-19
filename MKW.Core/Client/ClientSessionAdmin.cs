@@ -22,14 +22,14 @@ namespace MKW.Core.Client
                 Salt = systemCreds.Salt,
             };
 
-            db.UpdateAdmin(user);
+            Database.UpdateAdmin(user);
 
             return UserInfo.FromDatabaseUser(user);
         }
 
         public AdminSession OpenAdmin(string password)
         {
-            AdminUser admin = db.GetAdmin();
+            AdminUser admin = Database.GetAdmin();
 
             UserCredentials creds = UserCredentials.Open(password, admin.Salt);
 
@@ -38,7 +38,7 @@ namespace MKW.Core.Client
 
             byte[] privateKeyBytes = decoder.Decrypt(admin.PrivateKey);
 
-            return new AdminSession(db, admin, privateKeyBytes);
+            return new AdminSession(Database, admin, privateKeyBytes);
         }
     }
 }

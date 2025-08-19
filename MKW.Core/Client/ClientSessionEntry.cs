@@ -10,7 +10,7 @@ namespace MKW.Core.Client
         {
             if (entry == null)
             {
-                db.UpdateEntry(id, null);
+                Database.UpdateEntry(id, null);
 
                 return new EntryInfo
                 {
@@ -21,7 +21,7 @@ namespace MKW.Core.Client
             }
             else
             {
-                DatabaseUser[] users = db.EnumerateUsers().ToArray();
+                DatabaseUser[] users = Database.EnumerateUsers().ToArray();
 
                 DatabaseSecretEntry encodedEntry = EncodeEntry(entry, users);
 
@@ -31,8 +31,8 @@ namespace MKW.Core.Client
                     encodedForUsers.Add(UserInfo.FromDatabaseUser(user));
                 }
 
-                DatabaseSecretEntry? oldEntry = db.QueryEntry(id);
-                db.UpdateEntry(id, encodedEntry);
+                DatabaseSecretEntry? oldEntry = Database.QueryEntry(id);
+                Database.UpdateEntry(id, encodedEntry);
 
                 return new EntryInfo
                 {
@@ -51,7 +51,7 @@ namespace MKW.Core.Client
 
             var keys = new Dictionary<Guid, byte[]>();
 
-            foreach (DatabaseUser user in db.EnumerateUsers())
+            foreach (DatabaseUser user in Database.EnumerateUsers())
             {
                 using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey);
 
