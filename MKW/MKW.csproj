@@ -15,10 +15,9 @@
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta7.25380.108" />
   </ItemGroup>
 
-  <Target Name="AfterBuild">
-    <MSBuild Condition="'$(DeployOnBuild)'!='true'"
-             Projects="$(MSBuildProjectFullPath)"
-             Properties="DeployOnBuild=true;PublishProfile=Local;BuildingInsideVisualStudio=False" />
+  <Target Name="PublishMyself" BeforeTargets="AfterBuild" Condition="'$(Publish)'==''">
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="Publish"
+             Properties="Publish=true;NoBuild=true"></MSBuild>
   </Target>
-
 </Project>
