@@ -22,14 +22,14 @@ namespace MKW.Core.Client
                 Salt = systemCreds.Salt,
             };
 
-            db.AddUser(user.Id, user);
+            Database.AddUser(user.Id, user);
 
             return UserInfo.FromDatabaseUser(user);
         }
 
         public UserSession OpenUser(Guid id, string password)
         {
-            DatabaseUser user = db.GetUser(id);
+            DatabaseUser user = Database.GetUser(id);
 
             // Credentials can be opened within the entered password and the public salt
             UserCredentials creds = UserCredentials.Open(password, user.Salt);
@@ -39,7 +39,7 @@ namespace MKW.Core.Client
 
         public UserSession OpenUser(string password)
         {
-            foreach (DatabaseUser user in db.EnumerateUsers())
+            foreach (DatabaseUser user in Database.EnumerateUsers())
             {
                 try
                 {
@@ -67,7 +67,7 @@ namespace MKW.Core.Client
             // some validation may be required.
             byte[] privateKeyBytes = decoder.Decrypt(user.PrivateKey);
 
-            return new UserSession(db, user, privateKeyBytes);
+            return new UserSession(Database, user, privateKeyBytes);
         }
     }
 }

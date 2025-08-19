@@ -4,12 +4,13 @@ namespace MKW.Core.Client
 {
     public partial class ClientSession : IDisposable
     {
-        private readonly IDatabase db;
+        public IDatabase Database { get; }
+
         private readonly bool ownsDb;
 
         protected ClientSession(IDatabase db, bool ownsDb)
         {
-            this.db = db;
+            Database = db;
             this.ownsDb = ownsDb;
         }
 
@@ -28,7 +29,7 @@ namespace MKW.Core.Client
         {
             if (ownsDb)
             {
-                db.Dispose();
+                Database.Dispose();
             }
         }
     }
