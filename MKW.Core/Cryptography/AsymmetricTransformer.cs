@@ -38,27 +38,27 @@ namespace MKW.Core.Cryptography
 
         public byte[] Encrypt(byte[] data)
         {
-            return rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+            return rsa.Encrypt(data, CryptographicConstants.RSA.EncryptionPadding);
         }
 
         public byte[] Decrypt(byte[] data)
         {
-            return rsa.Decrypt(data, RSAEncryptionPadding.Pkcs1);
+            return rsa.Decrypt(data, CryptographicConstants.RSA.EncryptionPadding);
         }
 
         public byte[] Sign(byte[] data)
         {
             return rsa.SignData(data,
-                                HashAlgorithmName.SHA256,
-                                RSASignaturePadding.Pkcs1);
+                                CryptographicConstants.RSA.SignHashAlgorithm,
+                                CryptographicConstants.RSA.SignaturePadding);
         }
 
         public bool Verify(byte[] data, byte[] signature)
         {
             return rsa.VerifyData(data,
                                   signature,
-                                  HashAlgorithmName.SHA256,
-                                  RSASignaturePadding.Pkcs1);
+                                  CryptographicConstants.RSA.SignHashAlgorithm,
+                                  CryptographicConstants.RSA.SignaturePadding);
         }
 
         public byte[] ExportPublicKey()
