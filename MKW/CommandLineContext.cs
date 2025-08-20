@@ -86,14 +86,12 @@ namespace MKW
         {
             string path = argv.GetRequiredValue(argFile);
 
-            return JSONDatabaseSession.Open(path);
+            return JSONDatabaseSession.Open(path, DatabaseOpenMode.OpenOrCreate);
         }
 
         public ClientSession OpenSession(ParseResult argv)
         {
-            string path = argv.GetRequiredValue(argFile);
-
-            return ClientSession.Open(JSONDatabaseSession.Open(path), true);
+            return ClientSession.Open(OpenDatabase(argv), true);
         }
 
         private void EnsureInteractive(ParseResult argv, string errorMessage)
