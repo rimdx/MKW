@@ -4,9 +4,9 @@ namespace MKW.Core.Client
 {
     public class EntryPayload
     {
-        public Memory<byte> Data { get; }
+        public ReadOnlyMemory<byte> Data { get; }
 
-        public EntryPayload(Memory<byte> data)
+        public EntryPayload(ReadOnlyMemory<byte> data)
         {
             Data = data;
         }

@@ -7,11 +7,11 @@ namespace MKW.Core.Storage.JSON
         // Signed Public Keys of each trusted users by admin's private credentials.
         // FIXME: comparable signature instead of byte[]!!!
         [JsonRequired]
-        public HashSet<Memory<byte>> Trust { get; set; }
+        public HashSet<ReadOnlyMemory<byte>> Trust { get; set; }
 
         internal AdminUser(MemoryDatabaseSession host) : base(new Guid(), host)
         {
-            Trust = new HashSet<Memory<byte>>();
+            Trust = new HashSet<ReadOnlyMemory<byte>>();
         }
 
         [JsonConstructor]

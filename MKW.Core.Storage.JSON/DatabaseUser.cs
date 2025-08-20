@@ -26,13 +26,13 @@ namespace MKW.Core.Storage.JSON
         public Guid Id { get; }
 
         [JsonRequired]
-        public Memory<byte> Salt { get; set; }
+        public ReadOnlyMemory<byte> Salt { get; set; }
 
         [JsonRequired]
-        public Memory<byte> PublicKey { get; set; }
+        public ReadOnlyMemory<byte> PublicKey { get; set; }
 
         [JsonRequired]
-        public Memory<byte> PrivateKey { get; set; }
+        public ReadOnlyMemory<byte> PrivateKey { get; set; }
 
         public virtual void Save()
         {

@@ -15,7 +15,7 @@ namespace MKW.Core.Storage.JSON
         [JsonConstructor]
         internal DatabaseSecretEntry()
         {
-            Keys = new Dictionary<Guid, Memory<byte>>();
+            Keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
         }
 
         public DatabaseSecretEntry(Guid id)
@@ -28,13 +28,13 @@ namespace MKW.Core.Storage.JSON
         public Guid Id { get; }
 
         [JsonRequired]
-        public IDictionary<Guid, Memory<byte>> Keys { get; set; }
+        public IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; set; }
 
         [JsonRequired]
-        public Memory<byte> Salt { get; set; }
+        public ReadOnlyMemory<byte> Salt { get; set; }
 
         [JsonRequired]
-        public Memory<byte> Data { get; set; }
+        public ReadOnlyMemory<byte> Data { get; set; }
 
         public void Save()
         {
