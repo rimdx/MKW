@@ -11,11 +11,11 @@ namespace MKW.Tests
         public void AddOpenSimpleTest()
         {
             using SandBox sbox = new SandBox();
-            using Core.Client.ClientSession client = sbox.OpenSession();
+            using ClientSession client = sbox.OpenSession();
 
             UserInfo admin = client.PromoteAdmin("adminsecret");
 
-            Core.Client.AdminSession adminSession = client.OpenAdmin("adminsecret");
+            AdminSession adminSession = client.OpenAdmin("adminsecret");
         }
 
         [Test]
