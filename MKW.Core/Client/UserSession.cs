@@ -11,11 +11,11 @@ namespace MKW.Core.Client
 
         public UserSession(IDatabase db /* reference */,
                            DatabaseUser user /* reference */,
-                           byte[] privateKey)
+                           ReadOnlySpan<byte> privateKey)
         {
             this.db = db;
             this.user = user;
-            transformer = AsymmetricTransformer.Open(user.PublicKey, privateKey);
+            transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
         }
 
         public KeyedEntry GetEntry(Guid id)
@@ -55,17 +55,18 @@ namespace MKW.Core.Client
 
         public EntryPayload? DecodeEntry(DatabaseSecretEntry entry)
         {
-            if (entry.Keys.TryGetValue(user.Id, out byte[]? encodedKey) == false)
+            if (entry.Keys.TryGetValue(user.Id, out Memory<byte> encodedKey) == false)
             {
                 // No key for this user, cannot decode the entry
                 return null;
             }
 
-            byte[] decryptedKey = transformer.Decrypt(encodedKey);
+            Memory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
 
-            using SymmetricTransformer dataDecoder = SymmetricTransformer.Open(decryptedKey, entry.Salt);
+            using SymmetricTransformer dataDecoder = SymmetricTransformer.Open(decryptedKey.Span,
+                                                                               entry.Salt.Span);
 
-            byte[] decryptedData = dataDecoder.Decrypt(entry.Data);
+            Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
 
             return new EntryPayload(decryptedData);
         }

@@ -4,11 +4,11 @@
     {
         // Signed Public Keys of each trusted users by admin's private credentials.
         // FIXME: comparable signature instead of byte[]!!!
-        public HashSet<byte[]> Trust { get; set; }
+        public HashSet<Memory<byte>> Trust { get; set; }
 
         public AdminUser()
         {
-            Trust = new HashSet<byte[]>();
+            Trust = new HashSet<Memory<byte>>();
         }
     }
 }

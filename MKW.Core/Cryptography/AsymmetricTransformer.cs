@@ -17,7 +17,7 @@ namespace MKW.Core.Cryptography
             return new AsymmetricTransformer(rsa);
         }
 
-        public static AsymmetricTransformer Open(byte[] publicKey)
+        public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey)
         {
             RSA rsa = RSA.Create();
 
@@ -26,7 +26,7 @@ namespace MKW.Core.Cryptography
             return new AsymmetricTransformer(rsa);
         }
 
-        public static AsymmetricTransformer Open(byte[] publicKey, byte[] privateKey)
+        public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
         {
             RSA rsa = RSA.Create();
 
@@ -36,24 +36,24 @@ namespace MKW.Core.Cryptography
             return new AsymmetricTransformer(rsa);
         }
 
-        public byte[] Encrypt(byte[] data)
+        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             return rsa.Encrypt(data, CryptographicConstants.RSA.EncryptionPadding);
         }
 
-        public byte[] Decrypt(byte[] data)
+        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             return rsa.Decrypt(data, CryptographicConstants.RSA.EncryptionPadding);
         }
 
-        public byte[] Sign(byte[] data)
+        public Memory<byte> Sign(ReadOnlySpan<byte> data)
         {
             return rsa.SignData(data,
                                 CryptographicConstants.RSA.SignHashAlgorithm,
                                 CryptographicConstants.RSA.SignaturePadding);
         }
 
-        public bool Verify(byte[] data, byte[] signature)
+        public bool Verify(ReadOnlySpan<byte> data, ReadOnlySpan<byte> signature)
         {
             return rsa.VerifyData(data,
                                   signature,
@@ -61,12 +61,12 @@ namespace MKW.Core.Cryptography
                                   CryptographicConstants.RSA.SignaturePadding);
         }
 
-        public byte[] ExportPublicKey()
+        public Memory<byte> ExportPublicKey()
         {
             return rsa.ExportRSAPublicKey();
         }
 
-        public byte[] ExportPrivateKey()
+        public Memory<byte> ExportPrivateKey()
         {
             return rsa.ExportRSAPrivateKey();
         }

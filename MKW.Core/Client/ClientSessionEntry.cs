@@ -47,15 +47,15 @@ namespace MKW.Core.Client
         {
             using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
 
-            byte[] data = payloadEncoder.Encrypt(payload.Data);
+            Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
 
-            var keys = new Dictionary<Guid, byte[]>();
+            var keys = new Dictionary<Guid, Memory<byte>>();
 
             foreach (DatabaseUser user in Database.EnumerateUsers())
             {
-                using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey);
+                using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
 
-                byte[] encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey());
+                Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 
                 keys.Add(user.Id, encyptedKey);
             }

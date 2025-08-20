@@ -13,12 +13,12 @@ namespace MKW.Core.Client
 
         public AdminSession(IDatabase db /* reference */,
                             AdminUser admin /* reference */,
-                            byte[] privateKey)
+                            ReadOnlySpan<byte> privateKey)
         {
             this.db = db;
             this.admin = admin;
 
-            transformer = AsymmetricTransformer.Open(admin.PublicKey, privateKey);
+            transformer = AsymmetricTransformer.Open(admin.PublicKey.Span, privateKey);
         }
 
         public IEnumerable<UserInfo> EnumerateUsersTrust()
@@ -33,9 +33,9 @@ namespace MKW.Core.Client
         {
             UserInfo notify = UserInfo.FromDatabaseUser(user);
 
-            foreach (byte[] trust in admin.Trust)
+            foreach (Memory<byte> trust in admin.Trust)
             {
-                if (transformer.Verify(user.PublicKey, trust))
+                if (transformer.Verify(user.PublicKey.Span, trust.Span))
                 {
                     notify.Trust = Trust.FullTrust;
                     return notify;
@@ -50,7 +50,7 @@ namespace MKW.Core.Client
         {
             DatabaseUser user = db.GetUser(userId);
 
-            byte[] signature = transformer.Sign(user.PublicKey);
+            Memory<byte> signature = transformer.Sign(user.PublicKey.Span);
 
             if (trust == Trust.FullTrust)
             {

@@ -33,12 +33,12 @@ namespace MKW.Core.Client
 
             UserCredentials creds = UserCredentials.Open(password, admin.Salt);
 
-            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash(),
-                                                                           creds.ExportSalt());
+            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash().Span,
+                                                                           creds.ExportSalt().Span);
 
-            byte[] privateKeyBytes = decoder.Decrypt(admin.PrivateKey);
+            Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
 
-            return new AdminSession(Database, admin, privateKeyBytes);
+            return new AdminSession(Database, admin, privateKeyBytes.Span);
         }
     }
 }

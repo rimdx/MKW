@@ -21,17 +21,17 @@ namespace MKW.Core.Cryptography
             return new SymmetricTransformer(aes /* move */);
         }
 
-        public static SymmetricTransformer Open(byte[] key, byte[] iv)
+        public static SymmetricTransformer Open(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
             Aes aes = Aes.Create();
 
-            aes.Key = key;
-            aes.IV = iv;
+            aes.Key = key.ToArray(); /* copy */
+            aes.IV = iv.ToArray(); /* copy */
 
             return new SymmetricTransformer(aes /* move */);
         }
 
-        public byte[] Encrypt(byte[] data)
+        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             using MemoryStream output = new MemoryStream();
             using ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -43,24 +43,24 @@ namespace MKW.Core.Cryptography
             return output.ToArray();
         }
 
-        public byte[] Decrypt(byte[] data)
+        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
-            using MemoryStream input = new MemoryStream(data);
+            using MemoryStream output = new MemoryStream();
             using ICryptoTransform decryptor = aes.CreateDecryptor();
-            using CryptoStream decryptorStream = new CryptoStream(input, decryptor, CryptoStreamMode.Read);
-            using MemoryStream output = new MemoryStream(input.Capacity);
+            using CryptoStream decryptorStream = new CryptoStream(output, decryptor, CryptoStreamMode.Write);
 
-            decryptorStream.CopyTo(output);
+            decryptorStream.Write(data);
+            decryptorStream.FlushFinalBlock();
 
             return output.ToArray();
         }
 
-        public byte[] ExportIV()
+        public Memory<byte> ExportIV()
         {
             return aes.IV;
         }
 
-        public byte[] ExportKey()
+        public Memory<byte> ExportKey()
         {
             return aes.Key;
         }
