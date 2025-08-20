@@ -5,13 +5,12 @@ namespace MKW.Core.Storage.JSON
     public record class AdminUser : DatabaseUser, IDatabaseAdmin, ISavable
     {
         // Signed Public Keys of each trusted users by admin's private credentials.
-        // FIXME: comparable signature instead of byte[]!!!
         [JsonRequired]
-        public HashSet<ReadOnlyMemory<byte>> Trust { get; set; }
+        public List<ReadOnlyMemory<byte>> Trust { get; set; }
 
         internal AdminUser(MemoryDatabaseSession host) : base(new Guid(), host)
         {
-            Trust = new HashSet<ReadOnlyMemory<byte>>();
+            Trust = new List<ReadOnlyMemory<byte>>();
         }
 
         [JsonConstructor]
@@ -29,6 +28,21 @@ namespace MKW.Core.Storage.JSON
 
             host.Database.Admin = this;
             host.Save();
+        }
+
+        public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
+        {
+            return Trust.AsReadOnly();
+        }
+
+        public void AddTrust(ReadOnlyMemory<byte> data)
+        {
+            Trust.Add(data);
+        }
+
+        public void DeleteTrust(ReadOnlyMemory<byte> data)
+        {
+            Trust.RemoveAll(t => t.Span.SequenceEqual(data.Span));
         }
     }
 }

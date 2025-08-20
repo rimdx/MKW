@@ -33,7 +33,7 @@ namespace MKW.Core.Client
         {
             UserInfo notify = UserInfo.FromDatabaseUser(user);
 
-            foreach (ReadOnlyMemory<byte> trust in admin.Trust)
+            foreach (ReadOnlyMemory<byte> trust in admin.EnumerateTrust())
             {
                 if (transformer.Verify(user.PublicKey.Span, trust.Span))
                 {
@@ -54,11 +54,11 @@ namespace MKW.Core.Client
 
             if (trust == Trust.FullTrust)
             {
-                admin.Trust.Add(signature);
+                admin.AddTrust(signature);
             }
             else if (trust == Trust.None)
             {
-                admin.Trust.Remove(signature);
+                admin.DeleteTrust(signature);
             }
             else
             {
