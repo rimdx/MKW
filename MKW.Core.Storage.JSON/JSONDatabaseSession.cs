@@ -12,25 +12,27 @@ namespace MKW.Core.Storage.JSON
             this.file = file;
         }
 
-        public static JSONDatabaseSession Open(string path)
+        public static JSONDatabaseSession Open(string path, DatabaseOpenMode mode)
         {
             if (File.Exists(path))
             {
-                FileStream file = new FileStream(path, FileMode.OpenOrCreate);
+                FileStream file = new FileStream(path,
+                                                 mode.GetNativeFileMode(),
+                                                 mode.GetNativeFileAccess());
 
                 Database database = JsonSerializer.Deserialize<Database>(file)!;
 
-                return new JSONDatabaseSession(database,
-                                           file /* move */);
+                return new JSONDatabaseSession(database, file /* move */);
             }
             else
             {
-                FileStream file = new FileStream(path, FileMode.OpenOrCreate);
+                FileStream file = new FileStream(path,
+                                                 mode.GetNativeFileMode(),
+                                                 mode.GetNativeFileAccess());
 
                 Database database = new Database();
 
-                JSONDatabaseSession session = new JSONDatabaseSession(database,
-                                                              file /* move */);
+                JSONDatabaseSession session = new JSONDatabaseSession(database, file /* move */);
 
                 // Writes empty database to file to the disk
                 session.Save();

@@ -68,12 +68,12 @@ namespace MKW.Tests
 
         public IDatabase OpenDatabase()
         {
-            return JSONDatabaseSession.Open(DatabasePath);
+            return JSONDatabaseSession.Open(DatabasePath, DatabaseOpenMode.OpenOrCreate);
         }
 
         public ClientSession OpenSession()
         {
-            return ClientSession.Open(JSONDatabaseSession.Open(DatabasePath), true);
+            return ClientSession.Open(OpenDatabase(), true);
         }
 
         private string TrimString(string str)
