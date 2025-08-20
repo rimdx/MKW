@@ -1,6 +1,7 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using MKW.Core.Storage.JSON;
 using NUnit.Framework.Legacy;
 using System.Security.Cryptography;
 
@@ -14,9 +15,9 @@ namespace MKW.Tests
             using MemoryDatabaseSession db = new MemoryDatabaseSession();
             using ClientSession session = ClientSession.Open(db);
 
-            var user = session.PromoteUser("whattheheckamidoing");
+            UserInfo user = session.PromoteUser("whattheheckamidoing");
 
-            var users = db.EnumerateUsers().ToArray();
+            IDatabaseUser[] users = db.EnumerateUsers().ToArray();
             ClassicAssert.AreEqual(1, users.Length);
 
             ClassicAssert.AreEqual(user.Id, users[0].Id);
@@ -26,10 +27,10 @@ namespace MKW.Tests
         [Test]
         public void OpenUserTest()
         {
-            using var sbox = new SandBox();
-            using var client = sbox.OpenSession();
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
 
-            var user = client.PromoteUser("awesomesecretno1willeverguess");
+            UserInfo user = client.PromoteUser("awesomesecretno1willeverguess");
 
             using UserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
@@ -46,12 +47,12 @@ namespace MKW.Tests
         [Test]
         public void OpenUserTestNoId()
         {
-            using var sbox = new SandBox();
-            using var client = sbox.OpenSession();
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
 
-            var user1 = client.PromoteUser("cred1");
-            var user2 = client.PromoteUser("cred2");
-            var user3 = client.PromoteUser("cred3");
+            UserInfo user1 = client.PromoteUser("cred1");
+            UserInfo user2 = client.PromoteUser("cred2");
+            UserInfo user3 = client.PromoteUser("cred3");
 
             using UserSession userSession1 = client.OpenUser("cred1");
             using UserSession userSession2 = client.OpenUser("cred2");
@@ -68,11 +69,11 @@ namespace MKW.Tests
             using MemoryDatabaseSession db = new MemoryDatabaseSession();
             using ClientSession session = ClientSession.Open(db);
 
-            var user = session.PromoteUser("secretprotector");
-            var users = db.EnumerateUsers().ToArray();
+            UserInfo user = session.PromoteUser("secretprotector");
+            IDatabaseUser[] users = db.EnumerateUsers().ToArray();
             using UserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
 
-            var entry = session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
+            EntryInfo entry = session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
                                             new EntryPayload("secret"));
 
             ClassicAssert.AreEqual(1, db.Database.Users.Count);

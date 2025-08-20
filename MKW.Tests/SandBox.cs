@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Storage;
+using MKW.Core.Storage.JSON;
 using System.Diagnostics;
 using System.Text;
 
@@ -45,8 +46,8 @@ namespace MKW.Tests
 
             result.AppendLine($"  -- EXIT CODE: {process.ExitCode}");
 
-            var stderr = TrimString(process.StandardError.ReadToEnd());
-            var stdout = TrimString(process.StandardOutput.ReadToEnd());
+            string stderr = TrimString(process.StandardError.ReadToEnd());
+            string stdout = TrimString(process.StandardOutput.ReadToEnd());
 
             if (stderr != "")
             {
