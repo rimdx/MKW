@@ -14,19 +14,19 @@ namespace MKW.Core.Client
             using AsymmetricTransformer userKey = AsymmetricTransformer.Create();
 
             // Symmetric encoder for secret section.
-            using SymmetricTransformer encoder = SymmetricTransformer.Open(userCredentials.GetEncodingHash(),
-                                                                           userCredentials.ExportSalt());
+            using SymmetricTransformer encoder = SymmetricTransformer.Open(userCredentials.GetEncodingHash().Span,
+                                                                           userCredentials.ExportSalt().Span);
 
-            byte[] privateKeyBytes = userKey.ExportPrivateKey();
-            byte[] privateKeyEncrypted = encoder.Encrypt(privateKeyBytes);
+            Memory<byte> privateKeyBytes = userKey.ExportPrivateKey();
+            Memory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);
 
-            byte[] publicKeyBytes = userKey.ExportPublicKey();
+            Memory<byte> publicKeyBytes = userKey.ExportPublicKey();
 
             return new SystemCredentials
             {
                 PublicKey = publicKeyBytes,
                 PrivateKey = privateKeyEncrypted,
-                Salt = userCredentials.ExportSalt(),
+                Salt = userCredentials.ExportSalt().ToArray(),
             };
         }
     }

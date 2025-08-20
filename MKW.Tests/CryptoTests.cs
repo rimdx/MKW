@@ -11,16 +11,16 @@ namespace MKW.Tests
         {
             using AsymmetricTransformer transformer = AsymmetricTransformer.Create();
 
-            byte[] data = EncodingConverter.GetBytes("killmepls");
+            var data = EncodingConverter.GetBytes("killmepls");
 
-            byte[] sign1 = transformer.Sign(data);
-            byte[] sign2 = transformer.Sign(data);
+            var sign1 = transformer.Sign(data.Span);
+            var sign2 = transformer.Sign(data.Span);
 
-            CollectionAssert.AreEqual(sign1, sign2);
+            CollectionAssert.AreEqual(sign1.ToArray(), sign2.ToArray());
 
-            ClassicAssert.IsTrue(transformer.Verify(data, sign1));
-            ClassicAssert.IsFalse(transformer.Verify(data, RandomNumberGenerator.GetBytes(sign1.Length)));
-            ClassicAssert.IsFalse(transformer.Verify(data, EncodingConverter.GetBytes("random123")));
+            ClassicAssert.IsTrue(transformer.Verify(data.Span, sign1.Span));
+            ClassicAssert.IsFalse(transformer.Verify(data.Span, RandomNumberGenerator.GetBytes(sign1.Length)));
+            ClassicAssert.IsFalse(transformer.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
         }
     }
 }

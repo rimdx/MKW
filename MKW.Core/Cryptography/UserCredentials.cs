@@ -6,9 +6,9 @@ namespace MKW.Core.Cryptography
     public class UserCredentials
     {
         private readonly string password;
-        private readonly byte[] salt;
+        private readonly ReadOnlyMemory<byte> salt;
 
-        protected UserCredentials(string password, byte[] salt)
+        protected UserCredentials(string password, ReadOnlyMemory<byte> salt)
         {
             this.password = password;
             this.salt = salt;
@@ -19,31 +19,33 @@ namespace MKW.Core.Cryptography
             return new UserCredentials(password, GenerateSalt());
         }
 
-        public static UserCredentials Open(string password, byte[] salt)
+        public static UserCredentials Open(string password, ReadOnlyMemory<byte> salt)
         {
             return new UserCredentials(password, salt);
         }
 
-        public byte[] GetEncodingHash()
+        public Memory<byte> GetEncodingHash()
         {
-            return Rfc2898DeriveBytes.Pbkdf2(GetPasswordBytes(password),
-                                             salt,
+            Memory<byte> password = GetPasswordBytes(this.password);
+
+            return Rfc2898DeriveBytes.Pbkdf2(password.Span,
+                                             salt.Span,
                                              CryptographicConstants.DerivePassword.Iterations,
                                              CryptographicConstants.DerivePassword.HashAlgorithm,
                                              CryptographicConstants.DerivePassword.KeySize);
         }
 
-        public byte[] ExportSalt()
+        public ReadOnlyMemory<byte> ExportSalt()
         {
             return salt;
         }
 
-        private static byte[] GenerateSalt()
+        private static ReadOnlyMemory<byte> GenerateSalt()
         {
             return RandomNumberGenerator.GetBytes(CryptographicConstants.DerivePassword.SaltSize);
         }
 
-        private byte[] GetPasswordBytes(string password)
+        private Memory<byte> GetPasswordBytes(string password)
         {
             return EncodingConverter.GetBytes(password);
         }

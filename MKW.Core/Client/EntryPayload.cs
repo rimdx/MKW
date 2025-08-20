@@ -5,9 +5,9 @@ namespace MKW.Core.Client
 {
     public class EntryPayload
     {
-        public byte[] Data { get; }
+        public Memory<byte> Data { get; }
 
-        public EntryPayload(byte[] data)
+        public EntryPayload(Memory<byte> data)
         {
             Data = data;
         }
@@ -19,13 +19,13 @@ namespace MKW.Core.Client
 
         public override string ToString()
         {
-            return EncodingConverter.GetString(Data);
+            return EncodingConverter.GetString(Data.Span);
         }
 
         // Not for production use. Probably...
         public override bool Equals(object? obj)
         {
-            return obj is EntryPayload payload && Enumerable.SequenceEqual(Data, payload.Data);
+            return obj is EntryPayload other && Data.Span.SequenceEqual(other.Data.Span);
         }
 
         public override int GetHashCode()

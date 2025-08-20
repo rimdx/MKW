@@ -4,10 +4,10 @@
     {
         public required Guid Id { get; set; }
 
-        public required byte[] Salt { get; set; }
+        public required Memory<byte> Salt { get; set; }
 
-        public required byte[] PublicKey { get; set; }
+        public required Memory<byte> PublicKey { get; set; }
 
-        public required byte[] PrivateKey { get; set; }
+        public required Memory<byte> PrivateKey { get; set; }
     }
 }
