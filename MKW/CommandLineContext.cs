@@ -126,7 +126,7 @@ namespace MKW
             using ClientSession session = OpenSession(argv);
             using UserSession userSession = session.OpenUser(GetPassword(argv));
 
-            foreach (var entry in userSession.EnumerateEntries())
+            foreach (KeyedEntry entry in userSession.EnumerateEntries())
             {
                 Console.WriteLine($"-- {entry.Id}:");
 

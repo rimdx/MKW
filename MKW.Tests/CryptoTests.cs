@@ -11,10 +11,10 @@ namespace MKW.Tests
         {
             using AsymmetricTransformer transformer = AsymmetricTransformer.Create();
 
-            var data = EncodingConverter.GetBytes("killmepls");
+            Memory<byte> data = EncodingConverter.GetBytes("killmepls");
 
-            var sign1 = transformer.Sign(data.Span);
-            var sign2 = transformer.Sign(data.Span);
+            Memory<byte> sign1 = transformer.Sign(data.Span);
+            Memory<byte> sign2 = transformer.Sign(data.Span);
 
             CollectionAssert.AreEqual(sign1.ToArray(), sign2.ToArray());
 

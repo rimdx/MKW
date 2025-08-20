@@ -1,5 +1,4 @@
-﻿
-namespace MKW.Core.Storage
+﻿namespace MKW.Core.Storage.JSON
 {
     public class MemoryDatabaseSession : IDatabase, IDisposable
     {
@@ -17,7 +16,7 @@ namespace MKW.Core.Storage
 
         public IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created)
         {
-            DatabaseUser result = (mode == DatabaseOpenMode.ReadOnly) ? new DatabaseUser(id)
+            DatabaseUser result = mode == DatabaseOpenMode.ReadOnly ? new DatabaseUser(id)
                                                                       : new DatabaseUser(id, this);
             created = false;
 
@@ -49,9 +48,9 @@ namespace MKW.Core.Storage
 
         public IEnumerable<IDatabaseUser> EnumerateUsers()
         {
-            foreach (var item in Database.Users)
+            foreach (KeyValuePair<Guid, DatabaseUser> item in Database.Users)
             {
-                var result = new DatabaseUser(item.Key);
+                DatabaseUser result = new DatabaseUser(item.Key);
                 result.CopyFrom(item.Value);
                 yield return result;
             }
@@ -73,7 +72,7 @@ namespace MKW.Core.Storage
 
         public IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created)
         {
-            DatabaseSecretEntry result = (mode == DatabaseOpenMode.ReadOnly) ? new DatabaseSecretEntry(id)
+            DatabaseSecretEntry result = mode == DatabaseOpenMode.ReadOnly ? new DatabaseSecretEntry(id)
                                                                              : new DatabaseSecretEntry(id, this);
             created = false;
 
@@ -105,7 +104,7 @@ namespace MKW.Core.Storage
 
         public IEnumerable<IDatabaseEntry> EnumerateEntries()
         {
-            foreach (var item in Database.Entries)
+            foreach (KeyValuePair<Guid, DatabaseSecretEntry> item in Database.Entries)
             {
                 DatabaseSecretEntry result = new DatabaseSecretEntry(item.Key);
                 result.CopyFrom(item.Value);

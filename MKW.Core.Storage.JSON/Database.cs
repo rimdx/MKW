@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MKW.Core.Storage
+namespace MKW.Core.Storage.JSON
 {
     public class Database
     {
