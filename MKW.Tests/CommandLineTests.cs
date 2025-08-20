@@ -1,7 +1,5 @@
 using MKW.Core.Client;
 using MKW.Core.Client.Notify;
-using MKW.Core.Storage;
-using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests

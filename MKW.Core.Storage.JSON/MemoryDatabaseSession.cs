@@ -15,7 +15,7 @@ namespace MKW.Core.Storage
             Database = database;
         }
 
-        public IDatabaseUser OpenUser(Guid id,  DatabaseOpenMode mode, out bool created)
+        public IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created)
         {
             DatabaseUser result = (mode == DatabaseOpenMode.ReadOnly) ? new DatabaseUser(id)
                                                                       : new DatabaseUser(id, this);

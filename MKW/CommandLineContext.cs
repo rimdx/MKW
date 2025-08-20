@@ -2,7 +2,6 @@
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using System.CommandLine;
-using System.CommandLine.Parsing;
 
 namespace MKW
 {

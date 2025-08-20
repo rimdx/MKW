@@ -4,7 +4,7 @@
     {
         IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created);
         IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode) => OpenUser(id, mode, out _);
-        
+
         bool DeleteUser(Guid id);
         IEnumerable<IDatabaseUser> EnumerateUsers();
 

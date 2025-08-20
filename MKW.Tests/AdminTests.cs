@@ -1,5 +1,4 @@
-﻿using MKW.Core.Client;
-using MKW.Core.Client.Notify;
+﻿using MKW.Core.Client.Notify;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests

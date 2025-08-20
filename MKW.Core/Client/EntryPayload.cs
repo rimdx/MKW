@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Cryptography;
-using System.Text;
 
 namespace MKW.Core.Client
 {

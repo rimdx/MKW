@@ -1,7 +1,6 @@
 ﻿using MKW.Core.Client.Notify;
 using MKW.Core.Cryptography;
 using MKW.Core.Storage;
-using System.Security.Cryptography;
 
 namespace MKW.Core.Client
 {
