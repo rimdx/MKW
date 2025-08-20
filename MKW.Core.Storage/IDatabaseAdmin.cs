@@ -2,6 +2,9 @@
 {
     public interface IDatabaseAdmin : IDatabaseUser, ISavable
     {
-        HashSet<ReadOnlyMemory<byte>> Trust { get; set; }
+        IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust();
+
+        void AddTrust(ReadOnlyMemory<byte> data);
+        void DeleteTrust(ReadOnlyMemory<byte> data);
     }
 }
