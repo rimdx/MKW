@@ -57,11 +57,11 @@ namespace MKW
             cmdAddEntry.Options.Add(optForceInteractive);
             cmdAddEntry.SetAction(AddEntryAction);
 
-            cmdTouch = new Command("touch", "initializes empty database");
+            cmdTouch = new Command("create", "initializes empty database");
             cmdTouch.Arguments.Add(argFile);
             cmdTouch.Options.Add(optNonInteractive);
             cmdTouch.Options.Add(optForceInteractive);
-            cmdTouch.SetAction(TouchAction);
+            cmdTouch.SetAction(CreateAction);
 
             cmdEntries = new Command("entries", "list all entries in the database");
             cmdEntries.Arguments.Add(argFile);
@@ -82,11 +82,14 @@ namespace MKW
             return parsed.Invoke();
         }
 
+        private string GetFilePath(ParseResult argv)
+        {
+            return argv.GetRequiredValue(argFile);
+        }
+
         public IDatabase OpenDatabase(ParseResult argv)
         {
-            string path = argv.GetRequiredValue(argFile);
-
-            return JSONDatabaseSession.Open(path, DatabaseOpenMode.OpenOrCreate);
+            return JSONDatabaseSession.Open(GetFilePath(argv), DatabaseOpenMode.Open);
         }
 
         public ClientSession OpenSession(ParseResult argv)
