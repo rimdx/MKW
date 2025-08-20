@@ -23,13 +23,13 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
-            foreach (DatabaseUser user in db.EnumerateUsers())
+            foreach (IDatabaseUser user in db.EnumerateUsers())
             {
                 yield return GetTrust(user);
             }
         }
 
-        private UserInfo GetTrust(DatabaseUser user)
+        private UserInfo GetTrust(IDatabaseUser user)
         {
             UserInfo notify = UserInfo.FromDatabaseUser(user);
 
