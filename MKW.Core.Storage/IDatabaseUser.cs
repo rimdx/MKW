@@ -3,8 +3,8 @@
     public interface IDatabaseUser : ISavable
     {
         Guid Id { get; }
-        Memory<byte> Salt { get; set; }
-        Memory<byte> PublicKey { get; set; }
-        Memory<byte> PrivateKey { get; set; }
+        ReadOnlyMemory<byte> Salt { get; set; }
+        ReadOnlyMemory<byte> PublicKey { get; set; }
+        ReadOnlyMemory<byte> PrivateKey { get; set; }
     }
 }

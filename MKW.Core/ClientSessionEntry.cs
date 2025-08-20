@@ -50,7 +50,7 @@ namespace MKW.Core.Client
 
             Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
 
-            Dictionary<Guid, Memory<byte>> keys = new Dictionary<Guid, Memory<byte>>();
+            Dictionary<Guid, ReadOnlyMemory<byte>> keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
 
             foreach (IDatabaseUser user in Database.EnumerateUsers())
             {

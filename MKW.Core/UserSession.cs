@@ -50,7 +50,7 @@ namespace MKW.Core.Client
 
         public EntryPayload? DecodeEntry(IDatabaseEntry entry)
         {
-            if (entry.Keys.TryGetValue(user.Id, out Memory<byte> encodedKey) == false)
+            if (entry.Keys.TryGetValue(user.Id, out ReadOnlyMemory<byte> encodedKey) == false)
             {
                 // No key for this user, cannot decode the entry
                 return null;

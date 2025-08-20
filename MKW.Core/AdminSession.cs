@@ -33,7 +33,7 @@ namespace MKW.Core.Client
         {
             UserInfo notify = UserInfo.FromDatabaseUser(user);
 
-            foreach (Memory<byte> trust in admin.Trust)
+            foreach (ReadOnlyMemory<byte> trust in admin.Trust)
             {
                 if (transformer.Verify(user.PublicKey.Span, trust.Span))
                 {
@@ -50,7 +50,7 @@ namespace MKW.Core.Client
         {
             IDatabaseUser user = db.OpenUser(userId, DatabaseOpenMode.ReadOnly);
 
-            Memory<byte> signature = transformer.Sign(user.PublicKey.Span);
+            ReadOnlyMemory<byte> signature = transformer.Sign(user.PublicKey.Span);
 
             if (trust == Trust.FullTrust)
             {
