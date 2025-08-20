@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
     <ProjectReference Include="..\MKW.Core\MKW.Core.csproj" />
   </ItemGroup>
 
@@ -16,8 +17,6 @@
   </ItemGroup>
 
   <Target Name="PublishMyself" BeforeTargets="AfterBuild" Condition="'$(Publish)'==''">
-    <MSBuild Projects="$(MSBuildProjectFullPath)"
-             Targets="Publish"
-             Properties="Publish=true;NoBuild=true"></MSBuild>
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Publish" Properties="Publish=true;NoBuild=true"></MSBuild>
   </Target>
 </Project>

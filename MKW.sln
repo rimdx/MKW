@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Tests", "MKW.Tests\MKW.Tests.csproj", "{DE1CDADB-243C-41E5-84BA-11A721525FC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Storage", "MKW.Core.Storage\MKW.Core.Storage.csproj", "{96469AF1-D622-4991-B4F5-75B659E9F2D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Storage.JSON", "MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj", "{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|win-arm64 = Debug|win-arm64
@@ -61,6 +65,30 @@ Global
 		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Release|win-x64.Build.0 = Release|x64
 		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Release|win-x86.ActiveCfg = Release|win-x86
 		{DE1CDADB-243C-41E5-84BA-11A721525FC7}.Release|win-x86.Build.0 = Release|win-x86
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Debug|win-arm64.ActiveCfg = Debug|win-arm64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Debug|win-arm64.Build.0 = Debug|win-arm64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Debug|win-x64.ActiveCfg = Debug|win-x64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Debug|win-x64.Build.0 = Debug|win-x64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Debug|win-x86.ActiveCfg = Debug|win-x86
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Debug|win-x86.Build.0 = Debug|win-x86
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Release|win-arm64.ActiveCfg = Release|win-arm64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Release|win-arm64.Build.0 = Release|win-arm64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Release|win-x64.ActiveCfg = Release|win-x64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Release|win-x64.Build.0 = Release|win-x64
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Release|win-x86.ActiveCfg = Release|win-x86
+		{96469AF1-D622-4991-B4F5-75B659E9F2D9}.Release|win-x86.Build.0 = Release|win-x86
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Debug|win-arm64.ActiveCfg = Debug|win-arm64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Debug|win-arm64.Build.0 = Debug|win-arm64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Debug|win-x64.ActiveCfg = Debug|win-x64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Debug|win-x64.Build.0 = Debug|win-x64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Debug|win-x86.ActiveCfg = Debug|win-x86
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Debug|win-x86.Build.0 = Debug|win-x86
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-arm64.ActiveCfg = Release|win-arm64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-arm64.Build.0 = Release|win-arm64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x64.ActiveCfg = Release|win-x64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x64.Build.0 = Release|win-x64
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x86.ActiveCfg = Release|win-x86
+		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x86.Build.0 = Release|win-x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
