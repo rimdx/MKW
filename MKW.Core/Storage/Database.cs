@@ -1,17 +1,21 @@
-﻿namespace MKW.Core.Storage
+﻿using System.Text.Json.Serialization;
+
+namespace MKW.Core.Storage
 {
     public class Database
     {
         public AdminUser? Admin { get; set; }
 
-        public IList<DatabaseUser> Users { get; set; }
+        [JsonRequired]
+        public IDictionary<Guid, DatabaseUser> Users { get; set; }
 
         // EntryId -> Entry
+        [JsonRequired]
         public IDictionary<Guid, DatabaseSecretEntry> Entries { get; set; }
 
         public Database()
         {
-            Users = new List<DatabaseUser>();
+            Users = new Dictionary<Guid, DatabaseUser>();
             Entries = new Dictionary<Guid, DatabaseSecretEntry>();
         }
     }

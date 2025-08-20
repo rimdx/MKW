@@ -13,7 +13,7 @@ namespace MKW.Core.Client.Notify
         {
         }
 
-        internal static UserInfo FromDatabaseUser(DatabaseUser user)
+        internal static UserInfo FromDatabaseUser(IDatabaseUser user)
         {
             return new UserInfo
             {

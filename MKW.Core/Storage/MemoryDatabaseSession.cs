@@ -15,77 +15,101 @@ namespace MKW.Core.Storage
             Database = database;
         }
 
-        public void AddUser(Guid id, DatabaseUser user)
+        public IDatabaseUser OpenUser(Guid id,  DatabaseOpenMode mode, out bool created)
         {
-            Database.Users.Add(user);
-            Save();
+            DatabaseUser result = (mode == DatabaseOpenMode.ReadOnly) ? new DatabaseUser(id)
+                                                                      : new DatabaseUser(id, this);
+            created = false;
+
+            if (Database.Users.TryGetValue(id, out DatabaseUser? user))
+            {
+                result.CopyFrom(user);
+            }
+            else
+            {
+                switch (mode)
+                {
+                    case DatabaseOpenMode.ReadOnly:
+                    case DatabaseOpenMode.Open:
+                        throw new Exception("User doesn't exist.");
+
+                    case DatabaseOpenMode.OpenOrCreate:
+                        created = true;
+                        break;
+                }
+            }
+
+            return result;
         }
 
-        public DatabaseUser GetUser(Guid id)
+        public bool DeleteUser(Guid id)
         {
-            return Database.Users.First(u => u.Id == id);
+            return Database.Users.Remove(id);
         }
 
-        public IEnumerable<DatabaseUser> EnumerateUsers()
+        public IEnumerable<IDatabaseUser> EnumerateUsers()
         {
-            return Database.Users;
+            foreach (var item in Database.Users)
+            {
+                var result = new DatabaseUser(item.Key);
+                result.CopyFrom(item.Value);
+                yield return result;
+            }
         }
 
         // Admin
 
-        public void UpdateAdmin(AdminUser user)
-        {
-            Database.Admin = user;
-            Save();
-        }
-
-        public AdminUser GetAdmin()
+        public IDatabaseAdmin OpenAdmin()
         {
             if (Database.Admin == null)
             {
-                throw new Exception("Admin user is not set in the database.");
-            }
-
-            return Database.Admin;
-        }
-
-        public void UpdateEntry(Guid id, DatabaseSecretEntry? entry)
-        {
-            if (entry == null)
-            {
-                Database.Entries.Remove(id);
+                return new AdminUser(this);
             }
             else
             {
-                Database.Entries[id] = entry;
+                return Database.Admin;
             }
-
-            Save();
         }
 
-        public DatabaseSecretEntry? QueryEntry(Guid id)
+        public IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created)
         {
+            DatabaseSecretEntry result = (mode == DatabaseOpenMode.ReadOnly) ? new DatabaseSecretEntry(id)
+                                                                             : new DatabaseSecretEntry(id, this);
+            created = false;
+
             if (Database.Entries.TryGetValue(id, out DatabaseSecretEntry? entry))
             {
-                return entry;
+                result.CopyFrom(entry);
             }
             else
             {
-                return null;
+                switch (mode)
+                {
+                    case DatabaseOpenMode.ReadOnly:
+                    case DatabaseOpenMode.Open:
+                        throw new Exception("Entry doesn't exist.");
+
+                    case DatabaseOpenMode.OpenOrCreate:
+                        created = true;
+                        break;
+                }
             }
+
+            return result;
         }
 
-        public IEnumerable<DatabaseSecretKeyedEntry> EnumerateEntries()
+        public bool DeleteEntry(Guid id)
         {
-            foreach (KeyValuePair<Guid, DatabaseSecretEntry> entry in Database.Entries)
+            return Database.Entries.Remove(id);
+        }
+
+        public IEnumerable<IDatabaseEntry> EnumerateEntries()
+        {
+            foreach (var item in Database.Entries)
             {
-                yield return new DatabaseSecretKeyedEntry
-                {
-                    Id = entry.Key,
-                    Keys = entry.Value.Keys,
-                    Data = entry.Value.Data,
-                    Salt = entry.Value.Salt
-                };
+                DatabaseSecretEntry result = new DatabaseSecretEntry(item.Key);
+                result.CopyFrom(item.Value);
+                yield return result;
             }
         }
 

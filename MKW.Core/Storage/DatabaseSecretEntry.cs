@@ -1,16 +1,57 @@
-﻿namespace MKW.Core.Storage
+﻿using System.Text.Json.Serialization;
+
+namespace MKW.Core.Storage
 {
-    public record class DatabaseSecretEntry
+    public record class DatabaseSecretEntry : IDatabaseEntry, ISavable
     {
-        // User -> Payload
-        public required IDictionary<Guid, Memory<byte>> Keys { get; set; }
+        private readonly MemoryDatabaseSession? host;
 
-        // Salt used within [decoded]key to encode Data
-        public required Memory<byte> Salt { get; set; }
+        internal DatabaseSecretEntry(Guid id, MemoryDatabaseSession host)
+            : this(id)
+        {
+            this.host = host;
+        }
 
-        // The payload, symmetrically encoded using a key, available by encoding
-        // one of Keys using user's private key. The Salt is required to operate
-        // (internally states as IV).
-        public required Memory<byte> Data { get; set; }
+        [JsonConstructor]
+        internal DatabaseSecretEntry()
+        {
+            Keys = new Dictionary<Guid, Memory<byte>>();
+        }
+
+        public DatabaseSecretEntry(Guid id)
+            : this()
+        {
+            Id = id;
+        }
+
+        [JsonIgnore]
+        public Guid Id { get; }
+
+        [JsonRequired]
+        public IDictionary<Guid, Memory<byte>> Keys { get; set; }
+
+        [JsonRequired]
+        public Memory<byte> Salt { get; set; }
+
+        [JsonRequired]
+        public Memory<byte> Data { get; set; }
+
+        public void Save()
+        {
+            if (host == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            host.Database.Entries[Id] = this;
+            host.Save();
+        }
+
+        public void CopyFrom(DatabaseSecretEntry other)
+        {
+            Keys = other.Keys;
+            Salt = other.Salt;
+            Data = other.Data;
+        }
     }
 }

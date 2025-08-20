@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Storage
 {
-    public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase, IDisposable
+    public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase, ISavable
     {
         private readonly FileStream file;
 

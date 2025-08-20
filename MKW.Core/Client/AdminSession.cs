@@ -7,12 +7,12 @@ namespace MKW.Core.Client
     public class AdminSession : IDisposable
     {
         private readonly IDatabase db;
-        private readonly AdminUser admin;
+        private readonly IDatabaseAdmin admin;
 
         private readonly AsymmetricTransformer transformer;
 
         public AdminSession(IDatabase db /* reference */,
-                            AdminUser admin /* reference */,
+                            IDatabaseAdmin admin /* reference */,
                             ReadOnlySpan<byte> privateKey)
         {
             this.db = db;
@@ -48,7 +48,7 @@ namespace MKW.Core.Client
 
         public void UpdateTrust(Guid userId, Trust trust)
         {
-            DatabaseUser user = db.GetUser(userId);
+            IDatabaseUser user = db.OpenUser(userId, DatabaseOpenMode.ReadOnly);
 
             Memory<byte> signature = transformer.Sign(user.PublicKey.Span);
 
@@ -64,8 +64,6 @@ namespace MKW.Core.Client
             {
                 throw new ArgumentException("Invalid trust value.", nameof(trust));
             }
-
-            db.UpdateAdmin(admin);
         }
 
         public void Dispose()
