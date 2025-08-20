@@ -14,13 +14,13 @@ namespace MKW.Tests
             // create a test database file
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n",
-                sbox.Run($"mkw touch {sbox.DatabasePath}")
+                sbox.Run($"mkw create {sbox.DatabasePath}")
             );
 
             // run the command again to ensure it opens the existing file
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n",
-                sbox.Run($"mkw touch {sbox.DatabasePath}")
+                sbox.Run($"mkw create {sbox.DatabasePath}")
             );
         }
 
@@ -29,6 +29,7 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox();
 
+            sbox.Run($"mkw create {sbox.DatabasePath}");
             string output = sbox.Run($"mkw add-user {sbox.DatabasePath} --password lifeishard");
 
             using Core.Storage.IDatabase db = sbox.OpenDatabase();
@@ -137,6 +138,7 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox();
 
+            sbox.Run($"mkw create {sbox.DatabasePath}");
             sbox.Run($"mkw add-user {sbox.DatabasePath} --password test1");
             sbox.Run($"mkw add-user {sbox.DatabasePath} --password test2");
 
@@ -159,6 +161,7 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox();
 
+            sbox.Run($"mkw create {sbox.DatabasePath}");
             sbox.Run($"mkw add-user {sbox.DatabasePath}");
             sbox.Run($"mkw add-user {sbox.DatabasePath} --non-interactive");
             sbox.Run($"mkw add-user {sbox.DatabasePath} --force-interactive", "test3");

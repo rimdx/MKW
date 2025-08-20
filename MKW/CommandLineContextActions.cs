@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Core.Storage.JSON;
 using System.CommandLine;
 
 namespace MKW
@@ -26,9 +27,15 @@ namespace MKW
             Console.WriteLine($"{entry.Action}: {entry.Id} for {entry.EncodedForUsers.Count} users");
         }
 
-        private void TouchAction(ParseResult argv)
+        private void CreateAction(ParseResult argv)
         {
-            using ClientSession session = OpenSession(argv);
+            JSONDatabaseSession db = JSONDatabaseSession.Open(
+                GetFilePath(argv),
+                Core.Storage.DatabaseOpenMode.OpenOrCreate);
+
+            // no-op
+
+            db.Dispose();
         }
 
         private void ListEntriesAction(ParseResult argv)
