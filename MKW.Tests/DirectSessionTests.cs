@@ -17,10 +17,11 @@ namespace MKW.Tests
 
             var user = session.PromoteUser("whattheheckamidoing");
 
-            ClassicAssert.AreEqual(1, db.Database.Users.Count);
+            var users = db.EnumerateUsers().ToArray();
+            ClassicAssert.AreEqual(1, users.Length);
 
-            ClassicAssert.AreEqual(user.Id, db.Database.Users[0].Id);
-            ClassicAssert.AreEqual(user.PublicKey, db.Database.Users[0].PublicKey);
+            ClassicAssert.AreEqual(user.Id, users[0].Id);
+            ClassicAssert.AreEqual(user.PublicKey, users[0].PublicKey);
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace MKW.Tests
 
             using UserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
-            Assert.Throws<InvalidOperationException>(
+            Assert.Throws<Exception>(
                 () => client.OpenUser(new Guid("{DEADCCCE-69CF-3242-810A-C54B3D490797}"),
                                        "awesomesecretno1willeverguess")
             );
@@ -68,11 +69,12 @@ namespace MKW.Tests
             using MemoryDatabaseSession db = new MemoryDatabaseSession();
             using ClientSession session = ClientSession.Open(db);
 
-            var user = session.PromoteUser("protectmyballs");
-            using UserSession userSession = session.OpenUser(db.Database.Users[0].Id, "protectmyballs");
+            var user = session.PromoteUser("secretprotector");
+            var users = db.EnumerateUsers().ToArray();
+            using UserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
 
             var entry = session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
-                                            new EntryPayload("balls"));
+                                            new EntryPayload("secret"));
 
             ClassicAssert.AreEqual(1, db.Database.Users.Count);
             ClassicAssert.AreEqual(1, db.Database.Entries.Count);
@@ -92,7 +94,7 @@ namespace MKW.Tests
                 new KeyedEntry
                 {
                     Id = entry.Id,
-                    Payload = new EntryPayload("balls")
+                    Payload = new EntryPayload("secret")
                 },
                 userSession.GetEntry(entry.Id));
         }

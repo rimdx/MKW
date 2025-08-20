@@ -14,22 +14,18 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            DatabaseUser user = new DatabaseUser
-            {
-                Id = Guid.NewGuid(),
-                PublicKey = systemCreds.PublicKey,
-                PrivateKey = systemCreds.PrivateKey,
-                Salt = systemCreds.Salt,
-            };
+            using IDatabaseUser user = Database.OpenUser(Guid.NewGuid(), DatabaseOpenMode.OpenOrCreate);
 
-            Database.AddUser(user.Id, user);
+            user.PublicKey = systemCreds.PublicKey;
+            user.PrivateKey = systemCreds.PrivateKey;
+            user.Salt = systemCreds.Salt;
 
             return UserInfo.FromDatabaseUser(user);
         }
 
         public UserSession OpenUser(Guid id, string password)
         {
-            DatabaseUser user = Database.GetUser(id);
+            IDatabaseUser user = Database.OpenUser(id, DatabaseOpenMode.Open, out _);
 
             // Credentials can be opened within the entered password and the public salt
             UserCredentials creds = UserCredentials.Open(password, user.Salt);
@@ -39,13 +35,13 @@ namespace MKW.Core.Client
 
         public UserSession OpenUser(string password)
         {
-            foreach (DatabaseUser user in Database.EnumerateUsers())
+            foreach (IDatabaseUser user in Database.EnumerateUsers())
             {
                 try
                 {
                     UserCredentials creds = UserCredentials.Open(password, user.Salt);
 
-                    return OpenUser(user, creds);
+                    return OpenUser(Database.OpenUser(user.Id, DatabaseOpenMode.Open), creds);
                 }
                 catch (CryptographicException)
                 {
@@ -56,7 +52,7 @@ namespace MKW.Core.Client
             throw new Exception("No valid user found with the provided password.");
         }
 
-        public UserSession OpenUser(DatabaseUser user, UserCredentials creds)
+        public UserSession OpenUser(IDatabaseUser user, UserCredentials creds)
         {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).

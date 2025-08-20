@@ -6,11 +6,11 @@ namespace MKW.Core.Client
 {
     public partial class ClientSession : IDisposable
     {
-        public EntryInfo UpdateEntry(Guid id, EntryPayload? entry)
+        public EntryInfo UpdateEntry(Guid id, EntryPayload? payload)
         {
-            if (entry == null)
+            if (payload == null)
             {
-                Database.UpdateEntry(id, null);
+                Database.DeleteEntry(id);
 
                 return new EntryInfo
                 {
@@ -21,9 +21,13 @@ namespace MKW.Core.Client
             }
             else
             {
-                DatabaseUser[] users = Database.EnumerateUsers().ToArray();
+                using IDatabaseEntry entry = Database.OpenEntry(id,
+                                                                DatabaseOpenMode.OpenOrCreate,
+                                                                out bool created);
 
-                DatabaseSecretEntry encodedEntry = EncodeEntry(entry, users);
+                IDatabaseUser[] users = Database.EnumerateUsers().ToArray();
+
+                EncodeEntry(entry, payload, users);
 
                 List<UserInfo> encodedForUsers = [];
                 foreach (DatabaseUser user in users)
@@ -31,19 +35,16 @@ namespace MKW.Core.Client
                     encodedForUsers.Add(UserInfo.FromDatabaseUser(user));
                 }
 
-                DatabaseSecretEntry? oldEntry = Database.QueryEntry(id);
-                Database.UpdateEntry(id, encodedEntry);
-
                 return new EntryInfo
                 {
                     Id = id,
-                    Action = oldEntry == null ? ActionInfo.Added : ActionInfo.Updated,
+                    Action = created ? ActionInfo.Added : ActionInfo.Updated,
                     EncodedForUsers = encodedForUsers
                 };
             }
         }
 
-        public DatabaseSecretEntry EncodeEntry(EntryPayload payload, IEnumerable<DatabaseUser> users)
+        public void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<IDatabaseUser> users)
         {
             using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
 
@@ -60,14 +61,9 @@ namespace MKW.Core.Client
                 keys.Add(user.Id, encyptedKey);
             }
 
-            DatabaseSecretEntry entry = new DatabaseSecretEntry
-            {
-                Keys = keys,
-                Data = data,
-                Salt = payloadEncoder.ExportIV(),
-            };
-
-            return entry;
+            entry.Keys = keys;
+            entry.Data = data;
+            entry.Salt = payloadEncoder.ExportIV();
         }
     }
 }

@@ -14,22 +14,18 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            AdminUser user = new AdminUser
-            {
-                Id = Guid.NewGuid(),
-                PublicKey = systemCreds.PublicKey,
-                PrivateKey = systemCreds.PrivateKey,
-                Salt = systemCreds.Salt,
-            };
+            using IDatabaseAdmin admin = Database.OpenAdmin();
 
-            Database.UpdateAdmin(user);
+            admin.PublicKey = systemCreds.PublicKey;
+            admin.PrivateKey = systemCreds.PrivateKey;
+            admin.Salt = systemCreds.Salt;
 
-            return UserInfo.FromDatabaseUser(user);
+            return UserInfo.FromDatabaseUser(admin);
         }
 
         public AdminSession OpenAdmin(string password)
         {
-            AdminUser admin = Database.GetAdmin();
+            IDatabaseAdmin admin = Database.OpenAdmin();
 
             UserCredentials creds = UserCredentials.Open(password, admin.Salt);
 

@@ -1,13 +1,55 @@
-﻿namespace MKW.Core.Storage
+﻿using System.Text.Json.Serialization;
+
+namespace MKW.Core.Storage
 {
-    public record class DatabaseUser
+    public record class DatabaseUser : IDatabaseUser, ISavable
     {
-        public required Guid Id { get; set; }
+        protected readonly MemoryDatabaseSession? host;
 
-        public required Memory<byte> Salt { get; set; }
+        internal DatabaseUser(Guid id, MemoryDatabaseSession host)
+            : this(id)
+        {
+            this.host = host;
+        }
 
-        public required Memory<byte> PublicKey { get; set; }
+        [JsonConstructor]
+        internal DatabaseUser()
+        {
+        }
 
-        public required Memory<byte> PrivateKey { get; set; }
+        public DatabaseUser(Guid id)
+        {
+            Id = id;
+        }
+
+        [JsonIgnore]
+        public Guid Id { get; }
+
+        [JsonRequired]
+        public Memory<byte> Salt { get; set; }
+
+        [JsonRequired]
+        public Memory<byte> PublicKey { get; set; }
+
+        [JsonRequired]
+        public Memory<byte> PrivateKey { get; set; }
+
+        public virtual void Save()
+        {
+            if (host == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            host.Database.Users[Id] = this;
+            host.Save();
+        }
+
+        public void CopyFrom(DatabaseUser value)
+        {
+            PublicKey = value.PublicKey;
+            PrivateKey = value.PrivateKey;
+            Salt = value.Salt;
+        }
     }
 }

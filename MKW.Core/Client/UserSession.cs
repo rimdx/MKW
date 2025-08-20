@@ -6,11 +6,11 @@ namespace MKW.Core.Client
     public class UserSession : IDisposable
     {
         private readonly IDatabase db;
-        private readonly DatabaseUser user;
+        private readonly IDatabaseUser user;
         private readonly AsymmetricTransformer transformer;
 
         public UserSession(IDatabase db /* reference */,
-                           DatabaseUser user /* reference */,
+                           IDatabaseUser user /* reference */,
                            ReadOnlySpan<byte> privateKey)
         {
             this.db = db;
@@ -20,12 +20,7 @@ namespace MKW.Core.Client
 
         public KeyedEntry GetEntry(Guid id)
         {
-            DatabaseSecretEntry entry = db.QueryEntry(id);
-
-            if (entry == null)
-            {
-                throw new Exception($"No entry found for ID: {id}");
-            }
+            IDatabaseEntry entry = db.OpenEntry(id, DatabaseOpenMode.ReadOnly);
 
             EntryPayload? payload = DecodeEntry(entry);
 
@@ -43,7 +38,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<KeyedEntry> EnumerateEntries()
         {
-            foreach (DatabaseSecretKeyedEntry entry in db.EnumerateEntries())
+            foreach (IDatabaseEntry entry in db.EnumerateEntries())
             {
                 yield return new KeyedEntry
                 {
@@ -53,7 +48,7 @@ namespace MKW.Core.Client
             }
         }
 
-        public EntryPayload? DecodeEntry(DatabaseSecretEntry entry)
+        public EntryPayload? DecodeEntry(IDatabaseEntry entry)
         {
             if (entry.Keys.TryGetValue(user.Id, out Memory<byte> encodedKey) == false)
             {
@@ -74,6 +69,7 @@ namespace MKW.Core.Client
         public void Dispose()
         {
             transformer.Dispose();
+            user.Dispose();
         }
     }
 }

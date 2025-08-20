@@ -1,18 +1,19 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface IDatabase : IDisposable
+    public interface IDatabase : ISavable
     {
-        void AddUser(Guid id, DatabaseUser user);
-        DatabaseUser GetUser(Guid id);
-        IEnumerable<DatabaseUser> EnumerateUsers();
+        IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created);
+        IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode) => OpenUser(id, mode, out _);
+        
+        bool DeleteUser(Guid id);
+        IEnumerable<IDatabaseUser> EnumerateUsers();
 
-        void UpdateAdmin(AdminUser user);
-        AdminUser GetAdmin();
+        IDatabaseAdmin OpenAdmin();
 
-        void UpdateEntry(Guid id, DatabaseSecretEntry? entry);
-        DatabaseSecretEntry? QueryEntry(Guid id);
-        IEnumerable<DatabaseSecretKeyedEntry> EnumerateEntries();
+        IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created);
+        IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode) => OpenEntry(id, mode, out _);
 
-        void Save();
+        bool DeleteEntry(Guid id);
+        IEnumerable<IDatabaseEntry> EnumerateEntries();
     }
 }
