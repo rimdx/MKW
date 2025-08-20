@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Storage", "MKW.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Storage.JSON", "MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj", "{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Cryptography", "MKW.Core.Cryptography\MKW.Core.Cryptography.csproj", "{B36223C6-6773-4DFB-838B-558378860BC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|win-arm64 = Debug|win-arm64
@@ -90,6 +92,18 @@ Global
 		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x64.Build.0 = Release|win-x64
 		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x86.ActiveCfg = Release|win-x86
 		{3A2A0F6A-F25C-4C4F-825C-33FA4F145EE6}.Release|win-x86.Build.0 = Release|win-x86
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Debug|win-arm64.ActiveCfg = Debug|win-arm64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Debug|win-arm64.Build.0 = Debug|win-arm64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Debug|win-x64.ActiveCfg = Debug|win-x64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Debug|win-x64.Build.0 = Debug|win-x64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Debug|win-x86.ActiveCfg = Debug|win-x86
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Debug|win-x86.Build.0 = Debug|win-x86
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|win-arm64.ActiveCfg = Release|win-arm64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|win-arm64.Build.0 = Release|win-arm64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|win-x64.ActiveCfg = Release|win-x64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|win-x64.Build.0 = Release|win-x64
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|win-x86.ActiveCfg = Release|win-x86
+		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|win-x86.Build.0 = Release|win-x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
