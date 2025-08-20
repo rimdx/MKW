@@ -30,7 +30,7 @@ namespace MKW.Core.Client
                 EncodeEntry(entry, payload, users);
 
                 List<UserInfo> encodedForUsers = [];
-                foreach (DatabaseUser user in users)
+                foreach (IDatabaseUser user in users)
                 {
                     encodedForUsers.Add(UserInfo.FromDatabaseUser(user));
                 }
@@ -52,7 +52,7 @@ namespace MKW.Core.Client
 
             var keys = new Dictionary<Guid, Memory<byte>>();
 
-            foreach (DatabaseUser user in Database.EnumerateUsers())
+            foreach (IDatabaseUser user in Database.EnumerateUsers())
             {
                 using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
 

@@ -94,7 +94,7 @@ namespace MKW
         {
             string path = argv.GetRequiredValue(argFile);
 
-            return ClientSession.Open(path);
+            return ClientSession.Open(JSONDatabaseSession.Open(path), true);
         }
 
         private void AddUserAction(ParseResult argv)

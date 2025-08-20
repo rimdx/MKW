@@ -73,7 +73,7 @@ namespace MKW.Tests
 
         public ClientSession OpenSession()
         {
-            return ClientSession.Open(DatabasePath);
+            return ClientSession.Open(JSONDatabaseSession.Open(DatabasePath), true);
         }
 
         private string TrimString(string str)

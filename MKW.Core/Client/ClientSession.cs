@@ -19,10 +19,9 @@ namespace MKW.Core.Client
             return new ClientSession(db, false);
         }
 
-        public static ClientSession Open(string path)
+        public static ClientSession Open(IDatabase db, bool ownsDb)
         {
-            JSONDatabaseSession db = JSONDatabaseSession.Open(path);
-            return new ClientSession(db, true);
+            return new ClientSession(db, ownsDb);
         }
 
         public void Dispose()
