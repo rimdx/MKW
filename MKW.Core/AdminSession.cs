@@ -21,31 +21,6 @@ namespace MKW.Core.Client
             transformer = AsymmetricTransformer.Open(admin.PublicKey.Span, privateKey);
         }
 
-        public IEnumerable<UserInfo> EnumerateUsersTrust()
-        {
-            foreach (IDatabaseUser user in db.EnumerateUsers())
-            {
-                yield return GetTrust(user);
-            }
-        }
-
-        private UserInfo GetTrust(IDatabaseUser user)
-        {
-            UserInfo notify = UserInfo.FromDatabaseUser(user);
-
-            foreach (ReadOnlyMemory<byte> trust in admin.EnumerateTrust())
-            {
-                if (transformer.Verify(user.PublicKey.Span, trust.Span))
-                {
-                    notify.Trust = Trust.FullTrust;
-                    return notify;
-                }
-            }
-
-            notify.Trust = Trust.None;
-            return notify;
-        }
-
         public void UpdateTrust(Guid userId, Trust trust)
         {
             IDatabaseUser user = db.OpenUser(userId, DatabaseOpenMode.ReadOnly);
