@@ -30,7 +30,7 @@ jobs:
         run: dotnet restore ${{ env.Parameters }}
 
       - name: Build
-        run: dotnet build ${{ env.Parameters }}
+        run: dotnet build ${{ env.Parameters }} --no-restore
 
       - name: Test
         run: dotnet test ${{ env.Parameters }}
