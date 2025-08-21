@@ -13,7 +13,7 @@ namespace MKW
         {
             TextWriter output = parseResult.InvocationConfiguration.Output;
 
-            output.WriteLine("Type 'mkw help' for usage.");
+            output.WriteLine("Type 'mkw --help' for usage.");
 
             return 0;
         }
