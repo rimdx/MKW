@@ -2,6 +2,7 @@
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 using System.CommandLine;
+using System.CommandLine.Help;
 
 namespace MKW
 {
@@ -43,7 +44,10 @@ namespace MKW
 
         public CommandLineContext()
         {
-            rootCommand = new RootCommand("Multi-Key Wallet");
+            rootCommand = new RootCommand("Multi-Key Wallet")
+            {
+                Action = new UsageAction()
+            };
 
             cmdUser = new Command("user", "user management commands");
 
