@@ -18,7 +18,7 @@ namespace MKW
 
         private void AddEntryAction(ParseResult argv)
         {
-            string payload = argv.GetRequiredValue(argPayload);
+            string payload = argv.GetRequiredValue(CommonOptions.Payload);
 
             using ClientSession session = OpenSession(argv);
 
