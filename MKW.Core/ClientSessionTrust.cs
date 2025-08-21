@@ -8,17 +8,32 @@ namespace MKW.Core.Client
     {
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
-            IDatabaseAdmin admin = Database.OpenAdmin();
+            IDatabaseAdmin admin = Database.OpenAdmin(out bool created);
 
-            using AsymmetricTransformer adminKey = AsymmetricTransformer.Open(admin.PublicKey.Span);
-
-            foreach (IDatabaseUser user in Database.EnumerateUsers())
+            if (created)
             {
-                yield return GetTrust(user, admin, adminKey);
+                foreach (IDatabaseUser user in Database.EnumerateUsers())
+                {
+                    UserInfo notify = UserInfo.FromDatabaseUser(user);
+                    // Implicitly trust all users if no admin exists
+                    notify.Trust = Trust.FullTrust;
+                    yield return notify;
+                }
+            }
+            else
+            {
+                using AsymmetricTransformer adminKey = AsymmetricTransformer.Open(admin.PublicKey.Span);
+
+                foreach (IDatabaseUser user in Database.EnumerateUsers())
+                {
+                    UserInfo notify = UserInfo.FromDatabaseUser(user);
+                    notify.Trust = VerifyTrust(user, admin, adminKey);
+                    yield return notify;
+                }
             }
         }
 
-        private UserInfo GetTrust(IDatabaseUser user, IDatabaseAdmin admin, AsymmetricTransformer adminKey)
+        private Trust VerifyTrust(IDatabaseUser user, IDatabaseAdmin admin, AsymmetricTransformer adminKey)
         {
             UserInfo notify = UserInfo.FromDatabaseUser(user);
 
@@ -26,13 +41,11 @@ namespace MKW.Core.Client
             {
                 if (adminKey.Verify(user.PublicKey.Span, trust.Span))
                 {
-                    notify.Trust = Trust.FullTrust;
-                    return notify;
+                    return Trust.FullTrust;
                 }
             }
 
-            notify.Trust = Trust.None;
-            return notify;
+            return Trust.None;
         }
     }
 }
