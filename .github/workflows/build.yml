@@ -26,6 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Restore nuget packages
+        run: dotnet restore ${{ env.Parameters }}
+
       - name: Build
         run: dotnet build ${{ env.Parameters }}
 
