@@ -30,7 +30,7 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
 
             sbox.Run($"mkw create {sbox.DatabasePath}");
-            string output = sbox.Run($"mkw add-user {sbox.DatabasePath} --password lifeishard");
+            string output = sbox.Run($"mkw user add {sbox.DatabasePath} --password lifeishard");
 
             using Core.Storage.IDatabase db = sbox.OpenDatabase();
 
@@ -64,7 +64,7 @@ namespace MKW.Tests
 
             client.Dispose();
 
-            string output = sbox.Run($"mkw entries {sbox.DatabasePath} --password amogus");
+            string output = sbox.Run($"mkw entry list {sbox.DatabasePath} --password amogus");
 
             ClassicAssert.AreEqual(
                 """
@@ -97,7 +97,7 @@ namespace MKW.Tests
             }
 
             {
-                string output = sbox.Run($"mkw entries {sbox.DatabasePath} --password iamanoldman");
+                string output = sbox.Run($"mkw entry list {sbox.DatabasePath} --password iamanoldman");
 
                 ClassicAssert.AreEqual(
                     """
@@ -115,7 +115,7 @@ namespace MKW.Tests
             }
 
             {
-                string output = sbox.Run($"mkw entries {sbox.DatabasePath} --password ihatehimbutcantseehisstuff");
+                string output = sbox.Run($"mkw entry list {sbox.DatabasePath} --password ihatehimbutcantseehisstuff");
 
                 ClassicAssert.AreEqual(
                     """
@@ -139,10 +139,10 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
 
             sbox.Run($"mkw create {sbox.DatabasePath}");
-            sbox.Run($"mkw add-user {sbox.DatabasePath} --password test1");
-            sbox.Run($"mkw add-user {sbox.DatabasePath} --password test2");
+            sbox.Run($"mkw user add {sbox.DatabasePath} --password test1");
+            sbox.Run($"mkw user add {sbox.DatabasePath} --password test2");
 
-            string output1 = sbox.Run($"mkw add-entry {sbox.DatabasePath} \"secret entry no1\"");
+            string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} \"secret entry no1\"");
 
             using Core.Storage.IDatabase db = sbox.OpenDatabase();
 
@@ -162,9 +162,9 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
 
             sbox.Run($"mkw create {sbox.DatabasePath}");
-            sbox.Run($"mkw add-user {sbox.DatabasePath}");
-            sbox.Run($"mkw add-user {sbox.DatabasePath} --non-interactive");
-            sbox.Run($"mkw add-user {sbox.DatabasePath} --force-interactive", "test3");
+            sbox.Run($"mkw user add {sbox.DatabasePath}");
+            sbox.Run($"mkw user add {sbox.DatabasePath} --non-interactive");
+            sbox.Run($"mkw user add {sbox.DatabasePath} --force-interactive", "test3");
 
             using Core.Storage.IDatabase db = sbox.OpenDatabase();
 

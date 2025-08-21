@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using MKW.Core.Storage.JSON.Types;
 
-namespace MKW.Core.Storage.JSON
+namespace MKW.Core.Storage.JSON.Interface
 {
     public record class DatabaseUser : IDatabaseUser, ISavable
     {
@@ -12,44 +12,42 @@ namespace MKW.Core.Storage.JSON
             this.host = host;
         }
 
-        [JsonConstructor]
-        internal DatabaseUser()
-        {
-        }
-
         public DatabaseUser(Guid id)
         {
             Id = id;
         }
 
-        [JsonIgnore]
         public Guid Id { get; }
-
-        [JsonRequired]
         public ReadOnlyMemory<byte> Salt { get; set; }
-
-        [JsonRequired]
         public ReadOnlyMemory<byte> PublicKey { get; set; }
-
-        [JsonRequired]
         public ReadOnlyMemory<byte> PrivateKey { get; set; }
 
-        public virtual void Save()
+        public void Save()
         {
             if (host == null)
             {
                 throw new InvalidOperationException();
             }
 
-            host.Database.Users[Id] = this;
+            host.Database.Users[Id] = AsJSONObject();
             host.Save();
         }
 
-        public void CopyFrom(DatabaseUser value)
+        public void CopyFrom(JSONDatabaseUser obj)
         {
-            PublicKey = value.PublicKey;
-            PrivateKey = value.PrivateKey;
-            Salt = value.Salt;
+            PublicKey = obj.PublicKey;
+            PrivateKey = obj.PrivateKey;
+            Salt = obj.Salt;
+        }
+
+        public JSONDatabaseUser AsJSONObject()
+        {
+            return new JSONDatabaseUser
+            {
+                PublicKey = PublicKey,
+                PrivateKey = PrivateKey,
+                Salt = Salt
+            };
         }
     }
 }

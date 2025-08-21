@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using MKW.Core.Storage.JSON.Types;
 
-namespace MKW.Core.Storage.JSON
+namespace MKW.Core.Storage.JSON.Interface
 {
     public record class DatabaseSecretEntry : IDatabaseEntry, ISavable
     {
@@ -12,28 +12,15 @@ namespace MKW.Core.Storage.JSON
             this.host = host;
         }
 
-        [JsonConstructor]
-        internal DatabaseSecretEntry()
+        public DatabaseSecretEntry(Guid id)
         {
             Keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
-        }
-
-        public DatabaseSecretEntry(Guid id)
-            : this()
-        {
             Id = id;
         }
 
-        [JsonIgnore]
         public Guid Id { get; }
-
-        [JsonRequired]
         public IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; set; }
-
-        [JsonRequired]
         public ReadOnlyMemory<byte> Salt { get; set; }
-
-        [JsonRequired]
         public ReadOnlyMemory<byte> Data { get; set; }
 
         public void Save()
@@ -43,15 +30,25 @@ namespace MKW.Core.Storage.JSON
                 throw new InvalidOperationException();
             }
 
-            host.Database.Entries[Id] = this;
+            host.Database.Entries[Id] = AsJSONObject();
             host.Save();
         }
 
-        public void CopyFrom(DatabaseSecretEntry other)
+        public void CopyFrom(JSONDatabaseSecretEntry other)
         {
             Keys = other.Keys;
             Salt = other.Salt;
             Data = other.Data;
+        }
+
+        public JSONDatabaseSecretEntry AsJSONObject()
+        {
+            return new JSONDatabaseSecretEntry
+            {
+                Keys = Keys,
+                Salt = Salt,
+                Data = Data
+            };
         }
     }
 }
