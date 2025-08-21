@@ -51,5 +51,41 @@ namespace MKW.Tests
                 new UserInfo[] { user1, user2 },
                 client.EnumerateUsersTrust());
         }
+
+        [Test]
+        public void EntriesHiddenForUntrustedUsersTest()
+        {
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            UserInfo trusted = client.PromoteUser("trusted");
+            UserInfo untrusted = client.PromoteUser("untrusted");
+
+            client.PromoteAdmin("admin");
+            using AdminSession admin = client.OpenAdmin("admin");
+
+            admin.UpdateTrust(trusted.Id, Trust.FullTrust);
+            EntryInfo entry = client.UpdateEntry(Guid.NewGuid(), new EntryPayload("test data"));
+
+            {
+                using UserSession user = client.OpenUser("trusted");
+
+                ClassicAssert.AreEqual(new KeyedEntry
+                {
+                    Id = entry.Id,
+                    Payload = new EntryPayload("test data"),
+                }, user.GetEntry(entry.Id));
+            }
+
+            {
+                using UserSession user = client.OpenUser("untrusted");
+
+                ClassicAssert.AreEqual(new KeyedEntry
+                {
+                    Id = entry.Id,
+                    Payload = null,
+                }, user.GetEntry(entry.Id));
+            }
+        }
     }
 }

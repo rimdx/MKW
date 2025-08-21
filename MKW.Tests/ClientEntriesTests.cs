@@ -28,6 +28,7 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(entry.Id, db.Database.Entries.First().Key);
             ClassicAssert.AreEqual(ActionInfo.Added, entry.Action);
 
+            user.Trust = Trust.FullTrust;
             CollectionAssert.AreEqual(
                 new UserInfo[]
                 {
