@@ -43,6 +43,7 @@ jobs:
       Parameters: >
         /p:Configuration=Release
         /p:Platform=${{ matrix.platform }}
+      PublishDir: ${{ github.workspace }}\out\Release\${{ matrix.platform }}\publish
 
     steps:
       - uses: actions/checkout@v4
@@ -64,7 +65,7 @@ jobs:
           trusted-signing-account-name: ${{ secrets.AZURE_TRUSTED_SIGNING_ACCOUNT_NAME }}
           certificate-profile-name: ${{ secrets.AZURE_CERTIFICATE_PROFILE_NAME }}
           files: |
-            .\out\Release\${{ matrix.platform }}\publish\mkw.exe
+            ${{ env.PublishDir }}\mkw.exe
           file-digest: SHA256
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
@@ -74,12 +75,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Release-${{ matrix.platform }}
-          path: .\out\Release\${{ matrix.platform }}\publish
+          path: ${{ env.PublishDir }}
 
       - uses: actions/attest-build-provenance@v2
         with:
           subject-path: |
-            .\out\Release\${{ matrix.platform }}\publish\mkw.exe
+            ${{ env.PublishDir }}\mkw.exe
 
       - name: Upload package to release
         uses: actions/upload-release-asset@v1
@@ -87,6 +88,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: .\out\Release\${{ matrix.platform }}\publish\mkw.exe
+          asset_path: ${{ env.PublishDir }}\mkw.exe
           asset_name: mkw.exe
           asset_content_type: application/exe
