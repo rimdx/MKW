@@ -34,14 +34,14 @@ namespace MKW.Tests
             user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
                 new UserInfo[] { user1, user2 },
-                adminSession.EnumerateUsersTrust());
+                client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.FullTrust);
             user1.Trust = Trust.FullTrust;
             user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
                 new UserInfo[] { user1, user2 },
-                adminSession.EnumerateUsersTrust());
+                client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.None);
             adminSession.UpdateTrust(user2.Id, Trust.FullTrust);
@@ -49,7 +49,7 @@ namespace MKW.Tests
             user2.Trust = Trust.FullTrust;
             CollectionAssert.AreEqual(
                 new UserInfo[] { user1, user2 },
-                adminSession.EnumerateUsersTrust());
+                client.EnumerateUsersTrust());
         }
     }
 }
