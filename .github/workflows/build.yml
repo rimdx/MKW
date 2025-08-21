@@ -27,13 +27,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build
-        run: dotnet build /t:Restore ${{ env.Parameters }}
+        run: dotnet build /t:Restore,Build ${{ env.Parameters }}
 
       - name: Test
-        run: dotnet test ${{ env.Parameters }}
+        run: dotnet test --no-build ${{ env.Parameters }}
 
       - name: Publish
-        run: dotnet publish ${{ env.Parameters }}
+        run: dotnet publish --no-build ${{ env.Parameters }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
