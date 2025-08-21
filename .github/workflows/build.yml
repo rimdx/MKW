@@ -19,7 +19,7 @@ jobs:
         - win-x64
 
     env:
-      Parameters: |
+      Parameters: >
         --configuration Release
         --architecture ${{ matrix.platform }}
 
