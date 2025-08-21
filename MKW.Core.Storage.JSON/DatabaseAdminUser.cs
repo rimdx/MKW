@@ -2,19 +2,19 @@
 
 namespace MKW.Core.Storage.JSON
 {
-    public record class AdminUser : DatabaseUser, IDatabaseAdmin, ISavable
+    public record class DatabaseAdminUser : DatabaseUser, IDatabaseAdmin, ISavable
     {
         // Signed Public Keys of each trusted users by admin's private credentials.
         [JsonRequired]
         public List<ReadOnlyMemory<byte>> Trust { get; set; }
 
-        internal AdminUser(MemoryDatabaseSession host) : base(new Guid(), host)
+        internal DatabaseAdminUser(MemoryDatabaseSession host) : base(new Guid(), host)
         {
             Trust = new List<ReadOnlyMemory<byte>>();
         }
 
         [JsonConstructor]
-        internal AdminUser() : base()
+        internal DatabaseAdminUser() : base()
         {
             Trust = null!;
         }

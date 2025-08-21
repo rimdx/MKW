@@ -62,7 +62,7 @@
         {
             if (Database.Admin == null)
             {
-                return new AdminUser(this);
+                return new DatabaseAdminUser(this);
             }
             else
             {
