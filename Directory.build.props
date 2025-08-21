@@ -5,16 +5,17 @@
 
   <PropertyGroup>
     <RuntimeIdentifiers>win-x64;win-x86;win-arm64</RuntimeIdentifiers>
-    <Platforms>$(RuntimeIdentifiers)</Platforms>
+    <Platforms>x64;x86;ARM64</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Platform)' == ''">
-    <Platform Condition="'$(RuntimeIdentifier)' == ''">win-x64</Platform>
-    <Platform Condition="'$(RuntimeIdentifier)' != ''">$(RuntimeIdentifier)</Platform>
+  <PropertyGroup Condition="'$(Platform)' == 'x64'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <RuntimeIdentifier>$(Platform)</RuntimeIdentifier>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM64'">
+    <RuntimeIdentifier>win-arm64</RuntimeIdentifier>
   </PropertyGroup>
 
   <PropertyGroup>
