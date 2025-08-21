@@ -1,0 +1,79 @@
+name: Build and Release package
+
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  create-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: true
+          prerelease: false
+
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
+      release_id: ${{ steps.create-release.outputs.id }}
+
+  build:
+    runs-on: windows-latest
+
+    needs: create-release
+
+    strategy:
+      matrix:
+        platform:
+        - x64
+
+    env:
+      Parameters: >
+        /p:Configuration=Release
+        /p:Platform=${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: dotnet build ${{ env.Parameters }}
+
+      - name: Test
+        run: dotnet test --no-build ${{ env.Parameters }}
+
+      - name: Publish
+        run: |
+          dotnet publish --no-build MKW ${{ env.Parameters }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Release-${{ matrix.platform }}
+          path: .\out\Release\${{ matrix.platform }}\publish
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            .\out\Release\${{ matrix.platform }}\publish\mkw.exe
+
+      - name: Upload package to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: .\out\Release\${{ matrix.platform }}\publish\mkw.exe
+          asset_name: mkw.exe
+          asset_content_type: application/exe
