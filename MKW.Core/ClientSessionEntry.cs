@@ -25,26 +25,20 @@ namespace MKW.Core.Client
                                                                 DatabaseOpenMode.OpenOrCreate,
                                                                 out bool created);
 
-                IDatabaseUser[] users = Database.EnumerateUsers().ToArray();
+                UserInfo[] users = EnumerateUsersTrust().Where(user => user.Trust == Trust.FullTrust).ToArray();
 
                 EncodeEntry(entry, payload, users);
-
-                List<UserInfo> encodedForUsers = [];
-                foreach (IDatabaseUser user in users)
-                {
-                    encodedForUsers.Add(UserInfo.FromDatabaseUser(user));
-                }
 
                 return new EntryInfo
                 {
                     Id = id,
                     Action = created ? ActionInfo.Added : ActionInfo.Updated,
-                    EncodedForUsers = encodedForUsers
+                    EncodedForUsers = users
                 };
             }
         }
 
-        public void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<IDatabaseUser> users)
+        public void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
         {
             using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
 
@@ -52,7 +46,7 @@ namespace MKW.Core.Client
 
             Dictionary<Guid, ReadOnlyMemory<byte>> keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
 
-            foreach (IDatabaseUser user in users)
+            foreach (UserInfo user in users)
             {
                 using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
 
