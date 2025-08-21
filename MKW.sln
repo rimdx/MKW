@@ -45,8 +45,8 @@ Global
 		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Debug|x86.Build.0 = Debug|x86
 		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|ARM64.ActiveCfg = Release|ARM64
 		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|ARM64.Build.0 = Release|ARM64
-		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|x64.ActiveCfg = Release|ARM64
-		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|x64.Build.0 = Release|ARM64
+		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|x64.ActiveCfg = Release|x64
+		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|x64.Build.0 = Release|x64
 		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|x86.ActiveCfg = Release|x86
 		{17A9D532-7B27-4923-8D8D-35964A5D125D}.Release|x86.Build.0 = Release|x86
 		{F8191070-A372-4AC6-8E2B-344C84B800D2}.Debug|ARM64.ActiveCfg = Debug|ARM64
@@ -114,7 +114,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 	EndGlobalSection
 EndGlobal
