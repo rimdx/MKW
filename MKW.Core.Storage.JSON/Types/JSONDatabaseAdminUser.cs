@@ -3,6 +3,6 @@
     public record class JSONDatabaseAdminUser : JSONDatabaseUser
     {
         // Signed Public Keys of each trusted users by admin's private credentials.
-        public required List<ReadOnlyMemory<byte>> Trust { get; set; }
+        public required List<ReadOnlyMemory<byte>> Trust { get; init; }
     }
 }
