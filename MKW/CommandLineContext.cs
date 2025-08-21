@@ -10,9 +10,11 @@ namespace MKW
         private readonly RootCommand rootCommand;
 
         private readonly Command cmdAddUser;
+        private readonly Command cmdUser;
+        private readonly Command cmdEntry;
         private readonly Command cmdAddEntry;
         private readonly Command cmdTouch;
-        private readonly Command cmdEntries;
+        private readonly Command cmdListEntries;
 
         private readonly Argument<string> argFile = new("file")
         {
@@ -43,19 +45,33 @@ namespace MKW
         {
             rootCommand = new RootCommand("Multi-Key Wallet");
 
-            cmdAddUser = new Command("add-user", "adds a user to the database");
+            cmdUser = new Command("user", "user management commands");
+
+            cmdAddUser = new Command("add", "adds a user to the database");
             cmdAddUser.Arguments.Add(argFile);
             cmdAddUser.Options.Add(optPassword);
             cmdAddUser.Options.Add(optNonInteractive);
             cmdAddUser.Options.Add(optForceInteractive);
             cmdAddUser.SetAction(AddUserAction);
+            cmdUser.Subcommands.Add(cmdAddUser);
 
-            cmdAddEntry = new Command("add-entry", "adds an encrypted entry to the database");
+            cmdEntry = new Command("entry", "entry management commands");
+
+            cmdAddEntry = new Command("add", "adds an encrypted entry to the database");
             cmdAddEntry.Arguments.Add(argFile);
             cmdAddEntry.Arguments.Add(argPayload);
             cmdAddEntry.Options.Add(optNonInteractive);
             cmdAddEntry.Options.Add(optForceInteractive);
             cmdAddEntry.SetAction(AddEntryAction);
+            cmdEntry.Subcommands.Add(cmdAddEntry);
+
+            cmdListEntries = new Command("list", "list all entries in the database");
+            cmdListEntries.Arguments.Add(argFile);
+            cmdListEntries.Options.Add(optPassword);
+            cmdListEntries.Options.Add(optNonInteractive);
+            cmdListEntries.Options.Add(optForceInteractive);
+            cmdListEntries.SetAction(ListEntriesAction);
+            cmdEntry.Subcommands.Add(cmdListEntries);
 
             cmdTouch = new Command("create", "initializes empty database");
             cmdTouch.Arguments.Add(argFile);
@@ -63,17 +79,9 @@ namespace MKW
             cmdTouch.Options.Add(optForceInteractive);
             cmdTouch.SetAction(CreateAction);
 
-            cmdEntries = new Command("entries", "list all entries in the database");
-            cmdEntries.Arguments.Add(argFile);
-            cmdEntries.Options.Add(optPassword);
-            cmdEntries.Options.Add(optNonInteractive);
-            cmdEntries.Options.Add(optForceInteractive);
-            cmdEntries.SetAction(ListEntriesAction);
-
-            rootCommand.Subcommands.Add(cmdAddUser);
-            rootCommand.Subcommands.Add(cmdAddEntry);
+            rootCommand.Subcommands.Add(cmdUser);
+            rootCommand.Subcommands.Add(cmdEntry);
             rootCommand.Subcommands.Add(cmdTouch);
-            rootCommand.Subcommands.Add(cmdEntries);
         }
 
         public int Execute(IReadOnlyList<string> args)
