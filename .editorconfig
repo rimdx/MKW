@@ -161,3 +161,6 @@ dotnet_diagnostic.NUnit2038.severity = none
 dotnet_diagnostic.NUnit2039.severity = none
 dotnet_diagnostic.NUnit2048.severity = none
 dotnet_diagnostic.NUnit2049.severity = none
+
+# CS8524: The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
+dotnet_diagnostic.CS8524.severity = none
