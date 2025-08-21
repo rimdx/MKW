@@ -21,7 +21,7 @@ jobs:
     env:
       Parameters: >
         --configuration Release
-        --architecture ${{ matrix.platform }}
+        --arch ${{ matrix.platform }}
 
     steps:
       - uses: actions/checkout@v4
