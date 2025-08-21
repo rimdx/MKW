@@ -28,7 +28,13 @@
     <BaseOutputPath>$(SolutionDir)\out\$(Configuration)\$(Platform)\</BaseOutputPath>
     <OutDir>$(BaseOutputPath)\bin</OutDir>
     <BaseIntermediateOutputPath>$(BaseOutputPath)\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <Copyright>Copyright (c) Timofei Zhakov 2025</Copyright>
+    <Description>Multi-Key Wallet</Description>
   </PropertyGroup>
 
   <PropertyGroup>
