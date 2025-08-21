@@ -64,6 +64,8 @@ namespace MKW.Core.Client
             {
                 throw new ArgumentException("Invalid trust value.", nameof(trust));
             }
+
+            admin.Save();
         }
 
         public void Dispose()
