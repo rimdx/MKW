@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		Directory.build.props = Directory.build.props
 		Directory.build.targets = Directory.build.targets
+		Version.props = Version.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Tests", "MKW.Tests\MKW.Tests.csproj", "{DE1CDADB-243C-41E5-84BA-11A721525FC7}"
@@ -114,7 +115,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 EndGlobal
