@@ -20,8 +20,8 @@ jobs:
 
     env:
       Parameters: >
-        --configuration Release
-        --arch ${{ matrix.platform }}
+        /p:Configuration=Release
+        /p:Platform=${{ matrix.platform }}
 
     steps:
       - uses: actions/checkout@v4
