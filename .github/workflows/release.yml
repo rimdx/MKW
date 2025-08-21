@@ -57,6 +57,19 @@ jobs:
         run: |
           dotnet publish --no-build MKW ${{ env.Parameters }}
 
+      - name: Sign Package
+        uses: azure/trusted-signing-action@v0.5.1
+        with:
+          endpoint: https://eus.codesigning.azure.net/
+          trusted-signing-account-name: ${{ secrets.AZURE_TRUSTED_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ secrets.AZURE_CERTIFICATE_PROFILE_NAME }}
+          files: |
+            .\out\Release\${{ matrix.platform }}\publish\mkw.exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          cache-dependencies: false
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
