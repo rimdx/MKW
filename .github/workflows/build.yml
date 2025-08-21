@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         platform:
-        - x64
+        - win-x64
 
     env:
       Parameters: >
