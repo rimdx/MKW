@@ -8,7 +8,8 @@
         bool DeleteUser(Guid id);
         IEnumerable<IDatabaseUser> EnumerateUsers();
 
-        IDatabaseAdmin OpenAdmin();
+        IDatabaseAdmin OpenAdmin(out bool created);
+        IDatabaseAdmin OpenAdmin() => OpenAdmin(out _);
 
         IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created);
         IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode) => OpenEntry(id, mode, out _);
