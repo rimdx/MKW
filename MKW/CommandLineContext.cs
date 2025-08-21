@@ -2,31 +2,29 @@
 
 namespace MKW
 {
-    public class CommandLineContext
+    public class CommandLineContext : RootCommand
     {
-        private readonly RootCommand rootCommand;
-
-        public CommandLineContext()
+        public CommandLineContext() : base("Multi-Key Wallet")
         {
-            rootCommand = new RootCommand("Multi-Key Wallet")
+            Add(new Command("entry", "entry management commands")
             {
-                new Command("entry", "entry management commands")
-                {
-                    new AddEntryCommand(),
-                    new ListEntriesCommand(),
-                },
-                new Command("user", "user management commands")
-                {
-                    new AddUserCommand(),
-                },
-                new CreateCommand(),
-            };
-            rootCommand.Action = new UsageAction();
+                new AddEntryCommand(),
+                new ListEntriesCommand(),
+            });
+
+            Add(new Command("user", "user management commands")
+            {
+                new AddUserCommand(),
+            });
+
+            Add(new CreateCommand());
+
+            Action = new UsageAction();
         }
 
         public int Execute(IReadOnlyList<string> args)
         {
-            ParseResult parsed = rootCommand.Parse(args);
+            ParseResult parsed = Parse(args);
             return parsed.Invoke();
         }
     }
