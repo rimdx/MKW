@@ -28,7 +28,7 @@ namespace MKW.Core.Storage.JSON.Interface
                 throw new InvalidOperationException();
             }
 
-            host.Database.Users[Id] = AsJSONObject();
+            host.Database.Admin = AsJSONObject();
             host.Save();
         }
 
