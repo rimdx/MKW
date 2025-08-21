@@ -4,7 +4,7 @@ namespace MKW.Core.Storage.JSON
 {
     public class Database
     {
-        public AdminUser? Admin { get; set; }
+        public DatabaseAdminUser? Admin { get; set; }
 
         [JsonRequired]
         public IDictionary<Guid, DatabaseUser> Users { get; set; }
