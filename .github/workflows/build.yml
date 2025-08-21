@@ -1,0 +1,42 @@
+name: Build, Test, Publish
+
+on:
+  push:
+    branches: ["*"]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform:
+        - win-x64
+
+    env:
+      Parameters: |
+        --configuration Release
+        --architecture ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: dotnet build ${{ env.Parameters }}
+
+      - name: Test
+        run: dotnet test ${{ env.Parameters }}
+
+      - name: Publish
+        run: dotnet publish ${{ env.Parameters }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Release-${{ matrix.platform }}
+          path: .\bin\Release\${{ matrix.platform }}\publish
