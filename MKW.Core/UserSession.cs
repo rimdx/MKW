@@ -24,11 +24,6 @@ namespace MKW.Core.Client
 
             EntryPayload? payload = DecodeEntry(entry);
 
-            if (payload == null)
-            {
-                throw new Exception($"Cannot decode entry for ID: {id} - no key for user {user.Id}");
-            }
-
             return new KeyedEntry
             {
                 Id = id,
