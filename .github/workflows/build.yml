@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Release-${{ matrix.platform }}
-          path: .\bin\Release\${{ matrix.platform }}\publish
+          path: .\out\bin\Release\${{ matrix.platform }}\publish
