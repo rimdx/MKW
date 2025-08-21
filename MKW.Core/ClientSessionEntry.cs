@@ -52,7 +52,7 @@ namespace MKW.Core.Client
 
             Dictionary<Guid, ReadOnlyMemory<byte>> keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
 
-            foreach (IDatabaseUser user in Database.EnumerateUsers())
+            foreach (IDatabaseUser user in users)
             {
                 using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
 
