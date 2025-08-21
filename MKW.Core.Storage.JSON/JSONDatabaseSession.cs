@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using MKW.Core.Storage.JSON.Types;
+using System.Text.Json;
 
 namespace MKW.Core.Storage.JSON
 {
@@ -6,7 +7,7 @@ namespace MKW.Core.Storage.JSON
     {
         private readonly FileStream file;
 
-        protected JSONDatabaseSession(Database db, FileStream file)
+        protected JSONDatabaseSession(JSONDatabase db, FileStream file)
             : base(db)
         {
             this.file = file;
@@ -20,7 +21,7 @@ namespace MKW.Core.Storage.JSON
                                                  mode.GetNativeFileMode(),
                                                  mode.GetNativeFileAccess());
 
-                Database database = JsonSerializer.Deserialize<Database>(file)!;
+                JSONDatabase database = JsonSerializer.Deserialize<JSONDatabase>(file)!;
 
                 return new JSONDatabaseSession(database, file /* move */);
             }
@@ -30,7 +31,7 @@ namespace MKW.Core.Storage.JSON
                                                  mode.GetNativeFileMode(),
                                                  mode.GetNativeFileAccess());
 
-                Database database = new Database();
+                JSONDatabase database = new JSONDatabase();
 
                 JSONDatabaseSession session = new JSONDatabaseSession(database, file /* move */);
 

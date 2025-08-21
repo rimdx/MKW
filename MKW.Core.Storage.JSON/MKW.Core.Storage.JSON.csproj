@@ -10,4 +10,8 @@
     <ProjectReference Include="..\MKW.Core.Storage\MKW.Core.Storage.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interface\" />
+  </ItemGroup>
+
 </Project>

@@ -1,15 +1,18 @@
-﻿namespace MKW.Core.Storage.JSON
+﻿using MKW.Core.Storage.JSON.Interface;
+using MKW.Core.Storage.JSON.Types;
+
+namespace MKW.Core.Storage.JSON
 {
     public class MemoryDatabaseSession : IDatabase, IDisposable
     {
-        public readonly Database Database;
+        public readonly JSONDatabase Database;
 
         public MemoryDatabaseSession()
         {
-            Database = new Database();
+            Database = new JSONDatabase();
         }
 
-        public MemoryDatabaseSession(Database database)
+        public MemoryDatabaseSession(JSONDatabase database)
         {
             Database = database;
         }
@@ -17,10 +20,10 @@
         public IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created)
         {
             DatabaseUser result = mode == DatabaseOpenMode.ReadOnly ? new DatabaseUser(id)
-                                                                      : new DatabaseUser(id, this);
+                                                                    : new DatabaseUser(id, this);
             created = false;
 
-            if (Database.Users.TryGetValue(id, out DatabaseUser? user))
+            if (Database.Users.TryGetValue(id, out JSONDatabaseUser? user))
             {
                 result.CopyFrom(user);
             }
@@ -48,7 +51,7 @@
 
         public IEnumerable<IDatabaseUser> EnumerateUsers()
         {
-            foreach (KeyValuePair<Guid, DatabaseUser> item in Database.Users)
+            foreach (KeyValuePair<Guid, JSONDatabaseUser> item in Database.Users)
             {
                 DatabaseUser result = new DatabaseUser(item.Key);
                 result.CopyFrom(item.Value);
@@ -60,23 +63,23 @@
 
         public IDatabaseAdmin OpenAdmin()
         {
-            if (Database.Admin == null)
+            DatabaseAdminUser result = new DatabaseAdminUser(this);
+
+            if (Database.Admin != null)
             {
-                return new DatabaseAdminUser(this);
+                result.CopyFrom(Database.Admin);
             }
-            else
-            {
-                return Database.Admin;
-            }
+
+            return result;
         }
 
         public IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created)
         {
             DatabaseSecretEntry result = mode == DatabaseOpenMode.ReadOnly ? new DatabaseSecretEntry(id)
-                                                                             : new DatabaseSecretEntry(id, this);
+                                                                           : new DatabaseSecretEntry(id, this);
             created = false;
 
-            if (Database.Entries.TryGetValue(id, out DatabaseSecretEntry? entry))
+            if (Database.Entries.TryGetValue(id, out JSONDatabaseSecretEntry? entry))
             {
                 result.CopyFrom(entry);
             }
@@ -104,7 +107,7 @@
 
         public IEnumerable<IDatabaseEntry> EnumerateEntries()
         {
-            foreach (KeyValuePair<Guid, DatabaseSecretEntry> item in Database.Entries)
+            foreach (KeyValuePair<Guid, JSONDatabaseSecretEntry> item in Database.Entries)
             {
                 DatabaseSecretEntry result = new DatabaseSecretEntry(item.Key);
                 result.CopyFrom(item.Value);
