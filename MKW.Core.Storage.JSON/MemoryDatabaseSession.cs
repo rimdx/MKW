@@ -61,12 +61,17 @@ namespace MKW.Core.Storage.JSON
 
         // Admin
 
-        public IDatabaseAdmin OpenAdmin()
+        public IDatabaseAdmin OpenAdmin(out bool created)
         {
             DatabaseAdminUser result = new DatabaseAdminUser(this);
 
-            if (Database.Admin != null)
+            if (Database.Admin == null)
             {
+                created = true;
+            }
+            else
+            {
+                created = false;
                 result.CopyFrom(Database.Admin);
             }
 
