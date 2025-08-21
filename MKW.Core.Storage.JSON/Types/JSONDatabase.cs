@@ -7,11 +7,11 @@ namespace MKW.Core.Storage.JSON.Types
         public JSONDatabaseAdminUser? Admin { get; set; }
 
         [JsonRequired]
-        public IDictionary<Guid, JSONDatabaseUser> Users { get; set; }
+        public IDictionary<Guid, JSONDatabaseUser> Users { get; init; }
 
         // EntryId -> Entry
         [JsonRequired]
-        public IDictionary<Guid, JSONDatabaseSecretEntry> Entries { get; set; }
+        public IDictionary<Guid, JSONDatabaseSecretEntry> Entries { get; init; }
 
         public JSONDatabase()
         {

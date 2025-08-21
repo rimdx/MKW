@@ -2,10 +2,10 @@
 {
     public record class JSONDatabaseSecretEntry
     {
-        public required IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; set; }
+        public required IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; init; }
 
-        public required ReadOnlyMemory<byte> Salt { get; set; }
+        public required ReadOnlyMemory<byte> Salt { get; init; }
 
-        public required ReadOnlyMemory<byte> Data { get; set; }
+        public required ReadOnlyMemory<byte> Data { get; init; }
     }
 }
