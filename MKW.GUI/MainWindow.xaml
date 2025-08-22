@@ -1,12 +1,42 @@
-﻿<Window x:Class="WMK.GUI.MainWindow"
+﻿<Window x:Class="MKW.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WMK.GUI"
+        xmlns:local="clr-namespace:MKW.GUI"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="{Binding Title}"
+        Height="450" Width="800">
+  <Grid>
+    <Grid.ColumnDefinitions>
 
-    </Grid>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Menu Grid.Column="0" Grid.Row="0">
+      <MenuItem Header="_File" >
+        <MenuItem Header="_New" Click="NewDatabase_Click" />
+        <MenuItem Header="_Open" Click="OpenDatabase_Click" />
+        <MenuItem Header="Open _Recent">
+          <MenuItem Header="File 1.mkw" />
+          <MenuItem Header="File 2.mkw" />
+          <MenuItem Header="File 3.mkw" />
+        </MenuItem>
+        <MenuItem Header="_Close" />
+        <Separator />
+        <MenuItem Header="_Save" />
+        <MenuItem Header="Save _As" />
+        <Separator />
+        <MenuItem Header="_Lock Workspace" />
+        <MenuItem Header="_Exit" />
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem Header="_About Multi-Key Wallet" />
+      </MenuItem>
+    </Menu>
+  </Grid>
 </Window>
