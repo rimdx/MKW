@@ -1,4 +1,5 @@
-﻿using MKW.Core.Storage.JSON;
+﻿using MKW.Core.Client;
+using MKW.Core.Storage.JSON;
 using System.CommandLine;
 
 namespace MKW
@@ -7,17 +8,18 @@ namespace MKW
     {
         public CreateCommand() : base("create", "initializes empty database")
         {
+            Add(CommonOptions.Password);
         }
 
         protected override void Execute(ParseResult argv)
         {
-            JSONDatabaseSession db = JSONDatabaseSession.Open(
+            using JSONDatabaseSession db = JSONDatabaseSession.Open(
                 GetFilePath(argv),
                 Core.Storage.DatabaseOpenMode.OpenOrCreate);
 
-            // no-op
+            using ClientSession client = ClientSession.Open(db);
 
-            db.Dispose();
+            client.PromoteAdmin(GetPassword(argv));
         }
     }
 }

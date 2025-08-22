@@ -9,6 +9,7 @@ namespace MKW.Tests
     public class SandBox : IDisposable
     {
         public string DatabasePath { get; }
+        public string AdminSecret => "adminsecret123";
 
         public SandBox()
         {
@@ -74,6 +75,11 @@ namespace MKW.Tests
         public ClientSession OpenSession()
         {
             return ClientSession.Open(OpenDatabase(), true);
+        }
+
+        public AdminSession OpenAdmin(ClientSession client)
+        {
+            return client.OpenAdmin(AdminSecret);
         }
 
         private string TrimString(string str)

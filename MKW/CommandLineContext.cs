@@ -17,6 +17,11 @@ namespace MKW
                 new AddUserCommand(),
             });
 
+            Add(new Command("admin", "database management interface")
+            {
+                new AddTrustCommand(),
+            });
+
             Add(new CreateCommand());
 
             Action = new UsageAction();

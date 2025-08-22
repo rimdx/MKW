@@ -19,6 +19,11 @@ namespace MKW
             Description = "password to perform operation with",
         };
 
+        public readonly static Option<Guid> UserId = new("--userid")
+        {
+            Description = "user id",
+        };
+
         public readonly static Option<bool> NonInteractive = new("--non-interactive")
         {
             Description = "do no interactive prompting (default is to prompt only if standard input is a terminal device)"
