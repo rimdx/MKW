@@ -2,19 +2,25 @@
 {
     public interface IDatabase : ISavable
     {
-        IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created);
-        IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode) => OpenUser(id, mode, out _);
-
+        // User Management
+        IDatabaseUser CreateUser(Guid id);
+        IDatabaseUser OpenUser(Guid id, bool readOnly);
         bool DeleteUser(Guid id);
+
+        // ReadOnly
+        bool HasUser(Guid id);
         IEnumerable<IDatabaseUser> EnumerateUsers();
 
         IDatabaseAdmin OpenAdmin(out bool created);
         IDatabaseAdmin OpenAdmin() => OpenAdmin(out _);
 
-        IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created);
-        IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode) => OpenEntry(id, mode, out _);
-
+        // Entry Management
+        IDatabaseEntry CreateEntry(Guid id);
+        IDatabaseEntry OpenEntry(Guid id, bool readOnly);
         bool DeleteEntry(Guid id);
+
+        // ReadOnly
+        bool HasEntry(Guid id);
         IEnumerable<IDatabaseEntry> EnumerateEntries();
     }
 }

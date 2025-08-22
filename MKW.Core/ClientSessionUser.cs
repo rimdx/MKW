@@ -14,7 +14,7 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            using IDatabaseUser user = Database.OpenUser(Guid.NewGuid(), DatabaseOpenMode.OpenOrCreate);
+            using IDatabaseUser user = Database.CreateUser(Guid.NewGuid());
 
             user.PublicKey = systemCreds.PublicKey;
             user.PrivateKey = systemCreds.PrivateKey;
@@ -25,7 +25,7 @@ namespace MKW.Core.Client
 
         public UserSession OpenUser(Guid id, string password)
         {
-            IDatabaseUser user = Database.OpenUser(id, DatabaseOpenMode.Open, out _);
+            IDatabaseUser user = Database.OpenUser(id, false);
 
             // Credentials can be opened within the entered password and the public salt
             UserCredentials creds = UserCredentials.Open(password, user.Salt);
@@ -41,7 +41,7 @@ namespace MKW.Core.Client
                 {
                     UserCredentials creds = UserCredentials.Open(password, user.Salt);
 
-                    return OpenUser(Database.OpenUser(user.Id, DatabaseOpenMode.Open), creds);
+                    return OpenUser(Database.OpenUser(user.Id, false), creds);
                 }
                 catch (CryptographicException)
                 {
