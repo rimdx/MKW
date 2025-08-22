@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Client.Notify;
-using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -21,43 +20,21 @@ namespace MKW.Core.Client
             }
             else
             {
-                using IDatabaseEntry entry = Database.OpenEntry(id,
-                                                                DatabaseOpenMode.OpenOrCreate,
-                                                                out bool created);
+                using IDatabaseEntry dbEntry = Database.OpenEntry(id,
+                                                                  DatabaseOpenMode.OpenOrCreate,
+                                                                  out bool created);
 
-                UserInfo[] users = EnumerateUsersTrust().Where(user => user.Trust == Trust.FullTrust).ToArray();
+                using Entry entry = new Entry(this, dbEntry);
 
-                EncodeEntry(entry, payload, users);
+                EntryInfo notify = entry.UpdatePayload(payload);
 
                 return new EntryInfo
                 {
-                    Id = id,
+                    Id = notify.Id,
+                    EncodedForUsers = notify.EncodedForUsers,
                     Action = created ? ActionInfo.Added : ActionInfo.Updated,
-                    EncodedForUsers = users
                 };
             }
-        }
-
-        public void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
-        {
-            using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
-
-            Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
-
-            Dictionary<Guid, ReadOnlyMemory<byte>> keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
-
-            foreach (UserInfo user in users)
-            {
-                using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
-
-                Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
-
-                keys.Add(user.Id, encyptedKey);
-            }
-
-            entry.Keys = keys;
-            entry.Data = data;
-            entry.Salt = payloadEncoder.ExportIV();
         }
     }
 }
