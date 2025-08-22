@@ -6,16 +6,16 @@ namespace MKW.Core.Client
 {
     public class AdminSession : IDisposable
     {
-        private readonly IDatabase db;
+        private readonly ClientSession client;
         private readonly IDatabaseAdmin admin;
 
         private readonly AsymmetricTransformer transformer;
 
-        public AdminSession(IDatabase db /* reference */,
+        public AdminSession(ClientSession client /* reference */,
                             IDatabaseAdmin admin /* reference */,
                             ReadOnlySpan<byte> privateKey)
         {
-            this.db = db;
+            this.client = client;
             this.admin = admin;
 
             transformer = AsymmetricTransformer.Open(admin.PublicKey.Span, privateKey);
@@ -23,7 +23,7 @@ namespace MKW.Core.Client
 
         public void UpdateTrust(Guid userId, Trust trust)
         {
-            IDatabaseUser user = db.OpenUser(userId, DatabaseOpenMode.ReadOnly);
+            IDatabaseUser user = client.Database.OpenUser(userId, DatabaseOpenMode.ReadOnly);
 
             ReadOnlyMemory<byte> signature = transformer.Sign(user.PublicKey.Span);
 
