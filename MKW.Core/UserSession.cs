@@ -1,4 +1,5 @@
-﻿using MKW.Core.Cryptography;
+﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -23,9 +24,43 @@ namespace MKW.Core.Client
 
         public UserEntry OpenEntry(Guid id)
         {
-            IDatabaseEntry entry = client.Database.OpenEntry(id, false);
+            IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
+            return new UserEntry(client, this, dbEntry);
+        }
 
-            return new UserEntry(client, this, entry);
+        public UserEntry CreateEntry(Guid id)
+        {
+            IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
+            dbEntry.Save();
+            return new UserEntry(client, this, dbEntry);
+        }
+
+        public UserEntry CreateEntry() => CreateEntry(Guid.NewGuid());
+
+        public EntryInfo DeleteEntry(Guid id)
+        {
+            client.Database.DeleteEntry(id);
+
+            return new EntryInfo
+            {
+                Id = id,
+                Action = ActionInfo.Deleted,
+                EncodedForUsers = []
+            };
+        }
+
+        public UserEntry EnsureEntry(Guid id, out bool created)
+        {
+            created = !client.Database.HasEntry(id);
+
+            if (created)
+            {
+                return CreateEntry(id);
+            }
+            else
+            {
+                return OpenEntry(id);
+            }
         }
 
         public IEnumerable<UserEntry> EnumerateEntries()
