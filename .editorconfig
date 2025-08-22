@@ -1,3 +1,6 @@
+[*.{xml,ps1xml,html,csproj,vcxproj,props,targets,json,tasks,yml,wxs,wxl,wixproj,shproj,xaml}]
+indent_size=2
+indent_style=space
 
 [*.{cs,vb}]
 #### Naming styles ####
