@@ -1,5 +1,6 @@
 using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -14,13 +15,13 @@ namespace MKW.Tests
             // create a test database file
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n",
-                sbox.Run($"mkw create {sbox.DatabasePath}")
+                sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}")
             );
 
             // run the command again to ensure it opens the existing file
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n",
-                sbox.Run($"mkw create {sbox.DatabasePath}")
+                sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}")
             );
         }
 
@@ -29,7 +30,7 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox();
 
-            sbox.Run($"mkw create {sbox.DatabasePath}");
+            sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             string output = sbox.Run($"mkw user add {sbox.DatabasePath} --password lifeishard");
 
             using Core.Storage.IDatabase db = sbox.OpenDatabase();
@@ -138,22 +139,81 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox();
 
-            sbox.Run($"mkw create {sbox.DatabasePath}");
+            sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             sbox.Run($"mkw user add {sbox.DatabasePath} --password test1");
             sbox.Run($"mkw user add {sbox.DatabasePath} --password test2");
 
-            string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} \"secret entry no1\"");
+            string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} data1");
 
-            using Core.Storage.IDatabase db = sbox.OpenDatabase();
+            Guid entryId1, userId1;
+            using (IDatabase db = sbox.OpenDatabase())
+            {
+                entryId1 = db.EnumerateEntries().First().Id;
+                userId1 = db.EnumerateUsers().First().Id;
+            }
 
             ClassicAssert.AreEqual(
                 $"""
                   -- EXIT CODE: 0
                   -- STDOUT:
-                Added: {db.EnumerateEntries().First().Id} for 2 users
+                Added: {entryId1} for 0 users
 
                 """,
                 output1);
+
+            sbox.Run($"mkw admin trust {sbox.DatabasePath} --password {sbox.AdminSecret} --userid {userId1}");
+
+            ClassicAssert.AreEqual(
+                $"""
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                -- {entryId1}:
+                [hidden]
+                
+                """,
+                sbox.Run($"mkw entry list {sbox.DatabasePath} --password test1"));
+
+            ClassicAssert.AreEqual(
+                $"""
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                -- {entryId1}:
+                [hidden]
+
+                """,
+                sbox.Run($"mkw entry list {sbox.DatabasePath} --password test2"));
+
+            string output2 = sbox.Run($"mkw entry add {sbox.DatabasePath} data2");
+
+            Guid entryId2;
+            using (IDatabase db = sbox.OpenDatabase())
+            {
+                entryId2 = db.EnumerateEntries().ToArray()[1].Id;
+            }
+
+            ClassicAssert.AreEqual(
+                $"""
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                -- {entryId1}:
+                [hidden]
+                -- {entryId2}:
+                data2
+
+                """,
+                sbox.Run($"mkw entry list {sbox.DatabasePath} --password test1"));
+
+            ClassicAssert.AreEqual(
+                $"""
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                -- {entryId1}:
+                [hidden]
+                -- {entryId2}:
+                [hidden]
+
+                """,
+                sbox.Run($"mkw entry list {sbox.DatabasePath} --password test2"));
         }
 
         [Test]
@@ -161,18 +221,29 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox();
 
-            sbox.Run($"mkw create {sbox.DatabasePath}");
+            sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             sbox.Run($"mkw user add {sbox.DatabasePath}");
             sbox.Run($"mkw user add {sbox.DatabasePath} --non-interactive");
             sbox.Run($"mkw user add {sbox.DatabasePath} --force-interactive", "test3");
 
-            using Core.Storage.IDatabase db = sbox.OpenDatabase();
+            using IDatabase db = sbox.OpenDatabase();
 
             ClassicAssert.AreEqual(1, db.EnumerateUsers().Count());
 
             using ClientSession session = ClientSession.Open(db);
 
             UserSession user = session.OpenUser("test3");
+        }
+
+        [Test]
+        public void CommandLineCreatesAdmin()
+        {
+            using SandBox sbox = new SandBox();
+
+            sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
+
+            using ClientSession client = sbox.OpenSession();
+            using AdminSession admin = sbox.OpenAdmin(client);
         }
     }
 }
