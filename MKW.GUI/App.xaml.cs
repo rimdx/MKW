@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace WMK.GUI
+namespace MKW.GUI
 {
     /// <summary>
     /// Interaction logic for App.xaml
