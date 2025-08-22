@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub 
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.GUI", "MKW.GUI\MKW.GUI.csproj", "{6A4CF070-6259-A7C8-3069-05042086E067}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -111,6 +113,18 @@ Global
 		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|x64.Build.0 = Release|x64
 		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|x86.ActiveCfg = Release|x86
 		{B36223C6-6773-4DFB-838B-558378860BC1}.Release|x86.Build.0 = Release|x86
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Debug|ARM64.Build.0 = Debug|ARM64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Debug|x64.ActiveCfg = Debug|x64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Debug|x64.Build.0 = Debug|x64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Debug|x86.ActiveCfg = Debug|x86
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Debug|x86.Build.0 = Debug|x86
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Release|ARM64.ActiveCfg = Release|ARM64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Release|ARM64.Build.0 = Release|ARM64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Release|x64.ActiveCfg = Release|x64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Release|x64.Build.0 = Release|x64
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Release|x86.ActiveCfg = Release|x86
+		{6A4CF070-6259-A7C8-3069-05042086E067}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
