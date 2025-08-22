@@ -7,7 +7,9 @@ namespace MKW.Core.Client
     {
         private readonly ClientSession client;
         private readonly IDatabaseUser user;
-        private readonly AsymmetricTransformer transformer;
+
+        public Guid Id => user.Id;
+        public AsymmetricTransformer Transformer { get; }
 
         public UserSession(ClientSession client /* reference */,
                            IDatabaseUser user /* reference */,
@@ -15,55 +17,28 @@ namespace MKW.Core.Client
         {
             this.client = client;
             this.user = user;
-            transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
+
+            Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
         }
 
-        public KeyedEntry GetEntry(Guid id)
+        public UserEntry OpenEntry(Guid id)
         {
             IDatabaseEntry entry = client.Database.OpenEntry(id, DatabaseOpenMode.ReadOnly);
 
-            EntryPayload? payload = DecodeEntry(entry);
-
-            return new KeyedEntry
-            {
-                Id = id,
-                Payload = payload
-            };
+            return new UserEntry(client, this, entry);
         }
 
-        public IEnumerable<KeyedEntry> EnumerateEntries()
+        public IEnumerable<UserEntry> EnumerateEntries()
         {
             foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
             {
-                yield return new KeyedEntry
-                {
-                    Id = entry.Id,
-                    Payload = DecodeEntry(entry)
-                };
+                yield return new UserEntry(client, this, entry);
             }
-        }
-
-        public EntryPayload? DecodeEntry(IDatabaseEntry entry)
-        {
-            if (entry.Keys.TryGetValue(user.Id, out ReadOnlyMemory<byte> encodedKey) == false)
-            {
-                // No key for this user, cannot decode the entry
-                return null;
-            }
-
-            Memory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
-
-            using SymmetricTransformer dataDecoder = SymmetricTransformer.Open(decryptedKey.Span,
-                                                                               entry.Salt.Span);
-
-            Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
-
-            return new EntryPayload(decryptedData);
         }
 
         public void Dispose()
         {
-            transformer.Dispose();
+            Transformer.Dispose();
             user.Dispose();
         }
     }

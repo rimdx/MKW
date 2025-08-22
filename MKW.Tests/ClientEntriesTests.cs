@@ -36,13 +36,9 @@ namespace MKW.Tests
                 },
                 entry.EncodedForUsers);
 
-            ClassicAssert.AreEqual(
-                new KeyedEntry
-                {
-                    Id = entry.Id,
-                    Payload = new EntryPayload("secret")
-                },
-                userSession.GetEntry(entry.Id));
+            using UserEntry entrySession = userSession.OpenEntry(entry.Id);
+
+            ClassicAssert.AreEqual(new EntryPayload("secret"), entrySession.OpenPayload());
         }
 
         [Test]
@@ -63,49 +59,57 @@ namespace MKW.Tests
             using UserSession oldSession = session.OpenUser("iamanoldman");
 
             CollectionAssert.AreEqual(
-                new KeyedEntry[]
+                new[]
                 {
-                    new KeyedEntry
+                    new
                     {
                         Id = new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"),
                         Payload = new EntryPayload("entry1")
                     },
-                    new KeyedEntry
+                    new
                     {
                         Id = new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"),
                         Payload = new EntryPayload("entry2")
                     },
-                    new KeyedEntry
+                    new
                     {
                         Id = new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"),
                         Payload = new EntryPayload("entry3")
                     },
                 },
-                oldSession.EnumerateEntries()
+                oldSession.EnumerateEntries().Select(entry => new
+                {
+                    Id = entry.Id,
+                    Payload = entry.OpenPayload()
+                })
             );
 
             using UserSession newSession = session.OpenUser("ihatehimbutcantseehisstuff");
 
             CollectionAssert.AreEqual(
-                new KeyedEntry[]
+                new[]
                 {
-                    new KeyedEntry
+                    new
                     {
                         Id = new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"),
-                        Payload = null
+                        Payload = (EntryPayload?)null
                     },
-                    new KeyedEntry
+                    new
                     {
                         Id = new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"),
-                        Payload = null
+                        Payload = (EntryPayload?)null
                     },
-                    new KeyedEntry
+                    new
                     {
                         Id = new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"),
-                        Payload = new EntryPayload("entry3")
+                        Payload = (EntryPayload?)new EntryPayload("entry3")
                     },
                 },
-                newSession.EnumerateEntries()
+                newSession.EnumerateEntries().Select(entry => new
+                {
+                    Id = entry.Id,
+                    Payload = entry.OpenPayload()
+                })
             );
         }
     }

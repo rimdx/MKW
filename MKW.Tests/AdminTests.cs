@@ -69,22 +69,16 @@ namespace MKW.Tests
 
             {
                 using UserSession user = client.OpenUser("trusted");
+                using UserEntry entrySession = user.OpenEntry(entry.Id);
 
-                ClassicAssert.AreEqual(new KeyedEntry
-                {
-                    Id = entry.Id,
-                    Payload = new EntryPayload("test data"),
-                }, user.GetEntry(entry.Id));
+                ClassicAssert.AreEqual(new EntryPayload("test data"), entrySession.OpenPayload());
             }
 
             {
                 using UserSession user = client.OpenUser("untrusted");
+                using UserEntry entrySession = user.OpenEntry(entry.Id);
 
-                ClassicAssert.AreEqual(new KeyedEntry
-                {
-                    Id = entry.Id,
-                    Payload = null,
-                }, user.GetEntry(entry.Id));
+                ClassicAssert.AreEqual(null, entrySession.OpenPayload());
             }
         }
     }

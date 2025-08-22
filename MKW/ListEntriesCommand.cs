@@ -15,17 +15,19 @@ namespace MKW
             using ClientSession session = OpenSession(argv);
             using UserSession userSession = session.OpenUser(GetPassword(argv));
 
-            foreach (KeyedEntry entry in userSession.EnumerateEntries())
+            foreach (UserEntry entry in userSession.EnumerateEntries())
             {
                 Console.WriteLine($"-- {entry.Id}:");
 
-                if (entry.Payload == null)
+                EntryPayload? payload = entry.OpenPayload();
+
+                if (payload == null)
                 {
                     Console.WriteLine($"[hidden]");
                 }
                 else
                 {
-                    Console.WriteLine($"{entry.Payload}");
+                    Console.WriteLine($"{payload}");
                 }
             }
         }
