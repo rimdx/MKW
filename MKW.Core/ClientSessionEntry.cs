@@ -20,9 +20,9 @@ namespace MKW.Core.Client
             }
             else
             {
-                using IDatabaseEntry dbEntry = Database.OpenEntry(id,
-                                                                  DatabaseOpenMode.OpenOrCreate,
-                                                                  out bool created);
+                bool exists = Database.HasEntry(id);
+
+                using IDatabaseEntry dbEntry = exists ? Database.OpenEntry(id, false) : Database.CreateEntry(id);
 
                 using Entry entry = new Entry(this, dbEntry);
 
@@ -32,7 +32,7 @@ namespace MKW.Core.Client
                 {
                     Id = notify.Id,
                     EncodedForUsers = notify.EncodedForUsers,
-                    Action = created ? ActionInfo.Added : ActionInfo.Updated,
+                    Action = exists ? ActionInfo.Updated : ActionInfo.Added,
                 };
             }
         }

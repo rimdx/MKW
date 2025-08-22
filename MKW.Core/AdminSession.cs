@@ -23,7 +23,7 @@ namespace MKW.Core.Client
 
         public void UpdateTrust(Guid userId, Trust trust)
         {
-            IDatabaseUser user = client.Database.OpenUser(userId, DatabaseOpenMode.ReadOnly);
+            IDatabaseUser user = client.Database.OpenUser(userId, true);
 
             ReadOnlyMemory<byte> signature = transformer.Sign(user.PublicKey.Span);
 

@@ -23,7 +23,7 @@ namespace MKW.Core.Client
 
         public UserEntry OpenEntry(Guid id)
         {
-            IDatabaseEntry entry = client.Database.OpenEntry(id, DatabaseOpenMode.ReadOnly);
+            IDatabaseEntry entry = client.Database.OpenEntry(id, true);
 
             return new UserEntry(client, this, entry);
         }

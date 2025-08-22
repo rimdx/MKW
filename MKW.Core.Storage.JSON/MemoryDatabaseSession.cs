@@ -17,36 +17,40 @@ namespace MKW.Core.Storage.JSON
             Database = database;
         }
 
-        public IDatabaseUser OpenUser(Guid id, DatabaseOpenMode mode, out bool created)
+        public IDatabaseUser CreateUser(Guid id)
         {
-            DatabaseUser result = mode == DatabaseOpenMode.ReadOnly ? new DatabaseUser(id)
-                                                                    : new DatabaseUser(id, this);
-            created = false;
+            if (Database.Users.ContainsKey(id))
+            {
+                throw new Exception("User already exists.");
+            }
+
+            return new DatabaseUser(id, this);
+        }
+
+        public IDatabaseUser OpenUser(Guid id, bool readOnly)
+        {
+            DatabaseUser result = readOnly ? new DatabaseUser(id)
+                                           : new DatabaseUser(id, this);
 
             if (Database.Users.TryGetValue(id, out JSONDatabaseUser? user))
             {
                 result.CopyFrom(user);
+                return result;
             }
             else
             {
-                switch (mode)
-                {
-                    case DatabaseOpenMode.ReadOnly:
-                    case DatabaseOpenMode.Open:
-                        throw new Exception("User doesn't exist.");
-
-                    case DatabaseOpenMode.OpenOrCreate:
-                        created = true;
-                        break;
-                }
+                throw new Exception("User doesn't exist.");
             }
-
-            return result;
         }
 
         public bool DeleteUser(Guid id)
         {
             return Database.Users.Remove(id);
+        }
+
+        public bool HasUser(Guid id)
+        {
+            return Database.Users.ContainsKey(id);
         }
 
         public IEnumerable<IDatabaseUser> EnumerateUsers()
@@ -78,36 +82,40 @@ namespace MKW.Core.Storage.JSON
             return result;
         }
 
-        public IDatabaseEntry OpenEntry(Guid id, DatabaseOpenMode mode, out bool created)
+        public IDatabaseEntry CreateEntry(Guid id)
         {
-            DatabaseSecretEntry result = mode == DatabaseOpenMode.ReadOnly ? new DatabaseSecretEntry(id)
-                                                                           : new DatabaseSecretEntry(id, this);
-            created = false;
+            if (Database.Entries.ContainsKey(id))
+            {
+                throw new Exception("Entry already exists.");
+            }
+
+            return new DatabaseSecretEntry(id, this);
+        }
+
+        public IDatabaseEntry OpenEntry(Guid id, bool readOnly)
+        {
+            DatabaseSecretEntry result = readOnly ? new DatabaseSecretEntry(id)
+                                                  : new DatabaseSecretEntry(id, this);
 
             if (Database.Entries.TryGetValue(id, out JSONDatabaseSecretEntry? entry))
             {
                 result.CopyFrom(entry);
+                return result;
             }
             else
             {
-                switch (mode)
-                {
-                    case DatabaseOpenMode.ReadOnly:
-                    case DatabaseOpenMode.Open:
-                        throw new Exception("Entry doesn't exist.");
-
-                    case DatabaseOpenMode.OpenOrCreate:
-                        created = true;
-                        break;
-                }
+                throw new Exception("Entry doesn't exist.");
             }
-
-            return result;
         }
 
         public bool DeleteEntry(Guid id)
         {
             return Database.Entries.Remove(id);
+        }
+
+        public bool HasEntry(Guid id)
+        {
+            return Database.Entries.ContainsKey(id);
         }
 
         public IEnumerable<IDatabaseEntry> EnumerateEntries()
