@@ -5,22 +5,22 @@ namespace MKW.Core.Client
 {
     public class UserSession : IDisposable
     {
-        private readonly IDatabase db;
+        private readonly ClientSession client;
         private readonly IDatabaseUser user;
         private readonly AsymmetricTransformer transformer;
 
-        public UserSession(IDatabase db /* reference */,
+        public UserSession(ClientSession client /* reference */,
                            IDatabaseUser user /* reference */,
                            ReadOnlySpan<byte> privateKey)
         {
-            this.db = db;
+            this.client = client;
             this.user = user;
             transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
         }
 
         public KeyedEntry GetEntry(Guid id)
         {
-            IDatabaseEntry entry = db.OpenEntry(id, DatabaseOpenMode.ReadOnly);
+            IDatabaseEntry entry = client.Database.OpenEntry(id, DatabaseOpenMode.ReadOnly);
 
             EntryPayload? payload = DecodeEntry(entry);
 
@@ -33,7 +33,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<KeyedEntry> EnumerateEntries()
         {
-            foreach (IDatabaseEntry entry in db.EnumerateEntries())
+            foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
             {
                 yield return new KeyedEntry
                 {
