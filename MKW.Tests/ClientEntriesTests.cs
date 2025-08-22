@@ -19,7 +19,7 @@ namespace MKW.Tests
             using UserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
 
             EntryInfo entry = session.UpdateEntry(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}"),
-                                            new EntryPayload("secret"));
+                                                  new EntryPayload("secret"));
 
             ClassicAssert.AreEqual(1, db.Database.Users.Count);
             ClassicAssert.AreEqual(1, db.Database.Entries.Count);
@@ -36,9 +36,8 @@ namespace MKW.Tests
                 },
                 entry.EncodedForUsers);
 
-            using UserEntry entrySession = userSession.OpenEntry(entry.Id);
-
-            ClassicAssert.AreEqual(new EntryPayload("secret"), entrySession.OpenPayload());
+            ClassicAssert.AreEqual(new EntryPayload("secret"),
+                                   userSession.OpenEntry(entry.Id).OpenPayload());
         }
 
         [Test]
@@ -111,6 +110,148 @@ namespace MKW.Tests
                     Payload = entry.OpenPayload()
                 })
             );
+        }
+
+        [Test]
+        public void ClientEntryAPITest()
+        {
+            // init
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            client.PromoteUser("usersecret");
+            using UserSession user = client.OpenUser("usersecret");
+
+            // create
+            using Entry entry = client.CreateEntry();
+
+            ClassicAssert.AreNotEqual(Guid.Empty, entry.Id);
+            ClassicAssert.AreEqual(null,
+                                   user.OpenEntry(entry.Id).OpenPayload());
+
+            //UserInfo[] users = [
+            //    new UserInfo
+            //    {
+            //        Id = user.Id,
+            //        PublicKey = client.
+            //        Trust = Trust.Unknown,
+            //    }
+            //];
+
+            // initial update
+
+            // todo: assert notify info
+            //ClassicAssert.AreEqual(new EntryInfo
+            //{
+            //    Id = entry.Id,
+            //    Action = ActionInfo.Updated, // todo: added?
+            //    EncodedForUsers = new[]
+            //    {
+            //    }
+            //},
+
+            entry.UpdatePayload(new EntryPayload("data1"));
+
+            ClassicAssert.AreEqual(new EntryPayload("data1"),
+                                   user.OpenEntry(entry.Id).OpenPayload());
+
+            // another update
+
+            entry.UpdatePayload(new EntryPayload("data2"));
+
+            ClassicAssert.AreEqual(new EntryPayload("data2"),
+                                   user.OpenEntry(entry.Id).OpenPayload());
+
+            // create with same id
+            Assert.Throws<Exception>(() => client.CreateEntry(entry.Id));
+
+            // delete
+            client.DeleteEntry(entry.Id);
+            Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+            client.DeleteEntry(entry.Id);
+            Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+        }
+
+        [Test]
+        public void ClientUpdateEntryAPITest()
+        {
+            // init
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            client.PromoteUser("usersecret");
+            using UserSession user = client.OpenUser("usersecret");
+
+            // create
+            Guid id = Guid.NewGuid();
+            EntryInfo entry = client.UpdateEntry(id, new EntryPayload("data1"));
+
+            ClassicAssert.AreEqual(id, entry.Id);
+            ClassicAssert.AreEqual(new EntryPayload("data1"),
+                                   user.OpenEntry(entry.Id).OpenPayload());
+
+            // update
+            client.UpdateEntry(id, new EntryPayload("data2"));
+            ClassicAssert.AreEqual(new EntryPayload("data2"),
+                                   user.OpenEntry(entry.Id).OpenPayload());
+
+            // delete
+            client.UpdateEntry(id, null);
+            Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+            client.UpdateEntry(id, null);
+            Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+        }
+
+        [Test]
+        public void UserEntryAPITest()
+        {
+            // init
+            using SandBox sbox = new SandBox();
+            Guid entryId;
+
+            using (ClientSession client = sbox.OpenSession())
+            {
+                client.PromoteUser("usersecret");
+                using UserSession user = client.OpenUser("usersecret");
+
+                // create
+                using UserEntry entry = user.CreateEntry();
+                entryId = entry.Id;
+
+                ClassicAssert.AreNotEqual(Guid.Empty, entry.Id);
+                ClassicAssert.AreEqual(null,
+                                       user.OpenEntry(entry.Id).OpenPayload());
+
+                // initial update
+                entry.UpdatePayload(new EntryPayload("data1"));
+
+                ClassicAssert.AreEqual(new EntryPayload("data1"),
+                                       user.OpenEntry(entry.Id).OpenPayload());
+
+                // another update
+                entry.UpdatePayload(new EntryPayload("data2"));
+
+                ClassicAssert.AreEqual(new EntryPayload("data2"),
+                                       user.OpenEntry(entry.Id).OpenPayload());
+
+                // create with same id
+                Assert.Throws<Exception>(() => user.CreateEntry(entry.Id));
+            }
+
+            // blank session
+            using (ClientSession client = sbox.OpenSession())
+            {
+                using UserSession user = client.OpenUser("usersecret");
+                using UserEntry entry = user.OpenEntry(entryId);
+                ClassicAssert.AreEqual(new EntryPayload("data2"),
+                                       user.OpenEntry(entry.Id).OpenPayload());
+
+                // delete
+                user.DeleteEntry(entry.Id);
+                Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+                user.DeleteEntry(entry.Id);
+                Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+            }
         }
     }
 }
