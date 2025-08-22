@@ -1,9 +1,7 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface ISavable : IDisposable
+    public interface ISavable
     {
         void Save();
-
-        void IDisposable.Dispose() => Save();
     }
 }

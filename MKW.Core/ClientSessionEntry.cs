@@ -22,7 +22,7 @@ namespace MKW.Core.Client
             {
                 bool exists = Database.HasEntry(id);
 
-                using IDatabaseEntry dbEntry = exists ? Database.OpenEntry(id, false) : Database.CreateEntry(id);
+                IDatabaseEntry dbEntry = exists ? Database.OpenEntry(id, false) : Database.CreateEntry(id);
 
                 using Entry entry = new Entry(this, dbEntry);
 
