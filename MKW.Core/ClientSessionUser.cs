@@ -14,11 +14,13 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            using IDatabaseUser user = Database.CreateUser(Guid.NewGuid());
+            IDatabaseUser user = Database.CreateUser(Guid.NewGuid());
 
             user.PublicKey = systemCreds.PublicKey;
             user.PrivateKey = systemCreds.PrivateKey;
             user.Salt = systemCreds.Salt;
+
+            user.Save();
 
             return UserInfo.FromDatabaseUser(user);
         }

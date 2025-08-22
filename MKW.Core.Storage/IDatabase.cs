@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface IDatabase : ISavable
+    public interface IDatabase : ISavable, IDisposable
     {
         // User Management
         IDatabaseUser CreateUser(Guid id);

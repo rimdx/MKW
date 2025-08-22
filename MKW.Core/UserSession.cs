@@ -39,7 +39,6 @@ namespace MKW.Core.Client
         public void Dispose()
         {
             Transformer.Dispose();
-            user.Dispose();
         }
     }
 }
