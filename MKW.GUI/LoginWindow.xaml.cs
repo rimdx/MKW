@@ -31,12 +31,17 @@ namespace MKW.GUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Keyboard.Focus(UserPasswordInput);
+            Keyboard.Focus(PasswordInput);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
             model.Dispose();
+        }
+
+        private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            model.Password = PasswordInput.Password;
         }
     }
 }

@@ -79,12 +79,11 @@
            Target="{Binding ElementName=UserPasswordInput}"
            Content="_Password:" />
 
-    <TextBox Grid.Row="7"
-             Padding="4"
-             x:Name="UserPasswordInput"
-             FontFamily="Consolas"
-             IsEnabled="{Binding IsUserPassword}"
-             Text="{Binding Password, Mode=OneWayToSource}" />
+    <PasswordBox Grid.Row="7"
+                 Padding="4"
+                 x:Name="PasswordInput"
+                 FontFamily="Consolas"
+                 PasswordChanged="PasswordInput_PasswordChanged" />
 
     <Grid Grid.Row="9">
       <Grid.ColumnDefinitions>
