@@ -34,6 +34,12 @@
         <MenuItem Header="_Lock Workspace" />
         <MenuItem Header="_Exit" />
       </MenuItem>
+      <MenuItem Header="Entry">
+        <MenuItem Header="Add Entry" />
+        <MenuItem Header="Edit Entry" />
+        <MenuItem Header="Delete Entry" />
+        <MenuItem Header="Duplicate Entry" />
+      </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet" />
       </MenuItem>
