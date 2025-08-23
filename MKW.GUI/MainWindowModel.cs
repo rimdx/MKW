@@ -45,7 +45,7 @@ namespace MKW.GUI
                     dialog.FileName, DatabaseOpenMode.OpenOrCreate);
 
                 LoginWindow window = new LoginWindow(this, database, dialog.FileName);
-                window.Show();
+                window.ShowDialog();
             }
         }
 
