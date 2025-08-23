@@ -1,5 +1,7 @@
 ﻿using MKW.Core.Client;
+using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
@@ -10,6 +12,13 @@ namespace MKW.GUI
         UserPassword,
         AdminPassword,
         Anonymous,
+    }
+
+    public class LoginUser
+    {
+        public required bool IsAdmin { get; init; }
+        public required Guid Id { get; init; }
+        public required string Name { get; init; }
     }
 
     public class LoginWindowModel : INotifyPropertyChanged, IDisposable
@@ -27,9 +36,40 @@ namespace MKW.GUI
             this.window = window;
             this.database = database;
 
+            Users = [];
+
             Client = ClientSession.Open(database /* move */, true);
             DatabasePath = databasePath;
+
+            LoadUsers();
         }
+
+        private void LoadUsers()
+        {
+            Users.Clear();
+
+            Users.Add(new LoginUser
+            {
+                Id = Guid.Empty,
+                IsAdmin = true,
+                Name = "Admin"
+            });
+
+            foreach (UserInfo user in Client.EnumerateUsersTrust())
+            {
+                Users.Add(new LoginUser
+                {
+                    Id = user.Id,
+                    IsAdmin = false,
+                    Name = "User"
+                });
+            }
+
+            SelectedUser = Users[0];
+        }
+
+        public ObservableCollection<LoginUser> Users { get; }
+        public LoginUser? SelectedUser { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -42,47 +82,19 @@ namespace MKW.GUI
         }
 
         public string Password { get; set; } = "";
-        public string? ErrorMessage { get; private set; }
 
         public string DatabasePath { get; }
-
-        public bool IsUserPassword
-        {
-            get => LoginMode == LoginMode.UserPassword;
-            set => LoginMode = LoginMode.UserPassword;
-        }
-
-        public bool IsAdminPassword
-        {
-            get => LoginMode == LoginMode.AdminPassword;
-            set => LoginMode = LoginMode.AdminPassword;
-        }
-
-        public bool IsAnonymousMode
-        {
-            get => LoginMode == LoginMode.Anonymous;
-            set => LoginMode = LoginMode.Anonymous;
-        }
-
-        private LoginMode _loginMode = LoginMode.UserPassword;
-        public LoginMode LoginMode
-        {
-            get => _loginMode;
-            set
-            {
-                _loginMode = value;
-
-                OnPropertyChanged(nameof(IsUserPassword));
-                OnPropertyChanged(nameof(IsAdminPassword));
-                OnPropertyChanged(nameof(IsAnonymousMode));
-            }
-        }
 
         public void DoLogin()
         {
             try
             {
-                User = Client.OpenUser(Password);
+                if (SelectedUser == null)
+                {
+                    throw new Exception("Please select user.");
+                }
+
+                User = Client.OpenUser(SelectedUser.Id, Password);
                 window.Close();
             }
             catch (Exception ex)
