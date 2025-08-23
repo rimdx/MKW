@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Win32;
+using MKW.Core.Client;
+using MKW.Core.Storage;
+using MKW.Core.Storage.JSON;
+using System.ComponentModel;
 using System.Windows;
 
 namespace MKW.GUI
@@ -13,27 +17,58 @@ namespace MKW.GUI
         public MainWindow()
         {
             model = new MainWindowModel();
-            model.PropertyChanged += Model_PropertyChanged;
             DataContext = model;
             InitializeComponent();
         }
 
-        private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void OpenDatabase(IDatabase database, string filename)
         {
-            if (e.PropertyName == nameof(model.Database) && model.Database != null)
+            LoginWindow window = new LoginWindow(database, filename);
+
+            window.ShowDialog();
+
+            if (window.User == null)
             {
-                Database.Content = new DatabasePage(model.Database);
+                window.Client.Dispose();
+            }
+            else
+            {
+                Database.Content = new DatabasePage(window.Client /* move */,
+                                                    window.User /* move */);
             }
         }
 
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
         {
-            model.NewDatabase();
+            FileDialog dialog = new SaveFileDialog
+            {
+                FileName = "New Database",
+                DefaultExt = ".mkw",
+                Filter = "Multi-Key Wallet Database File|*.mkw"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                JSONDatabaseSession database = JSONDatabaseSession.Open(
+                    dialog.FileName, DatabaseOpenMode.OpenOrCreate);
+                OpenDatabase(database, dialog.FileName);
+            }
         }
 
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {
-            model.OpenDatabase();
+            FileDialog dialog = new OpenFileDialog
+            {
+                DefaultExt = ".mkw",
+                Filter = "Multi-Key Wallet Database File|*.mkw"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                JSONDatabaseSession database = JSONDatabaseSession.Open(
+                    dialog.FileName, DatabaseOpenMode.OpenOrCreate);
+                OpenDatabase(database, dialog.FileName);
+            }
         }
     }
 }

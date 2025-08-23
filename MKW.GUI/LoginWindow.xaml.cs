@@ -1,4 +1,5 @@
-﻿using MKW.Core.Storage;
+﻿using MKW.Core.Client;
+using MKW.Core.Storage;
 using System.Windows;
 using System.Windows.Input;
 
@@ -8,9 +9,12 @@ namespace MKW.GUI
     {
         private readonly LoginWindowModel model;
 
-        public LoginWindow(MainWindowModel host, IDatabase database, string databasePath)
+        public ClientSession Client => model.Client;
+        public UserSession? User => model.User;
+
+        public LoginWindow(IDatabase database, string databasePath)
         {
-            model = new LoginWindowModel(this, host, database, databasePath);
+            model = new LoginWindowModel(this, database, databasePath);
             DataContext = model;
             InitializeComponent();
         }
