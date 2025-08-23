@@ -33,7 +33,7 @@
     <TextBox Grid.Row="1"
              IsReadOnly="True"
              Text="{Binding DatabasePath, Mode=OneWay}"
-             d:Text="C:\path\to\database.wmk"
+             d:Text="C:\path\to\database.mkw"
              Margin="8,0,0,0">
       <TextBox.Style>
         <Style TargetType="TextBox">
