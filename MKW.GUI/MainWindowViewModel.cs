@@ -20,15 +20,6 @@ namespace MKW.GUI
             }
         }
 
-        public DatabaseViewModel OpenDatabase(ClientSession client, UserSession user)
-        {
-            Database?.Dispose();
-
-            Database = new DatabaseViewModel(client /* move */,
-                                         user /* move */);
-            return Database;
-        }
-
         private void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)

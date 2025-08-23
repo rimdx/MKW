@@ -6,19 +6,15 @@ namespace MKW.GUI
 {
     public class DatabaseViewModel : INotifyPropertyChanged, IDisposable
     {
-        private readonly ClientSession client;
-        private readonly UserSession user;
+        private readonly DatabaseModel database;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public DatabaseViewModel(ClientSession client, UserSession user)
+        public DatabaseViewModel(DatabaseModel database)
         {
-            this.client = client;
-            this.user = user;
-
             Entries = [];
 
-            foreach (UserEntry entry in user.EnumerateEntries())
+            foreach (UserEntry entry in database.User!.EnumerateEntries())
             {
                 Entries.Add(new DatabaseEntryModel
                 {
@@ -26,14 +22,15 @@ namespace MKW.GUI
                     Payload = entry.OpenPayload()?.ToString()
                 });
             }
+
+            this.database = database;
         }
 
         public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
 
         public void Dispose()
         {
-            client.Dispose();
-            user.Dispose();
+            database.Dispose();
         }
     }
 }
