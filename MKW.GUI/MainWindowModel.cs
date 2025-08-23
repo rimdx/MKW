@@ -11,6 +11,17 @@ namespace MKW.GUI
 
         public string Title => "Multi-Key Wallet";
 
+        private DatabaseModel? _database;
+        public DatabaseModel? Database
+        {
+            get => _database;
+            set
+            {
+                _database = value;
+                OnPropertyChanged(nameof(Database));
+            }
+        }
+
         private void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -33,7 +44,7 @@ namespace MKW.GUI
                 JSONDatabaseSession database = JSONDatabaseSession.Open(
                     dialog.FileName, DatabaseOpenMode.OpenOrCreate);
 
-                LoginWindow window = new LoginWindow(database, dialog.FileName);
+                LoginWindow window = new LoginWindow(this, database, dialog.FileName);
                 window.Show();
             }
         }

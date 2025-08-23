@@ -14,13 +14,18 @@ namespace MKW.GUI
 
     public class LoginWindowModel : INotifyPropertyChanged, IDisposable
     {
+        private readonly Window window;
+        private readonly MainWindowModel host;
         private readonly IDatabase database;
         private readonly ClientSession client;
-        private UserSession? user;
+        private bool ownsDb = true;
 
-        public LoginWindowModel(IDatabase database, string databasePath)
+        public LoginWindowModel(Window window, MainWindowModel host, IDatabase database, string databasePath)
         {
+            this.window = window;
+            this.host = host;
             this.database = database;
+
             client = ClientSession.Open(database);
             DatabasePath = databasePath;
         }
@@ -76,7 +81,12 @@ namespace MKW.GUI
         {
             try
             {
-                user = client.OpenUser(Password);
+                UserSession user = client.OpenUser(Password);
+
+                host.Database = new DatabaseModel(client, user);
+
+                ownsDb = false;
+                window.Close();
             }
             catch (Exception ex)
             {
@@ -91,8 +101,11 @@ namespace MKW.GUI
 
         public void Dispose()
         {
-            database.Dispose();
-            client.Dispose();
+            if (ownsDb)
+            {
+                database.Dispose();
+                client.Dispose();
+            }
         }
     }
 }
