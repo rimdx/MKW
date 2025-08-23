@@ -4,14 +4,14 @@ using System.ComponentModel;
 
 namespace MKW.GUI
 {
-    public class DatabaseModel : INotifyPropertyChanged, IDisposable
+    public class DatabaseViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly ClientSession client;
         private readonly UserSession user;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public DatabaseModel(ClientSession client, UserSession user)
+        public DatabaseViewModel(ClientSession client, UserSession user)
         {
             this.client = client;
             this.user = user;

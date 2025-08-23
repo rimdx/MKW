@@ -9,8 +9,8 @@ namespace MKW.GUI
 
         public string Title => "Multi-Key Wallet";
 
-        private DatabaseModel? _database;
-        public DatabaseModel? Database
+        private DatabaseViewModel? _database;
+        public DatabaseViewModel? Database
         {
             get => _database;
             set
@@ -20,11 +20,11 @@ namespace MKW.GUI
             }
         }
 
-        public DatabaseModel OpenDatabase(ClientSession client, UserSession user)
+        public DatabaseViewModel OpenDatabase(ClientSession client, UserSession user)
         {
             Database?.Dispose();
 
-            Database = new DatabaseModel(client /* move */,
+            Database = new DatabaseViewModel(client /* move */,
                                          user /* move */);
             return Database;
         }
