@@ -1,0 +1,88 @@
+﻿<Window x:Class="MKW.GUI.CreateDatabaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MKW.GUI"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
+        Title="Create Database"
+        Height="250" Width="400"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Loaded="Window_Loaded">
+  <Grid Margin="8">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0"
+           Content="Create Master Key"
+           FontWeight="Bold" />
+
+    <TextBox Grid.Row="1"
+             IsReadOnly="True"
+             Text="{Binding DatabasePath, Mode=OneWay}"
+             d:Text="C:\path\to\database.mkw"
+             Margin="8,0,0,8">
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Setter Property="IsReadOnly" Value="True" />
+          <Setter Property="BorderThickness" Value="0" />
+          <Setter Property="TextWrapping" Value="Wrap" />
+          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="2"
+             IsReadOnly="True"
+             Margin="0,0,0,8">
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Setter Property="IsReadOnly" Value="True" />
+          <Setter Property="BorderThickness" Value="0" />
+          <Setter Property="TextWrapping" Value="Wrap" />
+          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+        </Style>
+      </TextBox.Style>
+      This is the mater password that protects your database. It will be
+      required every time you unlock or access your stored passwords.
+      Choose a strong, memorable password — if you forget it, your data
+      cannot be recovered.
+    </TextBox>
+
+    <Label Grid.Row="3"
+           Padding="0"
+           FontWeight="Bold"
+           Target="{Binding ElementName=PasswordInput}"
+           Content="_Password:" />
+
+    <PasswordBox Grid.Row="4"
+                 Padding="4"
+                 x:Name="PasswordInput"
+                 FontFamily="Consolas"
+                 PasswordChanged="PasswordInput_PasswordChanged" />
+
+    <Grid Grid.Row="6">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="auto" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="auto" />
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="1" Content="OK" Width="70" Click="OK_Click" IsDefault="True" />
+      <Button Grid.Column="3" Content="Cancel" Width="70" Click="Cancel_Click" IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>
