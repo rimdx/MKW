@@ -12,11 +12,11 @@ namespace MKW.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly MainWindowModel model;
+        private readonly MainWindowViewModel model;
 
         public MainWindow()
         {
-            model = new MainWindowModel();
+            model = new MainWindowViewModel();
             DataContext = model;
             InitializeComponent();
         }

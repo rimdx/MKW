@@ -7,14 +7,14 @@ namespace MKW.GUI
 {
     public partial class LoginWindow : Window
     {
-        private readonly LoginWindowModel model;
+        private readonly LoginWindowViewModel model;
 
         public ClientSession Client => model.Client;
         public UserSession? User => model.User;
 
         public LoginWindow(IDatabase database, string databasePath)
         {
-            model = new LoginWindowModel(this, database, databasePath);
+            model = new LoginWindowViewModel(this, database, databasePath);
             DataContext = model;
             InitializeComponent();
         }

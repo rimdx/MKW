@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MKW.GUI"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:LoginWindowModel}"
+        d:DataContext="{d:DesignInstance Type=local:LoginWindowViewModel}"
         Title="Open Database"
         Height="250" Width="400"
         WindowStartupLocation="CenterScreen"
