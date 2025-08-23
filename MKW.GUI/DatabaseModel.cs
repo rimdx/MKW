@@ -10,7 +10,9 @@ namespace MKW.GUI
 
         public IDatabase Database { get; }
         public ClientSession Client { get; }
+
         public UserSession? User { get; private set; }
+        public AdminSession? Admin { get; private set; }
 
         public DatabaseModel(IDatabase database, string path)
         {
@@ -34,6 +36,13 @@ namespace MKW.GUI
         public void Authenticate(Guid id, string password)
         {
             User = Client.OpenUser(id, password);
+        }
+
+        public void CreateAdmin(string password)
+        {
+            Client.PromoteAdmin(password);
+            Admin = Client.OpenAdmin(password);
+            // TODO: User = Admin;
         }
 
         public void Dispose()

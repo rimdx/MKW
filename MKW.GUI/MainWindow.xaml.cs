@@ -23,19 +23,8 @@ namespace MKW.GUI
 
         private void OpenDatabase(DatabaseModel database)
         {
-            LoginWindow window = new LoginWindow(database);
-
-            window.ShowDialog();
-
-            if (database.User == null)
-            {
-                database.Dispose();
-            }
-            else
-            {
-                DatabaseViewModel dbModel = new DatabaseViewModel(database /* move */);
-                Database.Content = new DatabasePage(dbModel /* reference */);
-            }
+            DatabaseViewModel dbModel = new DatabaseViewModel(database /* move */);
+            Database.Content = new DatabasePage(dbModel /* reference */);
         }
 
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
@@ -49,7 +38,17 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
-                OpenDatabase(DatabaseModel.Open(dialog.FileName) /* move */);
+                CreateDatabaseWindowViewModel createDatabaseViewModel =
+                    new CreateDatabaseWindowViewModel(dialog.FileName);
+                CreateDatabaseWindow createDatabaseWindow =
+                    new CreateDatabaseWindow(createDatabaseViewModel);
+
+                createDatabaseWindow.ShowDialog();
+
+                if (createDatabaseViewModel.Database != null)
+                {
+                    OpenDatabase(createDatabaseViewModel.Database);
+                }
             }
         }
 
@@ -63,7 +62,19 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
-                OpenDatabase(DatabaseModel.Open(dialog.FileName) /* move */);
+                DatabaseModel database = DatabaseModel.Open(dialog.FileName);
+                LoginWindow window = new LoginWindow(database);
+
+                window.ShowDialog();
+
+                if (database.User == null)
+                {
+                    database.Dispose();
+                }
+                else
+                {
+                    OpenDatabase(database);
+                }
             }
         }
     }
