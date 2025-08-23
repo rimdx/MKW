@@ -1,9 +1,11 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using MKW.GUI.Images;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MKW.GUI
 {
@@ -19,6 +21,8 @@ namespace MKW.GUI
         public required bool IsAdmin { get; init; }
         public required Guid Id { get; init; }
         public required string Name { get; init; }
+
+        public object Icon => IsAdmin ? new Admin() : new User();
     }
 
     public class LoginWindowModel : INotifyPropertyChanged, IDisposable
