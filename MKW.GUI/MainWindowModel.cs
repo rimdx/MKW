@@ -32,6 +32,9 @@ namespace MKW.GUI
             {
                 JSONDatabaseSession database = JSONDatabaseSession.Open(
                     dialog.FileName, DatabaseOpenMode.OpenOrCreate);
+
+                LoginWindow window = new LoginWindow(database, dialog.FileName);
+                window.Show();
             }
         }
 
