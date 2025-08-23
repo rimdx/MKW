@@ -76,7 +76,7 @@
     <Label Grid.Row="6"
            Padding="0"
            FontWeight="Bold"
-           Target="{Binding ElementName=UserPasswordInput}"
+           Target="{Binding ElementName=PasswordInput}"
            Content="_Password:" />
 
     <PasswordBox Grid.Row="7"
