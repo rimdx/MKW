@@ -63,11 +63,13 @@
         <DataTemplate DataType="local:LoginUser">
           <Grid>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="20" />
+              <ColumnDefinition Width="16" />
+              <ColumnDefinition Width="8" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="1" Text="{Binding Name}" />
+            <ContentControl Content="{Binding Icon}" />
+            <TextBlock Grid.Column="2" Text="{Binding Name}" />
           </Grid>
         </DataTemplate>
       </ComboBox.ItemTemplate>
