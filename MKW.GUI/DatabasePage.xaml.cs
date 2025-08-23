@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using MKW.Core.Client;
+using System.Windows.Controls;
 
 namespace MKW.GUI
 {
@@ -6,9 +7,9 @@ namespace MKW.GUI
     {
         private readonly DatabaseModel model;
 
-        public DatabasePage(DatabaseModel database)
+        public DatabasePage(ClientSession client, UserSession user)
         {
-            model = database;
+            model = new DatabaseModel(client, user);
             DataContext = model;
             InitializeComponent();
         }
