@@ -21,20 +21,19 @@ namespace MKW.GUI
             InitializeComponent();
         }
 
-        private void OpenDatabase(IDatabase database, string filename)
+        private void OpenDatabase(DatabaseModel database)
         {
-            LoginWindow window = new LoginWindow(database, filename);
+            LoginWindow window = new LoginWindow(database);
 
             window.ShowDialog();
 
-            if (window.User == null)
+            if (database.User == null)
             {
-                window.Client.Dispose();
+                database.Dispose();
             }
             else
             {
-                DatabaseViewModel dbModel = model.OpenDatabase(window.Client /* move */,
-                                                           window.User /* move */);
+                DatabaseViewModel dbModel = new DatabaseViewModel(database /* move */);
                 Database.Content = new DatabasePage(dbModel /* reference */);
             }
         }
@@ -50,9 +49,7 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
-                JSONDatabaseSession database = JSONDatabaseSession.Open(
-                    dialog.FileName, DatabaseOpenMode.OpenOrCreate);
-                OpenDatabase(database, dialog.FileName);
+                OpenDatabase(DatabaseModel.Open(dialog.FileName) /* move */);
             }
         }
 
@@ -66,9 +63,7 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
-                JSONDatabaseSession database = JSONDatabaseSession.Open(
-                    dialog.FileName, DatabaseOpenMode.OpenOrCreate);
-                OpenDatabase(database, dialog.FileName);
+                OpenDatabase(DatabaseModel.Create(dialog.FileName) /* move */);
             }
         }
     }

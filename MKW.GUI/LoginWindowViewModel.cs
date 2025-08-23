@@ -28,22 +28,16 @@ namespace MKW.GUI
     public class LoginWindowViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly Window window;
-        private readonly IDatabase database;
-
-        public ClientSession Client { get; }
-        public UserSession? User { get; private set; }
+        private readonly DatabaseModel database;
 
         private bool ownsDb = true;
 
-        public LoginWindowViewModel(Window window, IDatabase database, string databasePath)
+        public LoginWindowViewModel(Window window, DatabaseModel database)
         {
             this.window = window;
             this.database = database;
 
             Users = [];
-
-            Client = ClientSession.Open(database /* move */, true);
-            DatabasePath = databasePath;
 
             LoadUsers();
         }
@@ -59,7 +53,7 @@ namespace MKW.GUI
                 Name = "Admin"
             });
 
-            foreach (UserInfo user in Client.EnumerateUsersTrust())
+            foreach (UserInfo user in database.Client.EnumerateUsersTrust())
             {
                 Users.Add(new LoginUser
                 {
@@ -87,7 +81,7 @@ namespace MKW.GUI
 
         public string Password { get; set; } = "";
 
-        public string DatabasePath { get; }
+        public string DatabasePath => database.Path;
 
         public void DoLogin()
         {
@@ -98,7 +92,8 @@ namespace MKW.GUI
                     throw new Exception("Please select user.");
                 }
 
-                User = Client.OpenUser(SelectedUser.Id, Password);
+                database.Authenticate(SelectedUser.Id, Password);
+                ownsDb = false;
                 window.Close();
             }
             catch (Exception ex)
@@ -117,7 +112,6 @@ namespace MKW.GUI
             if (ownsDb)
             {
                 database.Dispose();
-                Client.Dispose();
             }
         }
     }
