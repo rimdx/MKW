@@ -63,7 +63,7 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
-                OpenDatabase(DatabaseModel.Create(dialog.FileName) /* move */);
+                OpenDatabase(DatabaseModel.Open(dialog.FileName) /* move */);
             }
         }
     }
