@@ -9,6 +9,7 @@
         Title="Open Database"
         Height="250" Width="400"
         WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
   <Grid Margin="7">
