@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CHANGELOG.md = CHANGELOG.md
 		Directory.build.props = Directory.build.props
 		Directory.build.targets = Directory.build.targets
+		README.md = README.md
 		Version.props = Version.props
 	EndProjectSection
 EndProject
@@ -130,7 +131,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 	EndGlobalSection
 EndGlobal
