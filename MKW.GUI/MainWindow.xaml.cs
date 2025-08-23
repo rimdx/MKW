@@ -33,8 +33,9 @@ namespace MKW.GUI
             }
             else
             {
-                Database.Content = new DatabasePage(window.Client /* move */,
-                                                    window.User /* move */);
+                DatabaseModel dbModel = model.OpenDatabase(window.Client /* move */,
+                                                           window.User /* move */);
+                Database.Content = new DatabasePage(dbModel /* reference */);
             }
         }
 
