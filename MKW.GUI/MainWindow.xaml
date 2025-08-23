@@ -38,5 +38,7 @@
         <MenuItem Header="_About Multi-Key Wallet" />
       </MenuItem>
     </Menu>
+
+    <ContentControl Grid.Row="1" x:Name="Database" />
   </Grid>
 </Window>

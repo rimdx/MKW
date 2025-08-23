@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 
 namespace MKW.GUI
 {
@@ -12,8 +13,17 @@ namespace MKW.GUI
         public MainWindow()
         {
             model = new MainWindowModel();
+            model.PropertyChanged += Model_PropertyChanged;
             DataContext = model;
             InitializeComponent();
+        }
+
+        private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(model.Database) && model.Database != null)
+            {
+                Database.Content = new DatabasePage(model.Database);
+            }
         }
 
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
