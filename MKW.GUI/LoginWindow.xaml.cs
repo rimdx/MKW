@@ -29,11 +29,6 @@ namespace MKW.GUI
             Keyboard.Focus(PasswordInput);
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            model.Dispose();
-        }
-
         private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
             model.Password = PasswordInput.Password;

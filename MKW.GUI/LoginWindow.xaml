@@ -10,8 +10,7 @@
         Height="250" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Loaded="Window_Loaded"
-        Closed="Window_Closed">
+        Loaded="Window_Loaded">
   <Grid Margin="7">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />

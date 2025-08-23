@@ -25,12 +25,10 @@ namespace MKW.GUI
         public object Icon => IsAdmin ? new Admin() : new User();
     }
 
-    public class LoginWindowViewModel : INotifyPropertyChanged, IDisposable
+    public class LoginWindowViewModel : INotifyPropertyChanged
     {
         private readonly Window window;
         private readonly DatabaseModel database;
-
-        private bool ownsDb = true;
 
         public LoginWindowViewModel(Window window, DatabaseModel database)
         {
@@ -93,7 +91,6 @@ namespace MKW.GUI
                 }
 
                 database.Authenticate(SelectedUser.Id, Password);
-                ownsDb = false;
                 window.Close();
             }
             catch (Exception ex)
@@ -105,14 +102,6 @@ namespace MKW.GUI
         public void ReportError(Exception ex)
         {
             MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        public void Dispose()
-        {
-            if (ownsDb)
-            {
-                database.Dispose();
-            }
         }
     }
 }
