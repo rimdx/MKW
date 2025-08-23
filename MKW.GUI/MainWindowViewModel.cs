@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace MKW.GUI
 {
-    public class MainWindowModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

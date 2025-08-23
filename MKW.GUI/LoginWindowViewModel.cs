@@ -25,7 +25,7 @@ namespace MKW.GUI
         public object Icon => IsAdmin ? new Admin() : new User();
     }
 
-    public class LoginWindowModel : INotifyPropertyChanged, IDisposable
+    public class LoginWindowViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly Window window;
         private readonly IDatabase database;
@@ -35,7 +35,7 @@ namespace MKW.GUI
 
         private bool ownsDb = true;
 
-        public LoginWindowModel(Window window, IDatabase database, string databasePath)
+        public LoginWindowViewModel(Window window, IDatabase database, string databasePath)
         {
             this.window = window;
             this.database = database;
