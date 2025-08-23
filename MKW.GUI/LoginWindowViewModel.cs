@@ -1,21 +1,11 @@
-﻿using MKW.Core.Client;
-using MKW.Core.Client.Notify;
-using MKW.Core.Storage;
+﻿using MKW.Core.Client.Notify;
 using MKW.GUI.Images;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace MKW.GUI
 {
-    public enum LoginMode
-    {
-        UserPassword,
-        AdminPassword,
-        Anonymous,
-    }
-
     public class LoginUser
     {
         public required bool IsAdmin { get; init; }
