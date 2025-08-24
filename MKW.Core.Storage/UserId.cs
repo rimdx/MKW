@@ -4,6 +4,8 @@
     {
         private readonly Guid id;
 
+        public bool IsAdmin => id == Guid.Empty;
+
         private UserId(Guid id)
         {
             this.id = id;
