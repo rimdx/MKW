@@ -24,6 +24,18 @@ namespace MKW.Core.Client
             return new ClientSession(db, ownsDb);
         }
 
+        public static ClientSession Create(IDatabase db /* reference */, string adminPassword)
+        {
+            return Create(db, adminPassword, false);
+        }
+
+        public static ClientSession Create(IDatabase db, string adminPassword, bool ownsDb)
+        {
+            ClientSession client = new ClientSession(db, ownsDb);
+            client.PromoteAdmin(adminPassword);
+            return client;
+        }
+
         public void Dispose()
         {
             if (ownsDb)
