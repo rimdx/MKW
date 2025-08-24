@@ -35,8 +35,6 @@ namespace MKW.Core.Client
 
         private Trust VerifyTrust(IDatabaseUser user, IDatabaseAdmin admin, AsymmetricTransformer adminKey)
         {
-            UserInfo notify = UserInfo.FromDatabaseUser(user);
-
             foreach (ReadOnlyMemory<byte> trust in admin.EnumerateTrust())
             {
                 if (adminKey.Verify(user.PublicKey.Span, trust.Span))
