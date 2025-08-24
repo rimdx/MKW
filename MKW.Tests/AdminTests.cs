@@ -121,5 +121,17 @@ namespace MKW.Tests
                                        entry.OpenPayload());
             }
         }
+
+        [Test]
+        public void ClientMustFailOperationIfNoAdminExist()
+        {
+            using SandBox sbox = new SandBox(false);
+            using ClientSession client = sbox.OpenSession();
+
+            Assert.Throws<Exception>(() => client.PromoteUser("user"));
+            using Entry entry = client.CreateEntry();
+            Assert.Throws<Exception>(() => entry.UpdatePayload(new EntryPayload("123")));
+            Assert.Throws<Exception>(() => client.OpenAdmin("123"));
+        }
     }
 }
