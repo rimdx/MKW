@@ -15,9 +15,7 @@ namespace MKW
         {
             using JSONDatabaseSession db = JSONDatabaseSession.Create(GetFilePath(argv));
 
-            using ClientSession client = ClientSession.Open(db);
-
-            client.PromoteAdmin(GetPassword(argv));
+            using ClientSession client = ClientSession.Create(db, GetPassword(argv));
         }
     }
 }

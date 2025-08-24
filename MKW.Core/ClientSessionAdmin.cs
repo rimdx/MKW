@@ -37,5 +37,11 @@ namespace MKW.Core.Client
 
             return new AdminSession(this, admin, privateKeyBytes.Span);
         }
+
+        public UserInfo GetAdminInfo()
+        {
+            IDatabaseAdmin admin = Database.OpenAdmin(true);
+            return UserInfo.FromDatabaseUser(admin);
+        }
     }
 }

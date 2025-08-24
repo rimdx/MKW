@@ -28,8 +28,7 @@ namespace MKW.GUI
 
         public bool DoCreateDatabase()
         {
-            Database = DatabaseModel.Create(path);
-            Database.CreateAdmin(Password);
+            Database = DatabaseModel.Create(path, Password);
             return true;
         }
     }
