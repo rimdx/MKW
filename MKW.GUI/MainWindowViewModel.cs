@@ -15,6 +15,7 @@ namespace MKW.GUI
             get => _database;
             set
             {
+                _database?.Dispose();
                 _database = value;
                 OnPropertyChanged(nameof(Database));
             }
