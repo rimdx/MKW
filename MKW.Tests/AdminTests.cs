@@ -82,5 +82,22 @@ namespace MKW.Tests
                 ClassicAssert.AreEqual(null, entrySession.OpenPayload());
             }
         }
+
+        [Test]
+        public void OpenAdminAsUser()
+        {
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            client.PromoteAdmin("adminsecret");
+
+            using (UserSession admin = client.OpenUser(UserId.Admin(), "adminsecret"))
+            {
+            }
+
+            //using (UserSession admin = client.OpenUser("adminsecret"))
+            //{
+            //}
+        }
     }
 }

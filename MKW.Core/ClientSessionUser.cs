@@ -27,12 +27,19 @@ namespace MKW.Core.Client
 
         public UserSession OpenUser(UserId id, string password)
         {
-            IDatabaseUser user = Database.OpenUser(id, false);
+            if (id.IsAdmin)
+            {
+                return OpenAdmin(password);
+            }
+            else
+            {
+                IDatabaseUser user = Database.OpenUser(id, false);
 
-            // Credentials can be opened within the entered password and the public salt
-            UserCredentials creds = UserCredentials.Open(password, user.Salt);
+                // Credentials can be opened within the entered password and the public salt
+                UserCredentials creds = UserCredentials.Open(password, user.Salt);
 
-            return OpenUser(user, creds);
+                return OpenUser(user, creds);
+            }
         }
 
         public UserSession OpenUser(string password)
