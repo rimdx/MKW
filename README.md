@@ -171,7 +171,7 @@ a symmetric algorithm decrypt the data itself.
 
 Note: the entries are encrypt for a specific set of users, meaning they could
 be hidden for some users.  Usually, they will encrypt secrets for all trusted
-users, but, technically, they could manually choose who to share data to.
+users, but, technically, they could manually choose who to share data with.
 
 ### Cryptography
 
