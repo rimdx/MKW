@@ -17,9 +17,9 @@ namespace MKW.Core.Storage.JSON
             Database = database;
         }
 
-        public IDatabaseUser CreateUser(Guid id)
+        public IDatabaseUser CreateUser(UserId id)
         {
-            if (Database.Users.ContainsKey(id))
+            if (Database.Users.ContainsKey(id.GetGuid()))
             {
                 throw new Exception("User already exists.");
             }
@@ -27,12 +27,12 @@ namespace MKW.Core.Storage.JSON
             return new DatabaseUser(id, this);
         }
 
-        public IDatabaseUser OpenUser(Guid id, bool readOnly)
+        public IDatabaseUser OpenUser(UserId id, bool readOnly)
         {
             DatabaseUser result = readOnly ? new DatabaseUser(id)
                                            : new DatabaseUser(id, this);
 
-            if (Database.Users.TryGetValue(id, out JSONDatabaseUser? user))
+            if (Database.Users.TryGetValue(id.GetGuid(), out JSONDatabaseUser? user))
             {
                 result.CopyFrom(user);
                 return result;
@@ -43,21 +43,21 @@ namespace MKW.Core.Storage.JSON
             }
         }
 
-        public bool DeleteUser(Guid id)
+        public bool DeleteUser(UserId id)
         {
-            return Database.Users.Remove(id);
+            return Database.Users.Remove(id.GetGuid());
         }
 
-        public bool HasUser(Guid id)
+        public bool HasUser(UserId id)
         {
-            return Database.Users.ContainsKey(id);
+            return Database.Users.ContainsKey(id.GetGuid());
         }
 
         public IEnumerable<IDatabaseUser> EnumerateUsers()
         {
             foreach (KeyValuePair<Guid, JSONDatabaseUser> item in Database.Users)
             {
-                DatabaseUser result = new DatabaseUser(item.Key);
+                DatabaseUser result = new DatabaseUser(UserId.FromGuid(item.Key));
                 result.CopyFrom(item.Value);
                 yield return result;
             }

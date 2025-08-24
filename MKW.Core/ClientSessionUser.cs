@@ -14,7 +14,7 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            IDatabaseUser user = Database.CreateUser(Guid.NewGuid());
+            IDatabaseUser user = Database.CreateUser(UserId.Create());
 
             user.PublicKey = systemCreds.PublicKey;
             user.PrivateKey = systemCreds.PrivateKey;
@@ -25,7 +25,7 @@ namespace MKW.Core.Client
             return UserInfo.FromDatabaseUser(user);
         }
 
-        public UserSession OpenUser(Guid id, string password)
+        public UserSession OpenUser(UserId id, string password)
         {
             IDatabaseUser user = Database.OpenUser(id, false);
 

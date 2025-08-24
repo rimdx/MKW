@@ -15,7 +15,7 @@ namespace MKW.Core.Client
             this.admin = admin;
         }
 
-        public void UpdateTrust(Guid userId, Trust trust)
+        public void UpdateTrust(UserId userId, Trust trust)
         {
             IDatabaseUser user = client.Database.OpenUser(userId, true);
 

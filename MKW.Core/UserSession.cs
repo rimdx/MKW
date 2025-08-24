@@ -9,7 +9,7 @@ namespace MKW.Core.Client
         protected readonly ClientSession client;
         private readonly IDatabaseUser user;
 
-        public Guid Id => user.Id;
+        public UserId Id => user.Id;
         public AsymmetricTransformer Transformer { get; }
 
         public UserSession(ClientSession client /* reference */,

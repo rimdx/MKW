@@ -4,7 +4,7 @@ namespace MKW.Core.Client.Notify
 {
     public record class UserInfo
     {
-        public required Guid Id { get; init; }
+        public required UserId Id { get; init; }
         public required ReadOnlyMemory<byte> PublicKey { get; init; }
 
         public Trust Trust { get; set; } = Trust.Unknown;

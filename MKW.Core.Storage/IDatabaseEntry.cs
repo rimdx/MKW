@@ -5,7 +5,7 @@
         Guid Id { get; }
 
         // User -> Payload
-        IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; set; }
+        IDictionary<UserId, ReadOnlyMemory<byte>> Keys { get; set; }
 
         // Salt used within [decoded]key to encode Data
         ReadOnlyMemory<byte> Salt { get; set; }

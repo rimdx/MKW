@@ -33,7 +33,7 @@ namespace MKW.GUI
             return new DatabaseModel(db, path);
         }
 
-        public void Authenticate(Guid id, string password)
+        public void Authenticate(UserId id, string password)
         {
             User = Client.OpenUser(id, password);
         }
