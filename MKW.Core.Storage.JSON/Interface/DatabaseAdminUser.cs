@@ -39,7 +39,6 @@ namespace MKW.Core.Storage.JSON.Interface
             Salt = obj.Salt;
         }
 
-
         public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
         {
             return trust.AsReadOnly();
