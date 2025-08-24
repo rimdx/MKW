@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace MKW.GUI
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -26,6 +26,11 @@ namespace MKW.GUI
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public void Dispose()
+        {
+            Database?.Dispose();
         }
     }
 }
