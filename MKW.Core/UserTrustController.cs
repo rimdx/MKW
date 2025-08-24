@@ -16,7 +16,7 @@ namespace MKW.Core.Client
 
             ReadOnlyMemory<byte> signature = key.Sign(user.PublicKey.Span);
 
-            if (trust == Trust.FullTrust)
+            if (trust == Trust.ExplicitTrust)
             {
                 me.AddTrust(signature);
             }

@@ -4,7 +4,7 @@
     {
         Unknown,
         None,
-        FullTrust,
+        ExplicitTrust,
         ImplicitTrust,
     }
 }

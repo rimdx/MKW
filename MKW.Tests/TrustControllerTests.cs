@@ -19,7 +19,7 @@ namespace MKW.Tests
 
             UserInfo adminInfo = client.GetAdminInfo();
 
-            adminInfo.Trust = Trust.FullTrust;
+            adminInfo.Trust = Trust.ExplicitTrust;
 
             CollectionAssert.AreEqual(
                 new UserInfo[]
@@ -27,7 +27,7 @@ namespace MKW.Tests
                 },
                 trustController.EnumerateExplicitlyTrustedUsersInfo());
 
-            userInfo.Trust = Trust.FullTrust;
+            userInfo.Trust = Trust.ExplicitTrust;
             adminInfo.Trust = Trust.ImplicitTrust;
 
             CollectionAssert.AreEqual(

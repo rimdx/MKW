@@ -32,24 +32,24 @@ namespace MKW.Tests
             UserInfo user1 = client.PromoteUser("user1");
             UserInfo user2 = client.PromoteUser("user2");
 
-            admin.Trust = Trust.FullTrust;
+            admin.Trust = Trust.ExplicitTrust;
             user1.Trust = Trust.None;
             user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
                 new UserInfo[] { admin, user1, user2 },
                 client.EnumerateUsersTrust());
 
-            adminSession.UpdateTrust(user1.Id, Trust.FullTrust);
-            user1.Trust = Trust.FullTrust;
+            adminSession.UpdateTrust(user1.Id, Trust.ExplicitTrust);
+            user1.Trust = Trust.ExplicitTrust;
             user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
                 new UserInfo[] { admin, user1, user2 },
                 client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.None);
-            adminSession.UpdateTrust(user2.Id, Trust.FullTrust);
+            adminSession.UpdateTrust(user2.Id, Trust.ExplicitTrust);
             user1.Trust = Trust.None;
-            user2.Trust = Trust.FullTrust;
+            user2.Trust = Trust.ExplicitTrust;
             CollectionAssert.AreEqual(
                 new UserInfo[] { admin, user1, user2 },
                 client.EnumerateUsersTrust());
@@ -66,7 +66,7 @@ namespace MKW.Tests
 
             using AdminSession admin = sbox.OpenAdmin(client);
 
-            admin.UpdateTrust(trusted.Id, Trust.FullTrust);
+            admin.UpdateTrust(trusted.Id, Trust.ExplicitTrust);
             EntryInfo entry = client.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
 
             {

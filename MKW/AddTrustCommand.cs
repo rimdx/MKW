@@ -20,7 +20,7 @@ namespace MKW
             using ClientSession session = OpenSession(argv);
             using AdminSession admin = session.OpenAdmin(GetPassword(argv));
 
-            admin.UpdateTrust(userId, Trust.FullTrust);
+            admin.UpdateTrust(userId, Trust.ExplicitTrust);
 
             Console.WriteLine($"Marked user '{userId}' as trusted.");
         }
