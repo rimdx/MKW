@@ -10,7 +10,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
 
             // create a test database file
             ClassicAssert.AreEqual(
@@ -28,12 +28,12 @@ namespace MKW.Tests
         [Test]
         public void AddUserTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             string output = sbox.Run($"mkw user add {sbox.DatabasePath} --password lifeishard");
 
-            using Core.Storage.IDatabase db = sbox.OpenDatabase();
+            using IDatabase db = sbox.OpenDatabase();
 
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n" +
@@ -46,7 +46,7 @@ namespace MKW.Tests
         [Test]
         public void HelpTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
 
             sbox.Run("mkw --help");
         }
@@ -57,8 +57,8 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserInfo user1 = client.PromoteUser("amogus");
-            UserInfo user2 = client.PromoteUser("r34");
+            sbox.CreateUser(client, "amogus", out UserInfo user1).Dispose();
+            sbox.CreateUser(client, "r34", out UserInfo user2).Dispose();
 
             client.UpdateEntry(EntryId.FromGuid(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}")), new EntryPayload("sus1"));
             client.UpdateEntry(EntryId.FromGuid(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}")), new EntryPayload("sus2"));
@@ -87,12 +87,16 @@ namespace MKW.Tests
 
             using (ClientSession client = sbox.OpenSession())
             {
+                using AdminSession admin = sbox.OpenAdmin(client);
+
                 UserInfo oldUser = client.PromoteUser("iamanoldman");
+                admin.UpdateTrust(oldUser.Id, Trust.FullTrust);
 
                 client.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
                 client.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
 
                 UserInfo newUser = client.PromoteUser("ihatehimbutcantseehisstuff");
+                admin.UpdateTrust(newUser.Id, Trust.FullTrust);
 
                 client.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
             }
@@ -137,7 +141,7 @@ namespace MKW.Tests
         [Test]
         public void AddEntryTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             sbox.Run($"mkw user add {sbox.DatabasePath} --password test1");
@@ -157,7 +161,7 @@ namespace MKW.Tests
                 $"""
                   -- EXIT CODE: 0
                   -- STDOUT:
-                Added: {entryId1} for 0 users
+                Added: {entryId1} for 1 users
 
                 """,
                 output1);
@@ -220,7 +224,7 @@ namespace MKW.Tests
         [Test]
         public void InteractivePromptTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             sbox.Run($"mkw user add {sbox.DatabasePath}");
@@ -239,7 +243,7 @@ namespace MKW.Tests
         [Test]
         public void CommandLineCreatesAdmin()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
 

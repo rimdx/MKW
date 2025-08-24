@@ -10,27 +10,32 @@ namespace MKW.Tests
         [Test]
         public void AddEntryTests()
         {
-            using MemoryDatabaseSession db = new MemoryDatabaseSession();
+            using SandBox sbox = new SandBox(false);
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
-            UserInfo user = session.PromoteUser("secretprotector");
+            UserInfo admin = session.PromoteAdmin(sbox.AdminSecret);
+
+            sbox.CreateUser(session, "secretprotector", out UserInfo user).Dispose();
             IDatabaseUser[] users = db.EnumerateUsers().ToArray();
             using UserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
 
             EntryInfo entry = session.UpdateEntry(EntryId.FromGuid(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}")),
                                                   new EntryPayload("secret"));
 
-            ClassicAssert.AreEqual(1, db.Database.Users.Count);
-            ClassicAssert.AreEqual(1, db.Database.Entries.Count);
-            ClassicAssert.AreEqual(1, db.Database.Entries.First().Value.Keys.Count);
+            ClassicAssert.AreEqual(1, db.EnumerateUsers().Count());
+            ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
+            ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
 
-            ClassicAssert.AreEqual(entry.Id, EntryId.FromGuid(db.Database.Entries.First().Key));
+            ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
             ClassicAssert.AreEqual(ActionInfo.Added, entry.Action);
 
+            admin.Trust = Trust.FullTrust;
             user.Trust = Trust.FullTrust;
             CollectionAssert.AreEqual(
                 new UserInfo[]
                 {
+                    admin,
                     user
                 },
                 entry.EncodedForUsers);
@@ -42,15 +47,16 @@ namespace MKW.Tests
         [Test]
         public void HiddenEntriesTests()
         {
-            using MemoryDatabaseSession db = new MemoryDatabaseSession();
+            using SandBox sbox = new SandBox();
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
-            UserInfo oldUser = session.PromoteUser("iamanoldman");
+            sbox.CreateUser(session, "iamanoldman", out UserInfo oldUser).Dispose();
 
             session.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
             session.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
 
-            UserInfo newUser = session.PromoteUser("ihatehimbutcantseehisstuff");
+            sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out UserInfo newUser).Dispose();
 
             session.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
 
@@ -120,6 +126,8 @@ namespace MKW.Tests
 
             client.PromoteUser("usersecret");
             using UserSession user = client.OpenUser("usersecret");
+            using AdminSession admin = sbox.OpenAdmin(client);
+            admin.UpdateTrust(user.Id, Trust.FullTrust);
 
             // create
             using Entry entry = client.CreateEntry();
@@ -178,8 +186,7 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            client.PromoteUser("usersecret");
-            using UserSession user = client.OpenUser("usersecret");
+            using UserSession user = sbox.CreateUser(client, "usersecret", out _);
 
             // create
             EntryId id = EntryId.Create();
@@ -210,8 +217,7 @@ namespace MKW.Tests
 
             using (ClientSession client = sbox.OpenSession())
             {
-                client.PromoteUser("usersecret");
-                using UserSession user = client.OpenUser("usersecret");
+                using UserSession user = sbox.CreateUser(client, "usersecret", out _);
 
                 // create
                 using UserEntry entry = user.CreateEntry();
