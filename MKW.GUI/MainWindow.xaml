@@ -10,9 +10,6 @@
         Height="450" Width="800"
         Closed="Window_Closed">
   <Grid>
-    <Grid.ColumnDefinitions>
-
-    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
