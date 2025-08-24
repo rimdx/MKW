@@ -44,7 +44,7 @@ namespace MKW.Core.Client
 
         private IEnumerable<IDatabaseUser> EnumerateDatabaseUsers()
         {
-            yield return Database.OpenAdmin();
+            yield return Database.OpenAdmin(true);
 
             foreach (IDatabaseUser user in Database.EnumerateUsers())
             {
@@ -56,7 +56,7 @@ namespace MKW.Core.Client
         {
             if (id.IsAdmin)
             {
-                return Database.OpenAdmin(); // todo: readonly
+                return Database.OpenAdmin(readOnly);
             }
             else
             {

@@ -8,22 +8,15 @@ namespace MKW.Core.Client
     {
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
-            IDatabaseAdmin admin = Database.OpenAdmin(out bool created);
+            IDatabaseAdmin admin = Database.OpenAdmin(true);
 
-            if (created)
-            {
-                throw new Exception("Admin does not exist.");
-            }
-            else
-            {
-                using AsymmetricTransformer adminKey = AsymmetricTransformer.Open(admin.PublicKey.Span);
+            using AsymmetricTransformer adminKey = AsymmetricTransformer.Open(admin.PublicKey.Span);
 
-                foreach (IDatabaseUser user in EnumerateDatabaseUsers())
-                {
-                    UserInfo notify = UserInfo.FromDatabaseUser(user);
-                    notify.Trust = VerifyTrust(user, admin, adminKey);
-                    yield return notify;
-                }
+            foreach (IDatabaseUser user in EnumerateDatabaseUsers())
+            {
+                UserInfo notify = UserInfo.FromDatabaseUser(user);
+                notify.Trust = VerifyTrust(user, admin, adminKey);
+                yield return notify;
             }
         }
 

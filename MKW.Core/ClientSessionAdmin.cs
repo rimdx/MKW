@@ -13,7 +13,7 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            IDatabaseAdmin admin = Database.OpenAdmin();
+            IDatabaseAdmin admin = Database.CreateAdmin();
 
             admin.PublicKey = systemCreds.PublicKey;
             admin.PrivateKey = systemCreds.PrivateKey;
@@ -26,12 +26,7 @@ namespace MKW.Core.Client
 
         public AdminSession OpenAdmin(string password)
         {
-            IDatabaseAdmin admin = Database.OpenAdmin(out bool created);
-
-            if (created)
-            {
-                throw new InvalidOperationException("Admin user does not exist.");
-            }
+            IDatabaseAdmin admin = Database.OpenAdmin(false);
 
             UserCredentials creds = UserCredentials.Open(password, admin.Salt);
 
