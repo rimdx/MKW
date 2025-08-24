@@ -16,7 +16,7 @@ namespace MKW.Core.Client
 
         public static ClientSession Open(IDatabase db /* reference */)
         {
-            return new ClientSession(db, false);
+            return Open(db, false);
         }
 
         public static ClientSession Open(IDatabase db, bool ownsDb)
