@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage.JSON.Types
 {
-    public record class JSONDatabaseSecretEntry
+    internal record class JSONDatabaseSecretEntry
     {
         public required IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; init; }
 

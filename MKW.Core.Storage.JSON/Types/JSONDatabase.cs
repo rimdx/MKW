@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Storage.JSON.Types
 {
-    public class JSONDatabase
+    internal class JSONDatabase
     {
         public JSONDatabaseAdminUser? Admin { get; set; }
 

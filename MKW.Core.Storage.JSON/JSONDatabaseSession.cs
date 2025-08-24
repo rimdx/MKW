@@ -7,7 +7,7 @@ namespace MKW.Core.Storage.JSON
     {
         private readonly FileStream file;
 
-        protected JSONDatabaseSession(JSONDatabase db, FileStream file)
+        internal JSONDatabaseSession(JSONDatabase db, FileStream file)
             : base(db)
         {
             this.file = file;

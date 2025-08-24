@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Storage.JSON.Interface
 {
-    public record class DatabaseAdminUser : IDatabaseAdmin, ISavable
+    internal record class DatabaseAdminUser : IDatabaseAdmin, ISavable
     {
         protected readonly MemoryDatabaseSession? host;
         private List<ReadOnlyMemory<byte>> trust = new List<ReadOnlyMemory<byte>>();
