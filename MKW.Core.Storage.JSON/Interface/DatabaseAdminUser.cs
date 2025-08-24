@@ -16,7 +16,7 @@ namespace MKW.Core.Storage.JSON.Interface
         {
         }
 
-        public Guid Id => Guid.Empty;
+        public UserId Id => UserId.Admin();
         public ReadOnlyMemory<byte> Salt { get; set; }
         public ReadOnlyMemory<byte> PublicKey { get; set; }
         public ReadOnlyMemory<byte> PrivateKey { get; set; }

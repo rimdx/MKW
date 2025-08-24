@@ -6,18 +6,18 @@ namespace MKW.Core.Storage.JSON.Interface
     {
         protected readonly MemoryDatabaseSession? host;
 
-        internal DatabaseUser(Guid id, MemoryDatabaseSession host)
+        internal DatabaseUser(UserId id, MemoryDatabaseSession host)
             : this(id)
         {
             this.host = host;
         }
 
-        public DatabaseUser(Guid id)
+        public DatabaseUser(UserId id)
         {
             Id = id;
         }
 
-        public Guid Id { get; }
+        public UserId Id { get; }
         public ReadOnlyMemory<byte> Salt { get; set; }
         public ReadOnlyMemory<byte> PublicKey { get; set; }
         public ReadOnlyMemory<byte> PrivateKey { get; set; }
@@ -29,7 +29,7 @@ namespace MKW.Core.Storage.JSON.Interface
                 throw new InvalidOperationException();
             }
 
-            host.Database.Users[Id] = AsJSONObject();
+            host.Database.Users[Id.GetGuid()] = AsJSONObject();
             host.Save();
         }
 

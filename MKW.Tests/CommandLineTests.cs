@@ -145,7 +145,8 @@ namespace MKW.Tests
 
             string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} data1");
 
-            Guid entryId1, userId1;
+            Guid entryId1;
+            UserId userId1;
             using (IDatabase db = sbox.OpenDatabase())
             {
                 entryId1 = db.EnumerateEntries().First().Id;

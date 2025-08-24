@@ -3,12 +3,12 @@
     public interface IDatabase : ISavable, IDisposable
     {
         // User Management
-        IDatabaseUser CreateUser(Guid id);
-        IDatabaseUser OpenUser(Guid id, bool readOnly);
-        bool DeleteUser(Guid id);
+        IDatabaseUser CreateUser(UserId id);
+        IDatabaseUser OpenUser(UserId id, bool readOnly);
+        bool DeleteUser(UserId id);
 
         // ReadOnly
-        bool HasUser(Guid id);
+        bool HasUser(UserId id);
         IEnumerable<IDatabaseUser> EnumerateUsers();
 
         IDatabaseAdmin OpenAdmin(out bool created);

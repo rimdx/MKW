@@ -35,8 +35,8 @@ namespace MKW.Tests
             using UserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
             Assert.Throws<Exception>(
-                () => client.OpenUser(new Guid("{DEADCCCE-69CF-3242-810A-C54B3D490797}"),
-                                       "awesomesecretno1willeverguess")
+                () => client.OpenUser(UserId.Create(),
+                                      "awesomesecretno1willeverguess")
             );
 
             Assert.Throws<CryptographicException>(

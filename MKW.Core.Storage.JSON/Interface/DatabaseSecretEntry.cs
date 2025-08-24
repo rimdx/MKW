@@ -14,12 +14,12 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public DatabaseSecretEntry(Guid id)
         {
-            Keys = new Dictionary<Guid, ReadOnlyMemory<byte>>();
+            Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>();
             Id = id;
         }
 
         public Guid Id { get; }
-        public IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; set; }
+        public IDictionary<UserId, ReadOnlyMemory<byte>> Keys { get; set; }
         public ReadOnlyMemory<byte> Salt { get; set; }
         public ReadOnlyMemory<byte> Data { get; set; }
 
@@ -36,7 +36,11 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public void CopyFrom(JSONDatabaseSecretEntry other)
         {
-            Keys = other.Keys;
+            Keys = other.Keys
+                .Select(pair => new KeyValuePair<UserId, ReadOnlyMemory<byte>>(
+                    UserId.FromGuid(pair.Key), pair.Value))
+                .ToDictionary();
+
             Salt = other.Salt;
             Data = other.Data;
         }
@@ -45,7 +49,10 @@ namespace MKW.Core.Storage.JSON.Interface
         {
             return new JSONDatabaseSecretEntry
             {
-                Keys = Keys,
+                Keys = Keys
+                    .Select(pair => new KeyValuePair<Guid, ReadOnlyMemory<byte>>(
+                        pair.Key.GetGuid(), pair.Value))
+                    .ToDictionary(),
                 Salt = Salt,
                 Data = Data
             };
