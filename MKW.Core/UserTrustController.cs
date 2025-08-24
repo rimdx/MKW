@@ -1,0 +1,43 @@
+﻿using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
+
+namespace MKW.Core.Client
+{
+    public class UserTrustController : UserTrustProvider, IDisposable
+    {
+        public UserTrustController(ClientSession client, UserSession user)
+            : base(client, user.DatabaseUser, user.Transformer)
+        {
+        }
+
+        public void UpdateTrust(UserId userId, Trust trust)
+        {
+            IDatabaseUser user = client.Database.OpenUser(userId, true);
+
+            ReadOnlyMemory<byte> signature = key.Sign(user.PublicKey.Span);
+
+            if (trust == Trust.FullTrust)
+            {
+                me.AddTrust(signature);
+            }
+            else if (trust == Trust.None)
+            {
+                me.DeleteTrust(signature);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid trust value.", nameof(trust));
+            }
+
+            me.Save();
+        }
+
+        public override void Dispose()
+        {
+            // no-op
+
+            // In this case, the UserTrustProvider.key is actually managed by
+            // caller, since the user is given by a reference.
+        }
+    }
+}
