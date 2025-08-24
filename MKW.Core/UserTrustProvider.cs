@@ -11,10 +11,16 @@ namespace MKW.Core.Client
         private readonly AsymmetricTransformer key;
 
         public UserTrustProvider(ClientSession client, IDatabaseUser user)
+            : this(client, user, AsymmetricTransformer.Open(user.PublicKey.Span))
+        {
+        }
+
+        public UserTrustProvider(ClientSession client, IDatabaseUser user,
+                                 AsymmetricTransformer key)
         {
             this.client = client;
             me = user;
-            key = AsymmetricTransformer.Open(user.PublicKey.Span);
+            this.key = key;
         }
 
         public IEnumerable<UserInfo> EnumerateUsersTrust()
