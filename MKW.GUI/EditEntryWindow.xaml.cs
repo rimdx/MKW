@@ -6,7 +6,7 @@ namespace MKW.GUI
     public partial class EditEntryWindow : Window, IDisposable
     {
         private readonly DatabaseModel database;
-        private readonly Entry entry;
+        private readonly UserEntry entry;
 
         public EditEntryWindow(DatabaseModel database, UserEntry entry)
         {
@@ -15,13 +15,6 @@ namespace MKW.GUI
 
             DataContext = this;
             InitializeComponent();
-
-            string? payload = entry.OpenPayload()?.ToString();
-
-            if (payload != null)
-            {
-                Payload.Text = payload;
-            }
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
@@ -33,6 +26,16 @@ namespace MKW.GUI
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string? payload = entry.OpenPayload()?.ToString();
+
+            if (payload != null)
+            {
+                Payload.Text = payload;
+            }
         }
 
         public void Dispose()

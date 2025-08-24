@@ -9,6 +9,7 @@
         Title="Create new secret entry"
         Height="300" Width="400"
         WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
         Closed="Window_Closed">
   <Grid Margin="8">
     <Grid.RowDefinitions>
