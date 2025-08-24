@@ -32,13 +32,6 @@ namespace MKW.Core.Storage.JSON.Interface
             host.Save();
         }
 
-        public void CopyFrom(JSONDatabaseUser obj)
-        {
-            PublicKey = obj.PublicKey;
-            PrivateKey = obj.PrivateKey;
-            Salt = obj.Salt;
-        }
-
         public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
         {
             return trust.AsReadOnly();
