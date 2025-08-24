@@ -23,8 +23,10 @@ namespace MKW.GUI
 
         private void OpenDatabase(DatabaseModel database)
         {
-            DatabaseViewModel dbModel = new DatabaseViewModel(database /* move */);
-            Database.Content = new DatabasePage(dbModel /* reference */);
+            model.Database?.Dispose();
+
+            model.Database = new DatabaseViewModel(database /* move */);
+            Database.Content = new DatabasePage(model.Database /* reference */);
         }
 
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
@@ -76,6 +78,11 @@ namespace MKW.GUI
                     OpenDatabase(database);
                 }
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            model.Database?.Dispose();
         }
     }
 }
