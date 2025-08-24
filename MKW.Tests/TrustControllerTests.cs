@@ -20,15 +20,22 @@ namespace MKW.Tests
             UserInfo adminInfo = client.GetAdminInfo();
 
             adminInfo.Trust = Trust.FullTrust;
-            userInfo.Trust = Trust.None;
 
             CollectionAssert.AreEqual(
                 new UserInfo[]
                 {
-                    adminInfo,
-                    userInfo
                 },
-                trustController.EnumerateUsersTrust());
+                trustController.EnumerateExplicitlyTrustedUsersInfo());
+
+            userInfo.Trust = Trust.FullTrust;
+            adminInfo.Trust = Trust.ImplicitTrust;
+
+            CollectionAssert.AreEqual(
+                new UserInfo[]
+                {
+                    userInfo,
+                },
+                trustController.EnumerateImplicitlyTrustedUsers().ToArray());
         }
     }
 }

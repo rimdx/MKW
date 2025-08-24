@@ -35,6 +35,46 @@ namespace MKW.Core.Client
             }
         }
 
+        public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
+        {
+            UserInfo notify = UserInfo.FromDatabaseUser(me);
+            notify.Trust = Trust.FullTrust;
+
+            yield return notify;
+
+            foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
+            {
+                using UserTrustProvider child = new UserTrustProvider(client, user);
+
+                foreach (UserInfo trust in child.EnumerateUsersTrust())
+                {
+                    trust.Trust = Trust.ImplicitTrust;
+                    yield return trust;
+                }
+            }
+        }
+
+        public IEnumerable<IDatabaseUser> EnumerateExplicitlyTrustedUsers()
+        {
+            foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
+            {
+                if (VerifyTrust2(user) == Trust.FullTrust)
+                {
+                    yield return user;
+                }
+            }
+        }
+
+        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsersInfo()
+        {
+            foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
+            {
+                UserInfo notify = UserInfo.FromDatabaseUser(user);
+                notify.Trust = Trust.FullTrust;
+                yield return notify;
+            }
+        }
+
         private Trust VerifyTrust(IDatabaseUser user)
         {
             // TODO: this is insecure!
@@ -45,6 +85,19 @@ namespace MKW.Core.Client
                 return Trust.FullTrust;
             }
 
+            foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
+            {
+                if (key.Verify(user.PublicKey.Span, trust.Span))
+                {
+                    return Trust.FullTrust;
+                }
+            }
+
+            return Trust.None;
+        }
+
+        private Trust VerifyTrust2(IDatabaseUser user)
+        {
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
                 if (key.Verify(user.PublicKey.Span, trust.Span))
