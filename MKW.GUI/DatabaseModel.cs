@@ -55,6 +55,12 @@ namespace MKW.GUI
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
+        public void UpdateEntry(Entry entry, string text)
+        {
+            entry.UpdatePayload(new EntryPayload(text));
+            OnEntriesChanged?.Invoke(this, new EventArgs());
+        }
+
         public void Dispose()
         {
             Database?.Dispose();

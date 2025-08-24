@@ -1,7 +1,4 @@
 ﻿using Microsoft.Win32;
-using MKW.Core.Client;
-using MKW.Core.Storage;
-using MKW.Core.Storage.JSON;
 using System.ComponentModel;
 using System.Windows;
 
@@ -13,6 +10,7 @@ namespace MKW.GUI
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel model;
+        private DatabasePage? databasePage;
 
         public MainWindow()
         {
@@ -26,7 +24,8 @@ namespace MKW.GUI
         {
             if (e.PropertyName == nameof(model.Database) && model.Database != null)
             {
-                Database.Content = new DatabasePage(model.Database /* reference */);
+                databasePage = new DatabasePage(model.Database /* reference */);
+                Database.Content = databasePage;
             }
         }
 
@@ -90,6 +89,11 @@ namespace MKW.GUI
         {
             NewEntryWindow window = new NewEntryWindow(model.GetDatabase());
             window.ShowDialog();
+        }
+
+        private void EditEntry_Click(object sender, RoutedEventArgs e)
+        {
+            databasePage!.OnEditEntry();
         }
     }
 }

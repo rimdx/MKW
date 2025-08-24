@@ -1,5 +1,4 @@
-﻿using MKW.Core.Client;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace MKW.GUI
 {
@@ -19,10 +18,28 @@ namespace MKW.GUI
                 _database = value;
                 OnPropertyChanged(nameof(Database));
                 OnPropertyChanged(nameof(IsDatabaseAttached));
+                OnPropertyChanged(nameof(IsEntrySelected));
+
+                if (_database != null)
+                {
+                    _database.PropertyChanged += Database_PropertyChanged;
+                }
+            }
+        }
+
+        private void Database_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_database.SelectedEntry))
+            {
+                OnPropertyChanged(nameof(SelectedEntry));
+                OnPropertyChanged(nameof(IsEntrySelected));
             }
         }
 
         public bool IsDatabaseAttached => _database != null;
+
+        public DatabaseEntryModel? SelectedEntry => _database?.SelectedEntry;
+        public bool IsEntrySelected => SelectedEntry != null;
 
         public DatabaseModel GetDatabase()
         {
