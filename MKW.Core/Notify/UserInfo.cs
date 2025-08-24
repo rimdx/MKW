@@ -21,5 +21,15 @@ namespace MKW.Core.Client.Notify
                 PublicKey = user.PublicKey
             };
         }
+
+        internal static UserInfo FromDatabaseUser(IDatabaseUser user, Trust trust)
+        {
+            return new UserInfo
+            {
+                Id = user.Id,
+                PublicKey = user.PublicKey,
+                Trust = trust
+            };
+        }
     }
 }
