@@ -14,6 +14,8 @@ namespace MKW.GUI
         public UserSession? User { get; private set; }
         public AdminSession? Admin { get; private set; }
 
+        public event EventHandler? OnEntriesChanged;
+
         public DatabaseModel(IDatabase database, string path, ClientSession client)
         {
             Path = path;
@@ -50,6 +52,7 @@ namespace MKW.GUI
         {
             using Entry entry = Client.CreateEntry();
             entry.UpdatePayload(new EntryPayload(payload));
+            OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
         public void Dispose()
