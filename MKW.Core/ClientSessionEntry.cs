@@ -5,22 +5,22 @@ namespace MKW.Core.Client
 {
     public partial class ClientSession : IDisposable
     {
-        public Entry OpenEntry(Guid id)
+        public Entry OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = Database.OpenEntry(id, false);
             return new Entry(this, dbEntry);
         }
 
-        public Entry CreateEntry(Guid id)
+        public Entry CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = Database.CreateEntry(id);
             dbEntry.Save();
             return new Entry(this, dbEntry);
         }
 
-        public Entry CreateEntry() => CreateEntry(Guid.NewGuid());
+        public Entry CreateEntry() => CreateEntry(EntryId.Create());
 
-        public EntryInfo DeleteEntry(Guid id)
+        public EntryInfo DeleteEntry(EntryId id)
         {
             Database.DeleteEntry(id);
 
@@ -32,7 +32,7 @@ namespace MKW.Core.Client
             };
         }
 
-        public Entry EnsureEntry(Guid id, out bool created)
+        public Entry EnsureEntry(EntryId id, out bool created)
         {
             created = !Database.HasEntry(id);
 
@@ -46,7 +46,7 @@ namespace MKW.Core.Client
             }
         }
 
-        public EntryInfo UpdateEntry(Guid id, EntryPayload? payload)
+        public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
         {
             if (payload == null)
             {

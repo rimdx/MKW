@@ -60,8 +60,8 @@ namespace MKW.Tests
             UserInfo user1 = client.PromoteUser("amogus");
             UserInfo user2 = client.PromoteUser("r34");
 
-            client.UpdateEntry(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}"), new EntryPayload("sus1"));
-            client.UpdateEntry(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}"), new EntryPayload("sus2"));
+            client.UpdateEntry(EntryId.FromGuid(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}")), new EntryPayload("sus1"));
+            client.UpdateEntry(EntryId.FromGuid(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}")), new EntryPayload("sus2"));
 
             client.Dispose();
 
@@ -89,12 +89,12 @@ namespace MKW.Tests
             {
                 UserInfo oldUser = client.PromoteUser("iamanoldman");
 
-                client.UpdateEntry(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}"), new EntryPayload("entry1"));
-                client.UpdateEntry(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}"), new EntryPayload("entry2"));
+                client.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
+                client.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
 
                 UserInfo newUser = client.PromoteUser("ihatehimbutcantseehisstuff");
 
-                client.UpdateEntry(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}"), new EntryPayload("entry3"));
+                client.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
             }
 
             {
@@ -145,7 +145,7 @@ namespace MKW.Tests
 
             string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} data1");
 
-            Guid entryId1;
+            EntryId entryId1;
             UserId userId1;
             using (IDatabase db = sbox.OpenDatabase())
             {
@@ -186,7 +186,7 @@ namespace MKW.Tests
 
             string output2 = sbox.Run($"mkw entry add {sbox.DatabasePath} data2");
 
-            Guid entryId2;
+            EntryId entryId2;
             using (IDatabase db = sbox.OpenDatabase())
             {
                 entryId2 = db.EnumerateEntries().ToArray()[1].Id;

@@ -22,22 +22,22 @@ namespace MKW.Core.Client
             Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
         }
 
-        public UserEntry OpenEntry(Guid id)
+        public UserEntry OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
             return new UserEntry(client, this, dbEntry);
         }
 
-        public UserEntry CreateEntry(Guid id)
+        public UserEntry CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
             dbEntry.Save();
             return new UserEntry(client, this, dbEntry);
         }
 
-        public UserEntry CreateEntry() => CreateEntry(Guid.NewGuid());
+        public UserEntry CreateEntry() => CreateEntry(EntryId.Create());
 
-        public EntryInfo DeleteEntry(Guid id)
+        public EntryInfo DeleteEntry(EntryId id)
         {
             client.Database.DeleteEntry(id);
 
@@ -49,7 +49,7 @@ namespace MKW.Core.Client
             };
         }
 
-        public UserEntry EnsureEntry(Guid id, out bool created)
+        public UserEntry EnsureEntry(EntryId id, out bool created)
         {
             created = !client.Database.HasEntry(id);
 

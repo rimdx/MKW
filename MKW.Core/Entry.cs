@@ -9,7 +9,7 @@ namespace MKW.Core.Client
         protected readonly ClientSession client;
         protected readonly IDatabaseEntry entry;
 
-        public Guid Id => entry.Id;
+        public EntryId Id => entry.Id;
 
         public Entry(ClientSession client, IDatabaseEntry entry)
         {

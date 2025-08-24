@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -65,7 +66,7 @@ namespace MKW.Tests
             using AdminSession admin = client.OpenAdmin("admin");
 
             admin.UpdateTrust(trusted.Id, Trust.FullTrust);
-            EntryInfo entry = client.UpdateEntry(Guid.NewGuid(), new EntryPayload("test data"));
+            EntryInfo entry = client.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
 
             {
                 using UserSession user = client.OpenUser("trusted");

@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
 using System.CommandLine;
 
 namespace MKW
@@ -17,7 +18,7 @@ namespace MKW
 
             using ClientSession session = OpenSession(argv);
 
-            EntryInfo entry = session.UpdateEntry(Guid.NewGuid(), new EntryPayload(payload));
+            EntryInfo entry = session.UpdateEntry(EntryId.Create(), new EntryPayload(payload));
 
             Console.WriteLine($"{entry.Action}: {entry.Id} for {entry.EncodedForUsers.Count} users");
         }
