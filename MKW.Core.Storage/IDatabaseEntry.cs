@@ -2,7 +2,7 @@
 {
     public interface IDatabaseEntry : ISavable
     {
-        Guid Id { get; }
+        EntryId Id { get; }
 
         // User -> Payload
         IDictionary<UserId, ReadOnlyMemory<byte>> Keys { get; set; }

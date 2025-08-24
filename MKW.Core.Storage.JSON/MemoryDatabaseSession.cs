@@ -82,9 +82,9 @@ namespace MKW.Core.Storage.JSON
             return result;
         }
 
-        public IDatabaseEntry CreateEntry(Guid id)
+        public IDatabaseEntry CreateEntry(EntryId id)
         {
-            if (Database.Entries.ContainsKey(id))
+            if (Database.Entries.ContainsKey(id.GetGuid()))
             {
                 throw new Exception("Entry already exists.");
             }
@@ -92,12 +92,12 @@ namespace MKW.Core.Storage.JSON
             return new DatabaseSecretEntry(id, this);
         }
 
-        public IDatabaseEntry OpenEntry(Guid id, bool readOnly)
+        public IDatabaseEntry OpenEntry(EntryId id, bool readOnly)
         {
             DatabaseSecretEntry result = readOnly ? new DatabaseSecretEntry(id)
                                                   : new DatabaseSecretEntry(id, this);
 
-            if (Database.Entries.TryGetValue(id, out JSONDatabaseSecretEntry? entry))
+            if (Database.Entries.TryGetValue(id.GetGuid(), out JSONDatabaseSecretEntry? entry))
             {
                 result.CopyFrom(entry);
                 return result;
@@ -108,21 +108,21 @@ namespace MKW.Core.Storage.JSON
             }
         }
 
-        public bool DeleteEntry(Guid id)
+        public bool DeleteEntry(EntryId id)
         {
-            return Database.Entries.Remove(id);
+            return Database.Entries.Remove(id.GetGuid());
         }
 
-        public bool HasEntry(Guid id)
+        public bool HasEntry(EntryId id)
         {
-            return Database.Entries.ContainsKey(id);
+            return Database.Entries.ContainsKey(id.GetGuid());
         }
 
         public IEnumerable<IDatabaseEntry> EnumerateEntries()
         {
             foreach (KeyValuePair<Guid, JSONDatabaseSecretEntry> item in Database.Entries)
             {
-                DatabaseSecretEntry result = new DatabaseSecretEntry(item.Key);
+                DatabaseSecretEntry result = new DatabaseSecretEntry(EntryId.FromGuid(item.Key));
                 result.CopyFrom(item.Value);
                 yield return result;
             }

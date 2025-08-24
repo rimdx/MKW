@@ -15,12 +15,12 @@
         IDatabaseAdmin OpenAdmin() => OpenAdmin(out _);
 
         // Entry Management
-        IDatabaseEntry CreateEntry(Guid id);
-        IDatabaseEntry OpenEntry(Guid id, bool readOnly);
-        bool DeleteEntry(Guid id);
+        IDatabaseEntry CreateEntry(EntryId id);
+        IDatabaseEntry OpenEntry(EntryId id, bool readOnly);
+        bool DeleteEntry(EntryId id);
 
         // ReadOnly
-        bool HasEntry(Guid id);
+        bool HasEntry(EntryId id);
         IEnumerable<IDatabaseEntry> EnumerateEntries();
     }
 }

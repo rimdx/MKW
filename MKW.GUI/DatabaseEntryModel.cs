@@ -1,8 +1,10 @@
-﻿namespace MKW.GUI
+﻿using MKW.Core.Storage;
+
+namespace MKW.GUI
 {
     public class DatabaseEntryModel
     {
-        public required Guid Id { get; init; }
+        public required EntryId Id { get; init; }
         public required string? Payload { get; init; }
     }
 }
