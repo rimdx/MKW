@@ -17,16 +17,17 @@ namespace MKW.GUI
         public MainWindow()
         {
             model = new MainWindowViewModel();
+            model.PropertyChanged += Model_PropertyChanged;
             DataContext = model;
             InitializeComponent();
         }
 
-        private void OpenDatabase(DatabaseModel database)
+        private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            model.Database?.Dispose();
-
-            model.Database = new DatabaseViewModel(database /* move */);
-            Database.Content = new DatabasePage(model.Database /* reference */);
+            if (e.PropertyName == nameof(model.Database) && model.Database != null)
+            {
+                Database.Content = new DatabasePage(model.Database /* reference */);
+            }
         }
 
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
@@ -49,7 +50,7 @@ namespace MKW.GUI
 
                 if (createDatabaseViewModel.Database != null)
                 {
-                    OpenDatabase(createDatabaseViewModel.Database);
+                    model.Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
                 }
             }
         }
@@ -75,7 +76,7 @@ namespace MKW.GUI
                 }
                 else
                 {
-                    OpenDatabase(database);
+                    model.Database = new DatabaseViewModel(database /* move */);
                 }
             }
         }
