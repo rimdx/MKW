@@ -42,15 +42,37 @@ namespace MKW.Core.Client
             }
         }
 
+        private IEnumerable<IDatabaseUser> EnumerateDatabaseUsers()
+        {
+            yield return Database.OpenAdmin();
+
+            foreach (IDatabaseUser user in Database.EnumerateUsers())
+            {
+                yield return user;
+            }
+        }
+
+        private IDatabaseUser OpenDatabaseUser(UserId id, bool readOnly)
+        {
+            if (id.IsAdmin)
+            {
+                return Database.OpenAdmin(); // todo: readonly
+            }
+            else
+            {
+                return Database.OpenUser(id, readOnly);
+            }
+        }
+
         public UserSession OpenUser(string password)
         {
-            foreach (IDatabaseUser user in Database.EnumerateUsers())
+            foreach (IDatabaseUser user in EnumerateDatabaseUsers())
             {
                 try
                 {
                     UserCredentials creds = UserCredentials.Open(password, user.Salt);
 
-                    return OpenUser(Database.OpenUser(user.Id, false), creds);
+                    return OpenUser(OpenDatabaseUser(user.Id, false), creds);
                 }
                 catch (CryptographicException)
                 {

@@ -95,9 +95,9 @@ namespace MKW.Tests
             {
             }
 
-            //using (UserSession admin = client.OpenUser("adminsecret"))
-            //{
-            //}
+            using (UserSession admin = client.OpenUser("adminsecret"))
+            {
+            }
         }
     }
 }
