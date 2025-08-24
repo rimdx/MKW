@@ -184,7 +184,7 @@ Version '0' uses the following set of cryptographic algorithms:
 
 ### Storage
 
-- Since 0.1.0 the only storage provider is JSON-encoded single-file database.
+- Since 0.1.0 the only storage implementation is JSON-encoded single-file database.
 
 TODO: discuss format?
 
