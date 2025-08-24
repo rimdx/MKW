@@ -6,9 +6,9 @@ namespace MKW.Core.Client
 {
     public class UserTrustProvider : IDisposable
     {
-        private readonly ClientSession client;
-        private readonly IDatabaseUser me;
-        private readonly AsymmetricTransformer key;
+        protected readonly ClientSession client;
+        protected readonly IDatabaseUser me;
+        protected readonly AsymmetricTransformer key;
 
         public UserTrustProvider(ClientSession client, IDatabaseUser user)
             : this(client, user, AsymmetricTransformer.Open(user.PublicKey.Span))
@@ -56,7 +56,7 @@ namespace MKW.Core.Client
             return Trust.None;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             key.Dispose();
         }

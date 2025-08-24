@@ -7,9 +7,10 @@ namespace MKW.Core.Client
     public class UserSession : IDisposable
     {
         protected readonly ClientSession client;
-        private readonly IDatabaseUser user;
 
-        public UserId Id => user.Id;
+        internal IDatabaseUser DatabaseUser { get; }
+
+        public UserId Id => DatabaseUser.Id;
         public AsymmetricTransformer Transformer { get; }
 
         public UserSession(ClientSession client /* reference */,
@@ -17,7 +18,7 @@ namespace MKW.Core.Client
                            ReadOnlySpan<byte> privateKey)
         {
             this.client = client;
-            this.user = user;
+            DatabaseUser = user;
 
             Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
         }

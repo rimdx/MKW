@@ -5,36 +5,18 @@ namespace MKW.Core.Client
 {
     public class AdminSession : UserSession, IDisposable
     {
-        private readonly IDatabaseUser admin;
-
         public AdminSession(ClientSession client /* reference */,
                             IDatabaseUser admin /* reference */,
                             ReadOnlySpan<byte> privateKey)
             : base(client, admin, privateKey)
         {
-            this.admin = admin;
         }
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
-            IDatabaseUser user = client.Database.OpenUser(userId, true);
+            using UserTrustController trustController = new UserTrustController(client, this);
 
-            ReadOnlyMemory<byte> signature = Transformer.Sign(user.PublicKey.Span);
-
-            if (trust == Trust.FullTrust)
-            {
-                admin.AddTrust(signature);
-            }
-            else if (trust == Trust.None)
-            {
-                admin.DeleteTrust(signature);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid trust value.", nameof(trust));
-            }
-
-            admin.Save();
+            trustController.UpdateTrust(userId, trust);
         }
     }
 }
