@@ -36,10 +36,10 @@
         <MenuItem Header="_Exit" />
       </MenuItem>
       <MenuItem Header="Entry">
-        <MenuItem Header="Add Entry" />
-        <MenuItem Header="Edit Entry" />
-        <MenuItem Header="Delete Entry" />
-        <MenuItem Header="Duplicate Entry" />
+        <MenuItem Header="Add Entry" Click="AddEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
+        <MenuItem Header="Edit Entry" IsEnabled="{Binding IsDatabaseAttached}" />
+        <MenuItem Header="Delete Entry" IsEnabled="{Binding IsDatabaseAttached}" />
+        <MenuItem Header="Duplicate Entry" IsEnabled="{Binding IsDatabaseAttached}" />
       </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet" />

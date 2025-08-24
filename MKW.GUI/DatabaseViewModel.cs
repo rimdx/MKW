@@ -6,7 +6,7 @@ namespace MKW.GUI
 {
     public class DatabaseViewModel : INotifyPropertyChanged, IDisposable
     {
-        private readonly DatabaseModel database;
+        public DatabaseModel Database { get; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -23,14 +23,14 @@ namespace MKW.GUI
                 });
             }
 
-            this.database = database;
+            Database = database;
         }
 
         public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
 
         public void Dispose()
         {
-            database.Dispose();
+            Database.Dispose();
         }
     }
 }

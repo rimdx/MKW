@@ -18,7 +18,20 @@ namespace MKW.GUI
                 _database?.Dispose();
                 _database = value;
                 OnPropertyChanged(nameof(Database));
+                OnPropertyChanged(nameof(IsDatabaseAttached));
             }
+        }
+
+        public bool IsDatabaseAttached => _database != null;
+
+        public DatabaseModel GetDatabase()
+        {
+            if (_database == null)
+            {
+                throw new Exception("No database is attached.");
+            }
+
+            return _database.Database;
         }
 
         private void OnPropertyChanged(string propertyName)
