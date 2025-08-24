@@ -42,7 +42,7 @@ namespace MKW.GUI
         {
             Client.PromoteAdmin(password);
             Admin = Client.OpenAdmin(password);
-            // TODO: User = Admin;
+            User = Admin;
         }
 
         public void Dispose()
