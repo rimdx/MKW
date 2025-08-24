@@ -15,6 +15,12 @@ namespace MKW.GUI
             InitializeComponent();
         }
 
+        public void OnAddEntry()
+        {
+            NewEntryWindow window = new NewEntryWindow(model.Database);
+            window.ShowDialog();
+        }
+
         public void OnEditEntry()
         {
             if (model.SelectedEntry == null)
