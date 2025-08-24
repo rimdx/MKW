@@ -101,7 +101,7 @@ namespace MKW.GUI
 
         private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
-            databasePage!.OnEditEntry();
+            databasePage!.OnAddEntry();
         }
 
         private void EditEntry_Click(object sender, RoutedEventArgs e)
