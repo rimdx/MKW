@@ -1,6 +1,7 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using MKW.Core.Storage.JSON;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -11,7 +12,7 @@ namespace MKW.Tests
         public void AddEntryTests()
         {
             using SandBox sbox = new SandBox(false);
-            using IDatabase db = sbox.OpenDatabase();
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
             using ClientSession session = ClientSession.Open(db);
 
             UserInfo admin = session.PromoteAdmin(sbox.AdminSecret);

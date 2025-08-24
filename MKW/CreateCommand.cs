@@ -13,9 +13,7 @@ namespace MKW
 
         protected override void Execute(ParseResult argv)
         {
-            using JSONDatabaseSession db = JSONDatabaseSession.Open(
-                GetFilePath(argv),
-                Core.Storage.DatabaseOpenMode.OpenOrCreate);
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(GetFilePath(argv));
 
             using ClientSession client = ClientSession.Open(db);
 
