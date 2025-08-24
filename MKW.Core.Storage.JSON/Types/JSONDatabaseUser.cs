@@ -7,5 +7,7 @@
         public required ReadOnlyMemory<byte> PublicKey { get; init; }
 
         public required ReadOnlyMemory<byte> PrivateKey { get; init; }
+
+        public required List<ReadOnlyMemory<byte>> Trust { get; init; }
     }
 }
