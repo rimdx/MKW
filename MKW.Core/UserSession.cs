@@ -6,7 +6,7 @@ namespace MKW.Core.Client
 {
     public class UserSession : IDisposable
     {
-        private readonly ClientSession client;
+        protected readonly ClientSession client;
         private readonly IDatabaseUser user;
 
         public Guid Id => user.Id;
