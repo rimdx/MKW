@@ -33,8 +33,11 @@ namespace MKW.GUI
             {
                 _selectedEntry = value;
                 OnPropertyChanged(nameof(SelectedEntry));
+                OnPropertyChanged(nameof(IsEntrySelected));
             }
         }
+
+        public bool IsEntrySelected => _selectedEntry != null;
 
         public void RefreshEntries()
         {
