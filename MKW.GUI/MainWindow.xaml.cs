@@ -85,5 +85,11 @@ namespace MKW.GUI
         {
             model.Dispose();
         }
+
+        private void AddEntry_Click(object sender, RoutedEventArgs e)
+        {
+            NewEntryWindow window = new NewEntryWindow(model.GetDatabase());
+            window.ShowDialog();
+        }
     }
 }
