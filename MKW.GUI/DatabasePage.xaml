@@ -13,7 +13,10 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <ListView Grid.Row="1" ItemsSource="{Binding Entries}">
+    <ListView Grid.Row="1"
+              ItemsSource="{Binding Entries}"
+              SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
+              MouseDoubleClick="EntryListView_MouseDoubleClick">
       <ListView.View>
         <GridView>
           <GridView.Columns>

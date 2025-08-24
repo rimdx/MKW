@@ -25,6 +25,17 @@ namespace MKW.GUI
 
         public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
 
+        private DatabaseEntryModel? _selectedEntry;
+        public DatabaseEntryModel? SelectedEntry
+        {
+            get => _selectedEntry;
+            set
+            {
+                _selectedEntry = value;
+                OnPropertyChanged(nameof(SelectedEntry));
+            }
+        }
+
         public void RefreshEntries()
         {
             Entries.Clear();
@@ -36,6 +47,14 @@ namespace MKW.GUI
                     Id = entry.Id,
                     Payload = entry.OpenPayload()?.ToString()
                 });
+            }
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
