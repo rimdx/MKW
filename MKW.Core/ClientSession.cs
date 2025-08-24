@@ -26,10 +26,10 @@ namespace MKW.Core.Client
 
         public static ClientSession Create(IDatabase db /* reference */, string adminPassword)
         {
-            return Create(db, adminPassword, false);
+            return Create(db, false, adminPassword);
         }
 
-        public static ClientSession Create(IDatabase db, string adminPassword, bool ownsDb)
+        public static ClientSession Create(IDatabase db, bool ownsDb, string adminPassword)
         {
             ClientSession client = new ClientSession(db, ownsDb);
             client.PromoteAdmin(adminPassword);
