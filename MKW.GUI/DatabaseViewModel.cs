@@ -12,9 +12,18 @@ namespace MKW.GUI
 
         public DatabaseViewModel(DatabaseModel database)
         {
+            Database = database;
             Entries = [];
+            RefreshEntries();
+        }
 
-            foreach (UserEntry entry in database.User!.EnumerateEntries())
+        public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
+
+        public void RefreshEntries()
+        {
+            Entries.Clear();
+
+            foreach (UserEntry entry in Database.User!.EnumerateEntries())
             {
                 Entries.Add(new DatabaseEntryModel
                 {
@@ -22,11 +31,7 @@ namespace MKW.GUI
                     Payload = entry.OpenPayload()?.ToString()
                 });
             }
-
-            Database = database;
         }
-
-        public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
 
         public void Dispose()
         {
