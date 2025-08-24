@@ -89,7 +89,7 @@ namespace MKW.Tests
             return client.OpenAdmin(AdminSecret);
         }
 
-        public UserSession CreateUser(ClientSession client, string password, out UserInfo user, Trust trust = Trust.FullTrust)
+        public UserSession CreateUser(ClientSession client, string password, out UserInfo user, Trust trust = Trust.ExplicitTrust)
         {
             using AdminSession admin = OpenAdmin(client);
             user = client.PromoteUser(password);

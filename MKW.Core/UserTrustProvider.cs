@@ -38,7 +38,7 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
             UserInfo notify = UserInfo.FromDatabaseUser(me);
-            notify.Trust = Trust.FullTrust;
+            notify.Trust = Trust.ExplicitTrust;
 
             yield return notify;
 
@@ -58,7 +58,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
-                if (VerifyTrust2(user) == Trust.FullTrust)
+                if (VerifyTrust2(user) == Trust.ExplicitTrust)
                 {
                     yield return user;
                 }
@@ -70,7 +70,7 @@ namespace MKW.Core.Client
             foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
             {
                 UserInfo notify = UserInfo.FromDatabaseUser(user);
-                notify.Trust = Trust.FullTrust;
+                notify.Trust = Trust.ExplicitTrust;
                 yield return notify;
             }
         }
@@ -82,14 +82,14 @@ namespace MKW.Core.Client
             {
                 // We always trust admins.
                 // TODO: sign admins to handle potential fake admins
-                return Trust.FullTrust;
+                return Trust.ExplicitTrust;
             }
 
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
                 if (key.Verify(user.PublicKey.Span, trust.Span))
                 {
-                    return Trust.FullTrust;
+                    return Trust.ExplicitTrust;
                 }
             }
 
@@ -102,7 +102,7 @@ namespace MKW.Core.Client
             {
                 if (key.Verify(user.PublicKey.Span, trust.Span))
                 {
-                    return Trust.FullTrust;
+                    return Trust.ExplicitTrust;
                 }
             }
 

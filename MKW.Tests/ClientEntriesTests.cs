@@ -30,8 +30,8 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
             ClassicAssert.AreEqual(ActionInfo.Added, entry.Action);
 
-            admin.Trust = Trust.FullTrust;
-            user.Trust = Trust.FullTrust;
+            admin.Trust = Trust.ExplicitTrust;
+            user.Trust = Trust.ExplicitTrust;
             CollectionAssert.AreEqual(
                 new UserInfo[]
                 {
@@ -126,7 +126,7 @@ namespace MKW.Tests
             client.PromoteUser("usersecret");
             using UserSession user = client.OpenUser("usersecret");
             using AdminSession admin = sbox.OpenAdmin(client);
-            admin.UpdateTrust(user.Id, Trust.FullTrust);
+            admin.UpdateTrust(user.Id, Trust.ExplicitTrust);
 
             // create
             using Entry entry = client.CreateEntry();
