@@ -40,5 +40,15 @@ namespace MKW.GUI
         {
             OnEditEntry();
         }
+
+        private void AddEntry_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            OnAddEntry();
+        }
+
+        private void EditEntry_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            OnEditEntry();
+        }
     }
 }

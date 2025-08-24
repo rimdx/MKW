@@ -17,6 +17,18 @@
               ItemsSource="{Binding Entries}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
               MouseDoubleClick="EntryListView_MouseDoubleClick">
+      <ListView.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="_Copy payload" IsEnabled="{Binding IsEntrySelected}" />
+          <Separator />
+          <MenuItem Header="_Add Entry" Click="AddEntry_Click" />
+          <MenuItem Header="_Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
+          <MenuItem Header="Duplicate Entry" IsEnabled="{Binding IsEntrySelected}" />
+          <MenuItem Header="_Delete Entry" IsEnabled="{Binding IsEntrySelected}" />
+          <Separator />
+          <MenuItem Header="Select All" />
+        </ContextMenu>
+      </ListView.ContextMenu>
       <ListView.View>
         <GridView>
           <GridView.Columns>
