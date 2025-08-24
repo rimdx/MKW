@@ -175,12 +175,12 @@ users, but, technically, they could manually choose who to share data with.
 
 ### Cryptography
 
-Version '0' uses the following set of cryptographic algorithms:
+Version `0` uses the following set of cryptographic algorithms:
 
-- Password Derivation: PBKDF2 (C# Rfc2898DeriveBytes.Pbkdf2())
-- Symmetric transformations: AES (C# Aes.Create())
-- Asymmetric transformations: RSA with PKCS #1 padding (C# RSA.Create())
-- Hash algorithm: SHA256
+- Password Derivation: **PBKDF2** (C# `Rfc2898DeriveBytes.Pbkdf2()`)
+- Symmetric transformations: **AES** (C# `Aes.Create()`)
+- Asymmetric transformations: **RSA** with **PKCS #1** padding (C# `RSA.Create()`)
+- Hash algorithm: **SHA256**
 
 ### Storage
 
