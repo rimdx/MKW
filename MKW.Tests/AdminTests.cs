@@ -1,6 +1,7 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using MKW.Core.Storage.JSON;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -12,7 +13,8 @@ namespace MKW.Tests
         public void AddOpenSimpleTest()
         {
             using SandBox sbox = new SandBox(false);
-            using ClientSession client = sbox.OpenSession();
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
+            using ClientSession client = ClientSession.Open(db);
 
             UserInfo admin = client.PromoteAdmin("adminsecret");
 
@@ -23,7 +25,8 @@ namespace MKW.Tests
         public void UpdateTrustTest()
         {
             using SandBox sbox = new SandBox(false);
-            using ClientSession client = sbox.OpenSession();
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
+            using ClientSession client = ClientSession.Open(db);
 
             UserInfo admin = client.PromoteAdmin("adminsecret");
             AdminSession adminSession = client.OpenAdmin("adminsecret");
@@ -126,7 +129,8 @@ namespace MKW.Tests
         public void ClientMustFailOperationIfNoAdminExist()
         {
             using SandBox sbox = new SandBox(false);
-            using ClientSession client = sbox.OpenSession();
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
+            using ClientSession client = ClientSession.Open(db);
 
             Assert.Throws<Exception>(() => client.PromoteUser("user"));
             using Entry entry = client.CreateEntry();

@@ -26,7 +26,7 @@ namespace MKW
 
         protected IDatabase OpenDatabase(ParseResult argv)
         {
-            return JSONDatabaseSession.Open(GetFilePath(argv), DatabaseOpenMode.Open);
+            return JSONDatabaseSession.Open(GetFilePath(argv), false);
         }
 
         protected ClientSession OpenSession(ParseResult argv)

@@ -13,33 +13,29 @@ namespace MKW.Core.Storage.JSON
             this.file = file;
         }
 
-        public static JSONDatabaseSession Open(string path, DatabaseOpenMode mode)
+        public static JSONDatabaseSession Open(string path, bool readOnly)
         {
-            if (File.Exists(path))
-            {
-                FileStream file = new FileStream(path,
-                                                 mode.GetNativeFileMode(),
-                                                 mode.GetNativeFileAccess());
+            FileStream file = File.Open(path,
+                                        FileMode.Open,
+                                        readOnly ? FileAccess.Read : FileAccess.ReadWrite);
 
-                JSONDatabase database = JsonSerializer.Deserialize<JSONDatabase>(file)!;
+            JSONDatabase database = JsonSerializer.Deserialize<JSONDatabase>(file)!;
 
-                return new JSONDatabaseSession(database, file /* move */);
-            }
-            else
-            {
-                FileStream file = new FileStream(path,
-                                                 mode.GetNativeFileMode(),
-                                                 mode.GetNativeFileAccess());
+            return new JSONDatabaseSession(database, file /* move */);
+        }
 
-                JSONDatabase database = new JSONDatabase();
+        public static JSONDatabaseSession Create(string path)
+        {
+            FileStream file = File.Create(path);
 
-                JSONDatabaseSession session = new JSONDatabaseSession(database, file /* move */);
+            JSONDatabase database = new JSONDatabase();
 
-                // Writes empty database to file to the disk
-                session.Save();
+            JSONDatabaseSession session = new JSONDatabaseSession(database, file /* move */);
 
-                return session;
-            }
+            // Writes empty database to file to the disk
+            session.Save();
+
+            return session;
         }
 
         public override void Save()

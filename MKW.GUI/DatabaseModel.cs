@@ -23,13 +23,13 @@ namespace MKW.GUI
 
         public static DatabaseModel Open(string path)
         {
-            JSONDatabaseSession db = JSONDatabaseSession.Open(path, DatabaseOpenMode.Open);
+            JSONDatabaseSession db = JSONDatabaseSession.Open(path, false);
             return new DatabaseModel(db, path);
         }
 
         public static DatabaseModel Create(string path)
         {
-            JSONDatabaseSession db = JSONDatabaseSession.Open(path, DatabaseOpenMode.OpenOrCreate);
+            JSONDatabaseSession db = JSONDatabaseSession.Create(path);
             return new DatabaseModel(db, path);
         }
 
