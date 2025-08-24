@@ -20,9 +20,13 @@
 
     <Label Grid.Row="0"
            Content="Entry content:"
-           FontWeight="Bold" />
+           FontWeight="Bold"
+           Target="Payload" />
 
-    <TextBox Grid.Row="2" Text="{Binding Payload}" />
+    <TextBox Grid.Row="2"
+             x:Name="Payload"
+             FontFamily="Consolas"
+             AcceptsReturn="True" />
 
     <Grid Grid.Row="4">
       <Grid.ColumnDefinitions>

@@ -1,13 +1,10 @@
-﻿using MKW.Core.Client;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MKW.GUI
 {
     public partial class NewEntryWindow : Window
     {
         private readonly DatabaseModel database;
-
-        public string Payload { get; set; } = "";
 
         public NewEntryWindow(DatabaseModel database)
         {
@@ -18,7 +15,7 @@ namespace MKW.GUI
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            database.CreateEntry(Payload);
+            database.CreateEntry(Payload.Text);
             Close();
         }
 
