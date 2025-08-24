@@ -45,7 +45,7 @@ namespace MKW.Core.Client
             }
         }
 
-        private IEnumerable<IDatabaseUser> EnumerateDatabaseUsers()
+        internal IEnumerable<IDatabaseUser> EnumerateDatabaseUsers()
         {
             yield return Database.OpenAdmin(true);
 
