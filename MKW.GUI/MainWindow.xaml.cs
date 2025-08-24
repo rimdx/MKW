@@ -17,7 +17,11 @@ namespace MKW.GUI
             model = new MainWindowViewModel();
             model.PropertyChanged += Model_PropertyChanged;
             DataContext = model;
+
             InitializeComponent();
+
+            StartPage.OpenDatabaseClicked += (sender, e) => OnOpenDatabase();
+            StartPage.NewDatabaseClicked += (sender, e) => OnNewDatabase();
         }
 
         private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -29,7 +33,7 @@ namespace MKW.GUI
             }
         }
 
-        private void NewDatabase_Click(object sender, RoutedEventArgs e)
+        private void OnNewDatabase()
         {
             FileDialog dialog = new SaveFileDialog
             {
@@ -54,7 +58,7 @@ namespace MKW.GUI
             }
         }
 
-        private void OpenDatabase_Click(object sender, RoutedEventArgs e)
+        private void OnOpenDatabase()
         {
             FileDialog dialog = new OpenFileDialog
             {
@@ -78,6 +82,16 @@ namespace MKW.GUI
                     model.Database = new DatabaseViewModel(database /* move */);
                 }
             }
+        }
+
+        private void NewDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            OnNewDatabase();
+        }
+
+        private void OpenDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            OnOpenDatabase();
         }
 
         private void Window_Closed(object sender, EventArgs e)

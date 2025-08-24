@@ -39,7 +39,7 @@
 
         <images:OpenFile Grid.Row="2" />
         <TextBlock Grid.Column="1" Grid.Row="2">
-        <Hyperlink>Open Database</Hyperlink>
+        <Hyperlink Click="OpenDatabase_Click">Open Database</Hyperlink>
         </TextBlock>
       </Grid>
 
@@ -52,7 +52,7 @@
         <images:NewDocument Grid.Row="4" />
 
         <TextBlock Grid.Column="1" Grid.Row="4">
-          <Hyperlink>Create New Database</Hyperlink>
+          <Hyperlink Click="NewDatabase_Click">Create New Database</Hyperlink>
         </TextBlock>
       </Grid>
       
