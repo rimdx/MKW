@@ -8,7 +8,7 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
             IDatabaseUser admin = Database.OpenAdmin(true);
-            UserTrustProvider trust = new UserTrustProvider(this, admin);
+            using UserTrustProvider trust = new UserTrustProvider(this, admin);
 
             return trust.EnumerateUsersTrust();
         }
