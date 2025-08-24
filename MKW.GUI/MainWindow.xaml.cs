@@ -82,7 +82,7 @@ namespace MKW.GUI
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            model.Database?.Dispose();
+            model.Dispose();
         }
     }
 }
