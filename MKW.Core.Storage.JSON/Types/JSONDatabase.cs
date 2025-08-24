@@ -4,7 +4,7 @@ namespace MKW.Core.Storage.JSON.Types
 {
     internal class JSONDatabase
     {
-        public JSONDatabaseAdminUser? Admin { get; set; }
+        public JSONDatabaseUser? Admin { get; set; }
 
         [JsonRequired]
         public IDictionary<Guid, JSONDatabaseUser> Users { get; init; }

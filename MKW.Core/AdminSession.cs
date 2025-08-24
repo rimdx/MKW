@@ -5,10 +5,10 @@ namespace MKW.Core.Client
 {
     public class AdminSession : UserSession, IDisposable
     {
-        private readonly IDatabaseAdmin admin;
+        private readonly IDatabaseUser admin;
 
         public AdminSession(ClientSession client /* reference */,
-                            IDatabaseAdmin admin /* reference */,
+                            IDatabaseUser admin /* reference */,
                             ReadOnlySpan<byte> privateKey)
             : base(client, admin, privateKey)
         {

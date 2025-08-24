@@ -8,7 +8,7 @@ namespace MKW.Core.Client
     {
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
-            IDatabaseAdmin admin = Database.OpenAdmin(true);
+            IDatabaseUser admin = Database.OpenAdmin(true);
 
             using AsymmetricTransformer adminKey = AsymmetricTransformer.Open(admin.PublicKey.Span);
 
@@ -20,9 +20,10 @@ namespace MKW.Core.Client
             }
         }
 
-        private Trust VerifyTrust(IDatabaseUser user, IDatabaseAdmin admin, AsymmetricTransformer adminKey)
+        private Trust VerifyTrust(IDatabaseUser user, IDatabaseUser admin, AsymmetricTransformer adminKey)
         {
-            if (user is IDatabaseAdmin)
+            // TODO: this is insecure!
+            if (user.Id.IsAdmin)
             {
                 // We always trust admins.
                 // TODO: sign admins to handle potential fake admins
