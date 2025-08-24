@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Storage.JSON.Interface
 {
-    public record class DatabaseSecretEntry : IDatabaseEntry, ISavable
+    internal record class DatabaseSecretEntry : IDatabaseEntry, ISavable
     {
         private readonly MemoryDatabaseSession? host;
 

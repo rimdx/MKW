@@ -5,14 +5,14 @@ namespace MKW.Core.Storage.JSON
 {
     public class MemoryDatabaseSession : IDatabase, IDisposable
     {
-        public readonly JSONDatabase Database;
+        internal readonly JSONDatabase Database;
 
         public MemoryDatabaseSession()
         {
             Database = new JSONDatabase();
         }
 
-        public MemoryDatabaseSession(JSONDatabase database)
+        internal MemoryDatabaseSession(JSONDatabase database)
         {
             Database = database;
         }
