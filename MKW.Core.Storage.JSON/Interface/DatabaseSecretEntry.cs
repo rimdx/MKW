@@ -36,6 +36,7 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public void CopyFrom(JSONDatabaseSecretEntry other)
         {
+            // what am i doing? just having fun maybe...
             Keys = other.Keys
                 .Select(pair => new KeyValuePair<UserId, ReadOnlyMemory<byte>>(
                     UserId.FromGuid(pair.Key), pair.Value))
