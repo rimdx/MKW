@@ -5,6 +5,7 @@ namespace MKW.Core.Storage.JSON.Interface
     internal record class DatabaseUser : IDatabaseUser, ISavable
     {
         protected readonly MemoryDatabaseSession? host;
+        protected List<ReadOnlyMemory<byte>> trust = new List<ReadOnlyMemory<byte>>();
 
         internal DatabaseUser(UserId id, MemoryDatabaseSession host)
             : this(id)
@@ -22,6 +23,21 @@ namespace MKW.Core.Storage.JSON.Interface
         public ReadOnlyMemory<byte> PublicKey { get; set; }
         public ReadOnlyMemory<byte> PrivateKey { get; set; }
 
+        public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
+        {
+            return trust.AsReadOnly();
+        }
+
+        public void AddTrust(ReadOnlyMemory<byte> data)
+        {
+            trust.Add(data);
+        }
+
+        public void DeleteTrust(ReadOnlyMemory<byte> data)
+        {
+            trust.RemoveAll(t => t.Span.SequenceEqual(data.Span));
+        }
+
         public void Save()
         {
             if (host == null)
@@ -38,6 +54,7 @@ namespace MKW.Core.Storage.JSON.Interface
             PublicKey = obj.PublicKey;
             PrivateKey = obj.PrivateKey;
             Salt = obj.Salt;
+            trust = [.. obj.Trust];
         }
 
         public JSONDatabaseUser AsJSONObject()
@@ -46,7 +63,8 @@ namespace MKW.Core.Storage.JSON.Interface
             {
                 PublicKey = PublicKey,
                 PrivateKey = PrivateKey,
-                Salt = Salt
+                Salt = Salt,
+                Trust = [.. trust]
             };
         }
     }
