@@ -1,7 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
-using MKW.Core.Storage.JSON;
 using NUnit.Framework.Legacy;
 using System.Security.Cryptography;
 
@@ -12,7 +11,8 @@ namespace MKW.Tests
         [Test]
         public void SimpleAddUserTest()
         {
-            using MemoryDatabaseSession db = new MemoryDatabaseSession();
+            using SandBox sbox = new SandBox();
+            using var db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
             UserInfo user = session.PromoteUser("whattheheckamidoing");
