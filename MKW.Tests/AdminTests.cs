@@ -14,11 +14,9 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
-            using ClientSession client = ClientSession.Open(db);
+            using ClientSession client = ClientSession.Create(db, "adminsecret");
 
-            UserInfo admin = client.PromoteAdmin("adminsecret");
-
-            AdminSession adminSession = client.OpenAdmin("adminsecret");
+            using AdminSession adminSession = client.OpenAdmin("adminsecret");
         }
 
         [Test]
@@ -26,9 +24,9 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
-            using ClientSession client = ClientSession.Open(db);
+            using ClientSession client = ClientSession.Create(db, "adminsecret");
 
-            UserInfo admin = client.PromoteAdmin("adminsecret");
+            UserInfo admin = client.GetAdminInfo();
             AdminSession adminSession = client.OpenAdmin("adminsecret");
 
             UserInfo user1 = client.PromoteUser("user1");
@@ -130,12 +128,15 @@ namespace MKW.Tests
         {
             using SandBox sbox = new SandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
-            using ClientSession client = ClientSession.Open(db);
 
-            Assert.Throws<Exception>(() => client.PromoteUser("user"));
-            using Entry entry = client.CreateEntry();
-            Assert.Throws<Exception>(() => entry.UpdatePayload(new EntryPayload("123")));
-            Assert.Throws<Exception>(() => client.OpenAdmin("123"));
+            Assert.Throws<Exception>(() => ClientSession.Open(db));
+
+            // todo: maybe do this somehow?
+
+            // Assert.Throws<Exception>(() => client.PromoteUser("user"));
+            // using Entry entry = client.CreateEntry();
+            // Assert.Throws<Exception>(() => entry.UpdatePayload(new EntryPayload("123")));
+            // Assert.Throws<Exception>(() => client.OpenAdmin("123"));
         }
     }
 }

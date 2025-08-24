@@ -14,35 +14,36 @@ namespace MKW.GUI
         public UserSession? User { get; private set; }
         public AdminSession? Admin { get; private set; }
 
-        public DatabaseModel(IDatabase database, string path)
+        public DatabaseModel(IDatabase database, string path, ClientSession client)
         {
             Path = path;
             Database = database;
-            Client = ClientSession.Open(database);
+            Client = client;
         }
 
         public static DatabaseModel Open(string path)
         {
             JSONDatabaseSession db = JSONDatabaseSession.Open(path, false);
-            return new DatabaseModel(db, path);
+            ClientSession client = ClientSession.Open(db);
+            return new DatabaseModel(db, path, client);
         }
 
-        public static DatabaseModel Create(string path)
+        public static DatabaseModel Create(string path, string adminPassword)
         {
             JSONDatabaseSession db = JSONDatabaseSession.Create(path);
-            return new DatabaseModel(db, path);
+            ClientSession client = ClientSession.Create(db, adminPassword);
+
+            DatabaseModel model = new DatabaseModel(db, path, client);
+
+            model.Admin = model.Client.OpenAdmin(adminPassword);
+            model.User = model.Admin;
+
+            return model;
         }
 
         public void Authenticate(UserId id, string password)
         {
             User = Client.OpenUser(id, password);
-        }
-
-        public void CreateAdmin(string password)
-        {
-            Client.PromoteAdmin(password);
-            Admin = Client.OpenAdmin(password);
-            User = Admin;
         }
 
         public void Dispose()

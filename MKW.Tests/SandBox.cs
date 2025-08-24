@@ -22,8 +22,7 @@ namespace MKW.Tests
             if (init)
             {
                 using JSONDatabaseSession db = JSONDatabaseSession.Create(DatabasePath);
-                using ClientSession client = ClientSession.Open(db);
-                client.PromoteAdmin(AdminSecret);
+                using ClientSession client = ClientSession.Create(db, AdminSecret);
             }
         }
 

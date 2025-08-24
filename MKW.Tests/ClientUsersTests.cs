@@ -12,7 +12,7 @@ namespace MKW.Tests
         public void SimpleAddUserTest()
         {
             using SandBox sbox = new SandBox();
-            using var db = sbox.OpenDatabase();
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
             UserInfo user = session.PromoteUser("whattheheckamidoing");
