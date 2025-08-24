@@ -9,9 +9,6 @@ namespace MKW.Core.Client
     {
         public UserInfo PromoteUser(string password)
         {
-            // TODO: sign admin
-            IDatabaseAdmin admin = Database.OpenAdmin(true);
-
             SystemCredentialsManager credManager = new SystemCredentialsManager();
 
             UserCredentials userCreds = UserCredentials.Create(password);
