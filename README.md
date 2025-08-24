@@ -12,6 +12,74 @@ Securely encrypt you secrets for multiple users.
 This article explains the internal design of the database, and cryptographic
 details used to make your data secure.
 
+### Diagram
+
+This diagram visually shows the whole design of the database in terms of
+encryption.  The arrows show the sequence of decryption.
+
+For example, in the following diagram:...
+
+```mermaid
+flowchart TD
+
+SE(Symmetric Encryption)
+Key-->SE
+Source-->SE
+SE-->Data
+Source["Data (Encrypted)"]
+```
+
+The 'Data' is asymmetrically encrypted using 'Key', and stored in 'Data
+(Encrypted)'.  In other words, to decrypt data, 'Key' and 'Data (Encrypted)'
+are required.
+
+```mermaid
+flowchart TD
+
+subgraph SecretKey
+    direction TB
+    D(Password Derivation)
+    Password-->D
+    Secret-->D
+    Secret[Salt]
+    D-->S
+    S[Secret Key]
+end
+
+
+subgraph User
+    direction LR
+    US(Symmetric Encryption)
+    S-->US
+    PrivEUser-->US
+    US-->PrivUser
+    PrivEUser["User's Private Key (Encrypted)"]
+    PrivUser[User's Private Key]
+    PubUser[User's Public Key]
+
+    subgraph AsymmetricKey
+    direction LR
+        PubUser -.- PrivUser
+    end
+end
+
+subgraph Entry
+    EData["Payload Data (Encrypted)"]
+    DA("Symmetric Encryption")
+    Key["Key (generated for each user)"]
+    EKey["Key (encrypted)"]
+    EData-->DA
+    Key-->DA
+    DA-->DData
+    DData["Payload Data"]
+
+    AA("Asymmetric Algorithm")
+    AsymmetricKey-->AA
+    AA-->Key
+    EKey-->AA
+end
+```
+
 ### Secret key
 
 Secret key is a buffer of bytes, used to encrypt user's secret section.  The
