@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client;
+using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 using System.Diagnostics;
@@ -11,12 +12,18 @@ namespace MKW.Tests
         public string DatabasePath { get; }
         public string AdminSecret => "adminsecret123";
 
-        public SandBox()
+        public SandBox(bool init = true)
         {
             DatabasePath = Path.GetFullPath("./test.json");
 
             // todo: safer way?
             File.Delete("./test.json");
+
+            if (init)
+            {
+                using ClientSession client = OpenSession();
+                client.PromoteAdmin(AdminSecret);
+            }
         }
 
         public void Dispose()
@@ -80,6 +87,14 @@ namespace MKW.Tests
         public AdminSession OpenAdmin(ClientSession client)
         {
             return client.OpenAdmin(AdminSecret);
+        }
+
+        public UserSession CreateUser(ClientSession client, string password, out UserInfo user, Trust trust = Trust.FullTrust)
+        {
+            using AdminSession admin = OpenAdmin(client);
+            user = client.PromoteUser(password);
+            admin.UpdateTrust(user.Id, trust);
+            return client.OpenUser(user.Id, password);
         }
 
         private string TrimString(string str)

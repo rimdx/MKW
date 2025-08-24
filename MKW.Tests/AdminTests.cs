@@ -11,7 +11,7 @@ namespace MKW.Tests
         [Test]
         public void AddOpenSimpleTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
             using ClientSession client = sbox.OpenSession();
 
             UserInfo admin = client.PromoteAdmin("adminsecret");
@@ -22,7 +22,7 @@ namespace MKW.Tests
         [Test]
         public void UpdateTrustTest()
         {
-            using SandBox sbox = new SandBox();
+            using SandBox sbox = new SandBox(false);
             using ClientSession client = sbox.OpenSession();
 
             UserInfo admin = client.PromoteAdmin("adminsecret");
@@ -31,17 +31,18 @@ namespace MKW.Tests
             UserInfo user1 = client.PromoteUser("user1");
             UserInfo user2 = client.PromoteUser("user2");
 
+            admin.Trust = Trust.FullTrust;
             user1.Trust = Trust.None;
             user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
-                new UserInfo[] { user1, user2 },
+                new UserInfo[] { admin, user1, user2 },
                 client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.FullTrust);
             user1.Trust = Trust.FullTrust;
             user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
-                new UserInfo[] { user1, user2 },
+                new UserInfo[] { admin, user1, user2 },
                 client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.None);
@@ -49,7 +50,7 @@ namespace MKW.Tests
             user1.Trust = Trust.None;
             user2.Trust = Trust.FullTrust;
             CollectionAssert.AreEqual(
-                new UserInfo[] { user1, user2 },
+                new UserInfo[] { admin, user1, user2 },
                 client.EnumerateUsersTrust());
         }
 
@@ -62,8 +63,7 @@ namespace MKW.Tests
             UserInfo trusted = client.PromoteUser("trusted");
             UserInfo untrusted = client.PromoteUser("untrusted");
 
-            client.PromoteAdmin("admin");
-            using AdminSession admin = client.OpenAdmin("admin");
+            using AdminSession admin = sbox.OpenAdmin(client);
 
             admin.UpdateTrust(trusted.Id, Trust.FullTrust);
             EntryInfo entry = client.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
@@ -89,14 +89,36 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            client.PromoteAdmin("adminsecret");
-
-            using (UserSession admin = client.OpenUser(UserId.Admin(), "adminsecret"))
+            using (UserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
             {
             }
 
-            using (UserSession admin = client.OpenUser("adminsecret"))
+            using (UserSession admin = client.OpenUser(sbox.AdminSecret))
             {
+            }
+        }
+
+        [Test]
+        public void NewEntriesAreSharedWithAdminTest()
+        {
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            EntryId entryId;
+
+            {
+                using UserSession user = sbox.CreateUser(client, "user1", out _);
+                using UserEntry entry = user.CreateEntry();
+                entry.UpdatePayload(new EntryPayload("data"));
+                entryId = entry.Id;
+            }
+
+            {
+                using UserSession admin = sbox.OpenAdmin(client);
+                using UserEntry entry = admin.OpenEntry(entryId);
+
+                ClassicAssert.AreEqual(new EntryPayload("data"),
+                                       entry.OpenPayload());
             }
         }
     }
