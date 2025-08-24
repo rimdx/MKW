@@ -30,7 +30,7 @@ namespace MKW.Core.Client
 
             UserCredentials creds = UserCredentials.Open(password, admin.Salt);
 
-            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetEncodingHash().Span,
+            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetSecretKey().Span,
                                                                            creds.ExportSalt().Span);
 
             Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);

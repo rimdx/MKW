@@ -23,7 +23,7 @@ namespace MKW.Core.Cryptography
             return new UserCredentials(password, salt);
         }
 
-        public Memory<byte> GetEncodingHash()
+        public Memory<byte> GetSecretKey()
         {
             Memory<byte> password = GetPasswordBytes(this.password);
 

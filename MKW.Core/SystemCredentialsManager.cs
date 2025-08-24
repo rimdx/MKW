@@ -14,7 +14,7 @@ namespace MKW.Core.Client
             using AsymmetricTransformer userKey = AsymmetricTransformer.Create();
 
             // Symmetric encoder for secret section.
-            using SymmetricTransformer encoder = SymmetricTransformer.Open(userCredentials.GetEncodingHash().Span,
+            using SymmetricTransformer encoder = SymmetricTransformer.Open(userCredentials.GetSecretKey().Span,
                                                                            userCredentials.ExportSalt().Span);
 
             Memory<byte> privateKeyBytes = userKey.ExportPrivateKey();
