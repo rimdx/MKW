@@ -87,8 +87,7 @@ namespace MKW.GUI
 
         private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
-            NewEntryWindow window = new NewEntryWindow(model.GetDatabase());
-            window.ShowDialog();
+            databasePage!.OnEditEntry();
         }
 
         private void EditEntry_Click(object sender, RoutedEventArgs e)
