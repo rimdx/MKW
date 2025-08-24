@@ -21,7 +21,13 @@ namespace MKW.Core.Client
 
         public static ClientSession Open(IDatabase db, bool ownsDb)
         {
-            return new ClientSession(db, ownsDb);
+            ClientSession client = new ClientSession(db, ownsDb);
+
+            // ensure the admin actually exists
+            // a database without admin is invalid
+            client.Database.OpenAdmin(true);
+
+            return client;
         }
 
         public static ClientSession Create(IDatabase db /* reference */, string adminPassword)
