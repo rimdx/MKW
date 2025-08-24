@@ -13,7 +13,7 @@ namespace MKW.Core.Client
             UserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            IDatabaseAdmin admin = Database.CreateAdmin();
+            IDatabaseUser admin = Database.CreateAdmin();
 
             admin.PublicKey = systemCreds.PublicKey;
             admin.PrivateKey = systemCreds.PrivateKey;
@@ -26,7 +26,7 @@ namespace MKW.Core.Client
 
         public AdminSession OpenAdmin(string password)
         {
-            IDatabaseAdmin admin = Database.OpenAdmin(false);
+            IDatabaseUser admin = Database.OpenAdmin(false);
 
             UserCredentials creds = UserCredentials.Open(password, admin.Salt);
 
@@ -40,7 +40,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetAdminInfo()
         {
-            IDatabaseAdmin admin = Database.OpenAdmin(true);
+            IDatabaseUser admin = Database.OpenAdmin(true);
             return UserInfo.FromDatabaseUser(admin);
         }
     }

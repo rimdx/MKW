@@ -11,8 +11,8 @@
         bool HasUser(UserId id);
         IEnumerable<IDatabaseUser> EnumerateUsers();
 
-        IDatabaseAdmin CreateAdmin();
-        IDatabaseAdmin OpenAdmin(bool readOnly);
+        IDatabaseUser CreateAdmin();
+        IDatabaseUser OpenAdmin(bool readOnly);
 
         // Entry Management
         IDatabaseEntry CreateEntry(EntryId id);

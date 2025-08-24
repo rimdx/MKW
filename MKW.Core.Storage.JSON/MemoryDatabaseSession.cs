@@ -65,21 +65,21 @@ namespace MKW.Core.Storage.JSON
 
         // Admin
 
-        public IDatabaseAdmin OpenAdmin(bool readOnly)
+        public IDatabaseUser OpenAdmin(bool readOnly)
         {
             if (Database.Admin == null)
             {
                 throw new Exception("Admin user does not exist.");
             }
 
-            DatabaseAdminUser result = new DatabaseAdminUser(this);
+            DatabaseUser result = new DatabaseAdminUser(this);
 
             result.CopyFrom(Database.Admin);
 
             return result;
         }
 
-        public IDatabaseAdmin CreateAdmin()
+        public IDatabaseUser CreateAdmin()
         {
             if (Database.Admin != null)
             {

@@ -38,7 +38,7 @@ namespace MKW.Core.Storage.JSON.Interface
             trust.RemoveAll(t => t.Span.SequenceEqual(data.Span));
         }
 
-        public void Save()
+        public virtual void Save()
         {
             if (host == null)
             {
