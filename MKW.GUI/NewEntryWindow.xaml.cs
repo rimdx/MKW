@@ -18,8 +18,7 @@ namespace MKW.GUI
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            using Entry entry = database.Client.CreateEntry();
-            entry.UpdatePayload(new EntryPayload(Payload));
+            database.CreateEntry(Payload);
             Close();
         }
 
