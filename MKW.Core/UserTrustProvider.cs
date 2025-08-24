@@ -29,18 +29,13 @@ namespace MKW.Core.Client
 
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
-                UserInfo notify = UserInfo.FromDatabaseUser(user);
-                notify.Trust = VerifyTrust(user);
-                yield return notify;
+                yield return UserInfo.FromDatabaseUser(user, VerifyTrust(user));
             }
         }
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            UserInfo notify = UserInfo.FromDatabaseUser(me);
-            notify.Trust = Trust.ExplicitTrust;
-
-            yield return notify;
+            yield return UserInfo.FromDatabaseUser(me, Trust.ExplicitTrust);
 
             foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
             {
@@ -69,9 +64,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
             {
-                UserInfo notify = UserInfo.FromDatabaseUser(user);
-                notify.Trust = Trust.ExplicitTrust;
-                yield return notify;
+                yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
             }
         }
 
