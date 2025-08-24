@@ -46,6 +46,12 @@ namespace MKW.GUI
             User = Client.OpenUser(id, password);
         }
 
+        public void CreateEntry(string payload)
+        {
+            using Entry entry = Client.CreateEntry();
+            entry.UpdatePayload(new EntryPayload(payload));
+        }
+
         public void Dispose()
         {
             Database?.Dispose();
