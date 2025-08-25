@@ -41,7 +41,6 @@
         <Setter.Value>
           <ControlTemplate TargetType="GridViewColumnHeader">
             <Grid>
-
               <Border x:Name="HeaderBorder"
                       Background="{TemplateBinding Background}"
                       BorderBrush="{TemplateBinding BorderBrush}"
