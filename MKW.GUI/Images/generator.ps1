@@ -14,7 +14,9 @@ namespace MKW.GUI.Images
     }
 }" | Out-File -FilePath "$_.cs" -Encoding utf8BOM
 
-  svn add "$_.cs" --force
+    (Get-Content -Path $_).Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=") | Out-File -FilePath $_ -Encoding ansi
+
+    svn add "$_.cs" --force
 }
 
 Write-Host "-----"
