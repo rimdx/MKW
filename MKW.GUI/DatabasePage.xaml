@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MKW.GUI"
+             xmlns:images="clr-namespace:MKW.GUI.Images"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -23,10 +24,43 @@
               Grid.Column="0"
               BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
               BorderThickness="1">
-      <TreeViewItem Header="New Database"
-                    IsExpanded="True">
-        <TreeViewItem Header="Entries" />
-        <TreeViewItem Header="Users" />
+      <TreeViewItem IsExpanded="True">
+        <TreeViewItem.Header>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="24" />
+              <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <images:Database />
+            <TextBlock Grid.Column="1">Database</TextBlock>
+          </Grid>
+        </TreeViewItem.Header>
+
+        <TreeViewItem>
+          <TreeViewItem.Header>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="auto" />
+              </Grid.ColumnDefinitions>
+              <images:AsymmetricKey />
+              <TextBlock Grid.Column="1">Entries</TextBlock>
+            </Grid>
+          </TreeViewItem.Header>
+        </TreeViewItem>
+
+        <TreeViewItem>
+          <TreeViewItem.Header>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="auto" />
+              </Grid.ColumnDefinitions>
+              <images:Team />
+              <TextBlock Grid.Column="1">Users</TextBlock>
+            </Grid>
+          </TreeViewItem.Header>
+        </TreeViewItem>
       </TreeViewItem>
     </TreeView>
 
