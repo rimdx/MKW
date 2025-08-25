@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace MKW.GUI
 {
-    public class LoginUser
+    public class DatabaseUserViewModel
     {
         public required bool IsAdmin { get; init; }
         public required UserId Id { get; init; }
@@ -35,7 +35,7 @@ namespace MKW.GUI
         {
             Users.Clear();
 
-            foreach (LoginUser user in database.EnumerateUsers())
+            foreach (DatabaseUserViewModel user in database.EnumerateUsers())
             {
                 Users.Add(user);
             }
@@ -43,8 +43,8 @@ namespace MKW.GUI
             SelectedUser = Users[0];
         }
 
-        public ObservableCollection<LoginUser> Users { get; }
-        public LoginUser? SelectedUser { get; set; }
+        public ObservableCollection<DatabaseUserViewModel> Users { get; }
+        public DatabaseUserViewModel? SelectedUser { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
