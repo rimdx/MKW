@@ -10,6 +10,7 @@
       <Setter Property="BorderThickness" Value="0" />
       <Setter Property="Padding" Value="0" />
       <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
     </Style>
 
     <Style x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
