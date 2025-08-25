@@ -89,7 +89,9 @@
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
       <Setter Property="Margin" Value="0" />
+    </Style>
 
+    <Style x:Key="GridViewItemStyle" TargetType="ListViewItem">
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="ListViewItem">
@@ -98,6 +100,34 @@
                     Padding="4,2"
                     Margin="0">
               <GridViewRowPresenter />
+            </Border>
+
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ItemBorder" Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+              </Trigger>
+
+              <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="ItemBorder"
+                        Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListViewItem">
+            <Border x:Name="ItemBorder"
+                    Background="{TemplateBinding Background}"
+                    Padding="4,2"
+                    Margin="0">
+              <ContentPresenter />
             </Border>
 
             <ControlTemplate.Triggers>
