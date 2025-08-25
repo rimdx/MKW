@@ -56,11 +56,11 @@
             <ControlTemplate.Triggers>
               <Trigger SourceName="HeaderBorder" Property="IsMouseOver" Value="True">
                 <Setter TargetName="HeaderBorder" Property="Background"
-                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
               </Trigger>
-
-              <Trigger Property="Role" Value="Floating">
-                <Setter Property="Opacity" Value="0.3"/>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="HeaderBorder" Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -87,9 +87,36 @@
                 <ControlTemplate.Triggers>
                   <Trigger SourceName="HeaderBorder" Property="IsMouseOver" Value="True">
                     <Setter TargetName="HeaderBorder" Property="Background"
-                            Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                  </Trigger>
+                  <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="HeaderBorder" Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
                   </Trigger>
                 </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Trigger>
+        <Trigger Property="Role" Value="Floating">
+          <Setter Property="Opacity" Value="0.4" />
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="GridViewColumnHeader">
+                <Grid>
+                  <Border x:Name="HeaderBorder"
+                          Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          Padding="{TemplateBinding Padding}">
+                    <ContentPresenter />
+                  </Border>
+
+                  <Thumb x:Name="PART_HeaderGripper"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,-9,0"
+                         Style="{StaticResource GridViewColumnHeaderGripper}" />
+                </Grid>
               </ControlTemplate>
             </Setter.Value>
           </Setter>
