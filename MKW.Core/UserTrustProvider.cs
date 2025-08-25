@@ -35,7 +35,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            yield return UserInfo.FromDatabaseUser(me, Trust.ExplicitTrust);
+            yield return UserInfo.FromDatabaseUser(me, Trust.SelfTrust);
 
             foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
             {
@@ -43,7 +43,15 @@ namespace MKW.Core.Client
 
                 foreach (UserInfo trust in child.EnumerateImplicitlyTrustedUsers())
                 {
-                    trust.Trust = Trust.ImplicitTrust;
+                    // offset trust
+                    trust.Trust = trust.Trust switch
+                    {
+                        Trust.SelfTrust => Trust.ExplicitTrust,
+                        Trust.ExplicitTrust => Trust.ImplicitTrust,
+                        Trust.ImplicitTrust => Trust.ImplicitTrust,
+                        _ => throw new Exception("Invalid trust value."),
+                    };
+
                     yield return trust;
                 }
             }
