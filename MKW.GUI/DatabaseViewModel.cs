@@ -27,6 +27,43 @@ namespace MKW.GUI
             RefreshEntries();
         }
 
+        private enum PageType
+        {
+            Database,
+            Entries,
+            Users,
+        }
+
+        private PageType selectedPage = PageType.Entries;
+        private void SetPage(bool value, PageType type)
+        {
+            if (value)
+            {
+                selectedPage = type;
+                OnPropertyChanged(nameof(IsPageDatabase));
+                OnPropertyChanged(nameof(IsPageEntries));
+                OnPropertyChanged(nameof(IsPageUsers));
+            }
+        }
+
+        public bool IsPageDatabase
+        {
+            get => selectedPage == PageType.Database;
+            set => SetPage(value, PageType.Database);
+        }
+
+        public bool IsPageEntries
+        {
+            get => selectedPage == PageType.Entries;
+            set => SetPage(value, PageType.Entries);
+        }
+
+        public bool IsPageUsers
+        {
+            get => selectedPage == PageType.Users;
+            set => SetPage(value, PageType.Users);
+        }
+
         public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
 
         private DatabaseEntryModel? _selectedEntry;
