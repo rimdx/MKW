@@ -43,7 +43,8 @@
 
 ### Enhancements
 
-- [ ] Fancy data-grid
+- [x] Fancy data-grid
+- [ ] Dark theme
 - [ ] Repeat password in user creation forms
 - [ ] Show password in user creation and authentication forms
 - [ ] Tools
