@@ -7,28 +7,32 @@
     <local:TreeViewIndentConverter x:Key="TreeViewIndentConverter" IndentSize="16" />
 
     <Style TargetType="ListView">
-      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
 
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate>
-            <Grid>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-              </Grid.RowDefinitions>
+            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-              <GridViewHeaderRowPresenter x:Name="PART_HeaderRowPresenter"
-                                          Grid.Row="0"
-                                          Columns="{Binding Path=View.Columns, RelativeSource={RelativeSource TemplatedParent}}" />
+                <GridViewHeaderRowPresenter x:Name="PART_HeaderRowPresenter"
+                                            Grid.Row="0"
+                                            Columns="{Binding Path=View.Columns, RelativeSource={RelativeSource TemplatedParent}}" />
 
-              <ScrollViewer Grid.Row="1"
-                            Focusable="False">
-                <ItemsPresenter />
-              </ScrollViewer>
-            </Grid>
+                <ScrollViewer Grid.Row="1"
+                              Focusable="False">
+                  <ItemsPresenter />
+                </ScrollViewer>
+              </Grid>
+            </Border>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
@@ -213,11 +217,15 @@
       <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
       <Setter Property="Margin" Value="0" />
       <Setter Property="Padding" Value="0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
 
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="TreeView">
-            <Border Name="Border">
+            <Border Name="Border"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}">
               <ScrollViewer Focusable="False"
                             CanContentScroll="False">
                 <ItemsPresenter />
