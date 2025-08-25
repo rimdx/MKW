@@ -9,6 +9,10 @@
              d:DataContext="{d:DesignInstance Type=local:DatabaseViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              d:Background="White">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+  </UserControl.Resources>
+
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="200" />
@@ -23,7 +27,7 @@
 
     <TreeView Grid.Row="1"
               Grid.Column="0">
-      <TreeViewItem IsExpanded="True">
+      <TreeViewItem IsExpanded="True" IsSelected="{Binding IsPageDatabase, Mode=TwoWay}">
         <TreeViewItem.Header>
           <Grid>
             <Grid.ColumnDefinitions>
@@ -35,7 +39,7 @@
           </Grid>
         </TreeViewItem.Header>
 
-        <TreeViewItem>
+        <TreeViewItem IsSelected="{Binding IsPageEntries, Mode=TwoWay}">
           <TreeViewItem.Header>
             <Grid>
               <Grid.ColumnDefinitions>
@@ -48,7 +52,7 @@
           </TreeViewItem.Header>
         </TreeViewItem>
 
-        <TreeViewItem>
+        <TreeViewItem IsSelected="{Binding IsPageUsers, Mode=TwoWay}">
           <TreeViewItem.Header>
             <Grid>
               <Grid.ColumnDefinitions>
@@ -65,8 +69,11 @@
 
     <Grid Grid.Row="1"
           Grid.Column="2">
-      <ContentControl x:Name="EntriesPage" Visibility="Collapsed" />
-      <ContentControl x:Name="UsersPage" />
+      <ContentControl x:Name="EntriesPage"
+                      Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+      <ContentControl x:Name="UsersPage"
+                      Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
   </Grid>
 </UserControl>
