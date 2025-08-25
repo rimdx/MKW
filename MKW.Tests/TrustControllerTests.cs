@@ -148,5 +148,42 @@ namespace MKW.Tests
                 },
                 trustController1.EnumerateImplicitlyTrustedUsers().ToArray());
         }
+
+        [Test]
+        [Timeout(1000)]
+        public void TrustNetworkTestLoops()
+        {
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            // 1 --> 2
+            // 2 --> 1
+            // it's a loop!
+
+            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, Trust.None);
+            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, Trust.None);
+            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, Trust.None);
+            using AdminSession admin = sbox.OpenAdmin(client);
+
+            using UserTrustController trustController1 = new UserTrustController(client, user1);
+            using UserTrustController trustController2 = new UserTrustController(client, user2);
+
+            trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
+            trustController2.UpdateTrust(user1Info.Id, Trust.ExplicitTrust);
+
+            UserInfo adminInfo = client.GetAdminInfo();
+
+            user1Info.Trust = Trust.SelfTrust;
+            user2Info.Trust = Trust.ExplicitTrust;
+            user3Info.Trust = Trust.ExplicitTrust;
+
+            CollectionAssert.AreEquivalent(
+                new UserInfo[]
+                {
+                    user1Info,
+                    user2Info,
+                },
+                trustController1.EnumerateImplicitlyTrustedUsers().ToArray());
+        }
     }
 }
