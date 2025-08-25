@@ -73,10 +73,10 @@
               <ControlTemplate TargetType="GridViewColumnHeader">
                 <Grid>
                   <Border x:Name="HeaderBorder"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{TemplateBinding Padding}">
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          Padding="{TemplateBinding Padding}">
                     <ContentPresenter />
                   </Border>
                   <Thumb x:Name="PART_HeaderGripper"
