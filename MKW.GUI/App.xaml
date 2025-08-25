@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:MKW.GUI"
              StartupUri="MainWindow.xaml">
   <Application.Resources>
+    <Style TargetType="ListView">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
     <Style TargetType="GridViewColumnHeader">
       <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
