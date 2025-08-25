@@ -6,5 +6,6 @@
         None,
         ExplicitTrust,
         ImplicitTrust,
+        SelfTrust,
     }
 }
