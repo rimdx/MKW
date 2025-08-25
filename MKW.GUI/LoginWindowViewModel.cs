@@ -35,21 +35,9 @@ namespace MKW.GUI
         {
             Users.Clear();
 
-            Users.Add(new LoginUser
+            foreach (LoginUser user in database.EnumerateUsers())
             {
-                Id = UserId.Admin(),
-                IsAdmin = true,
-                Name = "Admin"
-            });
-
-            foreach (UserInfo user in database.Client.EnumerateUsersTrust())
-            {
-                Users.Add(new LoginUser
-                {
-                    Id = user.Id,
-                    IsAdmin = false,
-                    Name = "User"
-                });
+                Users.Add(user);
             }
 
             SelectedUser = Users[0];
