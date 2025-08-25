@@ -23,7 +23,7 @@ namespace MKW.GUI
         {
             Users.Clear();
 
-            foreach (DatabaseUserViewModel user in database.EnumerateUsers())
+            foreach (DatabaseUserModel user in database.EnumerateUsers())
             {
                 Users.Add(user);
             }
@@ -31,8 +31,8 @@ namespace MKW.GUI
             SelectedUser = Users[0];
         }
 
-        public ObservableCollection<DatabaseUserViewModel> Users { get; }
-        public DatabaseUserViewModel? SelectedUser { get; set; }
+        public ObservableCollection<DatabaseUserModel> Users { get; }
+        public DatabaseUserModel? SelectedUser { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
