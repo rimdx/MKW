@@ -41,7 +41,7 @@ namespace MKW.Core.Client
             {
                 using UserTrustProvider child = new UserTrustProvider(client, user);
 
-                foreach (UserInfo trust in child.EnumerateUsersTrust())
+                foreach (UserInfo trust in child.EnumerateImplicitlyTrustedUsers())
                 {
                     trust.Trust = Trust.ImplicitTrust;
                     yield return trust;
