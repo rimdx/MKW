@@ -8,9 +8,30 @@
 
     <Style TargetType="ListView">
       <Setter Property="BorderThickness" Value="0" />
-      <Setter Property="Padding" Value="0" />
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+
+              <GridViewHeaderRowPresenter x:Name="PART_HeaderRowPresenter"
+                                          Grid.Row="0"
+                                          Columns="{Binding Path=View.Columns, RelativeSource={RelativeSource TemplatedParent}}" />
+
+              <ScrollViewer Grid.Row="1"
+                            Focusable="False">
+                <ItemsPresenter />
+              </ScrollViewer>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
     </Style>
 
     <Style x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
