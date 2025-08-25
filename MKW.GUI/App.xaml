@@ -35,6 +35,7 @@
 
       <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
       <Setter Property="BorderThickness" Value="0,0,0,1"/>
+      <Setter Property="Padding" Value="8,4"/>
 
       <Setter Property="Template">
         <Setter.Value>
@@ -45,7 +46,7 @@
                       Background="{TemplateBinding Background}"
                       BorderBrush="{TemplateBinding BorderBrush}"
                       BorderThickness="{TemplateBinding BorderThickness}"
-                      Padding="8,4">
+                      Padding="{TemplateBinding Padding}">
                 <ContentPresenter />
               </Border>
               <Thumb x:Name="PART_HeaderGripper"
