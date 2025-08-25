@@ -55,6 +55,14 @@ namespace MKW.Core.Client
             }
         }
 
+        public IEnumerable<UserInfo> EnumerateUsers()
+        {
+            foreach (IDatabaseUser user in EnumerateDatabaseUsers())
+            {
+                yield return UserInfo.FromDatabaseUser(user);
+            }
+        }
+
         private IDatabaseUser OpenDatabaseUser(UserId id, bool readOnly)
         {
             if (id.IsAdmin)
