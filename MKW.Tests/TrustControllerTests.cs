@@ -44,6 +44,12 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
+            //            exp trust    imp trust
+            // self    /---- 2 ----------- 4
+            //  1 ----  
+            //         \---- 3
+            //            exp trust
+
             UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, Trust.None);
             UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, Trust.None);
             UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, Trust.None);
