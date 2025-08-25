@@ -3,7 +3,7 @@ using MKW.GUI.Images;
 
 namespace MKW.GUI
 {
-    public class DatabaseUserViewModel
+    public class DatabaseUserModel
     {
         public required bool IsAdmin { get; init; }
         public required UserId Id { get; init; }

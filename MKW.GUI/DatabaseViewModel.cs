@@ -94,10 +94,10 @@ namespace MKW.GUI
             }
         }
 
-        public ObservableCollection<DatabaseUserViewModel> Users { get; private set; }
+        public ObservableCollection<DatabaseUserModel> Users { get; private set; }
 
-        private DatabaseUserViewModel? _selectedUser;
-        public DatabaseUserViewModel? SelectedUser
+        private DatabaseUserModel? _selectedUser;
+        public DatabaseUserModel? SelectedUser
         {
             get => _selectedUser;
             set
@@ -114,7 +114,7 @@ namespace MKW.GUI
         {
             Users.Clear();
 
-            foreach (DatabaseUserViewModel user in Database.EnumerateUsers())
+            foreach (DatabaseUserModel user in Database.EnumerateUsers())
             {
                 Users.Add(user);
             }
