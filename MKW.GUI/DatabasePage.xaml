@@ -8,16 +8,35 @@
              d:DataContext="{d:DesignInstance Type=local:DatabaseViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
   <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200" />
+      <ColumnDefinition Width="auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
+    <TreeView Grid.Row="1"
+              Grid.Column="0"
+              BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
+              BorderThickness="1">
+      <TreeViewItem Header="New Database">
+        <TreeViewItem Header="Entries" />
+        <TreeViewItem Header="Users" />
+      </TreeViewItem>
+    </TreeView>
+
     <ListView Grid.Row="1"
+              Grid.Column="2"
               ItemsSource="{Binding Entries}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
-              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True">
+              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True"
+              BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
+              BorderThickness="1">
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Copy payload" IsEnabled="{Binding IsEntrySelected}" />

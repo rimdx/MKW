@@ -63,17 +63,39 @@
               <Trigger Property="Role" Value="Floating">
                 <Setter Property="Opacity" Value="0.3"/>
               </Trigger>
-
-              <Trigger Property="Role" Value="Padding">
-                <Setter TargetName="HeaderBorder" Property="Width" Value="0"/>
-                <Setter TargetName="HeaderBorder" Property="Height" Value="0"/>
-                <Setter TargetName="HeaderBorder" Property="Padding" Value="0"/>
-                <Setter TargetName="HeaderBorder" Property="Background" Value="Transparent"/>
-              </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
+      <Style.Triggers>
+        <Trigger Property="Role" Value="Padding">
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="GridViewColumnHeader">
+                <Grid>
+                  <Border x:Name="HeaderBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                    <ContentPresenter />
+                  </Border>
+                  <Thumb x:Name="PART_HeaderGripper"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,-9,0"
+                       Style="{StaticResource GridViewColumnHeaderGripper}" />
+                </Grid>
+                <ControlTemplate.Triggers>
+                  <Trigger SourceName="HeaderBorder" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="HeaderBorder" Property="Background"
+                          Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Trigger>
+      </Style.Triggers>
     </Style>
 
     <Style TargetType="ListViewItem">
