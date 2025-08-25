@@ -62,9 +62,9 @@ namespace MKW.GUI
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
-        public IEnumerable<LoginUser> EnumerateUsers()
+        public IEnumerable<DatabaseUserViewModel> EnumerateUsers()
         {
-            yield return new LoginUser
+            yield return new DatabaseUserViewModel
             {
                 Id = UserId.Admin(),
                 IsAdmin = true,
@@ -73,7 +73,7 @@ namespace MKW.GUI
 
             foreach (UserInfo user in Client.EnumerateUsers())
             {
-                yield return new LoginUser
+                yield return new DatabaseUserViewModel
                 {
                     Id = user.Id,
                     IsAdmin = false,
