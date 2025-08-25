@@ -60,7 +60,7 @@
               IsEditable="False"
               IsReadOnly="True">
       <ComboBox.ItemTemplate>
-        <DataTemplate DataType="local:LoginUser">
+        <DataTemplate DataType="local:DatabaseUserModel">
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="16" />

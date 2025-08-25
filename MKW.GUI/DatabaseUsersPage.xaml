@@ -32,7 +32,7 @@
           <GridView.Columns>
             <GridViewColumn Header="Name" Width="300">
               <GridViewColumn.CellTemplate>
-                <DataTemplate DataType="local:LoginUser">
+                <DataTemplate DataType="local:DatabaseUserModel">
                   <Grid>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="24" />
