@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client;
+using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 
@@ -59,6 +60,26 @@ namespace MKW.GUI
         {
             entry.UpdatePayload(new EntryPayload(text));
             OnEntriesChanged?.Invoke(this, new EventArgs());
+        }
+
+        public IEnumerable<LoginUser> EnumerateUsers()
+        {
+            yield return new LoginUser
+            {
+                Id = UserId.Admin(),
+                IsAdmin = true,
+                Name = "Admin"
+            };
+
+            foreach (UserInfo user in Client.EnumerateUsers())
+            {
+                yield return new LoginUser
+                {
+                    Id = user.Id,
+                    IsAdmin = false,
+                    Name = "User"
+                };
+            }
         }
 
         public void Dispose()
