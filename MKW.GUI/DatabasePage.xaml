@@ -16,7 +16,7 @@
     <ListView Grid.Row="1"
               ItemsSource="{Binding Entries}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
-              MouseDoubleClick="EntryListView_MouseDoubleClick">
+              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True">
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Copy payload" IsEnabled="{Binding IsEntrySelected}" />
