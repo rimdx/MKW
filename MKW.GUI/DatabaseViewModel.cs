@@ -14,8 +14,12 @@ namespace MKW.GUI
         {
             Database = database;
             Database.OnEntriesChanged += Database_OnEntriesChanged;
+
             Entries = [];
             RefreshEntries();
+
+            Users = [];
+            RefreshUsers();
         }
 
         private void Database_OnEntriesChanged(object? sender, EventArgs e)
@@ -50,6 +54,32 @@ namespace MKW.GUI
                     Id = entry.Id,
                     Payload = entry.OpenPayload()?.ToString()
                 });
+            }
+        }
+
+        public ObservableCollection<LoginUser> Users { get; private set; }
+
+        private LoginUser? _selectedUser;
+        public LoginUser? SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
+                OnPropertyChanged(nameof(IsUserSelected));
+            }
+        }
+
+        public bool IsUserSelected => _selectedUser != null;
+
+        public void RefreshUsers()
+        {
+            Users.Clear();
+
+            foreach (LoginUser user in Database.EnumerateUsers())
+            {
+                Users.Add(user);
             }
         }
 

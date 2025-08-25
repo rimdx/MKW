@@ -65,7 +65,8 @@
 
     <Grid Grid.Row="1"
           Grid.Column="2">
-      <ContentControl x:Name="EntriesPage" />
+      <ContentControl x:Name="EntriesPage" Visibility="Collapsed" />
+      <ContentControl x:Name="UsersPage" />
     </Grid>
   </Grid>
 </UserControl>

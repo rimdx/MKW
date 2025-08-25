@@ -14,6 +14,7 @@ namespace MKW.GUI
             InitializeComponent();
 
             EntriesPage.Content = new DatabaseEntriesPage(model);
+            UsersPage.Content = new DatabaseUsersPage(model);
         }
 
         private void AddEntry_Click(object sender, System.Windows.RoutedEventArgs e)
