@@ -61,6 +61,27 @@ namespace MKW.GUI
             }
         }
 
+        public void OnAddEntry()
+        {
+            NewEntryWindow window = new NewEntryWindow(Database);
+            window.ShowDialog();
+        }
+
+        public void OnEditEntry()
+        {
+            if (SelectedEntry == null)
+            {
+                throw new Exception("No entry was selected.");
+            }
+
+            using UserEntry entry = Database.User!.OpenEntry(SelectedEntry.Id);
+
+            EditEntryWindow window = new EditEntryWindow(Database,
+                                                         entry /* reference */);
+
+            window.ShowDialog();
+        }
+
         public void Dispose()
         {
             Database.Dispose();

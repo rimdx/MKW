@@ -63,32 +63,9 @@
       </TreeViewItem>
     </TreeView>
 
-    <ListView Grid.Row="1"
-              Grid.Column="2"
-              ItemsSource="{Binding Entries}"
-              ItemContainerStyle="{StaticResource GridViewItemStyle}"
-              SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
-              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True">
-      <ListView.ContextMenu>
-        <ContextMenu>
-          <MenuItem Header="_Copy payload" IsEnabled="{Binding IsEntrySelected}" />
-          <Separator />
-          <MenuItem Header="_Add Entry" Click="AddEntry_Click" />
-          <MenuItem Header="_Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
-          <MenuItem Header="Duplicate Entry" IsEnabled="{Binding IsEntrySelected}" />
-          <MenuItem Header="_Delete Entry" IsEnabled="{Binding IsEntrySelected}" />
-          <Separator />
-          <MenuItem Header="Select All" />
-        </ContextMenu>
-      </ListView.ContextMenu>
-      <ListView.View>
-        <GridView>
-          <GridView.Columns>
-            <GridViewColumn Header="Entry ID" Width="250" DisplayMemberBinding="{Binding Id}" />
-            <GridViewColumn Header="Payload" Width="300" DisplayMemberBinding="{Binding Payload}" />
-          </GridView.Columns>
-        </GridView>
-      </ListView.View>
-    </ListView>
+    <Grid Grid.Row="1"
+          Grid.Column="2">
+      <ContentControl x:Name="EntriesPage" />
+    </Grid>
   </Grid>
 </UserControl>
