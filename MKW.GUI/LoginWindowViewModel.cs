@@ -1,21 +1,9 @@
-﻿using MKW.Core.Client.Notify;
-using MKW.Core.Storage;
-using MKW.GUI.Images;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
 namespace MKW.GUI
 {
-    public class DatabaseUserViewModel
-    {
-        public required bool IsAdmin { get; init; }
-        public required UserId Id { get; init; }
-        public required string Name { get; init; }
-
-        public object Icon => IsAdmin ? new Admin() : new User();
-    }
-
     public class LoginWindowViewModel : INotifyPropertyChanged
     {
         private readonly Window window;
