@@ -22,9 +22,7 @@
     </Grid.RowDefinitions>
 
     <TreeView Grid.Row="1"
-              Grid.Column="0"
-              BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
-              BorderThickness="1">
+              Grid.Column="0">
       <TreeViewItem IsExpanded="True">
         <TreeViewItem.Header>
           <Grid>
@@ -70,9 +68,7 @@
               ItemsSource="{Binding Entries}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
-              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True"
-              BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
-              BorderThickness="1">
+              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True">
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Copy payload" IsEnabled="{Binding IsEntrySelected}" />
