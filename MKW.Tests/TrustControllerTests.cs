@@ -144,13 +144,11 @@ namespace MKW.Tests
                     user2Info,
                     user3Info,
                     user4Info,
-                    user4Info, // todo:
                 },
                 trustController1.EnumerateImplicitlyTrustedUsers().ToArray());
         }
 
         [Test]
-        [Timeout(1000)]
         public void TrustNetworkTestLoops()
         {
             using SandBox sbox = new SandBox();

@@ -6,6 +6,8 @@ namespace MKW.Core.Client
 {
     public class UserTrustProvider : IDisposable
     {
+        public UserId UserId => me.Id;
+
         protected readonly ClientSession client;
         protected readonly IDatabaseUser me;
         protected readonly AsymmetricTransformer key;
@@ -35,26 +37,12 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            yield return UserInfo.FromDatabaseUser(me, Trust.SelfTrust);
+            using UserTrustWorker worker = new UserTrustWorker(client, this, client.EnumerateDatabaseUsers());
 
-            foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
-            {
-                using UserTrustProvider child = new UserTrustProvider(client, user);
+            while (worker.Iterate())
+                continue;
 
-                foreach (UserInfo trust in child.EnumerateImplicitlyTrustedUsers())
-                {
-                    // offset trust
-                    trust.Trust = trust.Trust switch
-                    {
-                        Trust.SelfTrust => Trust.ExplicitTrust,
-                        Trust.ExplicitTrust => Trust.ImplicitTrust,
-                        Trust.ImplicitTrust => Trust.ImplicitTrust,
-                        _ => throw new Exception("Invalid trust value."),
-                    };
-
-                    yield return trust;
-                }
-            }
+            return worker.EnumerateTrustedUsers();
         }
 
         public IEnumerable<IDatabaseUser> EnumerateExplicitlyTrustedUsers()
@@ -97,7 +85,7 @@ namespace MKW.Core.Client
             return Trust.None;
         }
 
-        private Trust VerifyTrust2(IDatabaseUser user)
+        internal Trust VerifyTrust2(IDatabaseUser user)
         {
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
@@ -108,6 +96,11 @@ namespace MKW.Core.Client
             }
 
             return Trust.None;
+        }
+
+        public UserTrustProvider CreateChildTrustProvider(IDatabaseUser user)
+        {
+            return new UserTrustProvider(client, user);
         }
 
         public virtual void Dispose()
