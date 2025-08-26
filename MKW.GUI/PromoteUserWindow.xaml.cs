@@ -13,16 +13,6 @@ namespace MKW.GUI
             InitializeComponent();
         }
 
-        private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            model.Password = PasswordInput.Password;
-        }
-
-        private void PasswordRepeatInput_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            model.PasswordRepeat = PasswordRepeatInput.Password;
-        }
-
         private void OK_Click(object sender, RoutedEventArgs e)
         {
             if (model.OnOK())

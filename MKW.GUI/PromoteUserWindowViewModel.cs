@@ -11,16 +11,19 @@ namespace MKW.GUI
             this.database = database;
         }
 
-        public string Password { get; set; } = "";
-        public string PasswordRepeat { get; set; } = "";
-
-        public bool PasswordsMatch => Password == PasswordRepeat;
+        public string? Password { get; set; }
+        public bool IsPasswordMatch { get; set; }
 
         public bool OnOK() => RunAction(() =>
         {
-            if (!PasswordsMatch)
+            if (!IsPasswordMatch)
             {
                 throw new Exception("Password and repeated password don't match.");
+            }
+
+            if (Password == null)
+            {
+                throw new ArgumentNullException(nameof(Password));
             }
 
             database.PromoteUser(Password);
