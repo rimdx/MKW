@@ -63,7 +63,7 @@ namespace MKW.Core.Client
             }
         }
 
-        private IDatabaseUser OpenDatabaseUser(UserId id, bool readOnly)
+        internal IDatabaseUser OpenDatabaseUser(UserId id, bool readOnly)
         {
             if (id.IsAdmin)
             {
