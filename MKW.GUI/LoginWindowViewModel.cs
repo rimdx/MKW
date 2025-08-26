@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using MKW.GUI.Model;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MKW.GUI.Model;
 using System.ComponentModel;
 using System.Windows;
 

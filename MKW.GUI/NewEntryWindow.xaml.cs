@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MKW.GUI.Model;
+using System.Windows;
 
 namespace MKW.GUI
 {
