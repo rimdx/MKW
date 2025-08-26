@@ -160,7 +160,7 @@ namespace MKW.GUI
 
         public bool OnPromoteUser() => RunAction(() =>
         {
-            PromoteUserWindow window = new PromoteUserWindow(Database);
+            PromoteUserWindow window = new PromoteUserWindow(new PromoteUserWindowViewModel(Database));
             window.ShowDialog();
         });
 

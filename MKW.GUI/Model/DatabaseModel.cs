@@ -82,6 +82,11 @@ namespace MKW.GUI.Model
             }
         }
 
+        public void PromoteUser(string password)
+        {
+            Client.PromoteUser(password);
+        }
+
         public void Dispose()
         {
             Database?.Dispose();
