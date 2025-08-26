@@ -15,8 +15,7 @@ namespace MKW.GUI
             set
             {
                 _database?.Dispose();
-                _database = value;
-                OnPropertyChanged(nameof(Database));
+                SetProperty(ref _database, value);
                 OnPropertyChanged(nameof(IsDatabaseAttached));
                 OnPropertyChanged(nameof(IsEntrySelected));
 

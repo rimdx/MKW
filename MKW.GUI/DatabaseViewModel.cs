@@ -70,8 +70,7 @@ namespace MKW.GUI
             get => _selectedEntry;
             set
             {
-                _selectedEntry = value;
-                OnPropertyChanged(nameof(SelectedEntry));
+                SetProperty(ref _selectedEntry, value);
                 OnPropertyChanged(nameof(IsEntrySelected));
             }
         }
@@ -101,7 +100,7 @@ namespace MKW.GUI
             set
             {
                 _selectedUser = value;
-                OnPropertyChanged(nameof(SelectedUser));
+                SetProperty(ref _selectedUser, value);
                 OnPropertyChanged(nameof(IsUserSelected));
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace MKW.GUI
@@ -7,12 +8,25 @@ namespace MKW.GUI
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        protected virtual bool SetProperty<T>(ref T member,
+                                              T value,
+                                              [CallerMemberName] string? propertyName = null)
         {
-            if (PropertyChanged != null)
+            if (EqualityComparer<T>.Default.Equals(member, value))
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                return false;
             }
+            else
+            {
+                member = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void ReportError(Exception ex)

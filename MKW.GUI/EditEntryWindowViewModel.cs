@@ -25,11 +25,7 @@ namespace MKW.GUI
         public string Payload
         {
             get => _payload;
-            set
-            {
-                _payload = value;
-                OnPropertyChanged(_payload);
-            }
+            set => SetProperty(ref _payload, value);
         }
 
         public bool OnOK()
