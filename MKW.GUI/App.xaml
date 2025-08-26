@@ -300,6 +300,26 @@
                            Padding="4"
                            FontFamily="Consolas"
                            Margin="0,0,0,8" />
+            </StackPanel>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:PasswordRepeatInput}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type local:PasswordInput}">
+            <StackPanel Orientation="Vertical">
+              <Label Padding="0"
+                     FontWeight="Bold"
+                     Target="{Binding ElementName=PART_PasswordBox}"
+                     Content="_Password:" />
+
+              <PasswordBox x:Name="PART_PasswordBox"
+                           Padding="4"
+                           FontFamily="Consolas"
+                           Margin="0,0,0,8" />
 
               <Label Padding="0"
                      FontWeight="Bold"
