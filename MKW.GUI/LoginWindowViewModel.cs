@@ -56,10 +56,5 @@ namespace MKW.GUI
                 ReportError(ex);
             }
         }
-
-        public void ReportError(Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
     }
 }

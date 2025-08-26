@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 
 namespace MKW.GUI
 {
@@ -12,6 +13,11 @@ namespace MKW.GUI
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public void ReportError(Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
