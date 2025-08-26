@@ -46,8 +46,8 @@
         </TextBox.Text>
       </TextBox>
 
-      <local:PasswordInput Password="{Binding Password, Mode=OneWayToSource}"
-                           IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}" />
+      <local:PasswordRepeatInput Password="{Binding Password, Mode=OneWayToSource}"
+                                 IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}" />
     </StackPanel>
 
     <Grid Grid.Row="4">

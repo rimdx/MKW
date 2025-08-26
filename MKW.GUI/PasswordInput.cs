@@ -5,8 +5,7 @@ namespace MKW.GUI
 {
     public class PasswordInput : Control
     {
-        private PasswordBox? _passwordBox;
-        private PasswordBox? _passwordRepeatBox;
+        protected PasswordBox? _passwordBox;
 
         static PasswordInput()
         {
@@ -19,7 +18,7 @@ namespace MKW.GUI
                                         typeof(string),
                                         typeof(PasswordInput));
 
-        public string? Password
+        public virtual string? Password
         {
             get => (string?)GetValue(PasswordProperty);
             set
@@ -28,22 +27,7 @@ namespace MKW.GUI
 
                 if (_passwordBox != null)
                     _passwordBox.Password = value;
-
-                if (_passwordRepeatBox != null)
-                    _passwordRepeatBox.Password = value;
             }
-        }
-
-
-        public static readonly DependencyProperty IsPasswordMatchProperty =
-            DependencyProperty.Register(nameof(IsPasswordMatch),
-                                        typeof(bool),
-                                        typeof(PasswordInput));
-
-        public bool IsPasswordMatch
-        {
-            get => (bool)GetValue(IsPasswordMatchProperty);
-            set => throw new NotSupportedException();
         }
 
         public override void OnApplyTemplate()
@@ -52,47 +36,21 @@ namespace MKW.GUI
 
             if (_passwordBox != null)
                 _passwordBox.PasswordChanged -= PasswordChanged;
-            if (_passwordRepeatBox != null)
-                _passwordRepeatBox.PasswordChanged -= PasswordChanged;
 
             _passwordBox = GetTemplateChild("PART_PasswordBox") as PasswordBox;
-            _passwordRepeatBox = GetTemplateChild("PART_PasswordRepeatBox") as PasswordBox;
 
             if (_passwordBox != null)
             {
                 _passwordBox.Password = Password;
                 _passwordBox.PasswordChanged += PasswordChanged;
             }
-
-            if (_passwordRepeatBox != null)
-            {
-                _passwordRepeatBox.Password = Password;
-                _passwordRepeatBox.PasswordChanged += PasswordChanged;
-            }
         }
 
-        private void PasswordChanged(object sender, RoutedEventArgs e)
+        protected virtual void PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (_passwordBox != null)
             {
-                if (_passwordRepeatBox == null || !_passwordRepeatBox.IsEnabled)
-                {
-                    SetValue(PasswordProperty, _passwordBox.Password);
-                    SetValue(IsPasswordMatchProperty, true);
-                }
-                else
-                {
-                    if (_passwordBox.Password == _passwordRepeatBox.Password)
-                    {
-                        SetValue(PasswordProperty, _passwordBox.Password);
-                        SetValue(IsPasswordMatchProperty, true);
-                    }
-                    else
-                    {
-                        SetValue(PasswordProperty, null);
-                        SetValue(IsPasswordMatchProperty, false);
-                    }
-                }
+                SetValue(PasswordProperty, _passwordBox.Password);
             }
         }
     }
