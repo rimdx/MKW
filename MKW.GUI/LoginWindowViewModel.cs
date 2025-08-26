@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace MKW.GUI
 {
-    public class LoginWindowViewModel : INotifyPropertyChanged
+    public class LoginWindowViewModel : ViewModelBase
     {
         private readonly Window window;
         private readonly DatabaseModel database;
@@ -34,16 +34,6 @@ namespace MKW.GUI
 
         public ObservableCollection<DatabaseUserModel> Users { get; }
         public DatabaseUserModel? SelectedUser { get; set; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
 
         public string Password { get; set; } = "";
 

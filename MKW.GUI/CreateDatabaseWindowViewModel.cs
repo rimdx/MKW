@@ -1,9 +1,8 @@
 ﻿using MKW.GUI.Model;
-using System.ComponentModel;
 
 namespace MKW.GUI
 {
-    public class CreateDatabaseWindowViewModel : INotifyPropertyChanged
+    public class CreateDatabaseWindowViewModel : ViewModelBase
     {
         private readonly string path;
 
@@ -12,16 +11,6 @@ namespace MKW.GUI
         public CreateDatabaseWindowViewModel(string path)
         {
             this.path = path;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         public string Password { get; set; } = "";

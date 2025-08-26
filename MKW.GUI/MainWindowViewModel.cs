@@ -3,10 +3,8 @@ using System.ComponentModel;
 
 namespace MKW.GUI
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
+    public class MainWindowViewModel : ViewModelBase, IDisposable
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public string Title => "Multi-Key Wallet";
 
         private DatabaseViewModel? _database;
@@ -50,14 +48,6 @@ namespace MKW.GUI
             }
 
             return _database.Database;
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         public void Dispose()
