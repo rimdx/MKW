@@ -29,10 +29,5 @@ namespace MKW.GUI
         {
             Keyboard.Focus(PasswordInput);
         }
-
-        private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            model.Password = PasswordInput.Password;
-        }
     }
 }
