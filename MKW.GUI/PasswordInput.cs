@@ -57,7 +57,12 @@ namespace MKW.GUI
         protected override void OnGotFocus(RoutedEventArgs e)
         {
             base.OnGotFocus(e);
-            _passwordBox?.Focus();
+
+            if (_passwordBox != null)
+            {
+                _passwordBox.Focus();
+                e.Handled = true;
+            }
         }
     }
 }
