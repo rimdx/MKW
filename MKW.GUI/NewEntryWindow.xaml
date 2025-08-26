@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MKW.GUI"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:NewEntryWindow}"
+        d:DataContext="{d:DesignInstance Type=local:NewEntryWindowViewModel}"
         Title="Create new secret entry"
         Height="300" Width="400"
         WindowStartupLocation="CenterScreen">
@@ -25,6 +25,7 @@
 
     <TextBox Grid.Row="2"
              x:Name="Payload"
+             Text="{Binding Payload, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
              FontFamily="Consolas"
              AcceptsReturn="True" />
 

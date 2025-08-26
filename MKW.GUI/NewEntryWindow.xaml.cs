@@ -1,23 +1,31 @@
-﻿using MKW.GUI.Model;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MKW.GUI
 {
     public partial class NewEntryWindow : Window
     {
-        private readonly DatabaseModel database;
+        private readonly NewEntryWindowViewModel model;
 
-        public NewEntryWindow(DatabaseModel database)
+        public NewEntryWindow(NewEntryWindowViewModel model)
         {
-            this.database = database;
-            DataContext = this;
+            this.model = model;
+            DataContext = model;
             InitializeComponent();
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            database.CreateEntry(Payload.Text);
-            Close();
+            try
+            {
+                if (model.OnOK())
+                {
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

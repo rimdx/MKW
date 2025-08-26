@@ -36,7 +36,16 @@ namespace MKW.GUI
 
         private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.OnAddEntry();
+            try
+            {
+                NewEntryWindowViewModel viewModel = model.CreateNewEntryWindowViewModel();
+                NewEntryWindow window = new NewEntryWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void EditEntry_Click(object sender, RoutedEventArgs e)
