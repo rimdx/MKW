@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MKW.GUI"
         xmlns:images="clr-namespace:MKW.GUI.Images"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:PromoteUserWindow}"
+        d:DataContext="{d:DesignInstance Type=local:PromoteUserWindowViewModel}"
         Title="Promote New User"
         Height="350" Width="300"
         WindowStartupLocation="CenterScreen">
@@ -46,28 +46,10 @@
         </TextBox.Text>
       </TextBox>
 
-      <Label Padding="0"
-             FontWeight="Bold"
-             Target="{Binding ElementName=PasswordInput}"
-             Content="_Password:" />
-
-      <PasswordBox Padding="4"
-                   x:Name="PasswordInput"
-                   FontFamily="Consolas"
-                   PasswordChanged="PasswordInput_PasswordChanged"
-                   Margin="0,0,0,8" />
-
-      <Label Padding="0"
-             FontWeight="Bold"
-             Target="{Binding ElementName=PasswordInput}"
-             Content="_Repeat Password:" />
-
-      <PasswordBox Padding="4"
-                   x:Name="PasswordRepeatInput"
-                   FontFamily="Consolas"
-                   PasswordChanged="PasswordRepeatInput_PasswordChanged" />
+      <local:PasswordInput Password="{Binding Password, Mode=OneWayToSource}"
+                           IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}" />
     </StackPanel>
-    
+
     <Grid Grid.Row="4">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
