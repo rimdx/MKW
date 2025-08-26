@@ -15,9 +15,16 @@ namespace MKW.GUI
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            if (model.OnOK())
+            try
             {
-                Close();
+                if (model.OnOK())
+                {
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
