@@ -8,7 +8,7 @@ namespace MKW.Core.Client
         protected readonly UserSession user;
 
         public UserEntry(ClientSession client, UserSession user, IDatabaseEntry entry)
-            : base(client, entry)
+            : base(client, user.TrustController, entry)
         {
             this.user = user;
         }

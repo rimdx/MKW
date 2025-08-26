@@ -12,6 +12,7 @@ namespace MKW.Core.Client
 
         public UserId Id => DatabaseUser.Id;
         public AsymmetricTransformer Transformer { get; }
+        public UserTrustController TrustController { get; }
 
         public UserSession(ClientSession client /* reference */,
                            IDatabaseUser user /* reference */,
@@ -21,6 +22,7 @@ namespace MKW.Core.Client
             DatabaseUser = user;
 
             Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
+            TrustController = new UserTrustController(client, this);
         }
 
         public UserEntry OpenEntry(EntryId id)
@@ -75,13 +77,17 @@ namespace MKW.Core.Client
         public void Dispose()
         {
             Transformer.Dispose();
+            TrustController.Dispose();
         }
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
-            using UserTrustController trustController = new UserTrustController(client, this);
+            TrustController.UpdateTrust(userId, trust);
+        }
 
-            trustController.UpdateTrust(userId, trust);
+        public IEnumerable<UserInfo> EnumerateUsersTrust()
+        {
+            return TrustController.EnumerateImplicitlyTrustedUsers();
         }
     }
 }

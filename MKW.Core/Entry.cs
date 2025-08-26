@@ -7,20 +7,23 @@ namespace MKW.Core.Client
     public class Entry : IDisposable
     {
         protected readonly ClientSession client;
+        // TODO: dispose
+        protected readonly UserTrustProvider trustProvider;
         protected readonly IDatabaseEntry entry;
 
         public EntryId Id => entry.Id;
 
-        public Entry(ClientSession client, IDatabaseEntry entry)
+        public Entry(ClientSession client, UserTrustProvider trustProvider, IDatabaseEntry entry)
         {
             this.client = client;
+            this.trustProvider = trustProvider;
             this.entry = entry;
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
             UserInfo[] users =
-                client.EnumerateUsersTrust()
+                trustProvider.EnumerateImplicitlyTrustedUsers()
                 .Where(user => user.Trust switch
                 {
                     Trust.None => false,
