@@ -12,7 +12,7 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user = sbox.CreateUser(client, "123", out UserInfo userInfo, Trust.None);
+            using UserSession user = sbox.CreateUser(client, "123", out UserInfo userInfo, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController = new UserTrustController(client, user);
@@ -50,11 +50,11 @@ namespace MKW.Tests
             //         \---- 3
             //            exp trust
 
-            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, Trust.None);
-            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, Trust.None);
-            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, Trust.None);
-            UserSession user4 = sbox.CreateUser(client, "user4", out UserInfo user4Info, Trust.None);
-            UserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, Trust.None);
+            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, false);
+            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, false);
+            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
+            UserSession user4 = sbox.CreateUser(client, "user4", out UserInfo user4Info, false);
+            UserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController1 = new UserTrustController(client, user1);
@@ -112,11 +112,11 @@ namespace MKW.Tests
             //         \---- 3 -----/
             //            exp trust
 
-            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, Trust.None);
-            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, Trust.None);
-            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, Trust.None);
-            UserSession user4 = sbox.CreateUser(client, "user4", out UserInfo user4Info, Trust.None);
-            UserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, Trust.None);
+            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, false);
+            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, false);
+            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
+            UserSession user4 = sbox.CreateUser(client, "user4", out UserInfo user4Info, false);
+            UserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController1 = new UserTrustController(client, user1);
@@ -158,9 +158,9 @@ namespace MKW.Tests
             // 2 --> 1
             // it's a loop!
 
-            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, Trust.None);
-            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, Trust.None);
-            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, Trust.None);
+            UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, false);
+            UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, false);
+            UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController1 = new UserTrustController(client, user1);

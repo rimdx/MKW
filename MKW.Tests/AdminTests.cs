@@ -32,26 +32,26 @@ namespace MKW.Tests
             UserInfo user1 = client.PromoteUser("user1");
             UserInfo user2 = client.PromoteUser("user2");
 
-            admin.Trust = Trust.ExplicitTrust;
-            user1.Trust = Trust.None;
-            user2.Trust = Trust.None;
+            admin.Trust = Trust.SelfTrust;
+            user1.Trust = Trust.ExplicitTrust;
+            user2.Trust = Trust.ExplicitTrust;
+
             CollectionAssert.AreEqual(
-                new UserInfo[] { admin, user1, user2 },
+                new UserInfo[] { admin },
                 client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.ExplicitTrust);
-            user1.Trust = Trust.ExplicitTrust;
-            user2.Trust = Trust.None;
             CollectionAssert.AreEqual(
-                new UserInfo[] { admin, user1, user2 },
+                new UserInfo[] { admin, user1 },
                 client.EnumerateUsersTrust());
 
             adminSession.UpdateTrust(user1.Id, Trust.None);
             adminSession.UpdateTrust(user2.Id, Trust.ExplicitTrust);
+
             user1.Trust = Trust.None;
-            user2.Trust = Trust.ExplicitTrust;
+
             CollectionAssert.AreEqual(
-                new UserInfo[] { admin, user1, user2 },
+                new UserInfo[] { admin, user2 },
                 client.EnumerateUsersTrust());
         }
 
@@ -129,7 +129,7 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user = sbox.CreateUser(client, "user1", out _, Trust.None);
+            using UserSession user = sbox.CreateUser(client, "user1", out _, false);
 
             EntryId entryId = EntryId.Create();
 
