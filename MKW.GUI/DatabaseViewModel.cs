@@ -131,20 +131,17 @@ namespace MKW.GUI
             window.ShowDialog();
         });
 
-        public bool OnEditEntry() => RunAction(() =>
+        public EditEntryWindowViewModel CreateEditEntryWindowViewModel()
         {
             if (SelectedEntry == null)
             {
                 throw new Exception("No entry was selected.");
             }
 
-            using UserEntry entry = Database.User!.OpenEntry(SelectedEntry.Id);
+            UserEntry entry = Database.User!.OpenEntry(SelectedEntry.Id);
 
-            EditEntryWindow window = new EditEntryWindow(Database,
-                                                         entry /* reference */);
-
-            window.ShowDialog();
-        });
+            return new EditEntryWindowViewModel(Database, entry /* move */);
+        }
 
         public bool OnDeleteEntry() => RunAction(() =>
         {

@@ -17,7 +17,16 @@ namespace MKW.GUI
 
         private void EntryListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            model.OnEditEntry();
+            try
+            {
+                using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel();
+                EditEntryWindow window = new EditEntryWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CopyPayload_Click(object sender, RoutedEventArgs e)
@@ -32,7 +41,16 @@ namespace MKW.GUI
 
         private void EditEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.OnEditEntry();
+            try
+            {
+                using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel();
+                EditEntryWindow window = new EditEntryWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void DuplicateEntry_Click(object sender, RoutedEventArgs e)

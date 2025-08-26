@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace MKW.GUI
 {
@@ -18,14 +19,23 @@ namespace MKW.GUI
             UsersPage.Content = new DatabaseUsersPage(model);
         }
 
-        private void AddEntry_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
             model.OnAddEntry();
         }
 
-        private void EditEntry_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void EditEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.OnEditEntry();
+            try
+            {
+                using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel();
+                EditEntryWindow window = new EditEntryWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
