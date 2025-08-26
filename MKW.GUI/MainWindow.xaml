@@ -43,8 +43,6 @@
       </MenuItem>
     </Menu>
 
-    <ContentControl Grid.Row="1" x:Name="Database">
-      <local:StartPage x:Name="StartPage" />
-    </ContentControl>
+    <ContentControl Grid.Row="1" x:Name="Database" />
   </Grid>
 </Window>
