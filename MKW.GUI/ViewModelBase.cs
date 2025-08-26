@@ -20,15 +20,17 @@ namespace MKW.GUI
             MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        public void RunAction(Action action)
+        public bool RunAction(Action action)
         {
             try
             {
                 action();
+                return true;
             }
             catch (Exception ex)
             {
                 ReportError(ex);
+                return false;
             }
         }
     }
