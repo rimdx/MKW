@@ -156,6 +156,14 @@ namespace MKW.GUI
             throw new NotImplementedException();
         });
 
+        // User
+
+        public bool OnPromoteUser() => RunAction(() =>
+        {
+            PromoteUserWindow window = new PromoteUserWindow(Database);
+            window.ShowDialog();
+        });
+
         public void Dispose()
         {
             Database.Dispose();

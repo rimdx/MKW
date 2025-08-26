@@ -17,7 +17,7 @@
               SnapsToDevicePixels="True">
       <ListView.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="Promote _New User..." />
+          <MenuItem Header="Promote _New User..." Click="PromoteUser_Click" />
           <MenuItem Header="_Properties..." IsEnabled="{Binding IsUserSelected}" />
           <MenuItem Header="_Delete..." IsEnabled="{Binding IsUserSelected}" />
           <Separator />
