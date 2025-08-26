@@ -53,5 +53,11 @@ namespace MKW.GUI
                 SetValue(PasswordProperty, _passwordBox.Password);
             }
         }
+
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            base.OnGotFocus(e);
+            _passwordBox?.Focus();
+        }
     }
 }
