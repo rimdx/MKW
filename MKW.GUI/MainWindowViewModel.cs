@@ -1,4 +1,5 @@
-﻿using MKW.GUI.Model;
+﻿using Microsoft.Win32;
+using MKW.GUI.Model;
 using System.ComponentModel;
 
 namespace MKW.GUI
@@ -48,6 +49,57 @@ namespace MKW.GUI
             }
 
             return _database.Database;
+        }
+
+        public void OnNewDatabase()
+        {
+            FileDialog dialog = new SaveFileDialog
+            {
+                FileName = "New Database",
+                DefaultExt = ".mkw",
+                Filter = "Multi-Key Wallet Database File|*.mkw"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                CreateDatabaseWindowViewModel createDatabaseViewModel =
+                    new CreateDatabaseWindowViewModel(dialog.FileName);
+                CreateDatabaseWindow createDatabaseWindow =
+                    new CreateDatabaseWindow(createDatabaseViewModel);
+
+                createDatabaseWindow.ShowDialog();
+
+                if (createDatabaseViewModel.Database != null)
+                {
+                    Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
+                }
+            }
+        }
+
+        public void OnOpenDatabase()
+        {
+            FileDialog dialog = new OpenFileDialog
+            {
+                DefaultExt = ".mkw",
+                Filter = "Multi-Key Wallet Database File|*.mkw"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                DatabaseModel database = DatabaseModel.Open(dialog.FileName);
+                LoginWindow window = new LoginWindow(database);
+
+                window.ShowDialog();
+
+                if (database.User == null)
+                {
+                    database.Dispose();
+                }
+                else
+                {
+                    Database = new DatabaseViewModel(database /* move */);
+                }
+            }
         }
 
         public void Dispose()

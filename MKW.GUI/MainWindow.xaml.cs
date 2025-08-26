@@ -21,8 +21,8 @@ namespace MKW.GUI
 
             InitializeComponent();
 
-            StartPage.OpenDatabaseClicked += (sender, e) => OnOpenDatabase();
-            StartPage.NewDatabaseClicked += (sender, e) => OnNewDatabase();
+            StartPage.OpenDatabaseClicked += (sender, e) => model.OnOpenDatabase();
+            StartPage.NewDatabaseClicked += (sender, e) => model.OnNewDatabase();
         }
 
         private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -34,65 +34,14 @@ namespace MKW.GUI
             }
         }
 
-        private void OnNewDatabase()
-        {
-            FileDialog dialog = new SaveFileDialog
-            {
-                FileName = "New Database",
-                DefaultExt = ".mkw",
-                Filter = "Multi-Key Wallet Database File|*.mkw"
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                CreateDatabaseWindowViewModel createDatabaseViewModel =
-                    new CreateDatabaseWindowViewModel(dialog.FileName);
-                CreateDatabaseWindow createDatabaseWindow =
-                    new CreateDatabaseWindow(createDatabaseViewModel);
-
-                createDatabaseWindow.ShowDialog();
-
-                if (createDatabaseViewModel.Database != null)
-                {
-                    model.Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
-                }
-            }
-        }
-
-        private void OnOpenDatabase()
-        {
-            FileDialog dialog = new OpenFileDialog
-            {
-                DefaultExt = ".mkw",
-                Filter = "Multi-Key Wallet Database File|*.mkw"
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                DatabaseModel database = DatabaseModel.Open(dialog.FileName);
-                LoginWindow window = new LoginWindow(database);
-
-                window.ShowDialog();
-
-                if (database.User == null)
-                {
-                    database.Dispose();
-                }
-                else
-                {
-                    model.Database = new DatabaseViewModel(database /* move */);
-                }
-            }
-        }
-
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
         {
-            OnNewDatabase();
+            model.OnNewDatabase();
         }
 
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {
-            OnOpenDatabase();
+            model.OnOpenDatabase();
         }
 
         private void Window_Closed(object sender, EventArgs e)
