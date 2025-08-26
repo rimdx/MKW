@@ -15,7 +15,8 @@
               SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
               MouseDoubleClick="ListView_MouseDoubleClick"
               BorderThickness="0"
-              SnapsToDevicePixels="True">
+              SnapsToDevicePixels="True"
+              local:ListViewBehaviours.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="Promote _New User..." Click="PromoteUser_Click" />

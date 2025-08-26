@@ -16,7 +16,8 @@
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
               BorderThickness="0"
-              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True">
+              MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True"
+              local:ListViewBehaviours.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Copy payload" Click="CopyPayload_Click" IsEnabled="{Binding IsEntrySelected}" />
