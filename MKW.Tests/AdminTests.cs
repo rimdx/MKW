@@ -129,17 +129,28 @@ namespace MKW.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user = sbox.CreateUser(client, "user1", out _, false);
+            using UserSession user = sbox.CreateUser(client, "user1", out UserInfo userInfo, false);
 
             EntryId entryId = EntryId.Create();
 
             {
                 using UserEntry entry = user.CreateEntry(entryId);
                 entry.UpdatePayload(new EntryPayload("data"));
+
+                UserInfo[] users = [.. entry.EnumerateEncodedForUsers()];
+                ClassicAssert.AreEqual(1, users.Length);
+                ClassicAssert.AreEqual(userInfo.Id, users[0].Id);
+                ClassicAssert.AreEqual(Trust.Unknown, users[0].Trust);
             }
 
             {
                 using UserEntry entry = user.OpenEntry(entryId);
+
+                UserInfo[] users = [.. entry.EnumerateEncodedForUsers()];
+                ClassicAssert.AreEqual(1, users.Length);
+                ClassicAssert.AreEqual(userInfo.Id, users[0].Id);
+                ClassicAssert.AreEqual(Trust.Unknown, users[0].Trust);
+
                 ClassicAssert.AreEqual(new EntryPayload("data"),
                                        entry.OpenPayload());
             }

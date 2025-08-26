@@ -8,14 +8,18 @@ namespace MKW.Core.Client
         public Entry OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = Database.OpenEntry(id, false);
-            return new Entry(this, dbEntry);
+            IDatabaseUser admin = Database.OpenAdmin(true);
+            UserTrustProvider trustProvider = new UserTrustProvider(this, admin);
+            return new Entry(this, trustProvider /* move */, dbEntry);
         }
 
         public Entry CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = Database.CreateEntry(id);
+            IDatabaseUser admin = Database.OpenAdmin(true);
+            UserTrustProvider trustProvider = new UserTrustProvider(this, admin);
             dbEntry.Save();
-            return new Entry(this, dbEntry);
+            return new Entry(this, trustProvider /* move */, dbEntry);
         }
 
         public Entry CreateEntry() => CreateEntry(EntryId.Create());
