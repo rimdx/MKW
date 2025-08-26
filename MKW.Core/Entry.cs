@@ -64,6 +64,15 @@ namespace MKW.Core.Client
             entry.Salt = payloadEncoder.ExportIV();
         }
 
+        public IEnumerable<UserInfo> EnumerateEncodedForUsers()
+        {
+            foreach (UserId id in entry.Keys.Keys)
+            {
+                IDatabaseUser user = client.OpenDatabaseUser(id, true);
+                yield return UserInfo.FromDatabaseUser(user);
+            }
+        }
+
         public void Dispose()
         {
         }
