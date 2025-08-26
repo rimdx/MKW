@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-using MKW.GUI.Model;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 
 namespace MKW.GUI
@@ -21,16 +19,27 @@ namespace MKW.GUI
 
             InitializeComponent();
 
-            StartPage.OpenDatabaseClicked += (sender, e) => model.OnOpenDatabase();
-            StartPage.NewDatabaseClicked += (sender, e) => model.OnNewDatabase();
+            model.Database = null;
         }
 
         private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(model.Database) && model.Database != null)
+            if (e.PropertyName == nameof(model.Database))
             {
-                databasePage = new DatabasePage(model.Database /* reference */);
-                Database.Content = databasePage;
+                if (model.Database == null)
+                {
+                    StartPage startPage = new StartPage();
+
+                    startPage.OpenDatabaseClicked += (sender, e) => model.OnOpenDatabase();
+                    startPage.NewDatabaseClicked += (sender, e) => model.OnNewDatabase();
+
+                    Database.Content = startPage;
+                }
+                else
+                {
+                    databasePage = new DatabasePage(model.Database /* reference */);
+                    Database.Content = databasePage;
+                }
             }
         }
 
