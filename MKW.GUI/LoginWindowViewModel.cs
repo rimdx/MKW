@@ -39,22 +39,15 @@ namespace MKW.GUI
 
         public string DatabasePath => database.Path;
 
-        public void DoLogin()
+        public void DoLogin() => RunAction(() =>
         {
-            try
+            if (SelectedUser == null)
             {
-                if (SelectedUser == null)
-                {
-                    throw new Exception("Please select user.");
-                }
+                throw new Exception("Please select user.");
+            }
 
-                database.Authenticate(SelectedUser.Id, Password);
-                window.Close();
-            }
-            catch (Exception ex)
-            {
-                ReportError(ex);
-            }
-        }
+            database.Authenticate(SelectedUser.Id, Password);
+            window.Close();
+        });
     }
 }
