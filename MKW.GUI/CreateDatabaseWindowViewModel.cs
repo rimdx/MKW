@@ -16,10 +16,9 @@ namespace MKW.GUI
         public string Password { get; set; } = "";
         public string DatabasePath => path;
 
-        public bool DoCreateDatabase()
+        public bool DoCreateDatabase() => RunAction(() =>
         {
             Database = DatabaseModel.Create(path, Password);
-            return true;
-        }
+        });
     }
 }

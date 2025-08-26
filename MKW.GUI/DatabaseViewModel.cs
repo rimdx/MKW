@@ -118,13 +118,13 @@ namespace MKW.GUI
             }
         }
 
-        public void OnAddEntry()
+        public bool OnAddEntry() => RunAction(() =>
         {
             NewEntryWindow window = new NewEntryWindow(Database);
             window.ShowDialog();
-        }
+        });
 
-        public void OnEditEntry()
+        public bool OnEditEntry() => RunAction(() =>
         {
             if (SelectedEntry == null)
             {
@@ -137,7 +137,7 @@ namespace MKW.GUI
                                                          entry /* reference */);
 
             window.ShowDialog();
-        }
+        });
 
         public void Dispose()
         {
