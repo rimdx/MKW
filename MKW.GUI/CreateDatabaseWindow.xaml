@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
         Title="Create Database"
-        Height="250" Width="400"
+        Height="350" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Loaded="Window_Loaded">
@@ -16,7 +16,6 @@
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
       <RowDefinition Height="auto" />
       <RowDefinition Height="auto" />
       <RowDefinition Height="auto" />
@@ -61,19 +60,12 @@
       cannot be recovered.
     </TextBox>
 
-    <Label Grid.Row="3"
-           Padding="0"
-           FontWeight="Bold"
-           Target="{Binding ElementName=PasswordInput}"
-           Content="_Password:" />
+    <local:PasswordRepeatInput x:Name="PasswordInput"
+                               Grid.Row="3"
+                               Password="{Binding Password, Mode=OneWayToSource}"
+                               IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}" />
 
-    <PasswordBox Grid.Row="4"
-                 Padding="4"
-                 x:Name="PasswordInput"
-                 FontFamily="Consolas"
-                 PasswordChanged="PasswordInput_PasswordChanged" />
-
-    <Grid Grid.Row="6">
+    <Grid Grid.Row="5">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
