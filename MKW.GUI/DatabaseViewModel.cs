@@ -124,11 +124,10 @@ namespace MKW.GUI
             throw new NotImplementedException();
         });
 
-        public bool OnAddEntry() => RunAction(() =>
+        public NewEntryWindowViewModel CreateNewEntryWindowViewModel()
         {
-            NewEntryWindow window = new NewEntryWindow(Database);
-            window.ShowDialog();
-        });
+            return new NewEntryWindowViewModel(Database);
+        }
 
         public EditEntryWindowViewModel CreateEditEntryWindowViewModel()
         {

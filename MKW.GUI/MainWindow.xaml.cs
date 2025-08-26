@@ -89,12 +89,30 @@ namespace MKW.GUI
 
         private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.Database!.OnAddEntry();
+            try
+            {
+                NewEntryWindowViewModel viewModel = model.Database!.CreateNewEntryWindowViewModel();
+                NewEntryWindow window = new NewEntryWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void EditEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.Database!.OnAddEntry();
+            try
+            {
+                using EditEntryWindowViewModel viewModel = model.Database!.CreateEditEntryWindowViewModel();
+                EditEntryWindow window = new EditEntryWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void DeleteEntry_Click(object sender, RoutedEventArgs e)
