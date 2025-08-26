@@ -51,7 +51,7 @@ namespace MKW.GUI
             return _database.Database;
         }
 
-        public void OnNewDatabase()
+        public bool OnNewDatabase() => RunAction(() =>
         {
             FileDialog dialog = new SaveFileDialog
             {
@@ -74,9 +74,9 @@ namespace MKW.GUI
                     Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
                 }
             }
-        }
+        });
 
-        public void OnOpenDatabase()
+        public void OnOpenDatabase() => RunAction(() =>
         {
             FileDialog dialog = new OpenFileDialog
             {
@@ -100,7 +100,7 @@ namespace MKW.GUI
                     Database = new DatabaseViewModel(database /* move */);
                 }
             }
-        }
+        });
 
         public bool OnCloseDatabase() => RunAction(() =>
         {
