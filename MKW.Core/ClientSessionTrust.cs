@@ -10,7 +10,7 @@ namespace MKW.Core.Client
             IDatabaseUser admin = Database.OpenAdmin(true);
             using UserTrustProvider trustProvider = new UserTrustProvider(this, admin);
 
-            IEnumerable<UserInfo> trust = trustProvider.EnumerateUsersTrust();
+            IEnumerable<UserInfo> trust = trustProvider.EnumerateImplicitlyTrustedUsers();
 
             // Convert IEnumerable to an array, before returning from function,
             // because outside the trustProvider will be disposed.

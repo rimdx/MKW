@@ -89,12 +89,24 @@ namespace MKW.Tests
             return client.OpenAdmin(AdminSecret);
         }
 
-        public UserSession CreateUser(ClientSession client, string password, out UserInfo user, Trust trust = Trust.ExplicitTrust)
+        public UserSession CreateUser(ClientSession client,
+                                      string password,
+                                      out UserInfo user,
+                                      bool trusted = true)
         {
             using AdminSession admin = OpenAdmin(client);
+
             user = client.PromoteUser(password);
-            admin.UpdateTrust(user.Id, trust);
-            return client.OpenUser(user.Id, password);
+
+            UserSession userSession = client.OpenUser(user.Id, password);
+
+            if (trusted)
+            {
+                admin.UpdateTrust(user.Id, Trust.ExplicitTrust);
+                userSession.UpdateTrust(admin.Id, Trust.ExplicitTrust);
+            }
+
+            return userSession;
         }
 
         private string TrimString(string str)

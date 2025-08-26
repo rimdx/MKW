@@ -30,7 +30,7 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
             ClassicAssert.AreEqual(ActionInfo.Added, entry.Action);
 
-            admin.Trust = Trust.ExplicitTrust;
+            admin.Trust = Trust.SelfTrust;
             user.Trust = Trust.ExplicitTrust;
             CollectionAssert.AreEqual(
                 new UserInfo[]
