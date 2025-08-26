@@ -1,7 +1,7 @@
 ﻿using MKW.Core.Storage;
 using MKW.GUI.Images;
 
-namespace MKW.GUI
+namespace MKW.GUI.Model
 {
     public class DatabaseUserModel
     {

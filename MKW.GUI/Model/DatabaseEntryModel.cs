@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Storage;
 
-namespace MKW.GUI
+namespace MKW.GUI.Model
 {
     public class DatabaseEntryModel
     {

@@ -3,7 +3,7 @@ using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 
-namespace MKW.GUI
+namespace MKW.GUI.Model
 {
     public class DatabaseModel : IDisposable
     {

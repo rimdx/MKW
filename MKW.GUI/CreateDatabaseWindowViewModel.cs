@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using MKW.GUI.Model;
+using System.ComponentModel;
 
 namespace MKW.GUI
 {

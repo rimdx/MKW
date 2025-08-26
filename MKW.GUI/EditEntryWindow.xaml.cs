@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client;
+using MKW.GUI.Model;
 using System.Windows;
 
 namespace MKW.GUI
