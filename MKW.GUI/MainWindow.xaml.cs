@@ -34,6 +34,8 @@ namespace MKW.GUI
             }
         }
 
+        // File
+
         private void NewDatabase_Click(object sender, RoutedEventArgs e)
         {
             model.OnNewDatabase();
@@ -44,10 +46,32 @@ namespace MKW.GUI
             model.OnOpenDatabase();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
-            model.Dispose();
+            model.OnCloseDatabase();
         }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnSave();
+        }
+
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnSaveAs();
+        }
+
+        private void LockWorkspace_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnLockWorkspace();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        // Entry
 
         private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
@@ -57,6 +81,28 @@ namespace MKW.GUI
         private void EditEntry_Click(object sender, RoutedEventArgs e)
         {
             model.Database!.OnAddEntry();
+        }
+
+        private void DeleteEntry_Click(object sender, RoutedEventArgs e)
+        {
+            model.Database!.OnDeleteEntry();
+        }
+
+        private void DuplicateEntry_Click(object sender, RoutedEventArgs e)
+        {
+            model.Database!.OnDuplicateEntry();
+        }
+
+        // Help
+
+        private void HelpAbout_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnHelpAbout();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            model.Dispose();
         }
     }
 }

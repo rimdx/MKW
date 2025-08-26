@@ -118,6 +118,13 @@ namespace MKW.GUI
             }
         }
 
+        // Entry
+
+        public bool OnCopyPayload() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
         public bool OnAddEntry() => RunAction(() =>
         {
             NewEntryWindow window = new NewEntryWindow(Database);
@@ -137,6 +144,16 @@ namespace MKW.GUI
                                                          entry /* reference */);
 
             window.ShowDialog();
+        });
+
+        public bool OnDeleteEntry() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
+        public bool OnDuplicateEntry() => RunAction(() =>
+        {
+            throw new NotImplementedException();
         });
 
         public void Dispose()

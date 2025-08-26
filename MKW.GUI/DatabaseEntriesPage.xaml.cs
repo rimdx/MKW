@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace MKW.GUI
@@ -19,14 +20,33 @@ namespace MKW.GUI
             model.OnEditEntry();
         }
 
-        private void AddEntry_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void CopyPayload_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnCopyPayload();
+        }
+
+        private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
             model.OnAddEntry();
         }
 
-        private void EditEntry_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void EditEntry_Click(object sender, RoutedEventArgs e)
         {
             model.OnEditEntry();
+        }
+
+        private void DuplicateEntry_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnDuplicateEntry();
+        }
+
+        private void DeleteEntry_Click(object sender, RoutedEventArgs e)
+        {
+            model.OnDeleteEntry();
+        }
+
+        private void SelectAll_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

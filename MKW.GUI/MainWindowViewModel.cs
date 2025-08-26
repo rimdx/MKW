@@ -102,6 +102,33 @@ namespace MKW.GUI
             }
         }
 
+        public bool OnCloseDatabase() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
+        public bool OnLockWorkspace() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
+        public bool OnSave() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
+        public bool OnSaveAs() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
+        // Help
+
+        public void OnHelpAbout() => RunAction(() =>
+        {
+            throw new NotImplementedException();
+        });
+
         public void Dispose()
         {
             Database?.Dispose();

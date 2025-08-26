@@ -24,22 +24,22 @@
           <MenuItem Header="File 2.mkw" />
           <MenuItem Header="File 3.mkw" />
         </MenuItem>
-        <MenuItem Header="_Close" />
+        <MenuItem Header="_Close" Click="Close_Click" />
         <Separator />
-        <MenuItem Header="_Save" />
-        <MenuItem Header="Save _As" />
+        <MenuItem Header="_Save" Click="Save_Click" />
+        <MenuItem Header="Save _As" Click="SaveAs_Click" />
         <Separator />
-        <MenuItem Header="_Lock Workspace" />
-        <MenuItem Header="_Exit" />
+        <MenuItem Header="_Lock Workspace" Click="LockWorkspace_Click" />
+        <MenuItem Header="_Exit" Click="Exit_Click" />
       </MenuItem>
       <MenuItem Header="Entry">
         <MenuItem Header="Add Entry" Click="AddEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
         <MenuItem Header="Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
-        <MenuItem Header="Delete Entry" IsEnabled="{Binding IsDatabaseAttached}" />
-        <MenuItem Header="Duplicate Entry" IsEnabled="{Binding IsDatabaseAttached}" />
+        <MenuItem Header="Delete Entry" Click="DeleteEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
+        <MenuItem Header="Duplicate Entry" Click="DuplicateEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
       </MenuItem>
       <MenuItem Header="_Help">
-        <MenuItem Header="_About Multi-Key Wallet" />
+        <MenuItem Header="_About Multi-Key Wallet" Click="HelpAbout_Click" />
       </MenuItem>
     </Menu>
 
