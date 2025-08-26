@@ -19,27 +19,32 @@ namespace MKW.GUI
 
             InitializeComponent();
 
-            model.Database = null;
+            UpdateDatabasePage();
         }
 
         private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(model.Database))
             {
-                if (model.Database == null)
-                {
-                    StartPage startPage = new StartPage();
+                UpdateDatabasePage();
+            }
+        }
 
-                    startPage.OpenDatabaseClicked += (sender, e) => model.OnOpenDatabase();
-                    startPage.NewDatabaseClicked += (sender, e) => model.OnNewDatabase();
+        private void UpdateDatabasePage()
+        {
+            if (model.Database == null)
+            {
+                StartPage startPage = new StartPage();
 
-                    Database.Content = startPage;
-                }
-                else
-                {
-                    databasePage = new DatabasePage(model.Database /* reference */);
-                    Database.Content = databasePage;
-                }
+                startPage.OpenDatabaseClicked += (sender, e) => model.OnOpenDatabase();
+                startPage.NewDatabaseClicked += (sender, e) => model.OnNewDatabase();
+
+                Database.Content = startPage;
+            }
+            else
+            {
+                databasePage = new DatabasePage(model.Database /* reference */);
+                Database.Content = databasePage;
             }
         }
 
