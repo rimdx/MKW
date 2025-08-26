@@ -1,15 +1,12 @@
 ﻿using MKW.Core.Client;
 using MKW.GUI.Model;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace MKW.GUI
 {
-    public class DatabaseViewModel : INotifyPropertyChanged, IDisposable
+    public class DatabaseViewModel : ViewModelBase, IDisposable
     {
         public DatabaseModel Database { get; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
 
         public DatabaseViewModel(DatabaseModel database)
         {
@@ -118,14 +115,6 @@ namespace MKW.GUI
             foreach (DatabaseUserModel user in Database.EnumerateUsers())
             {
                 Users.Add(user);
-            }
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
