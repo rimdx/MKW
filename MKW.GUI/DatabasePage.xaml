@@ -67,6 +67,12 @@
       </TreeViewItem>
     </TreeView>
 
+    <GridSplitter Grid.Row="1"
+                  Grid.Column="1"
+                  Width="6"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch" />
+
     <Border Grid.Row="1"
             Grid.Column="2"
             BorderThickness="1"
