@@ -1,30 +1,34 @@
-﻿using MKW.GUI.Model;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MKW.GUI
 {
     public partial class PromoteUserWindow : Window
     {
-        private readonly DatabaseModel database;
+        private readonly PromoteUserWindowViewModel model;
 
-        public PromoteUserWindow(DatabaseModel database)
+        public PromoteUserWindow(PromoteUserWindowViewModel model)
         {
-            this.database = database;
-            DataContext = this;
+            this.model = model;
+            DataContext = model;
             InitializeComponent();
         }
 
         private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            model.Password = PasswordInput.Password;
         }
 
         private void PasswordRepeatInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            model.PasswordRepeat = PasswordRepeatInput.Password;
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (model.OnOK())
+            {
+                Close();
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
