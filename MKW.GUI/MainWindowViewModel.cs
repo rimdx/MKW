@@ -104,7 +104,7 @@ namespace MKW.GUI
 
         public bool OnCloseDatabase() => RunAction(() =>
         {
-            throw new NotImplementedException();
+            Database = null;
         });
 
         public bool OnLockWorkspace() => RunAction(() =>
