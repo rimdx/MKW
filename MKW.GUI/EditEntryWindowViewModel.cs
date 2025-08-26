@@ -1,0 +1,46 @@
+﻿using MKW.Core.Client;
+using MKW.GUI.Model;
+
+namespace MKW.GUI
+{
+    public class EditEntryWindowViewModel : ViewModelBase, IDisposable
+    {
+        private readonly DatabaseModel database;
+        private readonly UserEntry entry;
+
+        public EditEntryWindowViewModel(DatabaseModel database, UserEntry entry)
+        {
+            this.database = database;
+            this.entry = entry;
+
+            string? payload = entry.OpenPayload()?.ToString();
+
+            if (payload != null)
+            {
+                Payload = payload;
+            }
+        }
+
+        private string _payload = "";
+        public string Payload
+        {
+            get => _payload;
+            set
+            {
+                _payload = value;
+                OnPropertyChanged(_payload);
+            }
+        }
+
+        public bool OnOK()
+        {
+            database.UpdateEntry(entry, Payload);
+            return true;
+        }
+
+        public void Dispose()
+        {
+            entry.Dispose();
+        }
+    }
+}
