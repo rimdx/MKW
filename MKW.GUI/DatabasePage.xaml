@@ -15,18 +15,21 @@
 
   <Grid>
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="6" />
       <ColumnDefinition Width="200" />
       <ColumnDefinition Width="auto" />
       <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="6" />
     </Grid.ColumnDefinitions>
 
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
+      <RowDefinition Height="6" />
     </Grid.RowDefinitions>
 
     <TreeView Grid.Row="1"
-              Grid.Column="0">
+              Grid.Column="1">
       <TreeViewItem IsExpanded="True" IsSelected="{Binding IsPageDatabase, Mode=TwoWay}">
         <TreeViewItem.Header>
           <Grid>
@@ -68,13 +71,13 @@
     </TreeView>
 
     <GridSplitter Grid.Row="1"
-                  Grid.Column="1"
+                  Grid.Column="2"
                   Width="6"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" />
 
     <Border Grid.Row="1"
-            Grid.Column="2"
+            Grid.Column="3"
             BorderThickness="1"
             BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
       <Grid>
