@@ -67,16 +67,20 @@
       </TreeViewItem>
     </TreeView>
 
-    <Grid Grid.Row="1"
-          Grid.Column="2">
-      <ContentControl x:Name="InfoPage"
-                      Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    <Border Grid.Row="1"
+            Grid.Column="2"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+      <Grid>
+        <ContentControl x:Name="InfoPage"
+                        Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-      <ContentControl x:Name="EntriesPage"
-                      Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <ContentControl x:Name="EntriesPage"
+                        Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-      <ContentControl x:Name="UsersPage"
-                      Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
-    </Grid>
+        <ContentControl x:Name="UsersPage"
+                        Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
+      </Grid>
+    </Border>
   </Grid>
 </UserControl>

@@ -15,6 +15,7 @@
               ItemsSource="{Binding Entries}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
+              BorderThickness="0"
               MouseDoubleClick="EntryListView_MouseDoubleClick" SnapsToDevicePixels="True">
       <ListView.ContextMenu>
         <ContextMenu>
