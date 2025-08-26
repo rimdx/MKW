@@ -124,6 +124,28 @@ namespace MKW.Tests
         }
 
         [Test]
+        public void NewEntriesAreAlwaysSharedWithMeEvenThoughNooneTrustsMeFineIHaveNoIdeaHowToMakeTheTitleBiggerTest()
+        {
+            using SandBox sbox = new SandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            using UserSession user = sbox.CreateUser(client, "user1", out _, Trust.None);
+
+            EntryId entryId = EntryId.Create();
+
+            {
+                using UserEntry entry = user.CreateEntry(entryId);
+                entry.UpdatePayload(new EntryPayload("data"));
+            }
+
+            {
+                using UserEntry entry = user.OpenEntry(entryId);
+                ClassicAssert.AreEqual(new EntryPayload("data"),
+                                       entry.OpenPayload());
+            }
+        }
+
+        [Test]
         public void ClientMustFailOperationIfNoAdminExist()
         {
             using SandBox sbox = new SandBox(false);
