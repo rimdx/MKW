@@ -13,6 +13,7 @@ namespace MKW.GUI
 
             InitializeComponent();
 
+            InfoPage.Content = new DatabaseInfoPage(model);
             EntriesPage.Content = new DatabaseEntriesPage(model);
             UsersPage.Content = new DatabaseUsersPage(model);
         }
