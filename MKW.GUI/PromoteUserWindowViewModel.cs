@@ -14,7 +14,7 @@ namespace MKW.GUI
         public string? Password { get; set; }
         public bool IsPasswordMatch { get; set; }
 
-        public bool OnOK() => RunAction(() =>
+        public bool OnOK()
         {
             if (!IsPasswordMatch)
             {
@@ -27,6 +27,8 @@ namespace MKW.GUI
             }
 
             database.PromoteUser(Password);
-        });
+
+            return true;
+        }
     }
 }

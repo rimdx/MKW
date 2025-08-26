@@ -158,11 +158,10 @@ namespace MKW.GUI
 
         // User
 
-        public bool OnPromoteUser() => RunAction(() =>
+        public PromoteUserWindowViewModel CreatePromoteUserWindowViewModel()
         {
-            PromoteUserWindow window = new PromoteUserWindow(new PromoteUserWindowViewModel(Database));
-            window.ShowDialog();
-        });
+            return new PromoteUserWindowViewModel(Database);
+        }
 
         public void Dispose()
         {

@@ -21,7 +21,16 @@ namespace MKW.GUI
 
         private void PromoteUser_Click(object sender, RoutedEventArgs e)
         {
-            model.OnPromoteUser();
+            try
+            {
+                PromoteUserWindowViewModel viewModel = model.CreatePromoteUserWindowViewModel();
+                PromoteUserWindow window = new PromoteUserWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
