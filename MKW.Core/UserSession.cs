@@ -76,5 +76,12 @@ namespace MKW.Core.Client
         {
             Transformer.Dispose();
         }
+
+        public void UpdateTrust(UserId userId, Trust trust)
+        {
+            using UserTrustController trustController = new UserTrustController(client, this);
+
+            trustController.UpdateTrust(userId, trust);
+        }
     }
 }

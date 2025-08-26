@@ -1,5 +1,4 @@
-﻿using MKW.Core.Client.Notify;
-using MKW.Core.Storage;
+﻿using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
@@ -10,13 +9,6 @@ namespace MKW.Core.Client
                             ReadOnlySpan<byte> privateKey)
             : base(client, admin, privateKey)
         {
-        }
-
-        public void UpdateTrust(UserId userId, Trust trust)
-        {
-            using UserTrustController trustController = new UserTrustController(client, this);
-
-            trustController.UpdateTrust(userId, trust);
         }
     }
 }
