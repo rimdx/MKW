@@ -81,11 +81,11 @@ namespace MKW.Core.Client
             if (me.TrustProvider == null)
             {
                 using UserTrustProvider trustProvider = new UserTrustProvider(client, me.DatabaseUser);
-                return trustProvider.VerifyTrust(node.DatabaseUser);
+                return trustProvider.VerifyTrust(node.DatabaseUser.PublicKey.Span);
             }
             else
             {
-                return me.TrustProvider.VerifyTrust(node.DatabaseUser);
+                return me.TrustProvider.VerifyTrust(node.DatabaseUser.PublicKey.Span);
             }
         }
 

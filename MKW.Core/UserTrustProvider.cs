@@ -44,7 +44,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
-                if (VerifyTrust(user) == Trust.ExplicitTrust)
+                if (VerifyTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
                 {
                     yield return user;
                 }
@@ -59,11 +59,11 @@ namespace MKW.Core.Client
             }
         }
 
-        internal Trust VerifyTrust(IDatabaseUser user)
+        public Trust VerifyTrust(ReadOnlySpan<byte> publicKey)
         {
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
-                if (key.Verify(user.PublicKey.Span, trust.Span))
+                if (key.Verify(publicKey, trust.Span))
                 {
                     return Trust.ExplicitTrust;
                 }
