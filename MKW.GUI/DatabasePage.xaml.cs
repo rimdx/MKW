@@ -29,7 +29,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorReporter.HandleException(ex);
             }
         }
 
@@ -43,7 +43,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorReporter.HandleException(ex);
             }
         }
     }

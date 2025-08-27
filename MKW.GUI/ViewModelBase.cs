@@ -31,7 +31,7 @@ namespace MKW.GUI
 
         public void ReportError(Exception ex)
         {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorReporter.HandleException(ex);
         }
 
         public bool RunAction(Action action)
