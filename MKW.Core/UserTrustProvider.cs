@@ -72,11 +72,6 @@ namespace MKW.Core.Client
             return Trust.None;
         }
 
-        public UserTrustProvider CreateChildTrustProvider(IDatabaseUser user)
-        {
-            return new UserTrustProvider(client, user);
-        }
-
         public virtual void Dispose()
         {
             key.Dispose();
