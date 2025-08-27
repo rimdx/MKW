@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserTrustController : UserTrustProvider, IDisposable
+    public class UserTrustController : UserTrustProvider, ITrustProvider, IDisposable
     {
         public UserTrustController(ClientSession client, UserSession user)
             : base(client, user.DatabaseUser, user.Transformer)
