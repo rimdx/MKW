@@ -11,12 +11,18 @@ namespace MKW.GUI
         public DatabaseViewModel(DatabaseModel database)
         {
             Database = database;
-            Database.OnEntriesChanged += Database_OnEntriesChanged;
 
+            Database.OnEntriesChanged += Database_OnEntriesChanged;
             Entries = [];
             RefreshEntries();
 
+            Database.OnUsersChanged += Database_OnUsersChanged;
             Users = [];
+            RefreshUsers();
+        }
+
+        private void Database_OnUsersChanged(object? sender, EventArgs e)
+        {
             RefreshUsers();
         }
 
