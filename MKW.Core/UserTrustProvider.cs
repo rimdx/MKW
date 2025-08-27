@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserTrustProvider : IDisposable
+    public class UserTrustProvider : ITrustProvider, IDisposable
     {
         public UserId UserId => me.Id;
 
