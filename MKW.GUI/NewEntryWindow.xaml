@@ -9,7 +9,7 @@
         Title="Create new secret entry"
         Height="300" Width="400"
         WindowStartupLocation="CenterScreen">
-  <Grid Margin="8">
+  <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="8" />
