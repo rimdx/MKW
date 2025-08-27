@@ -24,14 +24,7 @@ namespace MKW.Core.Client
         {
             UserInfo[] users =
                 trustProvider.EnumerateUsersTrust()
-                .Where(user => user.Trust switch
-                {
-                    Trust.None => false,
-                    Trust.Unknown => false,
-                    Trust.ExplicitTrust => true,
-                    Trust.ImplicitTrust => true,
-                    Trust.SelfTrust => true,
-                }).ToArray();
+                .Where(user => ).ToArray();
 
             EncodeEntry(entry, payload, users);
 
