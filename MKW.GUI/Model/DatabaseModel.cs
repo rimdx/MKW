@@ -65,21 +65,9 @@ namespace MKW.GUI.Model
 
         public IEnumerable<DatabaseUserModel> EnumerateUsers()
         {
-            yield return new DatabaseUserModel
-            {
-                Id = UserId.Admin(),
-                IsAdmin = true,
-                Name = "Admin"
-            };
-
             foreach (UserInfo user in Client.EnumerateUsers())
             {
-                yield return new DatabaseUserModel
-                {
-                    Id = user.Id,
-                    IsAdmin = false,
-                    Name = "User"
-                };
+                yield return new DatabaseUserModel(user);
             }
         }
 
