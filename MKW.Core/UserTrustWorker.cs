@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserTrustWorker : IDisposable
+    internal class UserTrustWorker : IDisposable
     {
         private record class Node
         {
