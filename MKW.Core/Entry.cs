@@ -22,9 +22,7 @@ namespace MKW.Core.Client
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
-            UserInfo[] users =
-                trustProvider.EnumerateUsersTrust()
-                .Where(user => ).ToArray();
+            UserInfo[] users = trustProvider.EnumerateUsersTrust().ToArray();
 
             EncodeEntry(entry, payload, users);
 
