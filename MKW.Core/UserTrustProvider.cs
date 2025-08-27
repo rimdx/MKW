@@ -35,22 +35,14 @@ namespace MKW.Core.Client
             return worker.EnumerateTrustedUsers();
         }
 
-        public IEnumerable<IDatabaseUser> EnumerateExplicitlyTrustedUsers()
+        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
                 if (VerifyTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
                 {
-                    yield return user;
+                    yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
                 }
-            }
-        }
-
-        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsersInfo()
-        {
-            foreach (IDatabaseUser user in EnumerateExplicitlyTrustedUsers())
-            {
-                yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
             }
         }
 

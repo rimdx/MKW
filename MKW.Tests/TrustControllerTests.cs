@@ -25,7 +25,7 @@ namespace MKW.Tests
                 new UserInfo[]
                 {
                 },
-                trustController.EnumerateExplicitlyTrustedUsersInfo());
+                trustController.EnumerateExplicitlyTrustedUsers());
 
             userInfo.Trust = Trust.SelfTrust;
             adminInfo.Trust = Trust.ImplicitTrust;
@@ -80,7 +80,7 @@ namespace MKW.Tests
                     user2Info,
                     user3Info,
                 },
-                trustController1.EnumerateExplicitlyTrustedUsersInfo());
+                trustController1.EnumerateExplicitlyTrustedUsers());
 
             user1Info.Trust = Trust.SelfTrust;
             user2Info.Trust = Trust.ExplicitTrust;

@@ -20,9 +20,9 @@ namespace MKW.Core.Client
             Trust.SelfTrust => true,
         };
 
-        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsersInfo()
+        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
         {
-            foreach (UserInfo user in proxy.EnumerateExplicitlyTrustedUsersInfo())
+            foreach (UserInfo user in proxy.EnumerateExplicitlyTrustedUsers())
             {
                 if (IsTrusted(user))
                 {
