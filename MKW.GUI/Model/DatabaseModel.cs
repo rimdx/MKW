@@ -16,6 +16,7 @@ namespace MKW.GUI.Model
         public AdminSession? Admin { get; private set; }
 
         public event EventHandler? OnEntriesChanged;
+        public event EventHandler? OnUsersChanged;
 
         public DatabaseModel(IDatabase database, string path, ClientSession client)
         {
@@ -85,6 +86,7 @@ namespace MKW.GUI.Model
         public void PromoteUser(string password)
         {
             Client.PromoteUser(password);
+            OnUsersChanged?.Invoke(this, new EventArgs());
         }
 
         public void Dispose()
