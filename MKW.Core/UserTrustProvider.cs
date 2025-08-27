@@ -25,11 +25,6 @@ namespace MKW.Core.Client
             this.key = key;
         }
 
-        public IEnumerable<UserInfo> EnumerateUsersTrust()
-        {
-            return EnumerateImplicitlyTrustedUsers();
-        }
-
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
             using UserTrustWorker worker = new UserTrustWorker(client, this, client.EnumerateDatabaseUsers());
