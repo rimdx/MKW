@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Loaded="Window_Loaded">
-  <Grid Margin="8">
+  <Grid Margin="12">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
