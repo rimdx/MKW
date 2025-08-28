@@ -11,6 +11,13 @@
 - [x] Close database
 - [x] Close window
 - [ ] Help
+- [ ] Recent files
+  - [x] Storage
+  - [x] Menu items integration
+    - [ ] Opens on click
+  - [x] Start page integration
+    - [x] Opens on click
+  - [ ] Application jump list integration
 
 ### Entry management
 
