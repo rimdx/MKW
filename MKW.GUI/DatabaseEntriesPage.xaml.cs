@@ -29,11 +29,6 @@ namespace MKW.GUI
             }
         }
 
-        private void CopyPayload_Click(object sender, RoutedEventArgs e)
-        {
-            model.OnCopyPayload();
-        }
-
         private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
             try

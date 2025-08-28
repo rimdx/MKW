@@ -125,11 +125,6 @@ namespace MKW.GUI
 
         // Entry
 
-        public bool OnCopyPayload() => RunAction(() =>
-        {
-            throw new NotImplementedException();
-        });
-
         public NewEntryWindowViewModel CreateNewEntryWindowViewModel()
         {
             return new NewEntryWindowViewModel(Database);

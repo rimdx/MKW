@@ -20,8 +20,6 @@
               local:ListViewBehaviours.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="_Copy payload" Click="CopyPayload_Click" IsEnabled="{Binding IsEntrySelected}" />
-          <Separator />
           <MenuItem Header="_Add Entry" Click="AddEntry_Click" />
           <MenuItem Header="_Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
           <MenuItem Header="_Delete Entry" Click="DeleteEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
