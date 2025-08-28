@@ -7,7 +7,7 @@
 - [ ] Minimal workspace functionality
   - [x] Create, open, close files
   - [x] Close window
-  - [ ] About help
+  - [x] About help
 - [ ] Entry management
   - [ ] Create, edit, delete
 - [ ] User management
