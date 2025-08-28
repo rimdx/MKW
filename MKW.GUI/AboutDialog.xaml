@@ -1,0 +1,67 @@
+﻿<Window x:Class="MKW.GUI.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MKW.GUI"
+        mc:Ignorable="d"
+        Title="About Multi-Key Wallet"
+        Height="250" Width="400"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Orientation="Vertical">
+      <Label Content="Multi-Key Wallet"
+             HorizontalAlignment="Center"
+             Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
+             FontSize="18" FontWeight="Bold"
+             Padding="0" />
+
+      <Separator Margin="0,8" />
+
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+        <TextBlock Text="Version: " />
+        <TextBlock Text="{Binding Version}"
+                   d:Text="1.0.0.0"
+                   FontWeight="SemiBold" />
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+        <TextBlock Text="Source Code: " />
+        <TextBlock>
+          <Hyperlink Click="GitHubLinkClick">https://github.com/rimdx/MKW</Hyperlink>
+        </TextBlock>
+      </StackPanel>
+    </StackPanel>
+
+    <StackPanel Grid.Row="2" Orientation="Vertical">
+    <TextBlock Text="Copyright (c) Timofei Zhakov. All rights reserved."
+               Margin="0,0,0,6"
+               Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+      <Separator Margin="0,0,0,6" />
+    </StackPanel>
+
+    <Grid Grid.Row="3">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="auto" />
+        <ColumnDefinition Width="auto" />
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="1"
+              Content="OK"
+              Width="70"
+              Click="OK_Click"
+              IsDefault="True"
+              IsCancel="True"/>
+    </Grid>
+  </Grid>
+</Window>
