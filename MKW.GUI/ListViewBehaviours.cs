@@ -78,7 +78,10 @@ namespace MKW.GUI
         {
             if (sender is ListView listView)
             {
-                ResetSelection(listView);
+                if (!IsClickInsideListViewItem(e.OriginalSource as DependencyObject))
+                {
+                    ResetSelection(listView);
+                }
             }
         }
 
@@ -87,6 +90,28 @@ namespace MKW.GUI
             while (source != null)
             {
                 if (source == listView)
+                {
+                    return true;
+                }
+
+                if (source is Visual || source is Visual3D)
+                {
+                    source = VisualTreeHelper.GetParent(source);
+                }
+                else
+                {
+                    source = LogicalTreeHelper.GetParent(source);
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsClickInsideListViewItem(DependencyObject? source)
+        {
+            while (source != null)
+            {
+                if (source is ListViewItem)
                 {
                     return true;
                 }
