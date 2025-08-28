@@ -2,6 +2,7 @@
 using MKW.GUI.Model;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MKW.GUI
 {
@@ -88,6 +89,27 @@ namespace MKW.GUI
 
                     model.OpenDatabase(loginWindowViewModel);
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
+
+        private void RecentFileItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            RecentFileItemViewModel file = (RecentFileItemViewModel)menuItem.DataContext;
+
+            try
+            {
+                LoginWindowViewModel loginWindowViewModel =
+                    model.CreateLoginViewModel(file.FullPath);
+                LoginWindow window = new LoginWindow(loginWindowViewModel);
+
+                window.ShowDialog();
+
+                model.OpenDatabase(loginWindowViewModel);
             }
             catch (Exception ex)
             {
