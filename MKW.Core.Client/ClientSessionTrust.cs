@@ -18,5 +18,16 @@ namespace MKW.Core.Client
             // Dear .NET, why??
             return trust.ToArray();
         }
+
+        public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
+        {
+            IDatabaseUser user = OpenDatabaseUser(userId, true);
+            using UserTrustProvider trustProvider = new UserTrustProvider(this, user);
+
+            foreach (UserInfo trust in trustProvider.EnumerateImplicitlyTrustedUsers())
+            {
+                yield return trust;
+            }
+        }
     }
 }
