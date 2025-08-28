@@ -36,7 +36,7 @@
             </Style>
           </MenuItem.ItemContainerStyle>
         </MenuItem>
-
+        <Separator />
         <MenuItem Header="_Close" Click="Close_Click" />
         <Separator />
         <MenuItem Header="_Exit" Click="Exit_Click" />
