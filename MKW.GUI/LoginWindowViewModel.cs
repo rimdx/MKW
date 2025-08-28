@@ -5,11 +5,11 @@ namespace MKW.GUI
 {
     public class LoginWindowViewModel : ViewModelBase
     {
-        private readonly DatabaseModel database;
+        public DatabaseModel Database { get; private set; }
 
         public LoginWindowViewModel(DatabaseModel database)
         {
-            this.database = database;
+            Database = database;
 
             Users = [];
 
@@ -20,7 +20,7 @@ namespace MKW.GUI
         {
             Users.Clear();
 
-            foreach (DatabaseUserModel user in database.EnumerateUsers())
+            foreach (DatabaseUserModel user in Database.EnumerateUsers())
             {
                 Users.Add(user);
             }
@@ -33,7 +33,7 @@ namespace MKW.GUI
 
         public string Password { get; set; } = "";
 
-        public string DatabasePath => database.Path;
+        public string DatabasePath => Database.Path;
 
         public bool DoLogin()
         {
@@ -42,7 +42,7 @@ namespace MKW.GUI
                 throw new Exception("Please select user.");
             }
 
-            database.Authenticate(SelectedUser.Id, Password);
+            Database.Authenticate(SelectedUser.Id, Password);
 
             return true;
         }
