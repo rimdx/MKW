@@ -65,13 +65,11 @@ namespace MKW.GUI
 
         public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel(string filename)
         {
-            recentFilesService.OnFileOpened(filename);
             return new CreateDatabaseWindowViewModel(filename);
         }
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)
         {
-            recentFilesService.OnFileOpened(filename);
             DatabaseModel database = DatabaseModel.Open(filename);
             return new LoginWindowViewModel(database /* move */);
         }
@@ -80,6 +78,7 @@ namespace MKW.GUI
         {
             if (createDatabaseViewModel.Database != null)
             {
+                recentFilesService.OnFileOpened(createDatabaseViewModel.Database.Path);
                 Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
             }
             else
@@ -90,6 +89,8 @@ namespace MKW.GUI
 
         public void OpenDatabase(LoginWindowViewModel loginWindowViewModel)
         {
+            recentFilesService.OnFileOpened(loginWindowViewModel.Database.Path);
+
             if (loginWindowViewModel.Database.User == null)
             {
                 loginWindowViewModel.Database.Dispose();
