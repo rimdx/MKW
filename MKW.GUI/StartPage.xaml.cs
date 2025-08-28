@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace MKW.GUI
 {
@@ -56,6 +57,26 @@ namespace MKW.GUI
 
                     model.OpenDatabase(createDatabaseViewModel);
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Hyperlink hyperlink = (Hyperlink)e.Source;
+            RecentFileItemViewModel item = (RecentFileItemViewModel)hyperlink.DataContext;
+
+            try
+            {
+                LoginWindowViewModel loginWindowViewModel = model.CreateLoginViewModel(item.FullPath);
+                LoginWindow window = new LoginWindow(loginWindowViewModel);
+
+                window.ShowDialog();
+
+                model.OpenDatabase(loginWindowViewModel);
             }
             catch (Exception ex)
             {
