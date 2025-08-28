@@ -12,8 +12,9 @@ namespace MKW.GUI
 
         public StartPage(MainWindowViewModel model)
         {
-            InitializeComponent();
             this.model = model;
+            DataContext = model;
+            InitializeComponent();
         }
 
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
