@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -14,10 +13,5 @@
     <!--<PublishSingleFile>false</PublishSingleFile>-->
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
-    <ProjectReference Include="..\MKW.Core\MKW.Core.Client.csproj" />
-    <ProjectReference Include="..\MKW.GUI.Images\MKW.GUI.Images.csproj" />
-  </ItemGroup>
-
 </Project>
+
