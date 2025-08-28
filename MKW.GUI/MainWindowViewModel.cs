@@ -1,6 +1,5 @@
 ﻿using MKW.GUI.Model;
 using System.ComponentModel;
-using System.Windows;
 
 namespace MKW.GUI
 {
@@ -104,13 +103,6 @@ namespace MKW.GUI
         public bool OnCloseDatabase() => RunAction(() =>
         {
             Database = null;
-        });
-
-        // Help
-
-        public void OnHelpAbout() => RunAction(() =>
-        {
-            throw new NotImplementedException();
         });
 
         public void Dispose()
