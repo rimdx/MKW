@@ -1,11 +1,35 @@
 ﻿using Microsoft.Win32;
 using MKW.GUI.Model;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace MKW.GUI
 {
     public class MainWindowViewModel : ViewModelBase, IDisposable
     {
+        private RegistryService registryService;
+        private RecentFilesService recentFilesService;
+
+        public MainWindowViewModel()
+        {
+            registryService = new RegistryService();
+            recentFilesService = new RecentFilesService(registryService);
+            RecentFiles = [];
+            RefreshRecentFiles();
+            recentFilesService.RecentFilesChanged += (sender, e) => RefreshRecentFiles();
+        }
+
+        public ObservableCollection<string> RecentFiles { get; }
+        private void RefreshRecentFiles()
+        {
+            RecentFiles.Clear();
+
+            foreach (string file in recentFilesService.EnumerateRecentFiles())
+            {
+                RecentFiles.Add(file);
+            }
+        }
+
         public string Title => "Multi-Key Wallet";
 
         private DatabaseViewModel? _database;
@@ -61,6 +85,8 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
+                recentFilesService.OnFileOpened(dialog.FileName);
+
                 CreateDatabaseWindowViewModel createDatabaseViewModel =
                     new CreateDatabaseWindowViewModel(dialog.FileName);
                 CreateDatabaseWindow createDatabaseWindow =
@@ -85,6 +111,8 @@ namespace MKW.GUI
 
             if (dialog.ShowDialog() == true)
             {
+                recentFilesService.OnFileOpened(dialog.FileName);
+
                 DatabaseModel database = DatabaseModel.Open(dialog.FileName);
                 LoginWindow window = new LoginWindow(database);
 
@@ -131,6 +159,7 @@ namespace MKW.GUI
         public void Dispose()
         {
             Database?.Dispose();
+            registryService.Dispose();
         }
     }
 }
