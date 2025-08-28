@@ -137,7 +137,22 @@ namespace MKW.GUI
 
         private void DeleteEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.Database!.OnDeleteEntry();
+            try
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this entry?",
+                                                          "Confirm Deletion",
+                                                          MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    model.Database!.DeleteEntry();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+
         }
 
         // Help
