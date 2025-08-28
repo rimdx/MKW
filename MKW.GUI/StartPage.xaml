@@ -80,7 +80,7 @@
 
               <TextBlock Grid.Column="1" Grid.Row="4">
                 <Hyperlink TargetName="">
-                  <Run Text="{Binding FullPath, Mode=OneWay}" />
+                  <Run Text="{Binding FileName, Mode=OneWay}" />
                 </Hyperlink>
               </TextBlock>
             </Grid>
