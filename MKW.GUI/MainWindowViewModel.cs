@@ -12,7 +12,7 @@ namespace MKW.GUI
 
         public MainWindowViewModel()
         {
-            registryService = new RegistryService();
+            registryService = new RegistryService(RegistryKeys.RootKeyPath);
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
         }

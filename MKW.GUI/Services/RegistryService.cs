@@ -6,9 +6,9 @@ namespace MKW.GUI
     {
         private RegistryKey rootKey;
 
-        public RegistryService()
+        public RegistryService(string rootKeyPath)
         {
-            rootKey = Registry.CurrentUser.CreateSubKey(RegistryKeys.RootKeyPath);
+            rootKey = Registry.CurrentUser.CreateSubKey(rootKeyPath);
         }
 
         public string[] GetRecentFiles()
