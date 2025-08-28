@@ -9,9 +9,9 @@ namespace MKW.GUI
 
         public DatabaseUserCollectionViewModel(DatabaseModel database)
         {
+            this.database = database;
             database.OnUsersChanged += Database_OnUsersChanged;
             RefreshUsers();
-            this.database = database;
         }
 
         private void Database_OnUsersChanged(object? sender, EventArgs e)
