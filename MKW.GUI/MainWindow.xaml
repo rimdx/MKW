@@ -20,7 +20,7 @@
         <MenuItem Header="_New" Click="NewDatabase_Click" />
         <MenuItem Header="_Open" Click="OpenDatabase_Click" />
 
-        <MenuItem Header="Open _Recent"
+        <MenuItem Header="_Recent Files"
                   ItemsSource="{Binding RecentFiles}"
                   IsEnabled="{Binding Path=HasItems, RelativeSource={RelativeSource Self}}">
           <MenuItem.ItemContainerStyle>
