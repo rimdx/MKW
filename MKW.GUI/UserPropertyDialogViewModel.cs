@@ -10,9 +10,12 @@ namespace MKW.GUI
         public UserPropertyDialogViewModel(DatabaseModel database, UserInfo user /* reference */)
         {
             this.user = user;
+            TrustedUsers = new TrustedUsersCollectionViewModel(database, user.Id);
         }
 
         public string UserId => user.Id.ToString();
+
+        public TrustedUsersCollectionViewModel TrustedUsers { get; }
 
         public bool OnOK()
         {

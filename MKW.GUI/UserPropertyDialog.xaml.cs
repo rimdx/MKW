@@ -36,5 +36,29 @@ namespace MKW.GUI
         private void Apply_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void AddTrust_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
+
+        private void RemoveTrust_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
     }
 }
