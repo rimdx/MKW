@@ -164,7 +164,8 @@ namespace MKW.GUI
 
         private void HelpAbout_Click(object sender, RoutedEventArgs e)
         {
-            model.OnHelpAbout();
+            AboutDialog window = new AboutDialog(model);
+            window.ShowDialog();
         }
 
         private void Window_Closed(object sender, EventArgs e)

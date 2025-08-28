@@ -1,7 +1,6 @@
-﻿using Microsoft.Win32;
-using MKW.GUI.Images;
-using MKW.GUI.Model;
+﻿using MKW.GUI.Model;
 using System.ComponentModel;
+using System.Windows;
 
 namespace MKW.GUI
 {
@@ -20,6 +19,7 @@ namespace MKW.GUI
         public RecentFilesCollectionViewModel RecentFiles { get; }
 
         public string Title => "Multi-Key Wallet";
+        public string Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
         private DatabaseViewModel? _database;
         public DatabaseViewModel? Database
