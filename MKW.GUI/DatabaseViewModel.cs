@@ -1,4 +1,6 @@
 ﻿using MKW.Core.Client;
+using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
 using MKW.GUI.Model;
 
 namespace MKW.GUI
@@ -119,6 +121,17 @@ namespace MKW.GUI
         public PromoteUserWindowViewModel CreatePromoteUserWindowViewModel()
         {
             return new PromoteUserWindowViewModel(Database);
+        }
+
+        public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()
+        {
+            if (SelectedUser == null)
+            {
+                throw new Exception("No user was selected.");
+            }
+
+            UserInfo user = Database.Client.GetUserInfo(SelectedUser.Id);
+            return new UserPropertyDialogViewModel(Database, user);
         }
 
         public void Dispose()

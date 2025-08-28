@@ -20,7 +20,11 @@
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="Promote _New User..." Click="PromoteUser_Click" />
-          <MenuItem Header="_Properties..." IsEnabled="{Binding IsUserSelected}" />
+
+          <MenuItem Header="_Properties..."
+                    IsEnabled="{Binding IsUserSelected}"
+                    Click="UserPropertiesClick" />
+
           <MenuItem Header="_Delete..." IsEnabled="{Binding IsUserSelected}" />
           <Separator />
           <MenuItem Header="Select All" />
