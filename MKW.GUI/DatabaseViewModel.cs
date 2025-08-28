@@ -147,10 +147,17 @@ namespace MKW.GUI
             return new EditEntryWindowViewModel(Database, entry /* move */);
         }
 
-        public bool OnDeleteEntry() => RunAction(() =>
+        public bool DeleteEntry()
         {
-            throw new NotImplementedException();
-        });
+            if (SelectedEntry == null)
+            {
+                throw new Exception("No entry was selected.");
+            }
+
+            Database.DeleteEntry(SelectedEntry.Id);
+
+            return true;
+        }
 
         // User
 

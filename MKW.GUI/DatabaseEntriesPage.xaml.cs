@@ -64,7 +64,21 @@ namespace MKW.GUI
 
         private void DeleteEntry_Click(object sender, RoutedEventArgs e)
         {
-            model.OnDeleteEntry();
+            try
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this entry?",
+                                                          "Confirm Deletion",
+                                                          MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    model.DeleteEntry();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
         }
 
         private void SelectAll_Click(object sender, RoutedEventArgs e)

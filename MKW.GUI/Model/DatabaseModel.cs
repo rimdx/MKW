@@ -63,6 +63,12 @@ namespace MKW.GUI.Model
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
+        public void DeleteEntry(EntryId id)
+        {
+            Database.DeleteEntry(id);
+            OnEntriesChanged?.Invoke(this, new EventArgs());
+        }
+
         public IEnumerable<DatabaseUserModel> EnumerateUsers()
         {
             foreach (UserInfo user in Client.EnumerateUsers())
