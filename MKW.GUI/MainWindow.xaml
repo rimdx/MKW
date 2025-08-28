@@ -24,8 +24,8 @@
                   ItemsSource="{Binding RecentFiles}"
                   IsEnabled="{Binding Path=HasItems, RelativeSource={RelativeSource Self}}">
           <MenuItem.ItemTemplate>
-            <DataTemplate>
-              <MenuItem Header="{Binding}" />
+            <DataTemplate DataType="local:RecentFileItemViewModel">
+              <MenuItem Header="{Binding FullPath}" />
             </DataTemplate>
           </MenuItem.ItemTemplate>
         </MenuItem>
