@@ -107,5 +107,11 @@ namespace MKW.Core.Client
 
             return new UserSession(this, user, privateKeyBytes.Span);
         }
+
+        public UserInfo GetUserInfo(UserId id)
+        {
+            IDatabaseUser user = Database.OpenUser(id, true);
+            return UserInfo.FromDatabaseUser(user);
+        }
     }
 }
