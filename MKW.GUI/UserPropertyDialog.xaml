@@ -47,7 +47,6 @@
               Content="Apply"
               Width="70"
               Click="Apply_Click"
-              IsCancel="True"
               Margin="0,0,6,0" />
 
       <Button Grid.Column="3"
