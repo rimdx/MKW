@@ -1,4 +1,6 @@
-﻿namespace MKW.GUI.Tests
+﻿using NUnit.Framework.Legacy;
+
+namespace MKW.GUI.Tests
 {
     [TestFixture]
     public class RecentFilesServiceTests
