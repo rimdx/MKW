@@ -8,9 +8,9 @@ namespace MKW.GUI
     {
         private readonly LoginWindowViewModel model;
 
-        public LoginWindow(DatabaseModel database)
+        public LoginWindow(LoginWindowViewModel model)
         {
-            model = new LoginWindowViewModel(database);
+            this.model = model;
             DataContext = model;
             InitializeComponent();
         }
