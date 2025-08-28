@@ -23,9 +23,6 @@
           <MenuItem Header="_Properties..." IsEnabled="{Binding IsUserSelected}" />
           <MenuItem Header="_Delete..." IsEnabled="{Binding IsUserSelected}" />
           <Separator />
-          <MenuItem Header="_Copy User Name" IsEnabled="{Binding IsUserSelected}" />
-          <MenuItem Header="_Copy User ID" IsEnabled="{Binding IsUserSelected}" />
-          <Separator />
           <MenuItem Header="Select All" />
         </ContextMenu>
       </ListView.ContextMenu>
