@@ -6,8 +6,8 @@ namespace MKW.GUI
 {
     public class MainWindowViewModel : ViewModelBase, IDisposable
     {
-        private RegistryService registryService;
-        private RecentFilesService recentFilesService;
+        private readonly RegistryService registryService;
+        private readonly RecentFilesService recentFilesService;
 
         public MainWindowViewModel()
         {
