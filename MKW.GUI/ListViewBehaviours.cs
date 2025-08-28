@@ -34,43 +34,20 @@ namespace MKW.GUI
                 if ((bool)e.NewValue)
                 {
                     listView.PreviewMouseDown += ListView_PreviewMouseDown;
-                    listView.Loaded += ListView_Loaded;
                 }
                 else
                 {
                     listView.PreviewMouseDown -= ListView_PreviewMouseDown;
-                    listView.Loaded -= ListView_Loaded;
                 }
             }
         }
 
         private static void ResetSelection(ListView listView)
         {
+            if (listView.SelectedItem != null)
             {
-                if (listView.SelectedItem != null)
-                {
-                    listView.SelectedItem = null;
-                    Keyboard.ClearFocus();
-                }
-            }
-        }
-
-        private static void ListView_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (sender is ListView listView)
-            {
-                Window window = Window.GetWindow(listView);
-
-                if (window != null)
-                {
-                    window.PreviewMouseDown += (sender, we) =>
-                    {
-                        if (!IsClickInsideListView(listView, we.OriginalSource as DependencyObject))
-                        {
-                            ResetSelection(listView);
-                        }
-                    };
-                }
+                listView.SelectedItem = null;
+                Keyboard.ClearFocus();
             }
         }
 
@@ -78,55 +55,33 @@ namespace MKW.GUI
         {
             if (sender is ListView listView)
             {
-                if (!IsClickInsideListViewItem(e.OriginalSource as DependencyObject))
+                if (ShouldResetSelection(e.OriginalSource as DependencyObject))
                 {
                     ResetSelection(listView);
                 }
             }
         }
 
-        private static bool IsClickInsideListView(ListView listView, DependencyObject? source)
+        private static bool ShouldResetSelection(DependencyObject? element)
         {
-            while (source != null)
+            while (element != null)
             {
-                if (source == listView)
+                if (element is ListViewItem || element is GridViewColumnHeader)
                 {
-                    return true;
+                    return false;
                 }
 
-                if (source is Visual || source is Visual3D)
+                if (element is Visual || element is Visual3D)
                 {
-                    source = VisualTreeHelper.GetParent(source);
+                    element = VisualTreeHelper.GetParent(element);
                 }
                 else
                 {
-                    source = LogicalTreeHelper.GetParent(source);
+                    element = LogicalTreeHelper.GetParent(element);
                 }
             }
 
-            return false;
-        }
-
-        private static bool IsClickInsideListViewItem(DependencyObject? source)
-        {
-            while (source != null)
-            {
-                if (source is ListViewItem)
-                {
-                    return true;
-                }
-
-                if (source is Visual || source is Visual3D)
-                {
-                    source = VisualTreeHelper.GetParent(source);
-                }
-                else
-                {
-                    source = LogicalTreeHelper.GetParent(source);
-                }
-            }
-
-            return false;
+            return true;
         }
     }
 }
