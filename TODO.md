@@ -4,12 +4,12 @@
 
 ### 0.2.x
 
-- [ ] Minimal workspace functionality
+- [x] Minimal workspace functionality
   - [x] Create, open, close files
   - [x] Close window
   - [x] About help
-- [ ] Entry management
-  - [ ] Create, edit, delete
+- [x] Entry management
+  - [x] Create, edit, delete
 - [ ] User management
   - [ ] Create, view properties, delete
   - [ ] Add trust signature
@@ -38,7 +38,7 @@
 
 - [x] Create entries
 - [x] Edit entries
-- [ ] Delete entries
+- [x] Delete entries
 - [ ] Delete multiple entries
 - [ ] Duplicate entries
 - [x] View entries
