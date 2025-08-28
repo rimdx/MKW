@@ -81,6 +81,32 @@
   - [ ] Custom storage providers
   - [ ] User credential providers (for secret key)
 
+### User Experience
+
+- [ ] Management hotkeys
+  - [ ] Delete
+  - [ ] Enter to open
+  - [x] ESC in forms
+  - [x] Enter/ctrl+enter in forms
+  - [ ] ALT+Enter to properties
+  - [ ] Recent files hotkeys
+- [ ] Center windows to owner
+- [ ] Menu items icons
+- [ ] Context menu icons
+- [ ] Fancy dialogs
+  - [x] AboutDialog
+  - [ ] CreateDatabaseWindow
+  - [x] DatabaseEntriesPage
+  - [ ] DatabaseInfoPage
+  - [x] DatabasePage
+  - [x] DatabaseUsersPage
+  - [x] EditEntryWindow
+  - [ ] LoginWindow
+  - [x] MainWindow
+  - [ ] NewEntryWindow
+  - [ ] PromoteUserWindow
+  - [x] StartPage
+
 ## Core database
 
 - [ ] Secret entry metadata
