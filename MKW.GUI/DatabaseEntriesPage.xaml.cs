@@ -62,11 +62,6 @@ namespace MKW.GUI
             }
         }
 
-        private void DuplicateEntry_Click(object sender, RoutedEventArgs e)
-        {
-            model.OnDuplicateEntry();
-        }
-
         private void DeleteEntry_Click(object sender, RoutedEventArgs e)
         {
             model.OnDeleteEntry();
