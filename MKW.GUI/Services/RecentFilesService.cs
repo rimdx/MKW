@@ -24,7 +24,7 @@
 
             if (recentFiles.Count > MaxCount)
             {
-                recentFiles.RemoveRange(MaxCount - 1, recentFiles.Count - MaxCount);
+                recentFiles.RemoveRange(MaxCount, recentFiles.Count - MaxCount);
             }
 
             registryService.SetRecentFiles([.. recentFiles]);
