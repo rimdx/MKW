@@ -102,7 +102,8 @@ namespace MKW.GUI
                 recentFilesService.OnFileOpened(dialog.FileName);
 
                 DatabaseModel database = DatabaseModel.Open(dialog.FileName);
-                LoginWindow window = new LoginWindow(database);
+                LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel(database);
+                LoginWindow window = new LoginWindow(loginWindowViewModel);
 
                 window.ShowDialog();
 
