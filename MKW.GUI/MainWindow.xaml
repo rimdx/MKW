@@ -23,11 +23,11 @@
         <MenuItem Header="Open _Recent"
                   ItemsSource="{Binding RecentFiles}"
                   IsEnabled="{Binding Path=HasItems, RelativeSource={RelativeSource Self}}">
-          <MenuItem.ItemTemplate>
-            <DataTemplate DataType="local:RecentFileItemViewModel">
-              <MenuItem Header="{Binding FullPath}" />
-            </DataTemplate>
-          </MenuItem.ItemTemplate>
+          <MenuItem.ItemContainerStyle>
+            <Style TargetType="MenuItem">
+              <Setter Property="Header" Value="{Binding FileName}" />
+            </Style>
+          </MenuItem.ItemContainerStyle>
         </MenuItem>
 
         <MenuItem Header="_Close" Click="Close_Click" />
