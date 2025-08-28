@@ -19,14 +19,14 @@ namespace MKW.GUI
             recentFilesService.RecentFilesChanged += (sender, e) => RefreshRecentFiles();
         }
 
-        public ObservableCollection<string> RecentFiles { get; }
+        public ObservableCollection<RecentFileItemViewModel> RecentFiles { get; }
         private void RefreshRecentFiles()
         {
             RecentFiles.Clear();
 
             foreach (string file in recentFilesService.EnumerateRecentFiles())
             {
-                RecentFiles.Add(file);
+                RecentFiles.Add(new RecentFileItemViewModel(file));
             }
         }
 
