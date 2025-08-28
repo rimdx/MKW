@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MKW.GUI.Images;
 using MKW.GUI.Model;
 using System.ComponentModel;
 
@@ -62,61 +63,42 @@ namespace MKW.GUI
             return _database.Database;
         }
 
-        public bool OnNewDatabase() => RunAction(() =>
+        public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel(string filename)
         {
-            FileDialog dialog = new SaveFileDialog
-            {
-                FileName = "New Database",
-                DefaultExt = ".mkw",
-                Filter = "Multi-Key Wallet Database File|*.mkw"
-            };
+            recentFilesService.OnFileOpened(filename);
+            return new CreateDatabaseWindowViewModel(filename);
+        }
 
-            if (dialog.ShowDialog() == true)
-            {
-                recentFilesService.OnFileOpened(dialog.FileName);
-
-                CreateDatabaseWindowViewModel createDatabaseViewModel =
-                    new CreateDatabaseWindowViewModel(dialog.FileName);
-                CreateDatabaseWindow createDatabaseWindow =
-                    new CreateDatabaseWindow(createDatabaseViewModel);
-
-                createDatabaseWindow.ShowDialog();
-
-                if (createDatabaseViewModel.Database != null)
-                {
-                    Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
-                }
-            }
-        });
-
-        public void OnOpenDatabase() => RunAction(() =>
+        public LoginWindowViewModel CreateLoginViewModel(string filename)
         {
-            FileDialog dialog = new OpenFileDialog
+            recentFilesService.OnFileOpened(filename);
+            DatabaseModel database = DatabaseModel.Open(filename);
+            return new LoginWindowViewModel(database /* move */);
+        }
+
+        public void OpenDatabase(CreateDatabaseWindowViewModel createDatabaseViewModel)
+        {
+            if (createDatabaseViewModel.Database != null)
             {
-                DefaultExt = ".mkw",
-                Filter = "Multi-Key Wallet Database File|*.mkw"
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                recentFilesService.OnFileOpened(dialog.FileName);
-
-                DatabaseModel database = DatabaseModel.Open(dialog.FileName);
-                LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel(database);
-                LoginWindow window = new LoginWindow(loginWindowViewModel);
-
-                window.ShowDialog();
-
-                if (database.User == null)
-                {
-                    database.Dispose();
-                }
-                else
-                {
-                    Database = new DatabaseViewModel(database /* move */);
-                }
+                Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
             }
-        });
+            else
+            {
+                /* no-op */
+            }
+        }
+
+        public void OpenDatabase(LoginWindowViewModel loginWindowViewModel)
+        {
+            if (loginWindowViewModel.Database.User == null)
+            {
+                loginWindowViewModel.Database.Dispose();
+            }
+            else
+            {
+                Database = new DatabaseViewModel(loginWindowViewModel.Database /* move */);
+            }
+        }
 
         public bool OnCloseDatabase() => RunAction(() =>
         {
