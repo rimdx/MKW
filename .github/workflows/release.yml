@@ -53,7 +53,9 @@ jobs:
         run: dotnet build ${{ env.Parameters }}
 
       - name: Test
-        run: dotnet test --no-build ${{ env.Parameters }}
+        run: |
+          dotnet test MKW.Tests --no-build ${{ env.Parameters }}
+          dotnet test MKW.GUI.Tests --no-build ${{ env.Parameters }}
 
       - name: Publish
         run: |
