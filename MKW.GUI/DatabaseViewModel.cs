@@ -1,6 +1,5 @@
 ﻿using MKW.Core.Client;
 using MKW.GUI.Model;
-using System.Collections.ObjectModel;
 
 namespace MKW.GUI
 {
@@ -13,15 +12,7 @@ namespace MKW.GUI
             Database = database;
 
             Entries = new DatabaseEntryCollectionViewModel(database);
-
-            Database.OnUsersChanged += Database_OnUsersChanged;
-            Users = [];
-            RefreshUsers();
-        }
-
-        private void Database_OnUsersChanged(object? sender, EventArgs e)
-        {
-            RefreshUsers();
+            Users = new DatabaseUserCollectionViewModel(database);
         }
 
         private enum PageType
@@ -76,7 +67,7 @@ namespace MKW.GUI
 
         public bool IsEntrySelected => _selectedEntry != null;
 
-        public ObservableCollection<DatabaseUserModel> Users { get; private set; }
+        public DatabaseUserCollectionViewModel Users { get; }
 
         private DatabaseUserModel? _selectedUser;
         public DatabaseUserModel? SelectedUser
@@ -91,16 +82,6 @@ namespace MKW.GUI
         }
 
         public bool IsUserSelected => _selectedUser != null;
-
-        public void RefreshUsers()
-        {
-            Users.Clear();
-
-            foreach (DatabaseUserModel user in Database.EnumerateUsers())
-            {
-                Users.Add(user);
-            }
-        }
 
         // Entry
 
