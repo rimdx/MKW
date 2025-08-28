@@ -20,7 +20,7 @@
         public void OnFileOpened(string filename)
         {
             recentFiles.Remove(filename);
-            recentFiles.Add(filename);
+            recentFiles.Insert(0, filename);
 
             if (recentFiles.Count > MaxCount)
             {
