@@ -32,10 +32,6 @@
 
         <MenuItem Header="_Close" Click="Close_Click" />
         <Separator />
-        <MenuItem Header="_Save" Click="Save_Click" />
-        <MenuItem Header="Save _As" Click="SaveAs_Click" />
-        <Separator />
-        <MenuItem Header="_Lock Workspace" Click="LockWorkspace_Click" />
         <MenuItem Header="_Exit" Click="Exit_Click" />
       </MenuItem>
       <MenuItem Header="Entry">

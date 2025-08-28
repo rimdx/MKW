@@ -106,21 +106,6 @@ namespace MKW.GUI
             Database = null;
         });
 
-        public bool OnLockWorkspace() => RunAction(() =>
-        {
-            throw new NotImplementedException();
-        });
-
-        public bool OnSave() => RunAction(() =>
-        {
-            throw new NotImplementedException();
-        });
-
-        public bool OnSaveAs() => RunAction(() =>
-        {
-            throw new NotImplementedException();
-        });
-
         // Help
 
         public void OnHelpAbout() => RunAction(() =>

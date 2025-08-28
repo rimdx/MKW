@@ -100,21 +100,6 @@ namespace MKW.GUI
             model.OnCloseDatabase();
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            model.OnSave();
-        }
-
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
-        {
-            model.OnSaveAs();
-        }
-
-        private void LockWorkspace_Click(object sender, RoutedEventArgs e)
-        {
-            model.OnLockWorkspace();
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
