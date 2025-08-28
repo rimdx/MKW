@@ -140,11 +140,6 @@ namespace MKW.GUI
             model.Database!.OnDeleteEntry();
         }
 
-        private void DuplicateEntry_Click(object sender, RoutedEventArgs e)
-        {
-            model.Database!.OnDuplicateEntry();
-        }
-
         // Help
 
         private void HelpAbout_Click(object sender, RoutedEventArgs e)

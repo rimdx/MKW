@@ -152,11 +152,6 @@ namespace MKW.GUI
             throw new NotImplementedException();
         });
 
-        public bool OnDuplicateEntry() => RunAction(() =>
-        {
-            throw new NotImplementedException();
-        });
-
         // User
 
         public PromoteUserWindowViewModel CreatePromoteUserWindowViewModel()

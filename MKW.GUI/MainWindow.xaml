@@ -38,7 +38,6 @@
         <MenuItem Header="Add Entry" Click="AddEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
         <MenuItem Header="Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
         <MenuItem Header="Delete Entry" Click="DeleteEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
-        <MenuItem Header="Duplicate Entry" Click="DuplicateEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
       </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet" Click="HelpAbout_Click" />
