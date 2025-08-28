@@ -1,5 +1,19 @@
 # TODO list
 
+## Milestones
+
+### 0.2.x
+
+- [ ] Minimal workspace functionality
+  - [x] Create, open, close files
+  - [x] Close window
+  - [ ] About help
+- [ ] Entry management
+  - [ ] Create, edit, delete
+- [ ] User management
+  - [ ] Create, view properties, delete
+  - [ ] Add trust signature
+
 ## GUI
 
 ### Workspace
@@ -10,6 +24,7 @@
 - [ ] Multiple databases support
 - [x] Close database
 - [x] Close window
+- [ ] Lock workspace
 - [ ] Help
 - [ ] Recent files
   - [x] Storage
@@ -28,6 +43,7 @@
 - [ ] Duplicate entries
 - [x] View entries
 - [ ] View and edit (with overwrite) hidden entries
+- [ ] Copy data
 - [ ] Entry metadata and section
   - [ ] Title
   - [ ] Username
@@ -46,6 +62,7 @@
 - [ ] Trust management and verification
 - [ ] Delete users
 - [ ] Display user names and metadata
+- [ ] Copy important stuff
 - [ ] 
 
 ### Enhancements
