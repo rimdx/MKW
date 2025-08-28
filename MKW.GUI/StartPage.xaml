@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images"
+             d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              d:Background="White">
@@ -60,39 +61,32 @@
 
       <Label FontWeight="Bold">Recent files</Label>
 
-      <Grid Grid.Row="2" Margin="0,0,0,4">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="24" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+      <ItemsControl ItemsSource="{Binding RecentFiles}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Vertical" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
 
-        <images:OpenFile Grid.Row="2" />
-        <TextBlock Grid.Column="1" Grid.Row="4">
-          <Hyperlink>dsad.mkw</Hyperlink>
-        </TextBlock>
-      </Grid>
-      <Grid Grid.Row="2" Margin="0,0,0,4">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="24" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="local:RecentFileItemViewModel">
+            <Grid Margin="0,0,0,4">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
 
-        <images:OpenFile Grid.Row="2" />
-        <TextBlock Grid.Column="1" Grid.Row="4">
-          <Hyperlink>dad.mkw</Hyperlink>
-        </TextBlock>
-      </Grid>
-      <Grid Grid.Row="2" Margin="0,0,0,4">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="24" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+              <images:OpenFile Grid.Row="2" />
 
-        <images:OpenFile Grid.Row="2" />
-        <TextBlock Grid.Column="1" Grid.Row="4">
-          <Hyperlink>fasd.mkw</Hyperlink>
-        </TextBlock>
-      </Grid>
+              <TextBlock Grid.Column="1" Grid.Row="4">
+                <Hyperlink TargetName="">
+                  <Run Text="{Binding FullPath, Mode=OneWay}" />
+                </Hyperlink>
+              </TextBlock>
+            </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
     </StackPanel>
   </Grid>
 </UserControl>
