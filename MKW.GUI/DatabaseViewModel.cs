@@ -12,9 +12,7 @@ namespace MKW.GUI
         {
             Database = database;
 
-            Database.OnEntriesChanged += Database_OnEntriesChanged;
-            Entries = [];
-            RefreshEntries();
+            Entries = new DatabaseEntryCollectionViewModel(database);
 
             Database.OnUsersChanged += Database_OnUsersChanged;
             Users = [];
@@ -24,11 +22,6 @@ namespace MKW.GUI
         private void Database_OnUsersChanged(object? sender, EventArgs e)
         {
             RefreshUsers();
-        }
-
-        private void Database_OnEntriesChanged(object? sender, EventArgs e)
-        {
-            RefreshEntries();
         }
 
         private enum PageType
@@ -68,7 +61,7 @@ namespace MKW.GUI
             set => SetPage(value, PageType.Users);
         }
 
-        public ObservableCollection<DatabaseEntryModel> Entries { get; private set; }
+        public DatabaseEntryCollectionViewModel Entries { get; }
 
         private DatabaseEntryModel? _selectedEntry;
         public DatabaseEntryModel? SelectedEntry
@@ -82,20 +75,6 @@ namespace MKW.GUI
         }
 
         public bool IsEntrySelected => _selectedEntry != null;
-
-        public void RefreshEntries()
-        {
-            Entries.Clear();
-
-            foreach (UserEntry entry in Database.User!.EnumerateEntries())
-            {
-                Entries.Add(new DatabaseEntryModel
-                {
-                    Id = entry.Id,
-                    Payload = entry.OpenPayload()?.ToString()
-                });
-            }
-        }
 
         public ObservableCollection<DatabaseUserModel> Users { get; private set; }
 
