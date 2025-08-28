@@ -123,6 +123,8 @@ namespace MKW.GUI
 
         public void Dispose()
         {
+            Entries.Dispose();
+            Users.Dispose();
             Database.Dispose();
         }
     }
