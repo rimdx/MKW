@@ -5,12 +5,15 @@ namespace MKW.GUI
 {
     public partial class StartPage : UserControl
     {
+        private readonly MainWindowViewModel model;
+
         public event EventHandler? OpenDatabaseClicked;
         public event EventHandler? NewDatabaseClicked;
 
-        public StartPage()
+        public StartPage(MainWindowViewModel model)
         {
             InitializeComponent();
+            this.model = model;
         }
 
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)

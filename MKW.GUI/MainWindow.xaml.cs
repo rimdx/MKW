@@ -34,7 +34,7 @@ namespace MKW.GUI
         {
             if (model.Database == null)
             {
-                StartPage startPage = new StartPage();
+                StartPage startPage = new StartPage(model);
 
                 startPage.OpenDatabaseClicked += (sender, e) => model.OnOpenDatabase();
                 startPage.NewDatabaseClicked += (sender, e) => model.OnNewDatabase();
