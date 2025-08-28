@@ -10,14 +10,24 @@ namespace MKW.GUI
 
         public LoginWindow(DatabaseModel database)
         {
-            model = new LoginWindowViewModel(this, database);
+            model = new LoginWindowViewModel(database);
             DataContext = model;
             InitializeComponent();
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            model.DoLogin();
+            try
+            {
+                if (model.DoLogin())
+                {
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

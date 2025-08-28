@@ -1,17 +1,14 @@
 ﻿using MKW.GUI.Model;
 using System.Collections.ObjectModel;
-using System.Windows;
 
 namespace MKW.GUI
 {
     public class LoginWindowViewModel : ViewModelBase
     {
-        private readonly Window window;
         private readonly DatabaseModel database;
 
-        public LoginWindowViewModel(Window window, DatabaseModel database)
+        public LoginWindowViewModel(DatabaseModel database)
         {
-            this.window = window;
             this.database = database;
 
             Users = [];
@@ -38,7 +35,7 @@ namespace MKW.GUI
 
         public string DatabasePath => database.Path;
 
-        public void DoLogin() => RunAction(() =>
+        public bool DoLogin()
         {
             if (SelectedUser == null)
             {
@@ -46,7 +43,8 @@ namespace MKW.GUI
             }
 
             database.Authenticate(SelectedUser.Id, Password);
-            window.Close();
-        });
+
+            return true;
+        }
     }
 }
