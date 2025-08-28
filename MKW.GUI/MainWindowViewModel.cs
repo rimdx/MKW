@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using MKW.GUI.Model;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace MKW.GUI
@@ -14,21 +13,10 @@ namespace MKW.GUI
         {
             registryService = new RegistryService();
             recentFilesService = new RecentFilesService(registryService);
-            RecentFiles = [];
-            RefreshRecentFiles();
-            recentFilesService.RecentFilesChanged += (sender, e) => RefreshRecentFiles();
+            RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
         }
 
-        public ObservableCollection<RecentFileItemViewModel> RecentFiles { get; }
-        private void RefreshRecentFiles()
-        {
-            RecentFiles.Clear();
-
-            foreach (string file in recentFilesService.EnumerateRecentFiles())
-            {
-                RecentFiles.Add(new RecentFileItemViewModel(file));
-            }
-        }
+        public RecentFilesCollectionViewModel RecentFiles { get; }
 
         public string Title => "Multi-Key Wallet";
 
@@ -160,6 +148,7 @@ namespace MKW.GUI
         {
             Database?.Dispose();
             registryService.Dispose();
+            RecentFiles.Dispose();
         }
     }
 }
