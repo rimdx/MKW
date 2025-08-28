@@ -11,7 +11,7 @@ namespace MKW.GUI.Tests
 
         public SandBox()
         {
-            Registry.CurrentUser.DeleteSubKey(TestRootKey);
+            Registry.CurrentUser.DeleteSubKey(TestRootKey, false);
             RegistryService = new RegistryService(TestRootKey);
         }
 
