@@ -51,12 +51,7 @@ namespace MKW.GUI
         {
             try
             {
-                FileDialog dialog = new SaveFileDialog
-                {
-                    FileName = "New Database",
-                    DefaultExt = ".mkw",
-                    Filter = "Multi-Key Wallet Database File|*.mkw"
-                };
+                FileDialog dialog = FileDialogUtils.CreateSaveDatabaseDialog();
 
                 if (dialog.ShowDialog() == true)
                 {
@@ -81,11 +76,7 @@ namespace MKW.GUI
         {
             try
             {
-                FileDialog dialog = new OpenFileDialog
-                {
-                    DefaultExt = ".mkw",
-                    Filter = "Multi-Key Wallet Database File|*.mkw"
-                };
+                FileDialog dialog = FileDialogUtils.CreateOpenDatabaseDialog();
 
                 if (dialog.ShowDialog() == true)
                 {
