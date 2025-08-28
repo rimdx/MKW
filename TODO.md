@@ -6,10 +6,10 @@
 
 - [x] Create database
 - [x] Open database
-- [ ] Overwrite existing database on creation
+- [x] Overwrite existing database on creation
 - [ ] Multiple databases support
-- [ ] Close database
-- [ ] Close window
+- [x] Close database
+- [x] Close window
 - [ ] Help
 
 ### Entry management
@@ -19,7 +19,7 @@
 - [ ] Delete entries
 - [ ] Delete multiple entries
 - [ ] Duplicate entries
-- [ ] View entries
+- [x] View entries
 - [ ] View and edit (with overwrite) hidden entries
 - [ ] Entry metadata and section
   - [ ] Title
@@ -33,9 +33,9 @@
 
 - [x] Initial admin promotion
 - [ ] Create new users in open database wizard
-- [ ] Create new users in workspace
+- [x] Create new users in workspace
 - [x] Authenticate user and access database
-- [ ] View users
+- [x] View users
 - [ ] Trust management and verification
 - [ ] Delete users
 - [ ] Display user names and metadata
@@ -45,8 +45,8 @@
 
 - [x] Fancy data-grid
 - [ ] Dark theme
-- [ ] Repeat password in user creation forms
-- [ ] Show password in user creation and authentication forms
+- [x] Repeat password in user creation forms
+- [x] Show password in user creation and authentication forms
 - [ ] Tools
   - [ ] Password generation
 - [ ] Plugins
