@@ -110,7 +110,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            IDatabaseUser user = Database.OpenUser(id, true);
+            IDatabaseUser user = OpenDatabaseUser(id, true);
             return UserInfo.FromDatabaseUser(user);
         }
     }
