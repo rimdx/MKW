@@ -1,0 +1,60 @@
+﻿<Window x:Class="MKW.GUI.UserPropertyDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MKW.GUI"
+        xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+        d:DataContext="{d:DesignInstance Type=local:UserPropertyDialogViewModel}"
+        mc:Ignorable="d"
+        Title="Properties" Height="500" Width="400">
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Orientation="Vertical">
+      <Label Padding="0" Margin="0,0,0,3"
+             Content="User ID:" Target="UserIdTextBox" />
+
+      <TextBox x:Name="UserIdTextBox"
+               IsReadOnly="True"
+               Text="{Binding UserId, Mode=OneWay}"
+               Padding="4,2"
+               Margin="0,0,0,6" />
+
+    </StackPanel>
+
+    <Grid Grid.Row="4">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="auto" />
+        <ColumnDefinition Width="auto" />
+        <ColumnDefinition Width="auto" />
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="1"
+              Content="OK"
+              Width="70"
+              Click="OK_Click"
+              IsDefault="True"
+              Margin="0,0,6,0" />
+
+      <Button Grid.Column="2"
+              Content="Apply"
+              Width="70"
+              Click="Apply_Click"
+              IsCancel="True"
+              Margin="0,0,6,0" />
+
+      <Button Grid.Column="3"
+              Content="Cancel"
+              Width="70"
+              Click="Cancel_Click"
+              IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

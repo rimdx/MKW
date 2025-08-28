@@ -32,5 +32,12 @@ namespace MKW.GUI
                 ErrorReporter.HandleException(ex);
             }
         }
+
+        private void UserPropertiesClick(object sender, RoutedEventArgs e)
+        {
+            UserPropertyDialogViewModel viewModel = model.CreateUserPropertiesWindowViewModel();
+            UserPropertyDialog dialog = new UserPropertyDialog(viewModel);
+            dialog.ShowDialog();
+        }
     }
 }
