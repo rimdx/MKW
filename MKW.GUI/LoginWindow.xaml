@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=local:LoginWindowViewModel}"
         Title="Open Database"
         Height="250" Width="400"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Loaded="Window_Loaded">
   <Grid Margin="12">
