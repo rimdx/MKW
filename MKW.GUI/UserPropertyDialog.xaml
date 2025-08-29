@@ -59,6 +59,17 @@
                 Width="70"
                 Click="RemoveTrust_Click" />
       </Grid>
+
+      <Label Padding="0" Margin="0,0,0,3"
+             Content="Public Key:" Target="PublicKeyTextBox" />
+
+      <TextBox x:Name="PublicKeyTextBox"
+               Height="120"
+               IsReadOnly="True"
+               Text="{Binding PublicKey, Mode=OneWay}"
+               FontFamily="Consolas"
+               Padding="4,2"
+               Margin="0,0,0,6" />
     </StackPanel>
 
     <Grid Grid.Row="4">
