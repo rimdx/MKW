@@ -34,12 +34,9 @@ namespace MKW.Core.Common
             }
 
             // fill the rest with zeros
-            for (; i < InputChunkSize; i++)
+            for (int bit = i * BufferNumberWidth; bit < output.Length; bit++)
             {
-                for (int j = 0; j < OutputChunkSize; j++)
-                {
-                    output[(i * OutputChunkSize) + j] = false;
-                }
+                output[bit] = false;
             }
         }
 
