@@ -36,7 +36,7 @@ namespace MKW.GUI
         private void UserPropertiesClick(object sender, RoutedEventArgs e)
         {
             UserPropertyDialogViewModel viewModel = model.CreateUserPropertiesWindowViewModel();
-            UserPropertyDialog dialog = new UserPropertyDialog(viewModel);
+            UserPropertyDialog dialog = new UserPropertyDialog(viewModel, Window.GetWindow(this));
             dialog.ShowDialog();
         }
     }
