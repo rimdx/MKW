@@ -40,7 +40,7 @@ namespace MKW.GUI
 
         private void Database_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_database.SelectedEntry))
+            if (e.MatchProperty(nameof(_database.SelectedEntry)))
             {
                 OnPropertyChanged(nameof(SelectedEntry));
                 OnPropertyChanged(nameof(IsEntrySelected));
