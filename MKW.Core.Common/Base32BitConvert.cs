@@ -25,11 +25,11 @@ namespace MKW.Core.Common
             // copy data from input to output, expanding bytes to bits
             for (; i < input.Length; i++)
             {
-                for (int j = 0; j < OutputChunkSize; j++)
+                for (int j = 0; j < BufferNumberWidth; j++)
                 {
-                    int mask = 1 << (7 - j);
+                    int mask = 1 << (BufferNumberWidth - 1 - j);
                     bool bit = (input[i] & mask) > 0;
-                    output[(i * OutputChunkSize) + j] = bit;
+                    output[(i * BufferNumberWidth) + j] = bit;
                 }
             }
 
