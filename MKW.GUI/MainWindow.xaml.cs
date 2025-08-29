@@ -27,7 +27,7 @@ namespace MKW.GUI
 
         private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(model.Database))
+            if (e.MatchProperty(nameof(model.Database)))
             {
                 UpdateDatabasePage();
             }
