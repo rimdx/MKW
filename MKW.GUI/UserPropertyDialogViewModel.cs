@@ -6,17 +6,21 @@ namespace MKW.GUI
 {
     public class UserPropertyDialogViewModel : ViewModelBase
     {
+        private readonly DatabaseModel database;
         private readonly UserInfo user;
         private readonly KeyFormatter keyFormatter;
 
         public UserPropertyDialogViewModel(DatabaseModel database, UserInfo user /* reference */)
         {
+            this.database = database;
             this.user = user;
             keyFormatter = new KeyFormatter(50);
             TrustedUsers = new TrustedUsersCollectionViewModel(database, user.Id);
         }
 
         public string UserId => user.Id.ToString();
+
+        public bool IsMe => user.Id == database.User?.Id;
 
         public TrustedUsersCollectionViewModel TrustedUsers { get; }
 
