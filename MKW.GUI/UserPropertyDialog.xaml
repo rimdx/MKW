@@ -7,6 +7,7 @@
         xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
         d:DataContext="{d:DesignInstance Type=local:UserPropertyDialogViewModel}"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="Properties" Height="500" Width="400">
   <Grid Margin="12">
     <Grid.RowDefinitions>
