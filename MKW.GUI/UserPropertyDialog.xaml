@@ -53,11 +53,13 @@
 
         <Button Grid.Column="1" Content="Add..."
                 Width="70" Margin="0,0,6,0"
-                Click="AddTrust_Click" />
+                Click="AddTrust_Click"
+                IsEnabled="{Binding IsMe}" />
 
         <Button Grid.Column="2" Content="Remove"
                 Width="70"
-                Click="RemoveTrust_Click" />
+                Click="RemoveTrust_Click"
+                IsEnabled="{Binding IsMe}" />
       </Grid>
 
       <Label Padding="0" Margin="0,0,0,3"
