@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=local:EditEntryWindowViewModel}"
         Title="Edit Entry"
         Height="300" Width="400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterOwner">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
