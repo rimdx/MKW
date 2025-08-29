@@ -6,9 +6,10 @@ namespace MKW.GUI
     {
         private readonly EditEntryWindowViewModel model;
 
-        public EditEntryWindow(EditEntryWindowViewModel model)
+        public EditEntryWindow(EditEntryWindowViewModel model, Window owner)
         {
             this.model = model;
+            this.Owner = owner;
             DataContext = model;
             InitializeComponent();
         }

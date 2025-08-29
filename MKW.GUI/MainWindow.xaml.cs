@@ -148,7 +148,7 @@ namespace MKW.GUI
             try
             {
                 using EditEntryWindowViewModel viewModel = model.Database!.CreateEditEntryWindowViewModel();
-                EditEntryWindow window = new EditEntryWindow(viewModel);
+                EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
                 window.ShowDialog();
             }
             catch (Exception ex)
