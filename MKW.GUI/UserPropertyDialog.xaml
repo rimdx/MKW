@@ -28,42 +28,6 @@
                Margin="0,0,0,6" />
 
       <Label Padding="0" Margin="0,0,0,3"
-             Content="Trusted Users:" />
-
-      <ListView Height="120"
-                ItemsSource="{Binding TrustedUsers}"
-                ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                local:ListViewBehaviours.DeselectOnClickAway="True"
-                Margin="0,0,0,6">
-        <ListView.ItemTemplate>
-          <DataTemplate DataType="local:TrustedUserItemViewModel">
-            <StackPanel Orientation="Horizontal">
-              <ContentPresenter Content="{Binding Icon}" Width="24" />
-              <TextBlock Text="{Binding UserId}"></TextBlock>
-            </StackPanel>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
-
-      <Grid Margin="0,0,0,6">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="auto" />
-          <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
-
-        <Button Grid.Column="1" Content="Add..."
-                Width="70" Margin="0,0,6,0"
-                Click="AddTrust_Click"
-                IsEnabled="{Binding IsMe}" />
-
-        <Button Grid.Column="2" Content="Remove"
-                Width="70"
-                Click="RemoveTrust_Click"
-                IsEnabled="{Binding IsMe}" />
-      </Grid>
-
-      <Label Padding="0" Margin="0,0,0,3"
              Content="Public Key:" Target="PublicKeyTextBox" />
 
       <TextBox x:Name="PublicKeyTextBox"
