@@ -83,7 +83,7 @@ namespace MKW.GUI
                 {
                     LoginWindowViewModel loginWindowViewModel =
                         model.CreateLoginViewModel(dialog.FileName);
-                    LoginWindow window = new LoginWindow(loginWindowViewModel);
+                    LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
 
                     window.ShowDialog();
 
@@ -105,7 +105,7 @@ namespace MKW.GUI
             {
                 LoginWindowViewModel loginWindowViewModel =
                     model.CreateLoginViewModel(file.FullPath);
-                LoginWindow window = new LoginWindow(loginWindowViewModel);
+                LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
 
                 window.ShowDialog();
 
