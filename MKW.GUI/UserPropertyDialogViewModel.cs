@@ -15,14 +15,11 @@ namespace MKW.GUI
             this.database = database;
             this.user = user;
             keyFormatter = new KeyFormatter(50);
-            TrustedUsers = new TrustedUsersCollectionViewModel(database, user.Id);
         }
 
         public string UserId => user.Id.ToString();
 
         public bool IsMe => user.Id == database.User?.Id;
-
-        public TrustedUsersCollectionViewModel TrustedUsers { get; }
 
         public bool OnOK()
         {
