@@ -18,7 +18,6 @@ namespace MKW.Core.Common
         /// </summary>
         /// <param name="input"></param>
         /// <param name="output"></param>
-        /// <returns>The amount of bytes processed.</returns>
         public static void BufferToBits(ReadOnlySpan<byte> input, BitArray output)
         {
             int i = 0;
