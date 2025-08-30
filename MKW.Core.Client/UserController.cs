@@ -78,8 +78,8 @@ namespace MKW.Core.Client
         {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).
-            using SymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetSecretKey().Span,
-                                                                           creds.ExportSalt().Span);
+            using ISymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetSecretKey().Span,
+                                                                            creds.ExportSalt().Span);
 
             // Let's try'N decode the private key. We could potentially fail here. So
             // some validation may be required.

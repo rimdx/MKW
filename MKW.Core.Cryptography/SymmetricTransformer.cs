@@ -11,7 +11,7 @@ namespace MKW.Core.Cryptography
             this.aes = aes;
         }
 
-        public static SymmetricTransformer Create()
+        public static ISymmetricTransformer Create()
         {
             Aes aes = Aes.Create();
 
@@ -21,7 +21,7 @@ namespace MKW.Core.Cryptography
             return new SymmetricTransformer(aes /* move */);
         }
 
-        public static SymmetricTransformer Open(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
+        public static ISymmetricTransformer Open(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
             Aes aes = Aes.Create();
 
