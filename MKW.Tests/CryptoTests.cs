@@ -9,7 +9,7 @@ namespace MKW.Tests
         [Test]
         public void DummySignTest()
         {
-            using AsymmetricTransformer transformer = AsymmetricTransformer.Create();
+            using IAsymmetricPrivateTransformer transformer = AsymmetricTransformer.Create();
 
             Memory<byte> data = EncodingConverter.GetBytes("killmepls");
 

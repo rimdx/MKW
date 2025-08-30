@@ -10,7 +10,7 @@ namespace MKW.Core.Client
 
         protected readonly ClientSession client;
         protected readonly IDatabaseUser me;
-        protected readonly AsymmetricTransformer key;
+        protected readonly IAsymmetricPublicTransformer publicKey;
 
         public UserTrustProvider(ClientSession client, IDatabaseUser user)
             : this(client, user, AsymmetricTransformer.Open(user.PublicKey.Span))
@@ -18,11 +18,11 @@ namespace MKW.Core.Client
         }
 
         public UserTrustProvider(ClientSession client, IDatabaseUser user,
-                                 AsymmetricTransformer key)
+                                 IAsymmetricPublicTransformer publicKey)
         {
             this.client = client;
             me = user;
-            this.key = key;
+            this.publicKey = publicKey;
         }
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
@@ -50,7 +50,7 @@ namespace MKW.Core.Client
         {
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
-                if (key.Verify(publicKey, trust.Span))
+                if (this.publicKey.Verify(publicKey, trust.Span))
                 {
                     return Trust.ExplicitTrust;
                 }
@@ -61,7 +61,7 @@ namespace MKW.Core.Client
 
         public virtual void Dispose()
         {
-            key.Dispose();
+            publicKey.Dispose();
         }
     }
 }

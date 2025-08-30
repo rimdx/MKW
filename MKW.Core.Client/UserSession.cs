@@ -13,7 +13,7 @@ namespace MKW.Core.Client
         internal IDatabaseUser DatabaseUser { get; }
 
         public UserId Id => DatabaseUser.Id;
-        public AsymmetricTransformer Transformer { get; }
+        public IAsymmetricPrivateTransformer Transformer { get; }
         public UserTrustController TrustController { get; }
 
         public UserSession(ClientSession client /* reference */,
