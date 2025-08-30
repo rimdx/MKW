@@ -23,21 +23,8 @@ namespace MKW.GUI
             this.database = database;
             this.user = user;
 
-            initialTrust = GetTrust();
+            initialTrust = database.User!.GetImplicitTrust(user.Id);
             newTrust = initialTrust;
-        }
-
-        private Trust GetTrust()
-        {
-            foreach (UserInfo userTrust in database.User!.EnumerateImplicitlyTrustedUsers())
-            {
-                if (userTrust.Id == user.Id)
-                {
-                    return userTrust.Trust;
-                }
-            }
-
-            return Trust.None;
         }
 
         public void OnVerify()
