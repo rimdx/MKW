@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserEntry : Entry
+    public class UserEntry : Entry, IEntry
     {
         protected readonly UserSession user;
 
@@ -13,7 +13,7 @@ namespace MKW.Core.Client
             this.user = user;
         }
 
-        public EntryPayload? OpenPayload()
+        public override EntryPayload? OpenPayload()
         {
             if (entry.Keys.TryGetValue(user.Id, out ReadOnlyMemory<byte> encodedKey) == false)
             {

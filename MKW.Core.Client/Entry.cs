@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class Entry : IDisposable
+    public class Entry : IDisposable, IEntry
     {
         protected readonly ClientSession client;
         // TODO: dispose
@@ -34,6 +34,11 @@ namespace MKW.Core.Client
                 Action = ActionInfo.Updated,
                 EncodedForUsers = users
             };
+        }
+
+        public virtual EntryPayload? OpenPayload()
+        {
+            return null;
         }
 
         internal static void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
