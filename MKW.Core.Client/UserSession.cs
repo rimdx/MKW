@@ -8,6 +8,7 @@ namespace MKW.Core.Client
     {
         protected readonly ClientSession client;
         protected readonly IDatabase database;
+        protected readonly IEntryController entryController;
 
         internal IDatabaseUser DatabaseUser { get; }
 
@@ -23,73 +24,40 @@ namespace MKW.Core.Client
             this.client = client;
             this.database = database;
             DatabaseUser = user;
+            entryController = new UserEntryController(client, database, this);
 
             Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
             TrustController = new UserTrustController(client, this);
         }
 
+        // IEntryController
+
         public IEntrySession OpenEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = database.OpenEntry(id, false);
-            return new UserEntry(client, this, dbEntry);
+            return entryController.OpenEntry(id);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = database.CreateEntry(id);
-            dbEntry.Save();
-            return new UserEntry(client, this, dbEntry);
+            return entryController.CreateEntry(id);
         }
 
-        public IEntrySession CreateEntry() => CreateEntry(EntryId.Create());
+        public IEntrySession CreateEntry()
+        {
+            return entryController.CreateEntry();
+        }
 
         public EntryInfo DeleteEntry(EntryId id)
         {
-            database.DeleteEntry(id);
-
-            return new EntryInfo
-            {
-                Id = id,
-                Action = ActionInfo.Deleted,
-                EncodedForUsers = []
-            };
-        }
-
-        public IEntrySession EnsureEntry(EntryId id, out bool created)
-        {
-            created = !database.HasEntry(id);
-
-            if (created)
-            {
-                return CreateEntry(id);
-            }
-            else
-            {
-                return OpenEntry(id);
-            }
+            return entryController.DeleteEntry(id);
         }
 
         public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
         {
-            if (payload == null)
-            {
-                return DeleteEntry(id);
-            }
-            else
-            {
-                using IEntrySession entry = EnsureEntry(id, out bool created);
-
-                EntryInfo notify = entry.UpdatePayload(payload);
-
-                return new EntryInfo
-                {
-                    Id = notify.Id,
-                    EncodedForUsers = notify.EncodedForUsers,
-                    Action = created ? ActionInfo.Added : ActionInfo.Updated,
-                };
-            }
+            return entryController.UpdateEntry(id, payload);
         }
 
+        // todo: move to IEntryController
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
             foreach (IDatabaseEntry entry in database.EnumerateEntries())
@@ -98,11 +66,7 @@ namespace MKW.Core.Client
             }
         }
 
-        public void Dispose()
-        {
-            Transformer.Dispose();
-            TrustController.Dispose();
-        }
+        // todo: ITrustProvider
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
@@ -112,6 +76,13 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
             return TrustController.EnumerateImplicitlyTrustedUsers();
+        }
+
+        public void Dispose()
+        {
+            Transformer.Dispose();
+            TrustController.Dispose();
+            entryController.Dispose();
         }
     }
 }
