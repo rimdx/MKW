@@ -9,6 +9,10 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="Properties" Height="500" Width="400">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+  </Window.Resources>
+
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
@@ -18,6 +22,24 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Vertical">
+      <Border Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}"
+              Visibility="{Binding IsUntrusted, Converter={StaticResource BooleanToVisibilityConverter}}"
+              CornerRadius="6"
+              Padding="9"
+              Margin="0,0,0,6">
+        <StackPanel Orientation="Vertical">
+          <TextBlock Margin="0,0,0,3" Text="Warning" FontWeight="SemiBold" />
+          <TextBlock Margin="0,0,0,3" Text="This user is not verified. " />
+
+          <TextBlock Text="Only the database administrator can verify other users."
+                     Visibility="{Binding IsUser, Converter={StaticResource BooleanToVisibilityConverter}}" />
+          
+          <TextBlock Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Hyperlink Click="VerifyUser_Click">Verfiy this user</Hyperlink>
+          </TextBlock>
+        </StackPanel>
+      </Border>
+      
       <Label Padding="0" Margin="0,0,0,3"
              Content="User ID:" Target="UserIdTextBox" />
 
