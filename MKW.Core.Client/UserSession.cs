@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserSession : IDisposable
+    public class UserSession : IEntryController, IDisposable
     {
         protected readonly ClientSession client;
         protected readonly IDatabase database;
@@ -66,6 +66,27 @@ namespace MKW.Core.Client
             else
             {
                 return OpenEntry(id);
+            }
+        }
+
+        public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
+        {
+            if (payload == null)
+            {
+                return DeleteEntry(id);
+            }
+            else
+            {
+                using IEntrySession entry = EnsureEntry(id, out bool created);
+
+                EntryInfo notify = entry.UpdatePayload(payload);
+
+                return new EntryInfo
+                {
+                    Id = notify.Id,
+                    EncodedForUsers = notify.EncodedForUsers,
+                    Action = created ? ActionInfo.Added : ActionInfo.Updated,
+                };
             }
         }
 
