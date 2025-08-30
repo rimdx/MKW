@@ -66,7 +66,8 @@ namespace MKW.GUI
         {
             try
             {
-                throw new NotImplementedException();
+                UserPropertyVerifyUserDialog window = new UserPropertyVerifyUserDialog(model, this);
+                window.ShowDialog();
             }
             catch (Exception ex)
             {
