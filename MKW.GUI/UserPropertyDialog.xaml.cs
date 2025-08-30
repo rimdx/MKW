@@ -34,10 +34,6 @@ namespace MKW.GUI
             Close();
         }
 
-        private void Apply_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void VerifyUser_Click(object sender, RoutedEventArgs e)
         {
             try
