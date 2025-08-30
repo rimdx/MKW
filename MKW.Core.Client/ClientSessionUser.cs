@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace MKW.Core.Client
 {
-    public partial class ClientSession : IDisposable
+    public partial class ClientSession : IUserController, IDisposable
     {
         public UserInfo PromoteUser(string password)
         {
