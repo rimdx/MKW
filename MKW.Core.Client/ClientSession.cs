@@ -8,12 +8,14 @@ namespace MKW.Core.Client
 
         private readonly bool ownsDb;
         private readonly UserController userController;
+        private readonly AdminController adminController;
 
         protected ClientSession(IDatabase db, bool ownsDb)
         {
             Database = db;
             this.ownsDb = ownsDb;
             userController = new UserController(this, Database);
+            adminController = new AdminController(this, Database);
         }
 
         public static ClientSession Open(IDatabase db /* reference */)
