@@ -29,7 +29,7 @@ namespace MKW.GUI
 
         private Trust GetTrust()
         {
-            foreach (UserInfo userTrust in database.User!.EnumerateUsersTrust())
+            foreach (UserInfo userTrust in database.User!.EnumerateImplicitlyTrustedUsers())
             {
                 if (userTrust.Id == user.Id)
                 {

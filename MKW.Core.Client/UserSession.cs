@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserSession : IUserSession, IEntryController, ITrustController, IDisposable
+    public class UserSession : IUserSession, IEntryController, ITrustProvider, ITrustController, IDisposable
     {
         protected readonly ClientSession client;
         protected readonly IDatabase database;
@@ -65,16 +65,39 @@ namespace MKW.Core.Client
             }
         }
 
-        // todo: ITrustProvider
+        // ITrustProvider
+
+        public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
+        {
+            foreach (UserInfo user in TrustController.EnumerateImplicitlyTrustedUsers())
+            {
+                yield return user;
+            }
+        }
+
+        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
+        {
+            foreach (UserInfo user in TrustController.EnumerateExplicitlyTrustedUsers())
+            {
+                yield return user;
+            }
+        }
+
+        public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
+        {
+            return TrustController.GetExplicitTrust(publicKey);
+        }
+
+        public Trust GetImplicitTrust(UserId userId)
+        {
+            return TrustController.GetImplicitTrust(userId);
+        }
+
+        // ITrustController
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
             TrustController.UpdateTrust(userId, trust);
-        }
-
-        public IEnumerable<UserInfo> EnumerateUsersTrust()
-        {
-            return TrustController.EnumerateImplicitlyTrustedUsers();
         }
 
         public void Dispose()
