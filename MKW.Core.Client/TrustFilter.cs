@@ -42,7 +42,7 @@ namespace MKW.Core.Client
             }
         }
 
-        public Trust VerifyTrust(ReadOnlySpan<byte> publicKey)
+        public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
         {
             throw new NotSupportedException();
         }
