@@ -14,10 +14,7 @@ namespace MKW.Tests
 
         public SandBox(bool init = true)
         {
-            DatabasePath = Path.GetFullPath("./test.json");
-
-            // todo: safer way?
-            File.Delete("./test.json");
+            DatabasePath = Path.GetTempFileName();
 
             if (init)
             {
