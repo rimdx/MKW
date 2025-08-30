@@ -10,15 +10,17 @@ namespace MKW.Core.Editor
         , IDisposable
     {
         private readonly IUserSession proxy;
+        private readonly Dictionary<UserId, Trust> edits;
 
         public TrustEditor(IUserSession proxy /* todo: better type */)
         {
             this.proxy = proxy;
+            edits = [];
         }
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
-            proxy.UpdateTrust(userId, trust);
+            edits[userId] = trust;
         }
 
         public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
@@ -48,6 +50,10 @@ namespace MKW.Core.Editor
 
         public void Commit()
         {
+            foreach (KeyValuePair<UserId, Trust> edit in edits)
+            {
+                proxy.UpdateTrust(edit.Key, edit.Value);
+            }
         }
     }
 }
