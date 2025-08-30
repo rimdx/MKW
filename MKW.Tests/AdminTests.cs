@@ -71,14 +71,14 @@ namespace MKW.Tests
 
             {
                 using UserSession user = client.OpenUser("trusted");
-                using UserEntry entrySession = user.OpenEntry(entry.Id);
+                using IEntry entrySession = user.OpenEntry(entry.Id);
 
                 ClassicAssert.AreEqual(new EntryPayload("test data"), entrySession.OpenPayload());
             }
 
             {
                 using UserSession user = client.OpenUser("untrusted");
-                using UserEntry entrySession = user.OpenEntry(entry.Id);
+                using IEntry entrySession = user.OpenEntry(entry.Id);
 
                 ClassicAssert.AreEqual(null, entrySession.OpenPayload());
             }
@@ -109,14 +109,14 @@ namespace MKW.Tests
 
             {
                 using UserSession user = sbox.CreateUser(client, "user1", out _);
-                using UserEntry entry = user.CreateEntry();
+                using IEntry entry = user.CreateEntry();
                 entry.UpdatePayload(new EntryPayload("data"));
                 entryId = entry.Id;
             }
 
             {
                 using UserSession admin = sbox.OpenAdmin(client);
-                using UserEntry entry = admin.OpenEntry(entryId);
+                using IEntry entry = admin.OpenEntry(entryId);
 
                 ClassicAssert.AreEqual(new EntryPayload("data"),
                                        entry.OpenPayload());
@@ -134,7 +134,7 @@ namespace MKW.Tests
             EntryId entryId = EntryId.Create();
 
             {
-                using UserEntry entry = user.CreateEntry(entryId);
+                using IEntry entry = user.CreateEntry(entryId);
                 entry.UpdatePayload(new EntryPayload("data"));
 
                 UserInfo[] users = [.. entry.EnumerateEncodedForUsers()];
@@ -144,7 +144,7 @@ namespace MKW.Tests
             }
 
             {
-                using UserEntry entry = user.OpenEntry(entryId);
+                using IEntry entry = user.OpenEntry(entryId);
 
                 UserInfo[] users = [.. entry.EnumerateEncodedForUsers()];
                 ClassicAssert.AreEqual(1, users.Length);

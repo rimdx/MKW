@@ -99,7 +99,7 @@ namespace MKW.GUI
                 throw new Exception("No entry was selected.");
             }
 
-            UserEntry entry = Database.User!.OpenEntry(SelectedEntry.Id);
+            IEntry entry = Database.User!.OpenEntry(SelectedEntry.Id);
 
             return new EditEntryWindowViewModel(Database, entry /* move */);
         }

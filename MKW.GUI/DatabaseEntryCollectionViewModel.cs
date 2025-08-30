@@ -25,7 +25,7 @@ namespace MKW.GUI
         {
             Clear();
 
-            foreach (UserEntry entry in database.User!.EnumerateEntries())
+            foreach (IEntry entry in database.User!.EnumerateEntries())
             {
                 Add(new DatabaseEntryModel
                 {

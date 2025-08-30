@@ -52,12 +52,12 @@ namespace MKW.GUI.Model
 
         public void CreateEntry(string payload)
         {
-            using Entry entry = Client.CreateEntry();
+            using IEntry entry = Client.CreateEntry();
             entry.UpdatePayload(new EntryPayload(payload));
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
-        public void UpdateEntry(Entry entry, string text)
+        public void UpdateEntry(IEntry entry, string text)
         {
             entry.UpdatePayload(new EntryPayload(text));
             OnEntriesChanged?.Invoke(this, new EventArgs());
