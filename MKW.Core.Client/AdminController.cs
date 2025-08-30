@@ -44,7 +44,7 @@ namespace MKW.Core.Client
 
             Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
 
-            return new AdminSession(client, admin, privateKeyBytes.Span);
+            return new AdminSession(client, database, admin, privateKeyBytes.Span);
         }
 
         public UserInfo GetAdminInfo()
