@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class EntryController : IDisposable
+    public class EntryController : IEntryController, IDisposable
     {
         private readonly ClientSession client;
         private readonly IDatabaseUser user;
