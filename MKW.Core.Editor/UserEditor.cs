@@ -12,16 +12,19 @@ namespace MKW.Core.Editor
         , IDisposable
     {
         private readonly IUserSession proxy;
+        private readonly TrustEditor trustEditor;
 
         public UserId Id => proxy.Id;
 
         public UserEditor(IUserSession proxy)
         {
             this.proxy = proxy;
+            trustEditor = new TrustEditor(proxy);
         }
 
         public void Commit()
         {
+            trustEditor.Commit();
         }
 
         public void Dispose()
@@ -68,7 +71,7 @@ namespace MKW.Core.Editor
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            foreach (UserInfo user in proxy.EnumerateImplicitlyTrustedUsers())
+            foreach (UserInfo user in trustEditor.EnumerateImplicitlyTrustedUsers())
             {
                 yield return user;
             }
@@ -76,7 +79,7 @@ namespace MKW.Core.Editor
 
         public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
         {
-            foreach (UserInfo user in proxy.EnumerateExplicitlyTrustedUsers())
+            foreach (UserInfo user in trustEditor.EnumerateExplicitlyTrustedUsers())
             {
                 yield return user;
             }
@@ -84,19 +87,19 @@ namespace MKW.Core.Editor
 
         public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
         {
-            return proxy.GetExplicitTrust(publicKey);
+            return trustEditor.GetExplicitTrust(publicKey);
         }
 
         public Trust GetImplicitTrust(UserId userId)
         {
-            return proxy.GetImplicitTrust(userId);
+            return trustEditor.GetImplicitTrust(userId);
         }
 
         // ITrustController
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
-            throw new NotImplementedException();
+            trustEditor.UpdateTrust(userId, trust);
         }
     }
 }
