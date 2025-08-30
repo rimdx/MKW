@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Cryptography
 {
-    public class AsymmetricTransformer : IDisposable
+    public class AsymmetricTransformer : IAsymmetricPrivateTransformer, IAsymmetricPublicTransformer, IDisposable
     {
         private readonly RSA rsa;
 
