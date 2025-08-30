@@ -83,6 +83,12 @@ namespace MKW.GUI.Model
             OnUsersChanged?.Invoke(this, new EventArgs());
         }
 
+        public UserEditorModel CreateUserEditor(UserId userId)
+        {
+            UserInfo user = Client.GetUserInfo(userId);
+            return new UserEditorModel(this, user);
+        }
+
         public void Dispose()
         {
             Database?.Dispose();

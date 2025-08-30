@@ -4,33 +4,17 @@ using MKW.GUI.Services;
 
 namespace MKW.GUI
 {
-    public class UserPropertyDialogViewModel : ViewModelBase
+    public class UserPropertyDialogViewModel : ViewModelBase, IDisposable
     {
         private readonly DatabaseModel database;
-        private readonly UserInfo user;
+        private readonly UserEditorModel user;
         private readonly KeyFormatter keyFormatter;
-        private Trust trust;
 
-        public UserPropertyDialogViewModel(DatabaseModel database, UserInfo user /* reference */)
+        public UserPropertyDialogViewModel(DatabaseModel database, UserEditorModel user /* move */)
         {
             this.database = database;
             this.user = user;
             keyFormatter = new KeyFormatter(50);
-            RefreshTrust();
-        }
-
-        private void RefreshTrust()
-        {
-            trust = Trust.None;
-            foreach (UserInfo userTrust in database.User!.EnumerateUsersTrust())
-            {
-                if (userTrust.Id == user.Id)
-                {
-                    trust = userTrust.Trust;
-                }
-            }
-
-            OnPropertyChanged(nameof(IsUntrusted));
         }
 
         public string UserId => user.Id.ToString();
@@ -39,20 +23,27 @@ namespace MKW.GUI
 
         public bool OnOK()
         {
+            user.OnApply();
             return true;
         }
 
         public bool OnVerify()
         {
-            database.User!.UpdateTrust(user.Id, Trust.ExplicitTrust);
-            RefreshTrust();
+            user.OnVerify();
+            OnPropertyChanged(nameof(IsUntrusted));
             return true;
         }
 
-        public string PublicKey => keyFormatter.GetString(user.PublicKey.Span);
+        public string PublicKey => keyFormatter.GetString(user.PublicKey);
 
-        public bool IsUntrusted => trust == Trust.None;
+        public bool IsUntrusted => user.Trust == Trust.None;
+
         public bool IsUser => !database.User!.Id.IsAdmin;
         public bool IsAdmin => database.User!.Id.IsAdmin;
+
+        public void Dispose()
+        {
+            user.Dispose();
+        }
     }
 }

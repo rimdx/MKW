@@ -130,8 +130,9 @@ namespace MKW.GUI
                 throw new Exception("No user was selected.");
             }
 
-            UserInfo user = Database.Client.GetUserInfo(SelectedUser.Id);
-            return new UserPropertyDialogViewModel(Database, user);
+            UserEditorModel userEditor = Database.CreateUserEditor(SelectedUser.Id);
+
+            return new UserPropertyDialogViewModel(Database, userEditor);
         }
 
         public void Dispose()
