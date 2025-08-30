@@ -5,70 +5,39 @@ namespace MKW.Core.Client
 {
     public partial class ClientSession : IDisposable
     {
+        private EntryController OpenEntryController()
+        {
+            return new EntryController(this, Database.OpenAdmin(true));
+        }
+
         public Entry OpenEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = Database.OpenEntry(id, false);
-            IDatabaseUser admin = Database.OpenAdmin(true);
-            UserTrustProvider trustProvider = new UserTrustProvider(this, admin);
-            return new Entry(this, trustProvider /* move */, dbEntry);
+            using EntryController entryController = OpenEntryController();
+            return entryController.OpenEntry(id);
         }
 
         public Entry CreateEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = Database.CreateEntry(id);
-            IDatabaseUser admin = Database.OpenAdmin(true);
-            UserTrustProvider trustProvider = new UserTrustProvider(this, admin);
-            dbEntry.Save();
-            return new Entry(this, trustProvider /* move */, dbEntry);
+            using EntryController entryController = OpenEntryController();
+            return entryController.CreateEntry(id);
         }
 
-        public Entry CreateEntry() => CreateEntry(EntryId.Create());
+        public Entry CreateEntry()
+        {
+            using EntryController entryController = OpenEntryController();
+            return entryController.CreateEntry();
+        }
 
         public EntryInfo DeleteEntry(EntryId id)
         {
-            Database.DeleteEntry(id);
-
-            return new EntryInfo
-            {
-                Id = id,
-                Action = ActionInfo.Deleted,
-                EncodedForUsers = []
-            };
-        }
-
-        public Entry EnsureEntry(EntryId id, out bool created)
-        {
-            created = !Database.HasEntry(id);
-
-            if (created)
-            {
-                return CreateEntry(id);
-            }
-            else
-            {
-                return OpenEntry(id);
-            }
+            using EntryController entryController = OpenEntryController();
+            return entryController.DeleteEntry(id);
         }
 
         public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
         {
-            if (payload == null)
-            {
-                return DeleteEntry(id);
-            }
-            else
-            {
-                using Entry entry = EnsureEntry(id, out bool created);
-
-                EntryInfo notify = entry.UpdatePayload(payload);
-
-                return new EntryInfo
-                {
-                    Id = notify.Id,
-                    EncodedForUsers = notify.EncodedForUsers,
-                    Action = created ? ActionInfo.Added : ActionInfo.Updated,
-                };
-            }
+            using EntryController entryController = OpenEntryController();
+            return entryController.UpdateEntry(id, payload);
         }
     }
 }
