@@ -57,12 +57,11 @@ namespace MKW.Core.Client
             return entryController.UpdateEntry(id, payload);
         }
 
-        // todo: move to IEntryController
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
-            foreach (IDatabaseEntry entry in database.EnumerateEntries())
+            foreach (IEntrySession entry in entryController.EnumerateEntries())
             {
-                yield return new UserEntry(client, this, entry);
+                yield return entry;
             }
         }
 

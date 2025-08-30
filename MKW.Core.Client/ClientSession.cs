@@ -186,6 +186,16 @@ namespace MKW.Core.Client
             return entryController.UpdateEntry(id, payload);
         }
 
+        public IEnumerable<IEntrySession> EnumerateEntries()
+        {
+            using EntryController entryController = OpenEntryController();
+
+            foreach (IEntrySession entry in entryController.EnumerateEntries())
+            {
+                yield return entry;
+            }
+        }
+
         public void Dispose()
         {
             userController.Dispose();

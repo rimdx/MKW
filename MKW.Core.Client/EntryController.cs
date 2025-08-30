@@ -82,6 +82,14 @@ namespace MKW.Core.Client
             }
         }
 
+        public IEnumerable<IEntrySession> EnumerateEntries()
+        {
+            foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
+            {
+                yield return new Entry(client, OpenTrustProvider(), entry);
+            }
+        }
+
         public void Dispose()
         {
         }

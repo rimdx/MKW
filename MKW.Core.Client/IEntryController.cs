@@ -13,5 +13,7 @@ namespace MKW.Core.Client
         IEntrySession OpenEntry(EntryId id);
 
         EntryInfo UpdateEntry(EntryId id, EntryPayload? payload);
+
+        IEnumerable<IEntrySession> EnumerateEntries();
     }
 }
