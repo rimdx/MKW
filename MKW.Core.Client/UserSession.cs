@@ -7,6 +7,7 @@ namespace MKW.Core.Client
     public class UserSession : IDisposable
     {
         protected readonly ClientSession client;
+        protected readonly IDatabase database;
 
         internal IDatabaseUser DatabaseUser { get; }
 
@@ -15,10 +16,12 @@ namespace MKW.Core.Client
         public UserTrustController TrustController { get; }
 
         public UserSession(ClientSession client /* reference */,
+                           IDatabase database /* reference */,
                            IDatabaseUser user /* reference */,
                            ReadOnlySpan<byte> privateKey)
         {
             this.client = client;
+            this.database = database;
             DatabaseUser = user;
 
             Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
@@ -27,13 +30,13 @@ namespace MKW.Core.Client
 
         public IEntrySession OpenEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
+            IDatabaseEntry dbEntry = database.OpenEntry(id, false);
             return new UserEntry(client, this, dbEntry);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
+            IDatabaseEntry dbEntry = database.CreateEntry(id);
             dbEntry.Save();
             return new UserEntry(client, this, dbEntry);
         }
@@ -42,7 +45,7 @@ namespace MKW.Core.Client
 
         public EntryInfo DeleteEntry(EntryId id)
         {
-            client.Database.DeleteEntry(id);
+            database.DeleteEntry(id);
 
             return new EntryInfo
             {
@@ -54,7 +57,7 @@ namespace MKW.Core.Client
 
         public IEntrySession EnsureEntry(EntryId id, out bool created)
         {
-            created = !client.Database.HasEntry(id);
+            created = !database.HasEntry(id);
 
             if (created)
             {
@@ -68,7 +71,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
-            foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
+            foreach (IDatabaseEntry entry in database.EnumerateEntries())
             {
                 yield return new UserEntry(client, this, entry);
             }

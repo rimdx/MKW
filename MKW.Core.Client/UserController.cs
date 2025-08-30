@@ -85,7 +85,7 @@ namespace MKW.Core.Client
             // some validation may be required.
             Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.Span);
 
-            return new UserSession(client, user, privateKeyBytes.Span);
+            return new UserSession(client, database, user, privateKeyBytes.Span);
         }
 
         public IEnumerable<UserInfo> EnumerateUsers()
