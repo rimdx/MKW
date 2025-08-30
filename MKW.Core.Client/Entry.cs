@@ -43,7 +43,7 @@ namespace MKW.Core.Client
 
         internal static void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
         {
-            using SymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
+            using ISymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
 
             Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
 
