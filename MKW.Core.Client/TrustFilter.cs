@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
@@ -43,6 +44,11 @@ namespace MKW.Core.Client
         }
 
         public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Trust GetImplicitTrust(UserId userId)
         {
             throw new NotSupportedException();
         }

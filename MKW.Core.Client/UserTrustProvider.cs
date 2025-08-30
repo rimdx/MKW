@@ -59,6 +59,19 @@ namespace MKW.Core.Client
             return Trust.None;
         }
 
+        public Trust GetImplicitTrust(UserId userId)
+        {
+            foreach (UserInfo userTrust in EnumerateImplicitlyTrustedUsers())
+            {
+                if (userTrust.Id == userId)
+                {
+                    return userTrust.Trust;
+                }
+            }
+
+            return Trust.None;
+        }
+
         public virtual void Dispose()
         {
             publicKey.Dispose();

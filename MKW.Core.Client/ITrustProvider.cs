@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
@@ -25,5 +26,6 @@ namespace MKW.Core.Client
         IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers();
 
         Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey);
+        Trust GetImplicitTrust(UserId userId);
     }
 }
