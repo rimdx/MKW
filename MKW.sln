@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Common", "MKW.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Common.Tests", "MKW.Core.Common.Tests\MKW.Core.Common.Tests.csproj", "{32B18A40-3E27-4ECE-ADD1-EBF585CFB3D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Editor", "MKW.Core.Editor\MKW.Core.Editor.csproj", "{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Editor.Tests", "MKW.Core.Editor.Tests\MKW.Core.Editor.Tests.csproj", "{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -185,12 +189,36 @@ Global
 		{32B18A40-3E27-4ECE-ADD1-EBF585CFB3D3}.Release|x64.Build.0 = Release|x64
 		{32B18A40-3E27-4ECE-ADD1-EBF585CFB3D3}.Release|x86.ActiveCfg = Release|x86
 		{32B18A40-3E27-4ECE-ADD1-EBF585CFB3D3}.Release|x86.Build.0 = Release|x86
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Debug|ARM64.Build.0 = Debug|ARM64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Debug|x64.ActiveCfg = Debug|x64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Debug|x64.Build.0 = Debug|x64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Debug|x86.ActiveCfg = Debug|x86
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Debug|x86.Build.0 = Debug|x86
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Release|ARM64.ActiveCfg = Release|ARM64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Release|ARM64.Build.0 = Release|ARM64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Release|x64.ActiveCfg = Release|x64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Release|x64.Build.0 = Release|x64
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Release|x86.ActiveCfg = Release|x86
+		{78F8D465-76B5-49A9-ABE7-4C04B8F46DED}.Release|x86.Build.0 = Release|x86
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Debug|ARM64.Build.0 = Debug|ARM64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Debug|x64.ActiveCfg = Debug|x64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Debug|x64.Build.0 = Debug|x64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Debug|x86.ActiveCfg = Debug|x86
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Debug|x86.Build.0 = Debug|x86
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Release|ARM64.ActiveCfg = Release|ARM64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Release|ARM64.Build.0 = Release|ARM64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Release|x64.ActiveCfg = Release|x64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Release|x64.Build.0 = Release|x64
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Release|x86.ActiveCfg = Release|x86
+		{F08B992B-D9CE-4F8A-8450-E4CBFA1FF881}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 	EndGlobalSection
 EndGlobal
