@@ -11,5 +11,8 @@ namespace MKW.Core.Client
         UserSession OpenUser(string password);
         UserSession OpenUser(UserId id, string password);
         UserSession OpenUser(IDatabaseUser user, UserCredentials creds);
+
+        IEnumerable<UserInfo> EnumerateUsers();
+        UserInfo GetUserInfo(UserId id);
     }
 }

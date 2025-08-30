@@ -88,6 +88,20 @@ namespace MKW.Core.Client
             return new UserSession(client, user, privateKeyBytes.Span);
         }
 
+        public IEnumerable<UserInfo> EnumerateUsers()
+        {
+            foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
+            {
+                yield return UserInfo.FromDatabaseUser(user);
+            }
+        }
+
+        public UserInfo GetUserInfo(UserId id)
+        {
+            IDatabaseUser user = client.OpenDatabaseUser(id, true);
+            return UserInfo.FromDatabaseUser(user);
+        }
+
         public void Dispose()
         {
             /* no-op */
