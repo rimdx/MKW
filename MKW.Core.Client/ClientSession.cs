@@ -7,11 +7,13 @@ namespace MKW.Core.Client
         public IDatabase Database { get; }
 
         private readonly bool ownsDb;
+        private readonly UserController userController;
 
         protected ClientSession(IDatabase db, bool ownsDb)
         {
             Database = db;
             this.ownsDb = ownsDb;
+            userController = new UserController(this, Database);
         }
 
         public static ClientSession Open(IDatabase db /* reference */)
@@ -44,6 +46,8 @@ namespace MKW.Core.Client
 
         public void Dispose()
         {
+            userController.Dispose();
+
             if (ownsDb)
             {
                 Database.Dispose();
