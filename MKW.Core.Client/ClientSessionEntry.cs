@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public partial class ClientSession : IDisposable
+    public partial class ClientSession : IEntryController, IDisposable
     {
         private EntryController OpenEntryController()
         {
