@@ -36,6 +36,12 @@ namespace MKW.GUI
             return true;
         }
 
+        public bool OnVerify()
+        {
+            throw new NotImplementedException();
+            return true;
+        }
+
         public string PublicKey => keyFormatter.GetString(user.PublicKey.Span);
 
         public bool IsUntrusted => trust == Trust.None;

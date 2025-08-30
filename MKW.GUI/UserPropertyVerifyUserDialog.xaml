@@ -1,0 +1,60 @@
+﻿<Window x:Class="MKW.GUI.UserPropertyVerifyUserDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MKW.GUI"
+        mc:Ignorable="d"
+        Title="Verify User"
+        Width="350" Height="280"
+        d:DataContext="{d:DesignInstance Type=local:UserPropertyDialogViewModel}"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+      <StackPanel.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+      </StackPanel.Resources>
+
+      <TextBlock Margin="0,0,0,6">
+        Do you want to verify this user?
+      </TextBlock>
+      <TextBlock Margin="0,0,0,6">
+        This will create cryptographic signature, by which the other users will
+        identify this user and share their secrets securely.
+      </TextBlock>
+      <TextBlock Margin="0,0,0,6">
+        After the verification, this user will get access to all secret entries
+        in the database.
+      </TextBlock>
+      <TextBlock Margin="0,0,0,6">
+        Please carefully verify identity of this user through a trusted
+        communication channel before proceeding the action.
+      </TextBlock>
+    </StackPanel>
+
+    <StackPanel Grid.Row="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+
+      <Button Content="OK"
+              Width="70"
+              Click="OK_Click"
+              IsDefault="True"
+              Margin="0,0,6,0" />
+
+      <Button Content="Cancel"
+              Width="70"
+              Click="Cancel_Click"
+              IsCancel="True" />
+    </StackPanel>
+  </Grid>
+</Window>
