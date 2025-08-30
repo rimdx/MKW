@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserSession : IUserSession, IEntryController, IDisposable
+    public class UserSession : IUserSession, IEntryController, ITrustController, IDisposable
     {
         protected readonly ClientSession client;
         protected readonly IDatabase database;
