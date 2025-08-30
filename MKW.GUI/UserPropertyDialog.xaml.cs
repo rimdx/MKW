@@ -61,5 +61,17 @@ namespace MKW.GUI
                 ErrorReporter.HandleException(ex);
             }
         }
+
+        private void VerifyUser_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
     }
 }
