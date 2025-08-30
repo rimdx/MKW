@@ -9,14 +9,18 @@ namespace MKW.GUI
         private readonly DatabaseModel database;
         private readonly UserInfo user;
         private readonly KeyFormatter keyFormatter;
-        private readonly Trust trust;
+        private Trust trust;
 
         public UserPropertyDialogViewModel(DatabaseModel database, UserInfo user /* reference */)
         {
             this.database = database;
             this.user = user;
             keyFormatter = new KeyFormatter(50);
+            RefreshTrust();
+        }
 
+        private void RefreshTrust()
+        {
             trust = Trust.None;
             foreach (UserInfo userTrust in database.User!.EnumerateUsersTrust())
             {
@@ -25,6 +29,8 @@ namespace MKW.GUI
                     trust = userTrust.Trust;
                 }
             }
+
+            OnPropertyChanged(nameof(IsUntrusted));
         }
 
         public string UserId => user.Id.ToString();
@@ -38,7 +44,8 @@ namespace MKW.GUI
 
         public bool OnVerify()
         {
-            throw new NotImplementedException();
+            database.User!.UpdateTrust(user.Id, Trust.ExplicitTrust);
+            RefreshTrust();
             return true;
         }
 
