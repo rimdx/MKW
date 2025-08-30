@@ -24,6 +24,6 @@ namespace MKW.Core.Client
         IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers();
         IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers();
 
-        Trust VerifyTrust(ReadOnlySpan<byte> publicKey);
+        Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey);
     }
 }

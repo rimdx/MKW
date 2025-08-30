@@ -39,14 +39,14 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
-                if (VerifyTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
+                if (GetExplicitTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
                 {
                     yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
                 }
             }
         }
 
-        public Trust VerifyTrust(ReadOnlySpan<byte> publicKey)
+        public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
         {
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
