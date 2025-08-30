@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Cryptography
 {
-    public class SymmetricTransformer : IDisposable
+    public class SymmetricTransformer : ISymmetricTransformer, IDisposable
     {
         private readonly Aes aes;
 
