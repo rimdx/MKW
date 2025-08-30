@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public interface IEntry : IDisposable
+    public interface IEntrySession : IDisposable
     {
         EntryId Id { get; }
 

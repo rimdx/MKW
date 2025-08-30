@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class Entry : IDisposable, IEntry
+    public class Entry : IDisposable, IEntrySession
     {
         protected readonly ClientSession client;
         // TODO: dispose

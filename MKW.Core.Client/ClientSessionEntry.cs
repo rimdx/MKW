@@ -10,19 +10,19 @@ namespace MKW.Core.Client
             return new EntryController(this, Database.OpenAdmin(true));
         }
 
-        public IEntry OpenEntry(EntryId id)
+        public IEntrySession OpenEntry(EntryId id)
         {
             using EntryController entryController = OpenEntryController();
             return entryController.OpenEntry(id);
         }
 
-        public IEntry CreateEntry(EntryId id)
+        public IEntrySession CreateEntry(EntryId id)
         {
             using EntryController entryController = OpenEntryController();
             return entryController.CreateEntry(id);
         }
 
-        public IEntry CreateEntry()
+        public IEntrySession CreateEntry()
         {
             using EntryController entryController = OpenEntryController();
             return entryController.CreateEntry();
