@@ -25,20 +25,20 @@ namespace MKW.Core.Client
             TrustController = new UserTrustController(client, this);
         }
 
-        public IEntry OpenEntry(EntryId id)
+        public IEntrySession OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
             return new UserEntry(client, this, dbEntry);
         }
 
-        public IEntry CreateEntry(EntryId id)
+        public IEntrySession CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
             dbEntry.Save();
             return new UserEntry(client, this, dbEntry);
         }
 
-        public IEntry CreateEntry() => CreateEntry(EntryId.Create());
+        public IEntrySession CreateEntry() => CreateEntry(EntryId.Create());
 
         public EntryInfo DeleteEntry(EntryId id)
         {
@@ -52,7 +52,7 @@ namespace MKW.Core.Client
             };
         }
 
-        public IEntry EnsureEntry(EntryId id, out bool created)
+        public IEntrySession EnsureEntry(EntryId id, out bool created)
         {
             created = !client.Database.HasEntry(id);
 
@@ -66,7 +66,7 @@ namespace MKW.Core.Client
             }
         }
 
-        public IEnumerable<IEntry> EnumerateEntries()
+        public IEnumerable<IEntrySession> EnumerateEntries()
         {
             foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
             {

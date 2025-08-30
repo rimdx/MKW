@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserEntry : Entry, IEntry
+    public class UserEntry : Entry, IEntrySession
     {
         protected readonly UserSession user;
 

@@ -129,7 +129,7 @@ namespace MKW.Tests
             admin.UpdateTrust(user.Id, Trust.ExplicitTrust);
 
             // create
-            using IEntry entry = client.CreateEntry();
+            using IEntrySession entry = client.CreateEntry();
 
             ClassicAssert.AreNotEqual(EntryId.FromGuid(Guid.Empty), entry.Id);
             ClassicAssert.AreEqual(null,
@@ -219,7 +219,7 @@ namespace MKW.Tests
                 using UserSession user = sbox.CreateUser(client, "usersecret", out _);
 
                 // create
-                using IEntry entry = user.CreateEntry();
+                using IEntrySession entry = user.CreateEntry();
                 entryId = entry.Id;
 
                 ClassicAssert.AreNotEqual(EntryId.FromGuid(Guid.Empty), entry.Id);
@@ -246,7 +246,7 @@ namespace MKW.Tests
             using (ClientSession client = sbox.OpenSession())
             {
                 using UserSession user = client.OpenUser("usersecret");
-                using IEntry entry = user.OpenEntry(entryId);
+                using IEntrySession entry = user.OpenEntry(entryId);
                 ClassicAssert.AreEqual(new EntryPayload("data2"),
                                        user.OpenEntry(entry.Id).OpenPayload());
 
