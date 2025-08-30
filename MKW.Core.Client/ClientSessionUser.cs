@@ -28,9 +28,9 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
-            foreach (IDatabaseUser user in EnumerateDatabaseUsers())
+            foreach (UserInfo user in userController.EnumerateUsers())
             {
-                yield return UserInfo.FromDatabaseUser(user);
+                yield return user;
             }
         }
 
@@ -58,8 +58,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            IDatabaseUser user = OpenDatabaseUser(id, true);
-            return UserInfo.FromDatabaseUser(user);
+            return userController.GetUserInfo(id);
         }
     }
 }
