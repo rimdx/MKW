@@ -20,20 +20,20 @@ namespace MKW.Core.Client
             return new UserTrustProvider(client, user);
         }
 
-        public Entry OpenEntry(EntryId id)
+        public IEntry OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
             return new Entry(client, OpenTrustProvider() /* move */, dbEntry);
         }
 
-        public Entry CreateEntry(EntryId id)
+        public IEntry CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
             dbEntry.Save();
             return new Entry(client, OpenTrustProvider() /* move */, dbEntry);
         }
 
-        public Entry CreateEntry() => CreateEntry(EntryId.Create());
+        public IEntry CreateEntry() => CreateEntry(EntryId.Create());
 
         public EntryInfo DeleteEntry(EntryId id)
         {
@@ -47,7 +47,7 @@ namespace MKW.Core.Client
             };
         }
 
-        public Entry EnsureEntry(EntryId id, out bool created)
+        public IEntry EnsureEntry(EntryId id, out bool created)
         {
             created = !client.Database.HasEntry(id);
 
@@ -69,7 +69,7 @@ namespace MKW.Core.Client
             }
             else
             {
-                using Entry entry = EnsureEntry(id, out bool created);
+                using IEntry entry = EnsureEntry(id, out bool created);
 
                 EntryInfo notify = entry.UpdatePayload(payload);
 
