@@ -51,7 +51,7 @@ namespace MKW.Core.Client
 
             foreach (UserInfo user in users)
             {
-                using AsymmetricTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
+                using IAsymmetricPublicTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 

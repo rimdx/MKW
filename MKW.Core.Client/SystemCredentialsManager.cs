@@ -11,7 +11,7 @@ namespace MKW.Core.Client
         public SystemCredentials GenerateCredentials(UserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            using AsymmetricTransformer userKey = AsymmetricTransformer.Create();
+            using IAsymmetricPrivateTransformer userKey = AsymmetricTransformer.Create();
 
             // Symmetric encoder for secret section.
             using SymmetricTransformer encoder = SymmetricTransformer.Open(userCredentials.GetSecretKey().Span,

@@ -11,13 +11,13 @@ namespace MKW.Core.Cryptography
             this.rsa = rsa;
         }
 
-        public static AsymmetricTransformer Create()
+        public static IAsymmetricPrivateTransformer Create()
         {
             RSA rsa = RSA.Create();
             return new AsymmetricTransformer(rsa);
         }
 
-        public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey)
+        public static IAsymmetricPublicTransformer Open(ReadOnlySpan<byte> publicKey)
         {
             RSA rsa = RSA.Create();
 
@@ -26,7 +26,7 @@ namespace MKW.Core.Cryptography
             return new AsymmetricTransformer(rsa);
         }
 
-        public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
+        public static IAsymmetricPrivateTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
         {
             RSA rsa = RSA.Create();
 

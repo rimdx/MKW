@@ -1,20 +1,24 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
     public class UserTrustController : UserTrustProvider, ITrustProvider, IDisposable
     {
+        protected readonly IAsymmetricPrivateTransformer privateKey;
+
         public UserTrustController(ClientSession client, UserSession user)
             : base(client, user.DatabaseUser, user.Transformer)
         {
+            privateKey = user.Transformer;
         }
 
         public void UpdateTrust(UserId userId, Trust trust)
         {
             IDatabaseUser user = client.OpenDatabaseUser(userId, true);
 
-            ReadOnlyMemory<byte> signature = key.Sign(user.PublicKey.Span);
+            ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
             if (trust == Trust.ExplicitTrust)
             {
