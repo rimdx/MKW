@@ -9,7 +9,7 @@ namespace MKW.GUI
         public UserPropertyDialog(UserPropertyDialogViewModel model, Window window)
         {
             this.model = model;
-            this.Owner = window;
+            Owner = window;
             DataContext = model;
             InitializeComponent();
         }
