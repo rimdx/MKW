@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Cryptography
 {
-    public class UserCredentials
+    public class UserCredentials : IUserCredentials
     {
         private readonly string password;
         private readonly ReadOnlyMemory<byte> salt;
