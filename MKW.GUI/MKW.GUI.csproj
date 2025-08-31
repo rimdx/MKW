@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- WPF does not support trim. -->
-    <PublishTrimmed>false</PublishTrimmed>
     <!--<PublishSingleFile>false</PublishSingleFile>-->
   </PropertyGroup>
 
