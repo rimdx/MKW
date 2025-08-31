@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Editor.Tests", "MK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Cryptography.System", "MKW.Core.Cryptography.System\MKW.Core.Cryptography.System.csproj", "{D81BFC5C-5107-484E-A5FE-C34971D6CCAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Cryptography.Tests", "MKW.Core.Cryptography.Tests\MKW.Core.Cryptography.Tests.csproj", "{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -227,6 +229,18 @@ Global
 		{D81BFC5C-5107-484E-A5FE-C34971D6CCAA}.Release|x64.Build.0 = Release|x64
 		{D81BFC5C-5107-484E-A5FE-C34971D6CCAA}.Release|x86.ActiveCfg = Release|x86
 		{D81BFC5C-5107-484E-A5FE-C34971D6CCAA}.Release|x86.Build.0 = Release|x86
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Debug|ARM64.Build.0 = Debug|ARM64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Debug|x64.ActiveCfg = Debug|x64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Debug|x64.Build.0 = Debug|x64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Debug|x86.ActiveCfg = Debug|x86
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Debug|x86.Build.0 = Debug|x86
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Release|ARM64.ActiveCfg = Release|ARM64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Release|ARM64.Build.0 = Release|ARM64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Release|x64.ActiveCfg = Release|x64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Release|x64.Build.0 = Release|x64
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Release|x86.ActiveCfg = Release|x86
+		{E9C3A932-D1A9-46CC-85D4-37DEAC99168B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
