@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Client.Notify;
-using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -10,19 +9,13 @@ namespace MKW.Core.Client
 
         protected readonly ClientSession client;
         protected readonly IDatabaseUser me;
-        protected readonly IAsymmetricPublicTransformer publicKey;
+        protected readonly ITrustVerifier trustVerifier;
 
-        public UserTrustProvider(ClientSession client, IDatabaseUser user)
-            : this(client, user, AsymmetricTransformer.Open(user.PublicKey.Span))
-        {
-        }
-
-        public UserTrustProvider(ClientSession client, IDatabaseUser user,
-                                 IAsymmetricPublicTransformer publicKey)
+        public UserTrustProvider(ClientSession client, IDatabaseUser me)
         {
             this.client = client;
-            me = user;
-            this.publicKey = publicKey;
+            this.me = me;
+            trustVerifier = new UserTrustVerifier(me);
         }
 
         private IEnumerable<ITrustWorkerNode> EnumerateWorkerNodes()
@@ -47,7 +40,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
-                if (GetExplicitTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
+                if (trustVerifier.GetTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
                 {
                     yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
                 }
@@ -56,15 +49,7 @@ namespace MKW.Core.Client
 
         public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
         {
-            foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
-            {
-                if (this.publicKey.Verify(publicKey, trust.Span))
-                {
-                    return Trust.ExplicitTrust;
-                }
-            }
-
-            return Trust.None;
+            return trustVerifier.GetTrust(publicKey);
         }
 
         public Trust GetImplicitTrust(UserId userId)
@@ -82,7 +67,7 @@ namespace MKW.Core.Client
 
         public virtual void Dispose()
         {
-            publicKey.Dispose();
+            trustVerifier.Dispose();
         }
     }
 }

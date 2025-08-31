@@ -9,7 +9,7 @@ namespace MKW.Core.Client
         protected readonly IAsymmetricPrivateTransformer privateKey;
 
         public UserTrustController(ClientSession client, UserSession user)
-            : base(client, user.DatabaseUser, user.Transformer)
+            : base(client, user.DatabaseUser)
         {
             privateKey = user.Transformer;
         }
