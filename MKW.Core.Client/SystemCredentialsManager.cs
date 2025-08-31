@@ -8,7 +8,7 @@ namespace MKW.Core.Client
         {
         }
 
-        public SystemCredentials GenerateCredentials(UserCredentials userCredentials)
+        public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
             using IAsymmetricPrivateTransformer userKey = AsymmetricTransformer.Create();

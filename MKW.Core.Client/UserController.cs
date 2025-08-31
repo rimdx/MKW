@@ -23,7 +23,7 @@ namespace MKW.Core.Client
 
             SystemCredentialsManager credManager = new SystemCredentialsManager();
 
-            UserCredentials userCreds = UserCredentials.Create(password);
+            IUserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser user = database.CreateUser(UserId.Create());
@@ -49,7 +49,7 @@ namespace MKW.Core.Client
                 IDatabaseUser user = database.OpenUser(id, false);
 
                 // Credentials can be opened within the entered password and the public salt
-                UserCredentials creds = UserCredentials.Open(password, user.Salt);
+                IUserCredentials creds = UserCredentials.Open(password, user.Salt);
 
                 return OpenUser(user, creds);
             }
@@ -61,7 +61,7 @@ namespace MKW.Core.Client
             {
                 try
                 {
-                    UserCredentials creds = UserCredentials.Open(password, user.Salt);
+                    IUserCredentials creds = UserCredentials.Open(password, user.Salt);
 
                     return OpenUser(client.OpenDatabaseUser(user.Id, false), creds);
                 }
@@ -74,7 +74,7 @@ namespace MKW.Core.Client
             throw new Exception("No valid user found with the provided password.");
         }
 
-        public UserSession OpenUser(IDatabaseUser user, UserCredentials creds)
+        public UserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
         {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).
