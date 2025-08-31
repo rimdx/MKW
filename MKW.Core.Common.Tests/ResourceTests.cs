@@ -4,7 +4,7 @@ namespace MKW.Core.Common.Tests
 {
     public class ResourceTests
     {
-        private interface ITestResource : IResource<ITestResource>
+        private interface ITestResource : IResource
         {
             public int Disposed { get; }
         }
@@ -37,7 +37,7 @@ namespace MKW.Core.Common.Tests
             TestResource resource = new TestResource();
             ClassicAssert.AreEqual(0, resource.Disposed);
 
-            IResource<ITestResource> moved = resource.Move();
+            Resource<ITestResource> moved = resource.Move<ITestResource>();
 
             ClassicAssert.AreEqual(0, resource.Disposed);
             ClassicAssert.AreEqual(0, moved.Value.Disposed);
