@@ -29,7 +29,8 @@
 
     <Label Grid.Row="0"
            Content="Enter database credentials:"
-           FontWeight="Bold" />
+           FontWeight="Bold"
+           Padding="0" />
 
     <TextBox Grid.Row="1"
              IsReadOnly="True"
