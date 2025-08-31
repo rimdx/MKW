@@ -28,7 +28,7 @@
               Padding="9"
               Margin="0,0,0,6">
         <StackPanel Orientation="Vertical">
-          <StackPanel Orientation="Horizontal"  Margin="0,0,0,3">
+          <StackPanel Orientation="Horizontal"  Margin="0,0,0,6">
             <images:StatusWarning HorizontalAlignment="Left" Width="22" />
             <TextBlock Text="This user is not verified. " />
           </StackPanel>
