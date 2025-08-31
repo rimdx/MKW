@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Cryptography
+﻿namespace MKW.Core.Cryptography.System
 {
     public class CryptographyProvider : IDisposable, ICryptographyProvider
     {
