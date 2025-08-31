@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace MKW.Core.Cryptography
+namespace MKW.Core.Cryptography.System
 {
     public class UserCredentials : IUserCredentials
     {
