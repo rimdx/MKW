@@ -8,6 +8,8 @@ namespace MKW.Core.Client
     {
         public IDatabase Database { get; }
 
+        public ICryptographyProvider CryptographyProvider { get; set; }
+
         private readonly bool ownsDb;
         private readonly UserController userController;
         private readonly AdminController adminController;
@@ -15,6 +17,7 @@ namespace MKW.Core.Client
         protected ClientSession(IDatabase db, bool ownsDb)
         {
             Database = db;
+            CryptographyProvider = new CryptographyProvider();
             this.ownsDb = ownsDb;
             userController = new UserController(this, Database);
             adminController = new AdminController(this, Database);

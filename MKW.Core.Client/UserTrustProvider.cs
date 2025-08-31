@@ -15,7 +15,7 @@ namespace MKW.Core.Client
         {
             this.client = client;
             this.me = me;
-            trustVerifier = new UserTrustVerifier(me);
+            trustVerifier = new UserTrustVerifier(client, me);
         }
 
         private IEnumerable<ITrustWorkerNode> EnumerateWorkerNodes()

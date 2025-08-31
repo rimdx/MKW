@@ -21,7 +21,7 @@ namespace MKW.Core.Client
         {
             if (trustVerifier == null)
             {
-                trustVerifier = new UserTrustVerifier(user);
+                trustVerifier = new UserTrustVerifier(client, user);
             }
 
             // todo:
