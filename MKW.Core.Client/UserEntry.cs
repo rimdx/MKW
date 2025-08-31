@@ -23,8 +23,8 @@ namespace MKW.Core.Client
 
             Memory<byte> decryptedKey = user.Transformer.Decrypt(encodedKey.Span);
 
-            using ISymmetricTransformer dataDecoder = SymmetricTransformer.Open(decryptedKey.Span,
-                                                                                entry.Salt.Span);
+            using ISymmetricTransformer dataDecoder = client.CryptographyProvider.OpenSymmetricTransformer(
+                decryptedKey.Span, entry.Salt.Span);
 
             Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
 

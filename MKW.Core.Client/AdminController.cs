@@ -17,9 +17,9 @@ namespace MKW.Core.Client
 
         public UserInfo PromoteAdmin(string password)
         {
-            SystemCredentialsManager credManager = new SystemCredentialsManager();
+            SystemCredentialsManager credManager = new SystemCredentialsManager(client);
 
-            IUserCredentials userCreds = UserCredentials.Create(password);
+            IUserCredentials userCreds = client.CryptographyProvider.CreateUserCredentials(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser admin = database.CreateAdmin();
@@ -37,10 +37,10 @@ namespace MKW.Core.Client
         {
             IDatabaseUser admin = database.OpenAdmin(false);
 
-            IUserCredentials creds = UserCredentials.Open(password, admin.Salt);
+            IUserCredentials creds = client.CryptographyProvider.OpenUserCredentials(password, admin.Salt);
 
-            using ISymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetSecretKey().Span,
-                                                                            creds.ExportSalt().Span);
+            using ISymmetricTransformer decoder = client.CryptographyProvider.OpenSymmetricTransformer(
+                creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
             Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
 

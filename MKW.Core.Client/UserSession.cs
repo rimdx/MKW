@@ -31,7 +31,7 @@ namespace MKW.Core.Client
             DatabaseUser = user;
             entryController = new UserEntryController(client, database, this);
 
-            Transformer = AsymmetricTransformer.Open(user.PublicKey.Span, privateKey);
+            Transformer = client.CryptographyProvider.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
             TrustController = new UserTrustController(client, this);
         }
 

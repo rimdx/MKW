@@ -9,10 +9,10 @@ namespace MKW.Core.Client
         private readonly IAsymmetricPublicTransformer publicKey;
         private readonly IDatabaseUser me;
 
-        public UserTrustVerifier(IDatabaseUser me)
+        public UserTrustVerifier(ClientSession client, IDatabaseUser me)
         {
             this.me = me;
-            publicKey = AsymmetricTransformer.Open(me.PublicKey.Span);
+            publicKey = client.CryptographyProvider.OpenAsymmetricTransformer(me.PublicKey.Span);
         }
 
         public Trust GetTrust(ReadOnlySpan<byte> otherPublicKey)

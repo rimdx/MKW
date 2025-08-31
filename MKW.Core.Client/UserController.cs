@@ -21,9 +21,9 @@ namespace MKW.Core.Client
             // TODO: sign admin
             IDatabaseUser admin = database.OpenAdmin(true);
 
-            SystemCredentialsManager credManager = new SystemCredentialsManager();
+            SystemCredentialsManager credManager = new SystemCredentialsManager(client);
 
-            IUserCredentials userCreds = UserCredentials.Create(password);
+            IUserCredentials userCreds = client.CryptographyProvider.CreateUserCredentials(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser user = database.CreateUser(UserId.Create());
@@ -49,7 +49,7 @@ namespace MKW.Core.Client
                 IDatabaseUser user = database.OpenUser(id, false);
 
                 // Credentials can be opened within the entered password and the public salt
-                IUserCredentials creds = UserCredentials.Open(password, user.Salt);
+                IUserCredentials creds = client.CryptographyProvider.OpenUserCredentials(password, user.Salt);
 
                 return OpenUser(user, creds);
             }
@@ -61,7 +61,7 @@ namespace MKW.Core.Client
             {
                 try
                 {
-                    IUserCredentials creds = UserCredentials.Open(password, user.Salt);
+                    IUserCredentials creds = client.CryptographyProvider.OpenUserCredentials(password, user.Salt);
 
                     return OpenUser(client.OpenDatabaseUser(user.Id, false), creds);
                 }
@@ -78,8 +78,8 @@ namespace MKW.Core.Client
         {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).
-            using ISymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetSecretKey().Span,
-                                                                            creds.ExportSalt().Span);
+            using ISymmetricTransformer decoder = client.CryptographyProvider.OpenSymmetricTransformer(
+                creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
             // Let's try'N decode the private key. We could potentially fail here. So
             // some validation may be required.

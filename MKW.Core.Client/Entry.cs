@@ -41,9 +41,9 @@ namespace MKW.Core.Client
             return null;
         }
 
-        internal static void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
+        internal void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
         {
-            using ISymmetricTransformer payloadEncoder = SymmetricTransformer.Create();
+            using ISymmetricTransformer payloadEncoder = client.CryptographyProvider.CreateSymmetricTransformer();
 
             Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
 
@@ -51,7 +51,7 @@ namespace MKW.Core.Client
 
             foreach (UserInfo user in users)
             {
-                using IAsymmetricPublicTransformer keyEncoder = AsymmetricTransformer.Open(user.PublicKey.Span);
+                using IAsymmetricPublicTransformer keyEncoder = client.CryptographyProvider.OpenAsymmetricTransformer(user.PublicKey.Span);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 
