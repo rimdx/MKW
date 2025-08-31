@@ -63,12 +63,33 @@ namespace MKW.Core.Common.Tests
             A a = new A();
             B b = new B();
 
+            ClassicAssert.AreEqual(11, a.PropA);
+            ClassicAssert.AreEqual(22, b.PropB);
+
             Complex complex = new Complex(a.Move<IA>(), b.Reference<IB>());
+
+            ClassicAssert.AreEqual(11, complex.PropA);
+            ClassicAssert.AreEqual(22, complex.PropB);
 
             complex.Dispose();
 
             ClassicAssert.AreEqual(1, a.Disposed);
             ClassicAssert.AreEqual(0, b.Disposed);
+
+            ClassicAssert.AreEqual(11, complex.PropA); // todo: disposed exception
+            ClassicAssert.AreEqual(22, complex.PropB); // todo: disposed exception
+
+            ClassicAssert.AreEqual(11, a.PropA); // todo: exception
+            ClassicAssert.AreEqual(22, b.PropB); // we are fine since it was passed as a reference
+
+            a.Dispose();
+            b.Dispose();
+
+            ClassicAssert.AreEqual(1, a.Disposed);
+            ClassicAssert.AreEqual(1, b.Disposed);
+
+            ClassicAssert.AreEqual(11, a.PropA); // todo: exception
+            ClassicAssert.AreEqual(22, b.PropB); // todo: exception
         }
     }
 }
