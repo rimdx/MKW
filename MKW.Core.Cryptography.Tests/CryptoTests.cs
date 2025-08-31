@@ -23,5 +23,66 @@ namespace MKW.Tests
             ClassicAssert.IsFalse(transformer.Verify(data.Span, RandomNumberGenerator.GetBytes(sign1.Length)));
             ClassicAssert.IsFalse(transformer.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
         }
+
+        [Test]
+        public void UserCredentialsTests()
+        {
+            ICryptographyProvider crypto = new CryptographyProvider();
+
+            IUserCredentials pass1 = crypto.CreateUserCredentials("pass11");
+            IUserCredentials pass2 = crypto.OpenUserCredentials("pass11", pass1.ExportSalt());
+
+            CollectionAssert.AreEqual(pass1.GetSecretKey().ToArray(), pass2.GetSecretKey().ToArray());
+        }
+
+        [Test]
+        public void SymmetricTransformerTests()
+        {
+            ICryptographyProvider crypto = new CryptographyProvider();
+
+            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer();
+
+            byte[] data = [1, 2, 3];
+            Memory<byte> encrypted = key1.Encrypt(data);
+
+            ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(key1.ExportKey().Span, key1.ExportIV().Span);
+
+            CollectionAssert.AreEqual(data, key1.Decrypt(encrypted.Span).ToArray());
+            CollectionAssert.AreEqual(data, key2.Decrypt(encrypted.Span).ToArray());
+        }
+
+        [Test]
+        public void AsymmetricTransformerTests()
+        {
+            ICryptographyProvider crypto = new CryptographyProvider();
+
+            ISymmetricTransformer symkey = crypto.CreateSymmetricTransformer();
+            IAsymmetricPrivateTransformer key = crypto.CreateAsymmetricTransformer();
+
+            Memory<byte> data = symkey.ExportKey();
+            Memory<byte> encrypted = key.Encrypt(data.Span);
+
+            IAsymmetricPrivateTransformer decoder = crypto.OpenAsymmetricTransformer(key.ExportPublicKey().Span, key.ExportPrivateKey().Span);
+
+            CollectionAssert.AreEqual(data.ToArray(),
+                                      key.Decrypt(encrypted.Span).ToArray());
+
+            CollectionAssert.AreEqual(data.ToArray(),
+                                      decoder.Decrypt(encrypted.Span).ToArray());
+
+            CollectionAssert.AreNotEqual(key.Encrypt(data.Span).ToArray(),
+                                         key.Encrypt(data.Span).ToArray());
+
+            IAsymmetricPublicTransformer encoder = crypto.OpenAsymmetricTransformer(key.ExportPublicKey().Span);
+
+            Memory<byte> encrypted2 = key.Encrypt(data.Span);
+            CollectionAssert.AreNotEqual(encrypted.ToArray(),
+                                         encrypted2.ToArray());
+
+            CollectionAssert.AreEqual(data.ToArray(),
+                                      decoder.Decrypt(encrypted2.Span).ToArray());
+            CollectionAssert.AreEqual(data.ToArray(),
+                                      key.Decrypt(encrypted2.Span).ToArray());
+        }
     }
 }
