@@ -1,19 +1,20 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
     internal class UserTrustProviderWorkerNode : ITrustWorkerNode, IDisposable
     {
-        private readonly ClientSession client;
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabaseUser user;
         private ITrustVerifier? trustVerifier;
 
         public UserId Id => user.Id;
 
-        public UserTrustProviderWorkerNode(ClientSession client, IDatabaseUser user)
+        public UserTrustProviderWorkerNode(ICryptographyProvider crypto, IDatabaseUser user)
         {
-            this.client = client;
+            this.crypto = crypto;
             this.user = user;
         }
 
@@ -21,7 +22,7 @@ namespace MKW.Core.Client
         {
             if (trustVerifier == null)
             {
-                trustVerifier = new UserTrustVerifier(client, user);
+                trustVerifier = new UserTrustVerifier(crypto,  user);
             }
 
             // todo:

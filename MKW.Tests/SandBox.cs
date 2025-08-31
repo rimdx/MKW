@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 using System.Diagnostics;
@@ -11,6 +12,8 @@ namespace MKW.Tests
     {
         public string DatabasePath { get; }
         public string AdminSecret => "adminsecret123";
+
+        public ICryptographyProvider Crypto = new CryptographyProvider();
 
         public SandBox(bool init = true)
         {

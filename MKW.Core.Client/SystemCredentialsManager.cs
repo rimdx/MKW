@@ -4,20 +4,20 @@ namespace MKW.Core.Client
 {
     public class SystemCredentialsManager
     {
-        private readonly ClientSession client;
+        private readonly ICryptographyProvider crypto;
 
-        public SystemCredentialsManager(ClientSession client)
+        public SystemCredentialsManager(ICryptographyProvider crypto)
         {
-            this.client = client;
+            this.crypto = crypto;
         }
 
         public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            using IAsymmetricPrivateTransformer userKey = client.CryptographyProvider.CreateAsymmetricTransformer();
+            using IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer();
 
             // Symmetric encoder for secret section.
-            using ISymmetricTransformer encoder = client.CryptographyProvider.OpenSymmetricTransformer(
+            using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(
                 userCredentials.GetSecretKey().Span, userCredentials.ExportSalt().Span);
 
             Memory<byte> privateKeyBytes = userKey.ExportPrivateKey();

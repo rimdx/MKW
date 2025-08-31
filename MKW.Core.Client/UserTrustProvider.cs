@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -8,21 +9,25 @@ namespace MKW.Core.Client
         public UserId UserId => me.Id;
 
         protected readonly ClientSession client;
+        protected readonly ICryptographyProvider crypto;
         protected readonly IDatabaseUser me;
         protected readonly ITrustVerifier trustVerifier;
 
-        public UserTrustProvider(ClientSession client, IDatabaseUser me)
+        public UserTrustProvider(ClientSession client,
+                                 ICryptographyProvider crypto,
+                                 IDatabaseUser me)
         {
             this.client = client;
+            this.crypto = crypto;
             this.me = me;
-            trustVerifier = new UserTrustVerifier(client, me);
+            trustVerifier = new UserTrustVerifier(crypto, me);
         }
 
         private IEnumerable<ITrustWorkerNode> EnumerateWorkerNodes()
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
-                yield return new UserTrustProviderWorkerNode(client, user);
+                yield return new UserTrustProviderWorkerNode(crypto, user);
             }
         }
 

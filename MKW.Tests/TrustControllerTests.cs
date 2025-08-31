@@ -15,7 +15,7 @@ namespace MKW.Tests
             using UserSession user = sbox.CreateUser(client, "123", out UserInfo userInfo, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
-            using UserTrustController trustController = new UserTrustController(client, user);
+            using UserTrustController trustController = new UserTrustController(client, sbox.Crypto, user);
 
             UserInfo adminInfo = client.GetAdminInfo();
 
@@ -57,10 +57,10 @@ namespace MKW.Tests
             UserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
-            using UserTrustController trustController1 = new UserTrustController(client, user1);
-            using UserTrustController trustController2 = new UserTrustController(client, user2);
-            using UserTrustController trustController3 = new UserTrustController(client, user3);
-            using UserTrustController trustController4 = new UserTrustController(client, user4);
+            using UserTrustController trustController1 = new UserTrustController(client, sbox.Crypto, user1);
+            using UserTrustController trustController2 = new UserTrustController(client, sbox.Crypto, user2);
+            using UserTrustController trustController3 = new UserTrustController(client, sbox.Crypto, user3);
+            using UserTrustController trustController4 = new UserTrustController(client, sbox.Crypto, user4);
 
             trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
             trustController1.UpdateTrust(user3Info.Id, Trust.ExplicitTrust);
@@ -119,10 +119,10 @@ namespace MKW.Tests
             UserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
-            using UserTrustController trustController1 = new UserTrustController(client, user1);
-            using UserTrustController trustController2 = new UserTrustController(client, user2);
-            using UserTrustController trustController3 = new UserTrustController(client, user3);
-            using UserTrustController trustController4 = new UserTrustController(client, user4);
+            using UserTrustController trustController1 = new UserTrustController(client, sbox.Crypto, user1);
+            using UserTrustController trustController2 = new UserTrustController(client, sbox.Crypto, user2);
+            using UserTrustController trustController3 = new UserTrustController(client, sbox.Crypto, user3);
+            using UserTrustController trustController4 = new UserTrustController(client, sbox.Crypto, user4);
 
             trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
             trustController1.UpdateTrust(user3Info.Id, Trust.ExplicitTrust);
@@ -163,8 +163,8 @@ namespace MKW.Tests
             UserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
             using AdminSession admin = sbox.OpenAdmin(client);
 
-            using UserTrustController trustController1 = new UserTrustController(client, user1);
-            using UserTrustController trustController2 = new UserTrustController(client, user2);
+            using UserTrustController trustController1 = new UserTrustController(client, sbox.Crypto, user1);
+            using UserTrustController trustController2 = new UserTrustController(client, sbox.Crypto, user2);
 
             trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
             trustController2.UpdateTrust(user1Info.Id, Trust.ExplicitTrust);
