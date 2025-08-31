@@ -26,7 +26,7 @@
             return AsymmetricTransformer.Open(publicKey);
         }
 
-        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
+        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
         {
             return AsymmetricTransformer.Open(publicKey, privateKey);
         }
