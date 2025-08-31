@@ -73,6 +73,7 @@
         {
             if (state == ResourceState.Original || state == ResourceState.ReferenceOwned)
             {
+                state = ResourceState.Disposed;
                 Value.Dispose(true);
             }
         }
