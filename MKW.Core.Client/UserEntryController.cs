@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -6,14 +7,17 @@ namespace MKW.Core.Client
     public class UserEntryController : IEntryController, IDisposable
     {
         private readonly ClientSession client;
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly UserSession user;
 
         public UserEntryController(ClientSession client /* reference */,
+                                   ICryptographyProvider crypto,
                                    IDatabase database /* reference */,
                                    UserSession user /* reference */)
         {
             this.client = client;
+            this.crypto = crypto;
             this.database = database;
             this.user = user;
         }
@@ -21,14 +25,14 @@ namespace MKW.Core.Client
         public IEntrySession OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = database.OpenEntry(id, false);
-            return new UserEntry(client, user, dbEntry);
+            return new UserEntry(client, crypto, user, dbEntry);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = database.CreateEntry(id);
             dbEntry.Save();
-            return new UserEntry(client, user, dbEntry);
+            return new UserEntry(client, crypto, user, dbEntry);
         }
 
         public IEntrySession CreateEntry() => CreateEntry(EntryId.Create());
@@ -84,7 +88,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return new UserEntry(client, user, entry);
+                yield return new UserEntry(client, crypto, user, entry);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -6,31 +7,34 @@ namespace MKW.Core.Client
     public class EntryController : IEntryController, IDisposable
     {
         private readonly ClientSession client;
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabaseUser user;
 
         public EntryController(ClientSession client /* reference */,
+                               ICryptographyProvider crypto,
                                IDatabaseUser user)
         {
             this.client = client;
+            this.crypto = crypto;
             this.user = user;
         }
 
         private ITrustProvider OpenTrustProvider()
         {
-            return new UserTrustProvider(client, user);
+            return new UserTrustProvider(client, crypto, user);
         }
 
         public IEntrySession OpenEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
-            return new Entry(client, OpenTrustProvider() /* move */, dbEntry);
+            return new Entry(client, crypto, OpenTrustProvider() /* move */, dbEntry);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
             dbEntry.Save();
-            return new Entry(client, OpenTrustProvider() /* move */, dbEntry);
+            return new Entry(client, crypto, OpenTrustProvider() /* move */, dbEntry);
         }
 
         public IEntrySession CreateEntry() => CreateEntry(EntryId.Create());
@@ -86,7 +90,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
             {
-                yield return new Entry(client, OpenTrustProvider(), entry);
+                yield return new Entry(client, crypto, OpenTrustProvider(), entry);
             }
         }
 

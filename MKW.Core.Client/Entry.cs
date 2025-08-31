@@ -7,15 +7,21 @@ namespace MKW.Core.Client
     public class Entry : IEntrySession, IDisposable
     {
         protected readonly ClientSession client;
+        protected readonly ICryptographyProvider crypto;
+
         // TODO: dispose
         protected readonly ITrustProvider trustProvider;
         protected readonly IDatabaseEntry entry;
 
         public EntryId Id => entry.Id;
 
-        public Entry(ClientSession client, ITrustProvider trustProvider, IDatabaseEntry entry)
+        public Entry(ClientSession client,
+                     ICryptographyProvider crypto,
+                     ITrustProvider trustProvider,
+                     IDatabaseEntry entry)
         {
             this.client = client;
+            this.crypto = crypto;
             this.trustProvider = trustProvider;
             this.entry = entry;
         }
@@ -43,7 +49,7 @@ namespace MKW.Core.Client
 
         internal void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
         {
-            using ISymmetricTransformer payloadEncoder = client.CryptographyProvider.CreateSymmetricTransformer();
+            using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
 
             Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
 
@@ -51,7 +57,7 @@ namespace MKW.Core.Client
 
             foreach (UserInfo user in users)
             {
-                using IAsymmetricPublicTransformer keyEncoder = client.CryptographyProvider.OpenAsymmetricTransformer(user.PublicKey.Span);
+                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(user.PublicKey.Span);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 

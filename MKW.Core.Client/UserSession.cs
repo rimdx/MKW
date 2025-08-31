@@ -12,6 +12,7 @@ namespace MKW.Core.Client
         , IDisposable
     {
         protected readonly ClientSession client;
+        protected readonly ICryptographyProvider crypto;
         protected readonly IDatabase database;
         protected readonly IEntryController entryController;
 
@@ -22,17 +23,19 @@ namespace MKW.Core.Client
         public UserTrustController TrustController { get; }
 
         public UserSession(ClientSession client /* reference */,
+                           ICryptographyProvider crypto,
                            IDatabase database /* reference */,
                            IDatabaseUser user /* reference */,
                            ReadOnlySpan<byte> privateKey)
         {
             this.client = client;
+            this.crypto = crypto;
             this.database = database;
             DatabaseUser = user;
-            entryController = new UserEntryController(client, database, this);
 
-            Transformer = client.CryptographyProvider.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
-            TrustController = new UserTrustController(client, this);
+            entryController = new UserEntryController(client, crypto, database, this);
+            Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
+            TrustController = new UserTrustController(client, crypto, this);
         }
 
         // IEntryController

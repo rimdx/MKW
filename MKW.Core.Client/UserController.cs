@@ -8,11 +8,15 @@ namespace MKW.Core.Client
     public class UserController : IUserController, IDisposable
     {
         private readonly ClientSession client;
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
 
-        public UserController(ClientSession client, IDatabase database)
+        public UserController(ClientSession client,
+                              ICryptographyProvider crypto,
+                              IDatabase database)
         {
             this.client = client;
+            this.crypto = crypto;
             this.database = database;
         }
 
@@ -21,9 +25,9 @@ namespace MKW.Core.Client
             // TODO: sign admin
             IDatabaseUser admin = database.OpenAdmin(true);
 
-            SystemCredentialsManager credManager = new SystemCredentialsManager(client);
+            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-            IUserCredentials userCreds = client.CryptographyProvider.CreateUserCredentials(password);
+            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser user = database.CreateUser(UserId.Create());
@@ -49,7 +53,7 @@ namespace MKW.Core.Client
                 IDatabaseUser user = database.OpenUser(id, false);
 
                 // Credentials can be opened within the entered password and the public salt
-                IUserCredentials creds = client.CryptographyProvider.OpenUserCredentials(password, user.Salt);
+                IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
                 return OpenUser(user, creds);
             }
@@ -61,7 +65,7 @@ namespace MKW.Core.Client
             {
                 try
                 {
-                    IUserCredentials creds = client.CryptographyProvider.OpenUserCredentials(password, user.Salt);
+                    IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
                     return OpenUser(client.OpenDatabaseUser(user.Id, false), creds);
                 }
@@ -78,14 +82,14 @@ namespace MKW.Core.Client
         {
             // Private data of the user is encrypted symmetrically using our creds (decoder
             // also needs some data stored in the public section of the object).
-            using ISymmetricTransformer decoder = client.CryptographyProvider.OpenSymmetricTransformer(
+            using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
                 creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
             // Let's try'N decode the private key. We could potentially fail here. So
             // some validation may be required.
             Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.Span);
 
-            return new UserSession(client, database, user, privateKeyBytes.Span);
+            return new UserSession(client, crypto, database, user, privateKeyBytes.Span);
         }
 
         public IEnumerable<UserInfo> EnumerateUsers()

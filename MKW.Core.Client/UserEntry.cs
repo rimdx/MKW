@@ -7,8 +7,11 @@ namespace MKW.Core.Client
     {
         protected readonly UserSession user;
 
-        public UserEntry(ClientSession client, UserSession user, IDatabaseEntry entry)
-            : base(client, user.TrustController, entry)
+        public UserEntry(ClientSession client,
+                         ICryptographyProvider crypto,
+                         UserSession user,
+                         IDatabaseEntry entry)
+            : base(client, crypto, user.TrustController, entry)
         {
             this.user = user;
         }
@@ -23,7 +26,7 @@ namespace MKW.Core.Client
 
             Memory<byte> decryptedKey = user.Transformer.Decrypt(encodedKey.Span);
 
-            using ISymmetricTransformer dataDecoder = client.CryptographyProvider.OpenSymmetricTransformer(
+            using ISymmetricTransformer dataDecoder = crypto.OpenSymmetricTransformer(
                 decryptedKey.Span, entry.Salt.Span);
 
             Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);

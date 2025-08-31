@@ -7,19 +7,23 @@ namespace MKW.Core.Client
     public class AdminController : IAdminController, IDisposable
     {
         private readonly ClientSession client;
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
 
-        public AdminController(ClientSession client, IDatabase database)
+        public AdminController(ClientSession client,
+                               ICryptographyProvider crypto,
+                               IDatabase database)
         {
             this.client = client;
+            this.crypto = crypto;
             this.database = database;
         }
 
         public UserInfo PromoteAdmin(string password)
         {
-            SystemCredentialsManager credManager = new SystemCredentialsManager(client);
+            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-            IUserCredentials userCreds = client.CryptographyProvider.CreateUserCredentials(password);
+            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser admin = database.CreateAdmin();
@@ -37,14 +41,14 @@ namespace MKW.Core.Client
         {
             IDatabaseUser admin = database.OpenAdmin(false);
 
-            IUserCredentials creds = client.CryptographyProvider.OpenUserCredentials(password, admin.Salt);
+            IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
 
-            using ISymmetricTransformer decoder = client.CryptographyProvider.OpenSymmetricTransformer(
+            using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
                 creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
             Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
 
-            return new AdminSession(client, database, admin, privateKeyBytes.Span);
+            return new AdminSession(client, crypto, database, admin, privateKeyBytes.Span);
         }
 
         public UserInfo GetAdminInfo()

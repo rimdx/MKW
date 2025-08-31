@@ -19,8 +19,8 @@ namespace MKW.Core.Client
             Database = db;
             CryptographyProvider = new CryptographyProvider();
             this.ownsDb = ownsDb;
-            userController = new UserController(this, Database);
-            adminController = new AdminController(this, Database);
+            userController = new UserController(this, CryptographyProvider, Database);
+            adminController = new AdminController(this, CryptographyProvider, Database);
         }
 
         public static ClientSession Open(IDatabase db /* reference */)
@@ -78,7 +78,7 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
             IDatabaseUser admin = Database.OpenAdmin(true);
-            using UserTrustProvider trustProvider = new UserTrustProvider(this, admin);
+            using UserTrustProvider trustProvider = new UserTrustProvider(this, CryptographyProvider, admin);
 
             IEnumerable<UserInfo> trust = trustProvider.EnumerateImplicitlyTrustedUsers();
 
@@ -92,7 +92,7 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
         {
             IDatabaseUser user = OpenDatabaseUser(userId, true);
-            using UserTrustProvider trustProvider = new UserTrustProvider(this, user);
+            using UserTrustProvider trustProvider = new UserTrustProvider(this, CryptographyProvider, user);
 
             foreach (UserInfo trust in trustProvider.EnumerateImplicitlyTrustedUsers())
             {
@@ -156,7 +156,7 @@ namespace MKW.Core.Client
 
         private EntryController OpenEntryController()
         {
-            return new EntryController(this, Database.OpenAdmin(true));
+            return new EntryController(this, CryptographyProvider, Database.OpenAdmin(true));
         }
 
         public IEntrySession OpenEntry(EntryId id)
