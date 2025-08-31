@@ -6,12 +6,17 @@
         {
         }
 
-        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer()
+        public ISymmetricTransformer CreateSymmetricTransformer()
         {
-            throw new NotImplementedException();
+            return SymmetricTransformer.Create();
         }
 
-        public ISymmetricTransformer CreateSymmetricTransformer()
+        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
+        {
+            return SymmetricTransformer.Open(key, iv);
+        }
+
+        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer()
         {
             throw new NotImplementedException();
         }
@@ -27,11 +32,6 @@
         }
 
         public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
             throw new NotImplementedException();
         }
