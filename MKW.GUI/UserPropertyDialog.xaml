@@ -28,8 +28,10 @@
               Padding="9"
               Margin="0,0,0,6">
         <StackPanel Orientation="Vertical">
-          <TextBlock Margin="0,0,0,3" Text="Warning" FontWeight="SemiBold" />
-          <TextBlock Margin="0,0,0,3" Text="This user is not verified. " />
+          <StackPanel Orientation="Horizontal"  Margin="0,0,0,3">
+            <images:StatusWarning HorizontalAlignment="Left" Width="22" />
+            <TextBlock Text="This user is not verified. " />
+          </StackPanel>
 
           <TextBlock Text="Only the database administrator can verify other users."
                      Visibility="{Binding IsUser, Converter={StaticResource BooleanToVisibilityConverter}}" />
