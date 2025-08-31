@@ -47,7 +47,32 @@
       </TextBox>
 
       <local:PasswordRepeatInput Password="{Binding Password, Mode=OneWayToSource}"
-                                 IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}" />
+                                 IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}">
+        <local:PasswordRepeatInput.Template>
+          <ControlTemplate TargetType="{x:Type local:PasswordRepeatInput}">
+            <StackPanel Orientation="Vertical">
+              <Label Padding="0"
+                   FontWeight="Bold"
+                   Target="{Binding ElementName=PART_PasswordBox}"
+                   Content="_Password:" />
+
+              <PasswordBox x:Name="PART_PasswordBox"
+                         Padding="4"
+                         FontFamily="Consolas"
+                         Margin="0,0,0,8" />
+
+              <Label Padding="0"
+                     FontWeight="Bold"
+                     Target="{Binding ElementName=PART_PasswordRepeatBox}"
+                     Content="_Repeat Password:" />
+
+              <PasswordBox x:Name="PART_PasswordRepeatBox"
+                         Padding="4"
+                         FontFamily="Consolas"/>
+            </StackPanel>
+          </ControlTemplate>
+        </local:PasswordRepeatInput.Template>
+      </local:PasswordRepeatInput>
     </StackPanel>
 
     <Grid Grid.Row="4">
