@@ -6,5 +6,6 @@
         OriginalMovedOut,
         Reference,
         ReferenceOwned,
+        Disposed,
     }
 }
