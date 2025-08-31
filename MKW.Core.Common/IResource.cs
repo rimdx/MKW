@@ -1,13 +1,11 @@
 ﻿namespace MKW.Core.Common
 {
-    public interface IResource<T>
-        : IDisposable
-        where T : class, IDisposable
+    public interface IResource : IDisposable
     {
-        public T Value { get; }
+        public IResource Value { get; }
 
-        IResource<T> Reference();
-        IResource<T> Move();
+        IResource Reference();
+        IResource Move();
 
         void Dispose(bool disposing);
     }

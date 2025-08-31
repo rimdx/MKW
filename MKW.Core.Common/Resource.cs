@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Common
 {
-    public class Resource<T> : IResource<T>, IDisposable where T : class, IResource<T>
+    public class Resource<T> : IResource, IDisposable where T : IResource
     {
         private ResourceState state;
 
@@ -16,6 +16,7 @@
         }
 
         private readonly T? value;
+
         public T Value
         {
             get
@@ -31,20 +32,37 @@
             }
         }
 
+        IResource IResource.Value => Value;
+
         public static implicit operator T(Resource<T> resource)
         {
-            return resource.Value;
+            return resource.As<T>();
         }
 
-        public IResource<T> Reference()
+        public C As<C>() where C : T, IResource
         {
-            return new Resource<T>(Value, ResourceState.Reference);
+            return (C)Value;
         }
 
-        public IResource<T> Move()
+        IResource IResource.Reference()
+        {
+            return Reference<T>();
+        }
+
+        public Resource<C> Reference<C>() where C : T, IResource
+        {
+            return new Resource<C>(As<C>(), ResourceState.Reference);
+        }
+
+        IResource IResource.Move()
+        {
+            return Move<T>();
+        }
+
+        public Resource<C> Move<C>() where C : T
         {
             state = ResourceState.OriginalMovedOut;
-            return new Resource<T>(Value, ResourceState.ReferenceOwned);
+            return new Resource<C>(As<C>(), ResourceState.ReferenceOwned);
         }
 
         public virtual void Dispose(bool disposing)
@@ -55,14 +73,7 @@
         {
             if (state == ResourceState.Original || state == ResourceState.ReferenceOwned)
             {
-                if (value != null)
-                {
-                    value.Dispose(true);
-                }
-                else
-                {
-                    Dispose(true);
-                }
+                Value.Dispose(true);
             }
         }
     }
