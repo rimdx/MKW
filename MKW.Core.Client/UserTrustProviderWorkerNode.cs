@@ -7,7 +7,7 @@ namespace MKW.Core.Client
     {
         private readonly ClientSession client;
         private readonly IDatabaseUser user;
-        private UserTrustProvider? trustProvider;
+        private ITrustVerifier? trustVerifier;
 
         public UserId Id => user.Id;
 
@@ -19,15 +19,15 @@ namespace MKW.Core.Client
 
         public Trust GetTrust(ITrustWorkerNode other)
         {
-            if (trustProvider == null)
+            if (trustVerifier == null)
             {
-                trustProvider = new UserTrustProvider(client, user);
+                trustVerifier = new UserTrustVerifier(user);
             }
 
             // todo:
             UserTrustProviderWorkerNode workerNode = (UserTrustProviderWorkerNode)other;
 
-            return trustProvider.GetExplicitTrust(workerNode.user.PublicKey.Span);
+            return trustVerifier.GetTrust(workerNode.user.PublicKey.Span);
         }
 
         public UserInfo GetResult(Trust trust)
@@ -37,7 +37,7 @@ namespace MKW.Core.Client
 
         public void Dispose()
         {
-            trustProvider?.Dispose();
+            trustVerifier?.Dispose();
         }
     }
 }
