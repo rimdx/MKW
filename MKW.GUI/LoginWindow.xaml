@@ -12,74 +12,65 @@
         ResizeMode="NoResize"
         Loaded="Window_Loaded">
   <Grid Margin="12">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="12" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="8" />
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Row="0"
-           Content="Enter database credentials:"
-           FontWeight="Bold"
-           Padding="0" />
+    <StackPanel>
+      <Label Content="Enter database credentials:"
+             FontWeight="Bold"
+             Padding="0"
+             Margin="0,0,0,3" />
 
-    <TextBox Grid.Row="1"
-             IsReadOnly="True"
-             Text="{Binding DatabasePath, Mode=OneWay}"
-             d:Text="C:\path\to\database.mkw"
-             Margin="8,0,0,0">
-      <TextBox.Style>
-        <Style TargetType="TextBox">
-          <Setter Property="IsReadOnly" Value="True" />
-          <Setter Property="BorderThickness" Value="0" />
-          <Setter Property="TextWrapping" Value="Wrap" />
-          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-        </Style>
-      </TextBox.Style>
-    </TextBox>
+      <TextBox IsReadOnly="True"
+               Text="{Binding DatabasePath, Mode=OneWay}"
+               d:Text="C:\path\to\database.mkw"
+               Margin="8,0,0,6">
+        <TextBox.Style>
+          <Style TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+          </Style>
+        </TextBox.Style>
+      </TextBox>
 
-    <Label Grid.Row="3"
-           Padding="0"
-           FontWeight="Bold"
-           Target="{Binding ElementName=UserSelector}"
-           Content="_User:" />
+      <Label Padding="0"
+             FontWeight="Bold"
+             Target="{Binding ElementName=UserSelector}"
+             Content="_User:"
+             Margin="0,0,0,3" />
 
-    <ComboBox Grid.Row="4"
-              ItemsSource="{Binding Users}"
-              SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-              x:Name="UserSelector"
-              IsEditable="False"
-              IsReadOnly="True">
-      <ComboBox.ItemTemplate>
-        <DataTemplate DataType="local:DatabaseUserModel">
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="16" />
-              <ColumnDefinition Width="8" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+      <ComboBox ItemsSource="{Binding Users}"
+                SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                x:Name="UserSelector"
+                IsEditable="False"
+                IsReadOnly="True"
+                Margin="0,0,0,6">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="local:DatabaseUserModel">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
 
-            <ContentControl Content="{Binding Icon}" />
-            <TextBlock Grid.Column="2" Text="{Binding Name}" />
-          </Grid>
-        </DataTemplate>
-      </ComboBox.ItemTemplate>
-    </ComboBox>
+              <ContentControl Content="{Binding Icon}" />
+              <TextBlock Grid.Column="2" Text="{Binding Name}" />
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
 
-    <local:PasswordInput x:Name="PasswordInput"
-                         Grid.Row="6"
-                         Password="{Binding Password, Mode=OneWayToSource}" />
+      <local:PasswordInput x:Name="PasswordInput"
+                           Password="{Binding Password, Mode=OneWayToSource}" />
+    </StackPanel>
 
-    <Grid Grid.Row="8">
+    <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
