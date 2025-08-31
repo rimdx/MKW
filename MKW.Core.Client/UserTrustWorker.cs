@@ -17,11 +17,9 @@ namespace MKW.Core.Client
         private readonly Queue<Node> queue;
         private readonly List<Node> nodes;
         private readonly List<UserInfo> result;
-        private readonly ClientSession client;
 
-        public UserTrustWorker(ClientSession client, UserId start, IEnumerable<ITrustWorkerNode> users)
+        public UserTrustWorker(UserId start, IEnumerable<ITrustWorkerNode> users)
         {
-            this.client = client;
             queue = new Queue<Node>();
             nodes = [];
             result = [];

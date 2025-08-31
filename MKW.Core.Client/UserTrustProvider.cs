@@ -35,7 +35,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            using UserTrustWorker worker = new UserTrustWorker(client, UserId, EnumerateWorkerNodes());
+            using UserTrustWorker worker = new UserTrustWorker(UserId, EnumerateWorkerNodes());
 
             while (worker.Iterate())
                 continue;
