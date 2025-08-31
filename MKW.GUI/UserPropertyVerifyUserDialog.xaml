@@ -48,13 +48,13 @@
       <Button Content="OK"
               Width="70"
               Click="OK_Click"
-              IsDefault="True"
               Margin="0,0,6,0" />
 
       <Button Content="Cancel"
               Width="70"
               Click="Cancel_Click"
-              IsCancel="True" />
+              IsCancel="True"
+              IsDefault="True" />
     </StackPanel>
   </Grid>
 </Window>
