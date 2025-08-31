@@ -25,9 +25,17 @@ namespace MKW.Core.Client
             this.publicKey = publicKey;
         }
 
+        private IEnumerable<ITrustWorkerNode> EnumerateWorkerNodes()
+        {
+            foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
+            {
+                yield return new UserTrustProviderWorkerNode(client, user);
+            }
+        }
+
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            using UserTrustWorker worker = new UserTrustWorker(client, this, client.EnumerateDatabaseUsers());
+            using UserTrustWorker worker = new UserTrustWorker(client, UserId, EnumerateWorkerNodes());
 
             while (worker.Iterate())
                 continue;
