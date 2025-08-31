@@ -15,7 +15,7 @@ namespace MKW.Core.Client
             public bool Visited = false;
         }
 
-        private readonly Queue<Node> stack;
+        private readonly Queue<Node> queue;
         private readonly List<Node> nodes;
         private readonly List<UserInfo> result;
         private readonly ClientSession client;
@@ -23,7 +23,7 @@ namespace MKW.Core.Client
         public UserTrustWorker(ClientSession client, UserTrustProvider me, IEnumerable<IDatabaseUser> users)
         {
             this.client = client;
-            stack = new Queue<Node>();
+            queue = new Queue<Node>();
             nodes = [];
             result = [];
 
@@ -40,7 +40,7 @@ namespace MKW.Core.Client
                     };
 
                     nodes.Add(node);
-                    stack.Enqueue(node);
+                    queue.Enqueue(node);
                 }
                 else
                 {
@@ -56,12 +56,12 @@ namespace MKW.Core.Client
 
         public bool Iterate()
         {
-            if (stack.Count == 0)
+            if (queue.Count == 0)
             {
                 return false;
             }
 
-            Node node = stack.Dequeue();
+            Node node = queue.Dequeue();
 
             VisitNode(node);
             VisitChildren(node);
@@ -106,7 +106,7 @@ namespace MKW.Core.Client
                     };
                     childNode.Visited = true;
 
-                    stack.Enqueue(childNode);
+                    queue.Enqueue(childNode);
                 }
             }
         }
