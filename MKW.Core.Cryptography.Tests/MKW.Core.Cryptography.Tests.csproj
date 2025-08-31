@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
+    <ProjectReference Include="..\MKW.Core.Cryptography.BouncyCastle\MKW.Core.Cryptography.BouncyCastle.csproj" />
     <ProjectReference Include="..\MKW.Core.Cryptography.System\MKW.Core.Cryptography.System.csproj" />
     <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
   </ItemGroup>
