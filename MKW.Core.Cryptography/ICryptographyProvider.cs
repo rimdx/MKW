@@ -9,7 +9,7 @@
         ISymmetricTransformer CreateSymmetricTransformer();
         ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv);
 
-        UserCredentials CreateUserCredentials(string password);
-        UserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt);
+        IUserCredentials CreateUserCredentials(string password);
+        IUserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt);
     }
 }
