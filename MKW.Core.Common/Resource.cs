@@ -26,9 +26,9 @@
             return resource.As<T>();
         }
 
-        public C As<C>() where C : T, IResource
+        public C As<C>() where C : IResource
         {
-            return (C)Value;
+            return (C)(object)Value;
         }
 
         IResource IResource.Reference()
@@ -36,7 +36,7 @@
             return Reference<T>();
         }
 
-        public Resource<C> Reference<C>() where C : T, IResource
+        public Resource<C> Reference<C>() where C : IResource
         {
             return new Resource<C>(As<C>(), ResourceState.Reference);
         }
@@ -46,7 +46,7 @@
             return Move<T>();
         }
 
-        public Resource<C> Move<C>() where C : T
+        public Resource<C> Move<C>() where C : IResource
         {
             state = ResourceState.OriginalMovedOut;
             return new Resource<C>(As<C>(), ResourceState.ReferenceOwned);
