@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
+    <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
+  </ItemGroup>
+
+</Project>
