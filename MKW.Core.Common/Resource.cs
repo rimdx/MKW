@@ -16,10 +16,10 @@
             this.state = state;
         }
 
-        private readonly T _value;
+        private readonly object _value;
 
-        public T Value => _value;
-        IResource IResource.Value => _value;
+        public T Value => (T)_value;
+        IResource IResource.Value => (IResource)_value;
 
         public static implicit operator T(Resource<T> resource)
         {
