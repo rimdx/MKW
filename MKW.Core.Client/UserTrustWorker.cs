@@ -7,11 +7,10 @@ namespace MKW.Core.Client
     {
         private record class Node
         {
-            public required IDatabaseUser DatabaseUser;
+            public required ITrustWorkerNode Proxy;
             public required int Depth;
             public required Trust Trust;
 
-            public UserTrustProvider? TrustProvider;
             public bool Visited = false;
         }
 
@@ -20,23 +19,22 @@ namespace MKW.Core.Client
         private readonly List<UserInfo> result;
         private readonly ClientSession client;
 
-        public UserTrustWorker(ClientSession client, UserTrustProvider me, IEnumerable<IDatabaseUser> users)
+        public UserTrustWorker(ClientSession client, UserId start, IEnumerable<ITrustWorkerNode> users)
         {
             this.client = client;
             queue = new Queue<Node>();
             nodes = [];
             result = [];
 
-            foreach (IDatabaseUser user in users)
+            foreach (ITrustWorkerNode user in users)
             {
-                if (me.UserId == user.Id)
+                if (start == user.Id)
                 {
                     Node node = new Node
                     {
-                        DatabaseUser = user,
+                        Proxy = user,
                         Depth = 0,
                         Trust = Trust.SelfTrust,
-                        TrustProvider = me,
                     };
 
                     nodes.Add(node);
@@ -46,7 +44,7 @@ namespace MKW.Core.Client
                 {
                     nodes.Add(new Node
                     {
-                        DatabaseUser = user,
+                        Proxy = user,
                         Trust = Trust.Unknown,
                         Depth = -1
                     });
@@ -73,27 +71,14 @@ namespace MKW.Core.Client
         {
             node.Visited = true;
 
-            result.Add(UserInfo.FromDatabaseUser(node.DatabaseUser, node.Trust));
-        }
-
-        private Trust GetTrust(Node me, Node node)
-        {
-            if (me.TrustProvider == null)
-            {
-                using UserTrustProvider trustProvider = new UserTrustProvider(client, me.DatabaseUser);
-                return trustProvider.GetExplicitTrust(node.DatabaseUser.PublicKey.Span);
-            }
-            else
-            {
-                return me.TrustProvider.GetExplicitTrust(node.DatabaseUser.PublicKey.Span);
-            }
+            result.Add(node.Proxy.GetResult(node.Trust));
         }
 
         private void VisitChildren(Node node)
         {
             foreach (Node childNode in nodes)
             {
-                Trust trust = GetTrust(node, childNode);
+                Trust trust = node.Proxy.GetTrust(childNode.Proxy);
 
                 if (trust == Trust.ExplicitTrust && !childNode.Visited)
                 {
