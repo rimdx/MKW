@@ -35,6 +35,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 
     <Copyright>Copyright (c) Timofei Zhakov 2025</Copyright>
