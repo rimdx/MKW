@@ -5,12 +5,20 @@ using System.Security.Cryptography;
 
 namespace MKW.Tests
 {
-    public class CryptoTests
+    [TestFixture(typeof(CryptographyProvider))]
+    public class CryptoTests<TProvider> where TProvider : ICryptographyProvider, new()
     {
+        private readonly ICryptographyProvider crypto;
+
+        public CryptoTests()
+        {
+            crypto = new TProvider();
+        }
+
         [Test]
         public void DummySignTest()
         {
-            using IAsymmetricPrivateTransformer transformer = AsymmetricTransformer.Create();
+            using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
 
             Memory<byte> data = EncodingConverter.GetBytes("killmepls");
 
@@ -27,8 +35,6 @@ namespace MKW.Tests
         [Test]
         public void UserCredentialsTests()
         {
-            ICryptographyProvider crypto = new CryptographyProvider();
-
             IUserCredentials pass1 = crypto.CreateUserCredentials("pass11");
             IUserCredentials pass2 = crypto.OpenUserCredentials("pass11", pass1.ExportSalt());
 
@@ -38,8 +44,6 @@ namespace MKW.Tests
         [Test]
         public void SymmetricTransformerTests()
         {
-            ICryptographyProvider crypto = new CryptographyProvider();
-
             ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer();
 
             byte[] data = [1, 2, 3];
@@ -54,8 +58,6 @@ namespace MKW.Tests
         [Test]
         public void AsymmetricTransformerTests()
         {
-            ICryptographyProvider crypto = new CryptographyProvider();
-
             ISymmetricTransformer symkey = crypto.CreateSymmetricTransformer();
             IAsymmetricPrivateTransformer key = crypto.CreateAsymmetricTransformer();
 
