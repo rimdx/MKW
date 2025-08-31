@@ -13,12 +13,12 @@ namespace MKW.Core.Cryptography
             this.salt = salt;
         }
 
-        public static UserCredentials Create(string password)
+        public static IUserCredentials Create(string password)
         {
             return new UserCredentials(password, GenerateSalt());
         }
 
-        public static UserCredentials Open(string password, ReadOnlyMemory<byte> salt)
+        public static IUserCredentials Open(string password, ReadOnlyMemory<byte> salt)
         {
             return new UserCredentials(password, salt);
         }

@@ -19,7 +19,7 @@ namespace MKW.Core.Client
         {
             SystemCredentialsManager credManager = new SystemCredentialsManager();
 
-            UserCredentials userCreds = UserCredentials.Create(password);
+            IUserCredentials userCreds = UserCredentials.Create(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser admin = database.CreateAdmin();
@@ -37,7 +37,7 @@ namespace MKW.Core.Client
         {
             IDatabaseUser admin = database.OpenAdmin(false);
 
-            UserCredentials creds = UserCredentials.Open(password, admin.Salt);
+            IUserCredentials creds = UserCredentials.Open(password, admin.Salt);
 
             using ISymmetricTransformer decoder = SymmetricTransformer.Open(creds.GetSecretKey().Span,
                                                                             creds.ExportSalt().Span);
