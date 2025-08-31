@@ -6,33 +6,20 @@
 
         protected Resource()
         {
+            _value = this;
             state = ResourceState.Original;
         }
 
         private Resource(T value, ResourceState state)
         {
-            this.value = value;
+            _value = value;
             this.state = state;
         }
 
-        private readonly T? value;
+        private readonly T _value;
 
-        public T Value
-        {
-            get
-            {
-                if (value == null)
-                {
-                    return (T)(object)this;
-                }
-                else
-                {
-                    return value;
-                }
-            }
-        }
-
-        IResource IResource.Value => Value;
+        public T Value => _value;
+        IResource IResource.Value => _value;
 
         public static implicit operator T(Resource<T> resource)
         {
