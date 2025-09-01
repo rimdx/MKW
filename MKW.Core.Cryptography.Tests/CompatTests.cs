@@ -38,15 +38,18 @@ namespace MKW.Core.Cryptography.Tests
         [Test]
         public void SymmetricTransformerTests()
         {
-            ISymmetricTransformer encoder = crypto1.CreateSymmetricTransformer();
+            ISymmetricTransformer key1 = crypto1.CreateSymmetricTransformer();
 
             byte[] data = [1, 2, 3];
-            Memory<byte> encrypted = encoder.Encrypt(data);
+            Memory<byte> encrypted = key1.Encrypt(data);
 
-            ISymmetricTransformer decoder = crypto2.OpenSymmetricTransformer(encoder.ExportKey().Span,
-                                                                             encoder.ExportIV().Span);
+            ISymmetricTransformer key2 = crypto2.OpenSymmetricTransformer(key1.ExportKey().Span,
+                                                                          key1.ExportIV().Span);
 
-            CollectionAssert.AreEqual(data, decoder.Decrypt(encrypted.Span).ToArray());
+            CollectionAssert.AreEqual(data, key2.Decrypt(encrypted.Span).ToArray());
+
+            CollectionAssert.AreEqual(key1.Encrypt(data).ToArray(),
+                                      key2.Encrypt(data).ToArray());
         }
 
         [Test]
