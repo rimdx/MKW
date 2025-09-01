@@ -38,14 +38,9 @@ namespace MKW.Core.Cryptography.BouncyCastle
             return new SymmetricTransformer(key, iv);
         }
 
-        private void Init(bool forEncryption)
-        {
-            cipher.Init(forEncryption, parameters);
-        }
-
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
-            Init(false);
+            cipher.Init(false, parameters);
 
             using MemoryStream output = new MemoryStream();
 
@@ -60,7 +55,7 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
-            Init(true);
+            cipher.Init(true, parameters);
 
             using MemoryStream output = new MemoryStream();
 
