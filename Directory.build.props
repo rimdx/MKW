@@ -18,6 +18,10 @@
     <Platform>x64</Platform>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == ''">
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Platform)' == 'x64'">
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
