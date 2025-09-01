@@ -60,11 +60,12 @@ namespace MKW.Core.Cryptography.BouncyCastle
             Init(false);
 
             using MemoryStream output = new MemoryStream();
-            using CipherStream cipherStream = new CipherStream(new StreamDisown(output),
-                                                               null, cipher);
 
-            cipherStream.Write(data);
-            cipherStream.Close();
+            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                null, cipher))
+            {
+                cipherStream.Write(data);
+            }
 
             return output.ToArray();
         }
@@ -74,11 +75,12 @@ namespace MKW.Core.Cryptography.BouncyCastle
             Init(true);
 
             using MemoryStream output = new MemoryStream();
-            using CipherStream cipherStream = new CipherStream(new StreamDisown(output),
-                                                               null, cipher);
 
-            cipherStream.Write(data);
-            cipherStream.Close();
+            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                null, cipher))
+            {
+                cipherStream.Write(data);
+            }
 
             return output.ToArray();
         }
