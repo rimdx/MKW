@@ -1,2 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsNetFramework Condition="'$(TargetFramework)' == 'net472'">true</IsNetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Condition="'$(IsNetFramework)' != ''" Include="System.Memory" Version="4.6.3" />
+  </ItemGroup>
+
 </Project>
