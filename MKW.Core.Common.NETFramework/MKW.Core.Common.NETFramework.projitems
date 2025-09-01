@@ -9,6 +9,10 @@
     <Import_RootNamespace>MKW.Core.Common.NETFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CompilerFeatureRequiredAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IsExternalInit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequiredMemberAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetsRequiredMembersAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamExtensions.cs" />
   </ItemGroup>
 </Project>
