@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 
 namespace MKW.Tests
 {
+    [Parallelizable]
     [TestFixture(typeof(CryptographyProvider))]
     [TestFixture(typeof(BouncyCastleCryptographyProvider))]
     public class CryptoTests<TProvider> where TProvider : ICryptographyProvider, new()
