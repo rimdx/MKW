@@ -11,17 +11,21 @@ namespace MKW.Core.Cryptography.BouncyCastle
 {
     internal class SymmetricTransformer : ISymmetricTransformer, IDisposable
     {
-        private readonly IBufferedCipher cipher;
         private readonly ICipherParameters parameters;
+
+        private readonly AesEngine engine;
+        private readonly Pkcs7Padding padding;
+        private readonly CbcBlockCipher mode;
+        private readonly PaddedBufferedBlockCipher cipher;
 
         private readonly ReadOnlyMemory<byte> key;
         private readonly ReadOnlyMemory<byte> iv;
 
         private SymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
-            AesEngine engine = new AesEngine();
-            Pkcs7Padding padding = new Pkcs7Padding();
-            CbcBlockCipher mode = new CbcBlockCipher(engine);
+            engine = new AesEngine();
+            padding = new Pkcs7Padding();
+            mode = new CbcBlockCipher(engine);
             cipher = new PaddedBufferedBlockCipher(mode, padding);
 
             parameters = new ParametersWithIV(new KeyParameter(key), iv);
@@ -43,13 +47,21 @@ namespace MKW.Core.Cryptography.BouncyCastle
             return new SymmetricTransformer(key, iv);
         }
 
+        private void Init(bool forEncryption)
+        {
+            mode.Reset();
+            cipher.Reset();
+
+            cipher.Init(forEncryption, parameters);
+        }
+
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
+            Init(false);
+
             using MemoryStream output = new MemoryStream();
             using CipherStream cipherStream = new CipherStream(new StreamDisown(output),
                                                                null, cipher);
-
-            cipher.Init(false, parameters);
 
             cipherStream.Write(data);
             cipherStream.Close();
@@ -59,11 +71,11 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
+            Init(true);
+
             using MemoryStream output = new MemoryStream();
             using CipherStream cipherStream = new CipherStream(new StreamDisown(output),
                                                                null, cipher);
-
-            cipher.Init(true, parameters);
 
             cipherStream.Write(data);
             cipherStream.Close();
