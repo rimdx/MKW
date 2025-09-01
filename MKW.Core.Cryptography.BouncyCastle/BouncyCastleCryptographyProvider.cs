@@ -33,12 +33,12 @@
 
         public IUserCredentials CreateUserCredentials(string password)
         {
-            throw new NotImplementedException();
+            return UserCredentials.Create(password);
         }
 
         public IUserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt)
         {
-            throw new NotImplementedException();
+            return UserCredentials.Open(password, salt);
         }
     }
 }
