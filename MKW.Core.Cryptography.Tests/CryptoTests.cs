@@ -59,18 +59,18 @@ namespace MKW.Tests
         }
 
         [Test]
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(100)]
-        [TestCase(127)]
-        [TestCase(128)]
-        [TestCase(129)]
-        [TestCase(255)]
-        [TestCase(256)]
-        [TestCase(257)]
-        [TestCase(1218)]
-        [TestCase(1024 * 1024)] // 1 MB
-        public void SymmetricTransformerRandomTests(int len)
+        [TestCase(0, 16)]
+        [TestCase(1, 16)]
+        [TestCase(100, 16)]
+        [TestCase(127, 16)]
+        [TestCase(128, 16)]
+        [TestCase(129, 16)]
+        [TestCase(255, 16)]
+        [TestCase(256, 16)]
+        [TestCase(257, 16)]
+        [TestCase(1218, 16)]
+        [TestCase(1024 * 1024, 2)] // 1 MB
+        public void SymmetricTransformerRandomTests(int len, int extraTries)
         {
             ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer();
 
@@ -94,6 +94,15 @@ namespace MKW.Tests
 
             CollectionAssert.AreEqual(encrypted1.ToArray(), encrypted2.ToArray());
             CollectionAssert.AreEqual(decrypted1.ToArray(), decrypted2.ToArray());
+
+            for (int i = 0; i < extraTries; i++)
+            {
+                Memory<byte> encrypted3 = key1.Encrypt(data);
+                Memory<byte> decrypted3 = key1.Decrypt(encrypted3.Span);
+
+                CollectionAssert.AreEqual(encrypted1.ToArray(), encrypted3.ToArray());
+                CollectionAssert.AreEqual(decrypted1.ToArray(), decrypted3.ToArray());
+            }
         }
 
         [Test]
