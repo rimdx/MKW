@@ -95,6 +95,8 @@ namespace MKW.Tests
             for (int i = 0; i < 10; i++)
             {
                 using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
+                _ = transformer.ExportPrivateKey();
+                _ = transformer.ExportPublicKey();
             }
         }
 
