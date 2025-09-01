@@ -97,5 +97,25 @@ namespace MKW.Tests
                 using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
             }
         }
+
+        [Test]
+        [TestCase(5000)]
+        public void AsymmetricTransformerOpenBenchmark(int iterations)
+        {
+            using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
+
+            Memory<byte> priv = transformer.ExportPrivateKey();
+            Memory<byte> pub = transformer.ExportPublicKey();
+
+            for (int i = 0; i < iterations; i++)
+            {
+                using var t2 = crypto.OpenAsymmetricTransformer(pub.Span);
+            }
+
+            for (int i = 0; i < iterations; i++)
+            {
+                using var t2 = crypto.OpenAsymmetricTransformer(pub.Span, priv.Span);
+            }
+        }
     }
 }
