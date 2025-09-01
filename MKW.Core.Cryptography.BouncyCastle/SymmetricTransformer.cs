@@ -40,8 +40,6 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         private void Init(bool forEncryption)
         {
-            cipher.Reset();
-
             cipher.Init(forEncryption, parameters);
         }
 
