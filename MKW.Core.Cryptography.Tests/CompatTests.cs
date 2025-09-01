@@ -6,8 +6,12 @@ using System.Security.Cryptography;
 namespace MKW.Core.Cryptography.Tests
 {
     [Parallelizable]
+    // Compat between different modules
     [TestFixture(typeof(CryptographyProvider), typeof(BouncyCastleCryptographyProvider))]
     [TestFixture(typeof(BouncyCastleCryptographyProvider), typeof(CryptographyProvider))]
+    // Self compat
+    [TestFixture(typeof(BouncyCastleCryptographyProvider), typeof(BouncyCastleCryptographyProvider))]
+    [TestFixture(typeof(CryptographyProvider), typeof(CryptographyProvider))]
     public class CompatTests<T1, T2>
         where T1 : ICryptographyProvider, new()
         where T2 : ICryptographyProvider, new()
