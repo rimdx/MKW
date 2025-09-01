@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 
 namespace MKW.Core.Cryptography.Tests
 {
+    [Parallelizable]
     [TestFixture(typeof(CryptographyProvider), typeof(BouncyCastleCryptographyProvider))]
     [TestFixture(typeof(BouncyCastleCryptographyProvider), typeof(CryptographyProvider))]
     public class CompatTests<T1, T2>
