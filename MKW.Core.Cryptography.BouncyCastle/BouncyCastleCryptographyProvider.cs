@@ -18,20 +18,20 @@
 
         public IAsymmetricPrivateTransformer CreateAsymmetricTransformer()
         {
-            throw new NotImplementedException();
-        }
-
-        public IUserCredentials CreateUserCredentials(string password)
-        {
-            throw new NotImplementedException();
+            return AsymmetricTransformer.Create();
         }
 
         public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey)
         {
-            throw new NotImplementedException();
+            return AsymmetricTransformer.Open(publicKey);
         }
 
         public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
+        {
+            return AsymmetricTransformer.Open(publicKey, privateKey);
+        }
+
+        public IUserCredentials CreateUserCredentials(string password)
         {
             throw new NotImplementedException();
         }
