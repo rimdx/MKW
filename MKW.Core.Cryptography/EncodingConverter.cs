@@ -11,7 +11,7 @@ namespace MKW.Core.Cryptography
 
         public static string GetString(ReadOnlySpan<byte> data)
         {
-            return Encoding.UTF8.GetString(data);
+            return Encoding.UTF8.GetString(data.ToArray());
         }
     }
 }
