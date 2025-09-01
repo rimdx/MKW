@@ -15,6 +15,7 @@ namespace MKW.Core.Cryptography.BouncyCastle
         , IDisposable
     {
         private readonly IBufferedCipher cipher;
+        private readonly ISigner signer;
 
         private readonly AsymmetricKeyParameter publicKey;
         private readonly AsymmetricKeyParameter? privateKey;
@@ -25,6 +26,7 @@ namespace MKW.Core.Cryptography.BouncyCastle
             this.privateKey = privateKey;
 
             cipher = CipherUtilities.GetCipher(PkcsObjectIdentifiers.RsaEncryption);
+            signer = SignerUtilities.GetSigner(PkcsObjectIdentifiers.Sha256WithRsaEncryption);
         }
 
         public static AsymmetricTransformer Create()
@@ -101,12 +103,16 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public Memory<byte> Sign(ReadOnlySpan<byte> data)
         {
-            throw new NotImplementedException();
+            signer.Init(true, privateKey);
+            signer.BlockUpdate(data);
+            return signer.GenerateSignature();
         }
 
         public bool Verify(ReadOnlySpan<byte> data, ReadOnlySpan<byte> signature)
         {
-            throw new NotImplementedException();
+            signer.Init(false, publicKey);
+            signer.BlockUpdate(data);
+            return signer.VerifySignature(signature.ToArray());
         }
 
         public void Dispose()
