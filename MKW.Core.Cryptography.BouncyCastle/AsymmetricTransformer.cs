@@ -1,44 +1,102 @@
-﻿namespace MKW.Core.Cryptography.BouncyCastle
+﻿using MKW.Core.Common;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.IO;
+using Org.BouncyCastle.Pkcs;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.X509;
+
+namespace MKW.Core.Cryptography.BouncyCastle
 {
-    public class AsymmetricTransformer : IAsymmetricPrivateTransformer, IAsymmetricPublicTransformer, IDisposable
+    public class AsymmetricTransformer
+        : IAsymmetricPrivateTransformer
+        , IAsymmetricPublicTransformer
+        , IDisposable
     {
-        public AsymmetricTransformer()
+        private readonly IBufferedCipher cipher;
+
+        private readonly AsymmetricKeyParameter publicKey;
+        private readonly AsymmetricKeyParameter? privateKey;
+
+        public AsymmetricTransformer(AsymmetricKeyParameter publicKey, AsymmetricKeyParameter? privateKey)
         {
+            this.publicKey = publicKey;
+            this.privateKey = privateKey;
+
+            cipher = CipherUtilities.GetCipher(PkcsObjectIdentifiers.RsaEncryption);
         }
 
         public static AsymmetricTransformer Create()
         {
-            throw new NotImplementedException();
+            SecureRandom random = new SecureRandom();
+            IAsymmetricCipherKeyPairGenerator keyPairGen = GeneratorUtilities.GetKeyPairGenerator("RSA");
+
+            keyPairGen.Init(new KeyGenerationParameters(random, 2048));
+
+            AsymmetricCipherKeyPair key = keyPairGen.GenerateKeyPair();
+
+            return new AsymmetricTransformer(key.Public, key.Private);
         }
 
         public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey)
         {
-            throw new NotImplementedException();
+            return new AsymmetricTransformer(PublicKeyFactory.CreateKey(publicKey.ToArray()),
+                                             null);
         }
 
         public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
         {
-            throw new NotImplementedException();
+            // todo: verify keypair
+            return new AsymmetricTransformer(PublicKeyFactory.CreateKey(publicKey.ToArray()),
+                                             PrivateKeyFactory.CreateKey(privateKey.ToArray()));
         }
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
-            throw new NotImplementedException();
+            cipher.Init(true, publicKey);
+
+            using MemoryStream output = new MemoryStream();
+
+            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                null, cipher))
+            {
+                cipherStream.Write(data);
+            }
+
+            return output.ToArray();
         }
 
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
-            throw new NotImplementedException();
+            if (privateKey == null)
+            {
+                throw new NotSupportedException("Decryption requires private key.");
+            }
+
+            cipher.Init(false, privateKey);
+
+            using MemoryStream output = new MemoryStream();
+
+            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                null, cipher))
+            {
+                cipherStream.Write(data);
+            }
+
+            return output.ToArray();
         }
 
         public Memory<byte> ExportPrivateKey()
         {
-            throw new NotImplementedException();
+            PrivateKeyInfo info = PrivateKeyInfoFactory.CreatePrivateKeyInfo(privateKey);
+            return info.GetEncoded();
         }
 
         public Memory<byte> ExportPublicKey()
         {
-            throw new NotImplementedException();
+            SubjectPublicKeyInfo info = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(publicKey);
+            return info.GetEncoded();
         }
 
         public Memory<byte> Sign(ReadOnlySpan<byte> data)
