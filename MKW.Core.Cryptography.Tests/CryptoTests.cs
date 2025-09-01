@@ -88,5 +88,14 @@ namespace MKW.Tests
             CollectionAssert.AreEqual(data.ToArray(),
                                       key.Decrypt(encrypted2.Span).ToArray());
         }
+
+        [Test]
+        public void AsymmetricTransformerCreateBenchmark()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
+            }
+        }
     }
 }
