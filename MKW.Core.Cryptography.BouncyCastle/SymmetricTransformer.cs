@@ -1,9 +1,7 @@
 ﻿using MKW.Core.Common;
+using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.IO;
-using Org.BouncyCastle.Crypto.Modes;
-using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 
@@ -13,21 +11,14 @@ namespace MKW.Core.Cryptography.BouncyCastle
     {
         private readonly ICipherParameters parameters;
 
-        private readonly AesEngine engine;
-        private readonly Pkcs7Padding padding;
-        private readonly CbcBlockCipher mode;
-        private readonly PaddedBufferedBlockCipher cipher;
+        private readonly IBufferedCipher cipher;
 
         private readonly ReadOnlyMemory<byte> key;
         private readonly ReadOnlyMemory<byte> iv;
 
         private SymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
-            engine = new AesEngine();
-            padding = new Pkcs7Padding();
-            mode = new CbcBlockCipher(engine);
-            cipher = new PaddedBufferedBlockCipher(mode, padding);
-
+            cipher = CipherUtilities.GetCipher(NistObjectIdentifiers.IdAes128Cbc);
             parameters = new ParametersWithIV(new KeyParameter(key), iv);
 
             this.key = key.ToArray();
@@ -49,7 +40,6 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         private void Init(bool forEncryption)
         {
-            mode.Reset();
             cipher.Reset();
 
             cipher.Init(forEncryption, parameters);
