@@ -8,7 +8,7 @@ namespace MKW.Core.Cryptography.Loader
 
         public const bool Supported = true;
 
-        public static ICryptographyProvider Create()
+        public static ICryptographyProvider GetProvider()
         {
             return new BouncyCastleCryptographyProvider();
         }
