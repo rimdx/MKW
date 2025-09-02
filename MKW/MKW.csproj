@@ -3,10 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <AssemblyName>mkw</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
     <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
     <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
