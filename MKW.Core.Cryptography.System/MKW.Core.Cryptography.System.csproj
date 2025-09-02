@@ -5,4 +5,8 @@
     <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
+  </PropertyGroup>
+
 </Project>
