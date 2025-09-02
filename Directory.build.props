@@ -50,7 +50,7 @@
     <Description>Multi-Key Wallet</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net8'))">
     <SelfContained>true</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishReadyToRun>false</PublishReadyToRun>
