@@ -1,13 +1,13 @@
 ﻿using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.BouncyCastle;
-using MKW.Core.Cryptography.System;
 using NUnit.Framework.Legacy;
 using System.Security.Cryptography;
 
 namespace MKW.Tests
 {
     [Parallelizable]
+#if !NETFRAMEWORK
     [TestFixture(typeof(CryptographyProvider))]
+#endif
     [TestFixture(typeof(BouncyCastleCryptographyProvider))]
     public class CryptoTests<TProvider> where TProvider : ICryptographyProvider, new()
     {
