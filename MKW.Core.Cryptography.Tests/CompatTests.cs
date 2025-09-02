@@ -108,10 +108,11 @@ namespace MKW.Core.Cryptography.Tests
             ClassicAssert.IsTrue(singer2.Verify(data.Span, sign1.Span));
             ClassicAssert.IsTrue(verifier1.Verify(data.Span, sign2.Span));
             ClassicAssert.IsTrue(verifier2.Verify(data.Span, sign1.Span));
- 
-            ClassicAssert.IsFalse(singer1.Verify(data.Span, RandomNumberGenerator.GetBytes(sign1.Length)));
+
+            IRandomGenerator random = crypto1.CreateRandomGenerator();
+            ClassicAssert.IsFalse(singer1.Verify(data.Span, random.NextBytes(sign1.Length)));
             ClassicAssert.IsFalse(singer1.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
-            ClassicAssert.IsFalse(verifier1.Verify(data.Span, RandomNumberGenerator.GetBytes(sign1.Length)));
+            ClassicAssert.IsFalse(verifier1.Verify(data.Span, random.NextBytes(sign1.Length)));
             ClassicAssert.IsFalse(verifier1.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
         }
     }
