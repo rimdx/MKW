@@ -2,7 +2,7 @@
 {
     public static class CryptographyLoader
     {
-        public static ICryptographyProvider Create()
+        public static ICryptographyProvider GetProvider()
         {
             if (SystemCryptographyLoader.Supported)
             {
@@ -18,7 +18,7 @@
             }
         }
 
-        public static ICryptographyProvider Create(string name) => name switch
+        public static ICryptographyProvider GetProvider(string name) => name switch
         {
             BouncyCastleLoader.Name => BouncyCastleLoader.Create(),
             SystemCryptographyLoader.Name => BouncyCastleLoader.Create(),

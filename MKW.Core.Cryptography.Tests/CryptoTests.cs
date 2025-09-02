@@ -15,7 +15,7 @@ namespace MKW.Tests
 
         public CryptoTests(string provider)
         {
-            crypto = CryptographyLoader.Create(provider);
+            crypto = CryptographyLoader.GetProvider(provider);
         }
 
         [Test]

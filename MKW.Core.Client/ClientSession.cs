@@ -20,7 +20,7 @@ namespace MKW.Core.Client
             Database = db;
             this.ownsDb = ownsDb;
 
-            crypto = CryptographyLoader.Create();
+            crypto = CryptographyLoader.GetProvider();
             userController = new UserController(this, crypto, Database);
             adminController = new AdminController(this, crypto, Database);
         }
