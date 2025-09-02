@@ -5,14 +5,14 @@
         public const string Name = "System.Security";
 
 #if NETFRAMEWORK
-        public static bool Supported => false;
+        public const bool Supported = false;
 
         public static ICryptographyProvider Create()
         {
             throw new NotSupportedException();
         }
 #else
-        public static bool Supported => true;
+        public const bool Supported = true;
 
         public static ICryptographyProvider Create()
         {

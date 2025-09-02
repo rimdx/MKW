@@ -6,7 +6,7 @@ namespace MKW.Core.Cryptography.Loader
     {
         public const string Name = "BouncyCastle.Cryptography";
 
-        public static bool Supported => true;
+        public const bool Supported = true;
 
         public static ICryptographyProvider Create()
         {
