@@ -1,6 +1,5 @@
 ﻿using MKW.Core.Client.Notify;
 using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.System;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -18,7 +17,12 @@ namespace MKW.Core.Client
         protected ClientSession(IDatabase db, bool ownsDb)
         {
             Database = db;
+
+#if NETFRAMEWORK
+            CryptographyProvider = new BouncyCastleCryptographyProvider();
+#else
             CryptographyProvider = new CryptographyProvider();
+#endif
             this.ownsDb = ownsDb;
             userController = new UserController(this, CryptographyProvider, Database);
             adminController = new AdminController(this, CryptographyProvider, Database);
