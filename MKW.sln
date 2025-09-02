@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Core.Cryptography.Bounc
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MKW.Core.Common.NETFramework", "MKW.Core.Common.NETFramework\MKW.Core.Common.NETFramework.shproj", "{3D0581D4-05D7-463C-A3C0-59BB64CE4691}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MKW.Core.Cryptography.BouncyCastle.NETFramework", "MKW.Core.Cryptography.BouncyCastle.NETFramework\MKW.Core.Cryptography.BouncyCastle.NETFramework.shproj", "{076FEE77-D5C9-499C-9615-1947517E5F17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -262,10 +264,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		MKW.Core.Cryptography.BouncyCastle.NETFramework\MKW.Core.Cryptography.BouncyCastle.NETFramework.projitems*{076fee77-d5c9-499c-9615-1947517e5f17}*SharedItemsImports = 13
 		MKW.Core.Common.NETFramework\MKW.Core.Common.NETFramework.projitems*{3d0581d4-05d7-463c-a3c0-59bb64ce4691}*SharedItemsImports = 13
+		MKW.Core.Cryptography.BouncyCastle.NETFramework\MKW.Core.Cryptography.BouncyCastle.NETFramework.projitems*{c2994800-5807-42f7-b577-7bd9a1d9211f}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

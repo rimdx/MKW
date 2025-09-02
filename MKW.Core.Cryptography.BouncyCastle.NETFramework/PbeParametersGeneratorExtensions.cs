@@ -1,0 +1,15 @@
+﻿using Org.BouncyCastle.Crypto.Generators;
+
+namespace MKW.Core.Cryptography.BouncyCastle
+{
+    public static class PbeParametersGeneratorExtensions
+    {
+        public static void Init(this Pkcs5S2ParametersGenerator generator,
+                                ReadOnlySpan<byte> password,
+                                ReadOnlySpan<byte> salt,
+                                int iterationCount)
+        {
+            generator.Init(password.ToArray(), salt.ToArray(), iterationCount);
+        }
+    }
+}

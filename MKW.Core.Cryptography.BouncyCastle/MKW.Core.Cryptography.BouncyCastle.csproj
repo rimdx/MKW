@@ -9,4 +9,6 @@
     <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
   </ItemGroup>
 
+  <Import Project="..\MKW.Core.Cryptography.BouncyCastle.NETFramework\MKW.Core.Cryptography.BouncyCastle.NETFramework.projitems" Label="Shared" />
+
 </Project>
