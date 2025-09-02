@@ -6,11 +6,11 @@
         {
             if (SystemCryptographyLoader.Supported)
             {
-                return SystemCryptographyLoader.Create();
+                return SystemCryptographyLoader.GetProvider();
             }
             else if (BouncyCastleLoader.Supported)
             {
-                return BouncyCastleLoader.Create();
+                return BouncyCastleLoader.GetProvider();
             }
             else
             {
@@ -20,8 +20,8 @@
 
         public static ICryptographyProvider GetProvider(string name) => name switch
         {
-            BouncyCastleLoader.Name => BouncyCastleLoader.Create(),
-            SystemCryptographyLoader.Name => BouncyCastleLoader.Create(),
+            BouncyCastleLoader.Name => BouncyCastleLoader.GetProvider(),
+            SystemCryptographyLoader.Name => BouncyCastleLoader.GetProvider(),
             _ => throw new NotSupportedException(),
         };
     }
