@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
+    <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MKW.Core.Cryptography.BouncyCastle\MKW.Core.Cryptography.BouncyCastle.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
+    <ProjectReference Include="..\MKW.Core.Cryptography.System\MKW.Core.Cryptography.System.csproj" />
+  </ItemGroup>
+
+</Project>
