@@ -31,7 +31,7 @@ namespace MKW.Tests
             CollectionAssert.AreEqual(sign1.ToArray(), sign2.ToArray());
 
             ClassicAssert.IsTrue(transformer.Verify(data.Span, sign1.Span));
-            ClassicAssert.IsFalse(transformer.Verify(data.Span, RandomNumberGenerator.GetBytes(sign1.Length)));
+            ClassicAssert.IsFalse(transformer.Verify(data.Span, crypto.CreateRandomGenerator().NextBytes(sign1.Length)));
             ClassicAssert.IsFalse(transformer.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
         }
 
