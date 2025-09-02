@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
@@ -17,9 +17,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
-    <ProjectReference Include="..\MKW.Core.Cryptography.BouncyCastle\MKW.Core.Cryptography.BouncyCastle.csproj" />
-    <ProjectReference Include="..\MKW.Core.Cryptography.System\MKW.Core.Cryptography.System.csproj" />
     <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MKW.Core.Cryptography.BouncyCastle\MKW.Core.Cryptography.BouncyCastle.csproj" />
+    <Using Include="MKW.Core.Cryptography.BouncyCastle" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
+    <ProjectReference Include="..\MKW.Core.Cryptography.System\MKW.Core.Cryptography.System.csproj" />
+    <Using Include="MKW.Core.Cryptography.System" />
   </ItemGroup>
 
   <ItemGroup>
