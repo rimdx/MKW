@@ -21,8 +21,8 @@ namespace MKW.Core.Cryptography.Tests
 
         public CompatTests(string provider1, string provider2)
         {
-            crypto1 = CryptographyProvider.Create(provider1);
-            crypto2 = CryptographyProvider.Create(provider2);
+            crypto1 = CryptographyLoader.Create(provider1);
+            crypto2 = CryptographyLoader.Create(provider2);
         }
 
         [Test]

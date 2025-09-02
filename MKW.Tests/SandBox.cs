@@ -14,7 +14,7 @@ namespace MKW.Tests
         public string DatabasePath { get; }
         public string AdminSecret => "adminsecret123";
 
-        public ICryptographyProvider Crypto = CryptographyProvider.Create();
+        public ICryptographyProvider Crypto = CryptographyLoader.Create();
 
         public SandBox(bool init = true)
         {

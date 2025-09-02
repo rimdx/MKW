@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Cryptography.Loader
 {
-    public static class CryptographyProvider
+    public static class CryptographyLoader
     {
         public static ICryptographyProvider Create()
         {
