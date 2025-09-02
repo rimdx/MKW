@@ -1,0 +1,37 @@
+name: Build, Test, Publish
+
+on:
+  push:
+    branches: ["*"]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform:
+        - x64
+
+    env:
+      Parameters: >
+        /p:Configuration=Release
+        /p:Platform=${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: dotnet build ${{ env.Parameters }}
+
+      - name: Test
+        run: dotnet test --no-build ${{ env.Parameters }}
+
+      - name: Publish
+        run: |
+          dotnet publish --no-build MKW ${{ env.Parameters }}
