@@ -33,11 +33,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateProjectSpecificOutputFolder>false</GenerateProjectSpecificOutputFolder>
-
-    <BaseOutputPath>$(SolutionDir)\out\bin\</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(SolutionDir)\out\obj\</BaseIntermediateOutputPath>
-
     <PublishDir Condition="'$(PublishDir)' == ''">$(SolutionDir)\out\publish\</PublishDir>
   </PropertyGroup>
 
