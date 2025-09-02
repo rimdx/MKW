@@ -17,12 +17,7 @@ namespace MKW.Core.Client
         protected ClientSession(IDatabase db, bool ownsDb)
         {
             Database = db;
-
-#if NETFRAMEWORK
-            CryptographyProvider = new BouncyCastleCryptographyProvider();
-#else
-            CryptographyProvider = new CryptographyProvider();
-#endif
+            CryptographyProvider = Cryptography.Loader.CryptographyProvider.Create();
             this.ownsDb = ownsDb;
             userController = new UserController(this, CryptographyProvider, Database);
             adminController = new AdminController(this, CryptographyProvider, Database);
