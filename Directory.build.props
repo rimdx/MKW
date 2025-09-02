@@ -3,14 +3,14 @@
     <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
   </PropertyGroup>
 
-  <!--<PropertyGroup>
-    --><!--<GenerateProjectSpecificOutputFolder>false</GenerateProjectSpecificOutputFolder>--><!--
+  <PropertyGroup>
+    <GenerateProjectSpecificOutputFolder>true</GenerateProjectSpecificOutputFolder>
 
     <BaseOutputPath>$(SolutionDir)\out\bin\</BaseOutputPath>
     <BaseIntermediateOutputPath>$(SolutionDir)\out\obj\</BaseIntermediateOutputPath>
 
     <PublishDir Condition="'$(PublishDir)' == ''">$(SolutionDir)out\publish\</PublishDir>
-  </PropertyGroup>-->
+  </PropertyGroup>
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net472</TargetFrameworks>
