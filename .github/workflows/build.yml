@@ -21,4 +21,4 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish --no-build MKW ${{ env.Parameters }}
+          dotnet publish --no-build ConsoleApp1
