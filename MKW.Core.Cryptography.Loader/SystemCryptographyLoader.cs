@@ -2,7 +2,7 @@
 {
     public class SystemCryptographyLoader
     {
-        public const string Name = "System.Security";;
+        public const string Name = "System.Security";
 
 #if NETFRAMEWORK
         public static bool Supported => false;
