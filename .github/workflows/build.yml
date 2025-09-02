@@ -1,0 +1,24 @@
+name: Build, Test, Publish
+
+on:
+  push:
+    branches: ["*"]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: dotnet build
+
+      - name: Publish
+        run: |
+          dotnet publish --no-build MKW ${{ env.Parameters }}
