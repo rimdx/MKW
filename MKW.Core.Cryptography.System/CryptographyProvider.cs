@@ -43,7 +43,7 @@
 
         public IRandomGenerator CreateRandomGenerator()
         {
-            throw new NotImplementedException();
+            return new SystemRandomGenerator();
         }
 
         public void Dispose()
