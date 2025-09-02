@@ -1,0 +1,37 @@
+<Project>
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
+  </PropertyGroup>
+
+  <!--<PropertyGroup>
+    --><!--<GenerateProjectSpecificOutputFolder>false</GenerateProjectSpecificOutputFolder>--><!--
+
+    <BaseOutputPath>$(SolutionDir)\out\bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(SolutionDir)\out\obj\</BaseIntermediateOutputPath>
+
+    <PublishDir Condition="'$(PublishDir)' == ''">$(SolutionDir)out\publish\</PublishDir>
+  </PropertyGroup>-->
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net472</TargetFrameworks>
+    <LangVersion>13.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+    <Copyright>Copyright (c) Timofei Zhakov 2025</Copyright>
+    <Description>Multi-Key Wallet</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <PublishTrimmed>false</PublishTrimmed>
+    <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+  </PropertyGroup>
+</Project>
