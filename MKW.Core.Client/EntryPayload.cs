@@ -29,7 +29,7 @@ namespace MKW.Core.Client
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Data);
+            return Data.GetHashCode();
         }
     }
 }
