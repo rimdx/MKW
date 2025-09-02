@@ -262,8 +262,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MKW.Core.Common.NETFramework\MKW.Core.Common.NETFramework.projitems*{3d0581d4-05d7-463c-a3c0-59bb64ce4691}*SharedItemsImports = 13
