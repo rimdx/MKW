@@ -36,24 +36,30 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public void CopyFrom(JSONDatabaseSecretEntry other)
         {
-            // what am i doing? just having fun maybe...
-            Keys = other.Keys
-                .Select(pair => new KeyValuePair<UserId, ReadOnlyMemory<byte>>(
-                    UserId.FromGuid(pair.Key), pair.Value))
-                .ToDictionary();
+            Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
+            foreach (KeyValuePair<Guid, ReadOnlyMemory<byte>> pair in other.Keys)
+            {
+                keys.Add(UserId.FromGuid(pair.Key), pair.Value);
+            }
+
+            Keys = keys;
             Salt = other.Salt;
             Data = other.Data;
         }
 
         public JSONDatabaseSecretEntry AsJSONObject()
         {
+            Dictionary<Guid, ReadOnlyMemory<byte>> keys = [];
+
+            foreach (KeyValuePair<UserId, ReadOnlyMemory<byte>> pair in Keys)
+            {
+                keys.Add(pair.Key.GetGuid(), pair.Value);
+            }
+
             return new JSONDatabaseSecretEntry
             {
-                Keys = Keys
-                    .Select(pair => new KeyValuePair<Guid, ReadOnlyMemory<byte>>(
-                        pair.Key.GetGuid(), pair.Value))
-                    .ToDictionary(),
+                Keys = keys,
                 Salt = Salt,
                 Data = Data
             };
