@@ -41,6 +41,11 @@
             return UserCredentials.Open(password, salt);
         }
 
+        public IRandomGenerator CreateRandomGenerator()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
         }

@@ -11,5 +11,7 @@
 
         IUserCredentials CreateUserCredentials(string password);
         IUserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt);
+
+        IRandomGenerator CreateRandomGenerator();
     }
 }
