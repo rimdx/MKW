@@ -19,7 +19,7 @@ namespace MKW.Core.Cryptography.BouncyCastle
         private SymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
             cipher = CipherUtilities.GetCipher(NistObjectIdentifiers.IdAes128Cbc);
-            parameters = new ParametersWithIV(new KeyParameter(key), iv);
+            parameters = new ParametersWithIV(new KeyParameter(key.ToArray()), iv.ToArray());
 
             this.key = key.ToArray();
             this.iv = iv.ToArray();
