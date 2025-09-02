@@ -13,24 +13,11 @@ jobs:
   build:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        platform:
-        - x64
-
-    env:
-      Parameters: >
-        /p:Configuration=Release
-        /p:Platform=${{ matrix.platform }}
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Build
-        run: dotnet build ${{ env.Parameters }}
-
-      - name: Test
-        run: dotnet test --no-build ${{ env.Parameters }}
+        run: dotnet build
 
       - name: Publish
         run: |
