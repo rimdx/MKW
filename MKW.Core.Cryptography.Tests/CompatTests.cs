@@ -1,30 +1,28 @@
-﻿using NUnit.Framework.Legacy;
-using System.Security.Cryptography;
+﻿using MKW.Core.Cryptography.Loader;
+using NUnit.Framework.Legacy;
 
 namespace MKW.Core.Cryptography.Tests
 {
     [Parallelizable]
 #if NETFRAMEWORK
-    [TestFixture(typeof(BouncyCastleCryptographyProvider), typeof(BouncyCastleCryptographyProvider))]
+    [TestFixture(BouncyCastleLoader.Name, BouncyCastleLoader.Name)]
 #else
     // Compat between different modules
-    [TestFixture(typeof(CryptographyProvider), typeof(BouncyCastleCryptographyProvider))]
-    [TestFixture(typeof(BouncyCastleCryptographyProvider), typeof(CryptographyProvider))]
+    [TestFixture(SystemCryptographyLoader.Name, BouncyCastleLoader.Name)]
+    [TestFixture(BouncyCastleLoader.Name, SystemCryptographyLoader.Name)]
     // Self compat
-    [TestFixture(typeof(BouncyCastleCryptographyProvider), typeof(BouncyCastleCryptographyProvider))]
-    [TestFixture(typeof(CryptographyProvider), typeof(CryptographyProvider))]
+    [TestFixture(BouncyCastleLoader.Name, BouncyCastleLoader.Name)]
+    [TestFixture(SystemCryptographyLoader.Name, SystemCryptographyLoader.Name)]
 #endif
-    public class CompatTests<T1, T2>
-        where T1 : ICryptographyProvider, new()
-        where T2 : ICryptographyProvider, new()
+    public class CompatTests
     {
         private readonly ICryptographyProvider crypto1;
         private readonly ICryptographyProvider crypto2;
 
-        public CompatTests()
+        public CompatTests(string provider1, string provider2)
         {
-            crypto1 = new T1();
-            crypto2 = new T2();
+            crypto1 = CryptographyProvider.Create(provider1);
+            crypto2 = CryptographyProvider.Create(provider2);
         }
 
         [Test]
