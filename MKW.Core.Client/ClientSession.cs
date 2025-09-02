@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client.Notify;
 using MKW.Core.Cryptography;
+using MKW.Core.Cryptography.Loader;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -8,19 +9,20 @@ namespace MKW.Core.Client
     {
         public IDatabase Database { get; }
 
-        public ICryptographyProvider CryptographyProvider { get; set; }
-
         private readonly bool ownsDb;
+
+        private readonly ICryptographyProvider crypto;
         private readonly UserController userController;
         private readonly AdminController adminController;
 
         protected ClientSession(IDatabase db, bool ownsDb)
         {
             Database = db;
-            CryptographyProvider = Cryptography.Loader.CryptographyProvider.Create();
             this.ownsDb = ownsDb;
-            userController = new UserController(this, CryptographyProvider, Database);
-            adminController = new AdminController(this, CryptographyProvider, Database);
+
+            crypto = CryptographyProvider.Create();
+            userController = new UserController(this, crypto, Database);
+            adminController = new AdminController(this, crypto, Database);
         }
 
         public static ClientSession Open(IDatabase db /* reference */)
@@ -78,7 +80,7 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
             IDatabaseUser admin = Database.OpenAdmin(true);
-            using UserTrustProvider trustProvider = new UserTrustProvider(this, CryptographyProvider, admin);
+            using UserTrustProvider trustProvider = new UserTrustProvider(this, crypto, admin);
 
             IEnumerable<UserInfo> trust = trustProvider.EnumerateImplicitlyTrustedUsers();
 
@@ -92,7 +94,7 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
         {
             IDatabaseUser user = OpenDatabaseUser(userId, true);
-            using UserTrustProvider trustProvider = new UserTrustProvider(this, CryptographyProvider, user);
+            using UserTrustProvider trustProvider = new UserTrustProvider(this, crypto, user);
 
             foreach (UserInfo trust in trustProvider.EnumerateImplicitlyTrustedUsers())
             {
@@ -156,7 +158,7 @@ namespace MKW.Core.Client
 
         private EntryController OpenEntryController()
         {
-            return new EntryController(this, CryptographyProvider, Database.OpenAdmin(true));
+            return new EntryController(this, crypto, Database.OpenAdmin(true));
         }
 
         public IEntrySession OpenEntry(EntryId id)
