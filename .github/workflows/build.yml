@@ -21,4 +21,5 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish --no-build ConsoleApp1
+          dotnet publish --no-build ConsoleApp1 -f net8.0
+          dotnet publish --no-build ConsoleApp1 -f net472
