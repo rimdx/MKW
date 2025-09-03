@@ -1,23 +1,21 @@
 ﻿using Microsoft.Win32;
+using MKW.Testing.Common;
 
 namespace MKW.GUI.Tests
 {
-    public class SandBox : IDisposable
+    public class SandBox : SandBoxBase
     {
-        public static readonly string TestRootKey =
-            Path.Combine(RegistryKeys.RootKeyPath, "UnitTesting");
-
         public RegistryService RegistryService;
 
         public SandBox()
         {
-            Registry.CurrentUser.DeleteSubKey(TestRootKey, false);
             RegistryService = new RegistryService(TestRootKey);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             RegistryService.Dispose();
+            Registry.CurrentUser.DeleteSubKey(TestRootKey, false);
         }
     }
 }
