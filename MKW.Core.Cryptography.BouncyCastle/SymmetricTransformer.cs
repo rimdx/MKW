@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Common;
+using MKW.Core.Cryptography.Exceptions;
 using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.IO;
@@ -18,6 +19,16 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         private SymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
         {
+            if (key.Length != 16)
+            {
+                throw new Exceptions.InvalidKeyException($"Symmetric key length must be 16 bytes.");
+            }
+
+            if (iv.Length != 16)
+            {
+                throw new Exceptions.InvalidKeyException($"Symmetric IV length must be 16 bytes.");
+            }
+
             cipher = CipherUtilities.GetCipher(NistObjectIdentifiers.IdAes128Cbc);
             parameters = new ParametersWithIV(new KeyParameter(key.ToArray()), iv.ToArray());
 
@@ -40,32 +51,46 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
-            cipher.Init(false, parameters);
-
-            using MemoryStream output = new MemoryStream();
-
-            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
-                                                                null, cipher))
+            try
             {
-                cipherStream.Write(data);
-            }
+                cipher.Init(false, parameters);
 
-            return output.ToArray();
+                using MemoryStream output = new MemoryStream();
+
+                using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                    null, cipher))
+                {
+                    cipherStream.Write(data);
+                }
+
+                return output.ToArray();
+            }
+            catch (CryptoException ex)
+            {
+                throw new SymmetricOperationFailedException(ex);
+            }
         }
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
-            cipher.Init(true, parameters);
-
-            using MemoryStream output = new MemoryStream();
-
-            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
-                                                                null, cipher))
+            try
             {
-                cipherStream.Write(data);
-            }
+                cipher.Init(true, parameters);
 
-            return output.ToArray();
+                using MemoryStream output = new MemoryStream();
+
+                using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                    null, cipher))
+                {
+                    cipherStream.Write(data);
+                }
+
+                return output.ToArray();
+            }
+            catch (CryptoException ex)
+            {
+                throw new SymmetricOperationFailedException(ex);
+            }
         }
 
         public Memory<byte> ExportIV()
