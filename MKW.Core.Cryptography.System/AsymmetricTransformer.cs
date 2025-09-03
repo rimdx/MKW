@@ -22,7 +22,14 @@ namespace MKW.Core.Cryptography.System
         {
             RSA rsa = RSA.Create();
 
-            rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
+            try
+            {
+                rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidKeyException(ex);
+            }
 
             return new AsymmetricTransformer(rsa);
         }
@@ -31,8 +38,15 @@ namespace MKW.Core.Cryptography.System
         {
             RSA rsa = RSA.Create();
 
-            rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
-            rsa.ImportPkcs8PrivateKey(privateKey, out _);
+            try
+            {
+                rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
+                rsa.ImportPkcs8PrivateKey(privateKey, out _);
+            }
+            catch (CryptographicException ex)
+            {
+                throw new InvalidKeyException(ex);
+            }
 
             return new AsymmetricTransformer(rsa);
         }
