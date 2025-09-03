@@ -43,7 +43,6 @@ jobs:
     env:
       Parameters: >
         /p:Configuration=Release
-        /p:Platform=${{ matrix.platform }}
       PublishDir: ${{ github.workspace }}\out\Release\${{ matrix.platform }}\publish
 
     steps:
