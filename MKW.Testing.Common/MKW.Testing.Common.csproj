@@ -2,25 +2,24 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="NUnit" Version="4.4.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
     <PackageReference Include="NUnit.Analyzers" Version="4.10.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MKW.Core.Cryptography.Loader\MKW.Core.Cryptography.Loader.csproj" />
-    <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
-    <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
-    <ProjectReference Include="..\MKW.Testing.Common\MKW.Testing.Common.csproj" />
-    <ProjectReference Include="..\MKW\MKW.csproj" />
+    <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

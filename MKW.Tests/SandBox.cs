@@ -4,75 +4,25 @@ using MKW.Core.Cryptography;
 using MKW.Core.Cryptography.Loader;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
+using MKW.Testing.Common;
 using System.Diagnostics;
 using System.Text;
 
 namespace MKW.Tests
 {
-    public class SandBox : IDisposable
+    public class SandBox : SandBoxBase
     {
-        public string DatabasePath { get; }
         public string AdminSecret => "adminsecret123";
 
         public ICryptographyProvider Crypto = CryptographyLoader.GetProvider();
 
         public SandBox(bool init = true)
         {
-            DatabasePath = Path.GetTempFileName();
-
             if (init)
             {
                 using JSONDatabaseSession db = JSONDatabaseSession.Create(DatabasePath);
                 using ClientSession client = ClientSession.Create(db, AdminSecret);
             }
-        }
-
-        public void Dispose()
-        {
-        }
-
-        public string Run(string cmd, string stdin = "")
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/c {cmd}",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            };
-
-            using Process process = Process.Start(startInfo)!;
-
-            process.StandardInput.Write(stdin);
-            process.StandardInput.Close();
-
-            process.WaitForExit();
-
-            StringBuilder result = new StringBuilder();
-
-            result.AppendLine($"  -- EXIT CODE: {process.ExitCode}");
-
-            string stderr = TrimString(process.StandardError.ReadToEnd());
-            string stdout = TrimString(process.StandardOutput.ReadToEnd());
-
-            if (stderr != "")
-            {
-                result.AppendLine("  -- STDERR:");
-                result.AppendLine(stderr);
-            }
-
-            if (stdout != "")
-            {
-                result.AppendLine("  -- STDOUT:");
-                result.AppendLine(stdout);
-            }
-
-            Console.WriteLine(result.ToString());
-
-            return result.ToString();
         }
 
         public IDatabase OpenDatabase()
@@ -108,11 +58,6 @@ namespace MKW.Tests
             }
 
             return userSession;
-        }
-
-        private string TrimString(string str)
-        {
-            return str.Trim([' ', '\n', '\r', '\t']);
         }
     }
 }
