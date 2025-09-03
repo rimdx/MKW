@@ -35,11 +35,6 @@ jobs:
 
     needs: create-release
 
-    strategy:
-      matrix:
-        platform:
-        - x64
-
     env:
       Parameters: >
         /p:Configuration=Release
