@@ -15,12 +15,13 @@ jobs:
 
     strategy:
       matrix:
-        platform:
-        - x64
+        runtime:
+        - win-x64
 
     env:
       Parameters: >
         /p:Configuration=Release
+        /p:RuntimeIdentifier=${{ matrix.runtime }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,5 +39,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Release-${{ matrix.platform }}
-          path: .\out\Release\${{ matrix.platform }}\publish
+          name: Release-${{ matrix.runtime }}
+          path: .\out\publish
