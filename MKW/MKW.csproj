@@ -5,7 +5,7 @@
     <AssemblyName>mkw</AssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net8'))">
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
