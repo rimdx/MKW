@@ -28,9 +28,9 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish --rid win-x64 --framework net8.0 MKW ${{ env.Parameters }}
-          dotnet publish --rid win-x64 --framework net8.0-windows MKW ${{ env.Parameters }}
-          dotnet publish --rid win-x64 --framework net8.0-windows MKW.GUI ${{ env.Parameters }}
+          dotnet publish /p:RuntimeIdentifier=win-x64 --framework net8.0 MKW ${{ env.Parameters }}
+          dotnet publish /p:RuntimeIdentifier=win-x64 --framework net8.0-windows MKW ${{ env.Parameters }}
+          dotnet publish /p:RuntimeIdentifier=win-x64 --framework net8.0-windows MKW.GUI ${{ env.Parameters }}
           dotnet publish --no-build --framework net472 MKW ${{ env.Parameters }}
           dotnet publish --no-build --framework net472 MKW.GUI ${{ env.Parameters }}
 
