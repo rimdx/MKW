@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PublishDir Condition="'$(PublishDir)' == ''">$(SolutionDir)\out\publish\</PublishDir>
+    <PublishDir Condition="'$(PublishDir)' == ''">$(SolutionDir)\out\publish\$(TargetFramework)</PublishDir>
   </PropertyGroup>
 
   <PropertyGroup>
