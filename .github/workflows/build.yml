@@ -34,7 +34,12 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish --no-build MKW ${{ env.Parameters }}
+          dotnet publish --no-build --framework net8.0 MKW ${{ env.Parameters }}
+          dotnet publish --no-build --framework net8.0 MKW.GUI ${{ env.Parameters }}
+          dotnet publish --no-build --framework net8.0-windows MKW ${{ env.Parameters }}
+          dotnet publish --no-build --framework net8.0-windows MKW.GUI ${{ env.Parameters }}
+          dotnet publish --no-build --framework net472 MKW ${{ env.Parameters }}
+          dotnet publish --no-build --framework net472 MKW.GUI ${{ env.Parameters }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
