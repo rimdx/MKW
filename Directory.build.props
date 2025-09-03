@@ -11,25 +11,15 @@
 
   <PropertyGroup>
     <RuntimeIdentifiers>win-x64;win-x86;win-arm64</RuntimeIdentifiers>
-    <Platforms>x64;x86;ARM64</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Platform)' == ''">
-    <Platform>x64</Platform>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == ''">
     <Configuration>Release</Configuration>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Platform)' == 'x64'">
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == ''">
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)' == 'x86'">
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)' == 'ARM64'">
-    <RuntimeIdentifier>win-arm64</RuntimeIdentifier>
   </PropertyGroup>
 
   <PropertyGroup>
