@@ -44,18 +44,33 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey)
         {
-            AsymmetricKeyParameter publicParameter = PublicKeyFactory.CreateKey(publicKey.ToArray());
+            try
+            {
+                AsymmetricKeyParameter publicParameter = PublicKeyFactory.CreateKey(publicKey.ToArray());
 
-            return new AsymmetricTransformer(publicParameter, null);
+                return new AsymmetricTransformer(publicParameter, null);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new Exceptions.InvalidKeyException(ex);
+            }
         }
 
         public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
         {
             // todo: verify keypair
-            AsymmetricKeyParameter publicParameter = PublicKeyFactory.CreateKey(publicKey.ToArray());
-            AsymmetricKeyParameter privateParameter = PrivateKeyFactory.CreateKey(privateKey.ToArray());
 
-            return new AsymmetricTransformer(publicParameter, privateParameter);
+            try
+            {
+                AsymmetricKeyParameter publicParameter = PublicKeyFactory.CreateKey(publicKey.ToArray());
+                AsymmetricKeyParameter privateParameter = PrivateKeyFactory.CreateKey(privateKey.ToArray());
+
+                return new AsymmetricTransformer(publicParameter, privateParameter);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new Exceptions.InvalidKeyException(ex);
+            }
         }
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
