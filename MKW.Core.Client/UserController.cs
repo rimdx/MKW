@@ -73,6 +73,10 @@ namespace MKW.Core.Client
                 {
                     // Ignore this user if the credentials are invalid
                 }
+                catch (InvalidKeyException)
+                {
+                    // Possible occurrence, as experiments have shown. Fails in 1/~35 times.
+                }
             }
 
             throw new Exception("No valid user found with the provided password.");
