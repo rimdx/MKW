@@ -20,7 +20,6 @@
 
     <StackPanel>
       <Label Content="Enter database credentials:"
-             FontWeight="Bold"
              Padding="0"
              Margin="0,0,0,3" />
 
@@ -39,7 +38,6 @@
       </TextBox>
 
       <Label Padding="0"
-             FontWeight="Bold"
              Target="{Binding ElementName=UserSelector}"
              Content="_User:"
              Margin="0,0,0,3" />
@@ -72,7 +70,6 @@
           <ControlTemplate TargetType="local:PasswordInput">
             <StackPanel Orientation="Vertical">
               <Label Padding="0"
-                     FontWeight="Bold"
                      Target="{Binding ElementName=PART_PasswordBox}"
                      Content="_Password:" />
 
