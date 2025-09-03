@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Common;
+using MKW.Core.Cryptography.Exceptions;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
@@ -59,37 +60,51 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
-            cipher.Init(true, publicKey);
-
-            using MemoryStream output = new MemoryStream();
-
-            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
-                                                                null, cipher))
+            try
             {
-                cipherStream.Write(data);
-            }
+                cipher.Init(true, publicKey);
 
-            return output.ToArray();
+                using MemoryStream output = new MemoryStream();
+
+                using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                    null, cipher))
+                {
+                    cipherStream.Write(data);
+                }
+
+                return output.ToArray();
+            }
+            catch (CryptoException ex)
+            {
+                throw new AsymmetricOperationFailedException(ex);
+            }
         }
 
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             if (privateKey == null)
             {
-                throw new NotSupportedException("Decryption requires private key.");
+                throw new AsymmetricOperationRequiresPrivateKey();
             }
 
-            cipher.Init(false, privateKey);
-
-            using MemoryStream output = new MemoryStream();
-
-            using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
-                                                                null, cipher))
+            try
             {
-                cipherStream.Write(data);
-            }
+                cipher.Init(false, privateKey);
 
-            return output.ToArray();
+                using MemoryStream output = new MemoryStream();
+
+                using (CipherStream cipherStream = new CipherStream(new StreamDisown(output),
+                                                                    null, cipher))
+                {
+                    cipherStream.Write(data);
+                }
+
+                return output.ToArray();
+            }
+            catch (CryptoException ex)
+            {
+                throw new AsymmetricOperationFailedException(ex);
+            }
         }
 
         public Memory<byte> ExportPrivateKey()
@@ -106,6 +121,11 @@ namespace MKW.Core.Cryptography.BouncyCastle
 
         public Memory<byte> Sign(ReadOnlySpan<byte> data)
         {
+            if (privateKey == null)
+            {
+                throw new AsymmetricOperationRequiresPrivateKey();
+            }
+
             signer.Init(true, privateKey);
             signer.BlockUpdate(data);
             return signer.GenerateSignature();

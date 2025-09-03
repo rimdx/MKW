@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using MKW.Core.Cryptography.Exceptions;
+using System.Security.Cryptography;
 
 namespace MKW.Core.Cryptography.System
 {
@@ -38,27 +39,55 @@ namespace MKW.Core.Cryptography.System
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
-            return rsa.Encrypt(data, CryptographicConstants.RSA.EncryptionPadding);
+            try
+            {
+                return rsa.Encrypt(data, CryptographicConstants.RSA.EncryptionPadding);
+            }
+            catch (CryptographicException ex)
+            {
+                throw new AsymmetricOperationFailedException(ex);
+            }
         }
 
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
-            return rsa.Decrypt(data, CryptographicConstants.RSA.EncryptionPadding);
+            try
+            {
+                return rsa.Decrypt(data, CryptographicConstants.RSA.EncryptionPadding);
+            }
+            catch (CryptographicException ex)
+            {
+                throw new AsymmetricOperationFailedException(ex);
+            }
         }
 
         public Memory<byte> Sign(ReadOnlySpan<byte> data)
         {
-            return rsa.SignData(data,
-                                CryptographicConstants.RSA.SignHashAlgorithm,
-                                CryptographicConstants.RSA.SignaturePadding);
+            try
+            {
+                return rsa.SignData(data,
+                                    CryptographicConstants.RSA.SignHashAlgorithm,
+                                    CryptographicConstants.RSA.SignaturePadding);
+            }
+            catch (CryptographicException ex)
+            {
+                throw new AsymmetricOperationFailedException(ex);
+            }
         }
 
         public bool Verify(ReadOnlySpan<byte> data, ReadOnlySpan<byte> signature)
         {
-            return rsa.VerifyData(data,
-                                  signature,
-                                  CryptographicConstants.RSA.SignHashAlgorithm,
-                                  CryptographicConstants.RSA.SignaturePadding);
+            try
+            {
+                return rsa.VerifyData(data,
+                                      signature,
+                                      CryptographicConstants.RSA.SignHashAlgorithm,
+                                      CryptographicConstants.RSA.SignaturePadding);
+            }
+            catch (CryptographicException ex)
+            {
+                throw new SignatureVerificationFailedException(ex);
+            }
         }
 
         public Memory<byte> ExportPublicKey()
