@@ -13,15 +13,9 @@ jobs:
   build:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        runtime:
-        - win-x64
-
     env:
       Parameters: >
         /p:Configuration=Release
-        /p:RuntimeIdentifier=${{ matrix.runtime }}
 
     steps:
       - uses: actions/checkout@v4
@@ -34,10 +28,10 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish --no-build --framework net8.0 MKW ${{ env.Parameters }}
-          dotnet publish --no-build --framework net8.0 MKW.GUI ${{ env.Parameters }}
-          dotnet publish --no-build --framework net8.0-windows MKW ${{ env.Parameters }}
-          dotnet publish --no-build --framework net8.0-windows MKW.GUI ${{ env.Parameters }}
+          dotnet publish --rid win-x64 --framework net8.0 MKW ${{ env.Parameters }}
+          dotnet publish --rid win-x64 --framework net8.0 MKW.GUI ${{ env.Parameters }}
+          dotnet publish --rid win-x64 --framework net8.0-windows MKW ${{ env.Parameters }}
+          dotnet publish --rid win-x64 --framework net8.0-windows MKW.GUI ${{ env.Parameters }}
           dotnet publish --no-build --framework net472 MKW ${{ env.Parameters }}
           dotnet publish --no-build --framework net472 MKW.GUI ${{ env.Parameters }}
 
