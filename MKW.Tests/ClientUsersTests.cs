@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography.Exceptions;
 using MKW.Core.Storage;
 using NUnit.Framework.Legacy;
 using System.Security.Cryptography;
@@ -39,7 +40,7 @@ namespace MKW.Tests
                                       "awesomesecretno1willeverguess")
             );
 
-            Assert.Throws<CryptographicException>(
+            Assert.Throws<SymmetricOperationFailedException>(
                 () => client.OpenUser(user.Id, "randomheckerpwdhaha")
             );
         }

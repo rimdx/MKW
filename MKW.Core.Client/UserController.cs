@@ -1,7 +1,7 @@
 ﻿using MKW.Core.Client.Notify;
 using MKW.Core.Cryptography;
+using MKW.Core.Cryptography.Exceptions;
 using MKW.Core.Storage;
-using System.Security.Cryptography;
 
 namespace MKW.Core.Client
 {
@@ -69,7 +69,7 @@ namespace MKW.Core.Client
 
                     return OpenUser(client.OpenDatabaseUser(user.Id, false), creds);
                 }
-                catch (CryptographicException)
+                catch (SymmetricOperationFailedException)
                 {
                     // Ignore this user if the credentials are invalid
                 }
