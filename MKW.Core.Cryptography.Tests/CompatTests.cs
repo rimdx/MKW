@@ -113,5 +113,18 @@ namespace MKW.Core.Cryptography.Tests
             ClassicAssert.IsFalse(verifier1.Verify(data.Span, random.NextBytes(sign1.Length)));
             ClassicAssert.IsFalse(verifier1.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
         }
+
+        [Test]
+        [Repeat(50)]
+        public void PassAsymmetricKeysCrashTest()
+        {
+            using IAsymmetricPrivateTransformer key1 = crypto1.CreateAsymmetricTransformer();
+
+            using IAsymmetricPrivateTransformer key2 = crypto2.OpenAsymmetricTransformer(
+                key1.ExportPublicKey().Span, key1.ExportPrivateKey().Span);
+
+            using IAsymmetricPublicTransformer pubkey2 = crypto2.OpenAsymmetricTransformer(
+                key1.ExportPublicKey().Span);
+        }
     }
 }
