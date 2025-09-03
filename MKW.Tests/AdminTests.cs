@@ -2,6 +2,7 @@
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -12,7 +13,7 @@ namespace MKW.Tests
         [Test]
         public void AddOpenSimpleTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
             using ClientSession client = ClientSession.Create(db, "adminsecret");
 
@@ -22,7 +23,7 @@ namespace MKW.Tests
         [Test]
         public void UpdateTrustTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
             using ClientSession client = ClientSession.Create(db, "adminsecret");
 
@@ -58,7 +59,7 @@ namespace MKW.Tests
         [Test]
         public void EntriesHiddenForUntrustedUsersTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             UserInfo trusted = client.PromoteUser("trusted");
@@ -87,7 +88,7 @@ namespace MKW.Tests
         [Test]
         public void OpenAdminAsUser()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             using (UserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
@@ -102,7 +103,7 @@ namespace MKW.Tests
         [Test]
         public void NewEntriesAreSharedWithAdminTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             EntryId entryId;
@@ -126,7 +127,7 @@ namespace MKW.Tests
         [Test]
         public void NewEntriesAreAlwaysSharedWithMeEvenThoughNooneTrustsMeFineIHaveNoIdeaHowToMakeTheTitleBiggerTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             using UserSession user = sbox.CreateUser(client, "user1", out UserInfo userInfo, false);
@@ -159,7 +160,7 @@ namespace MKW.Tests
         [Test]
         public void ClientMustFailOperationIfNoAdminExist()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
 
             Assert.Throws<Exception>(() => ClientSession.Open(db));

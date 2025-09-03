@@ -2,6 +2,7 @@
 using MKW.Core.Client.Notify;
 using MKW.Core.Cryptography.Exceptions;
 using MKW.Core.Storage;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 using System.Security.Cryptography;
 
@@ -12,7 +13,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleAddUserTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
@@ -28,7 +29,7 @@ namespace MKW.Tests
         [Test]
         public void OpenUserTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             UserInfo user = client.PromoteUser("awesomesecretno1willeverguess");
@@ -48,7 +49,7 @@ namespace MKW.Tests
         [Test]
         public void OpenUserTestNoId()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             UserInfo user1 = client.PromoteUser("cred1");

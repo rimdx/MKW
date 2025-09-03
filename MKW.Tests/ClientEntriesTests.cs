@@ -1,6 +1,7 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -10,7 +11,7 @@ namespace MKW.Tests
         [Test]
         public void AddEntryTests()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
@@ -47,7 +48,7 @@ namespace MKW.Tests
         [Test]
         public void HiddenEntriesTests()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession session = sbox.OpenSession();
 
             sbox.CreateUser(session, "iamanoldman", out UserInfo oldUser).Dispose();
@@ -120,7 +121,7 @@ namespace MKW.Tests
         public void ClientEntryAPITest()
         {
             // init
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             client.PromoteUser("usersecret");
@@ -182,7 +183,7 @@ namespace MKW.Tests
         public void ClientUpdateEntryAPITest()
         {
             // init
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             using UserSession user = sbox.CreateUser(client, "usersecret", out _);
@@ -211,7 +212,7 @@ namespace MKW.Tests
         public void UserEntryAPITest()
         {
             // init
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             EntryId entryId;
 
             using (ClientSession client = sbox.OpenSession())

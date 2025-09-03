@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -9,7 +10,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             using UserSession user = sbox.CreateUser(client, "123", out UserInfo userInfo, false);
@@ -41,7 +42,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleTrustNetworkTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             //            exp trust    imp trust
@@ -103,7 +104,7 @@ namespace MKW.Tests
         [Test]
         public void TrustNetworkTestWithCommonNode()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             //            exp trust
@@ -151,7 +152,7 @@ namespace MKW.Tests
         [Test]
         public void TrustNetworkTestLoops()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             // 1 --> 2
