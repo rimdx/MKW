@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using MKW.Testing.Common;
+﻿using MKW.Testing.Common;
 
 namespace MKW.GUI.Tests
 {
@@ -15,7 +14,6 @@ namespace MKW.GUI.Tests
         public override void Dispose()
         {
             RegistryService.Dispose();
-            Registry.CurrentUser.DeleteSubKey(TestRootKey, false);
         }
     }
 }
