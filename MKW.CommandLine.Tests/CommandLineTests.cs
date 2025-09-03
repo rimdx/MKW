@@ -4,7 +4,7 @@ using MKW.Core.Storage;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
-namespace MKW.Tests
+namespace MKW.CommandLine.Tests
 {
     public class CommandLineTests
     {
