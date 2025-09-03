@@ -1,6 +1,7 @@
 using MKW.Core.Client;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -10,7 +11,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
 
             // create a test database file
             ClassicAssert.AreEqual(
@@ -31,7 +32,7 @@ namespace MKW.Tests
         [Test]
         public void AddUserTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             string output = sbox.Run($"mkw user add {sbox.DatabasePath} --password lifeishard");
@@ -49,7 +50,7 @@ namespace MKW.Tests
         [Test]
         public void HelpTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
 
             sbox.Run("mkw --help");
         }
@@ -57,7 +58,7 @@ namespace MKW.Tests
         [Test]
         public void ListEntriesTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             sbox.CreateUser(client, "amogus", out UserInfo user1).Dispose();
@@ -86,7 +87,7 @@ namespace MKW.Tests
         [Test]
         public void HiddenEntriesTests()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
 
             using (ClientSession client = sbox.OpenSession())
             {
@@ -144,7 +145,7 @@ namespace MKW.Tests
         [Test]
         public void AddEntryTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             sbox.Run($"mkw user add {sbox.DatabasePath} --password test1");
@@ -227,7 +228,7 @@ namespace MKW.Tests
         [Test]
         public void InteractivePromptTest()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
             sbox.Run($"mkw user add {sbox.DatabasePath}");
@@ -246,7 +247,7 @@ namespace MKW.Tests
         [Test]
         public void CommandLineCreatesAdmin()
         {
-            using SandBox sbox = new SandBox(false);
+            using ClientSandBox sbox = new ClientSandBox(false);
 
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
 

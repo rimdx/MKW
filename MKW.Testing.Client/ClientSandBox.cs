@@ -5,18 +5,16 @@ using MKW.Core.Cryptography.Loader;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 using MKW.Testing.Common;
-using System.Diagnostics;
-using System.Text;
 
-namespace MKW.Tests
+namespace MKW.Testing.Client
 {
-    public class SandBox : SandBoxBase
+    public class ClientSandBox : SandBoxBase
     {
         public string AdminSecret => "adminsecret123";
 
         public ICryptographyProvider Crypto = CryptographyLoader.GetProvider();
 
-        public SandBox(bool init = true)
+        public ClientSandBox(bool init = true)
         {
             if (init)
             {
@@ -59,5 +57,6 @@ namespace MKW.Tests
 
             return userSession;
         }
+
     }
 }

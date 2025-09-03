@@ -9,6 +9,7 @@
     <ProjectReference Include="..\MKW.Core.Cryptography.Loader\MKW.Core.Cryptography.Loader.csproj" />
     <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
     <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
+    <ProjectReference Include="..\MKW.Testing.Client\MKW.Testing.Client.csproj" />
     <ProjectReference Include="..\MKW.Testing.Common\MKW.Testing.Common.csproj" />
     <ProjectReference Include="..\MKW\MKW.csproj" />
   </ItemGroup>
