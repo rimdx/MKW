@@ -20,7 +20,6 @@
 
     <Label Grid.Row="0"
            Content="Entry content:"
-           FontWeight="Bold"
            Target="Payload" />
 
     <TextBox Grid.Row="2"
