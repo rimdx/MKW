@@ -30,6 +30,21 @@
 
         public Resource<T> Move()
         {
+            if (state == ResourceState.Reference)
+            {
+                throw new ResourceNotOwnedException();
+            }
+
+            if (state == ResourceState.OriginalMovedOut)
+            {
+                throw new ResourceNotOwnedException();
+            }
+
+            if (state == ResourceState.Disposed)
+            {
+                throw new ResourceDisposedException();
+            }
+
             state = ResourceState.OriginalMovedOut;
             return new Resource<T>(Value, ResourceState.ReferenceOwned);
         }
