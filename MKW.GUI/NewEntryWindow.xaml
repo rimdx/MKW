@@ -19,7 +19,8 @@
     <Label Grid.Row="0"
            Content="Entry content:"
            Target="Payload"
-           Margin="0,0,0,6" />
+           Margin="0,0,0,6"
+           Padding="0" />
 
     <TextBox Grid.Row="1"
              x:Name="Payload"
