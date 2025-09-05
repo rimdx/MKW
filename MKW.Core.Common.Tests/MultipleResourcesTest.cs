@@ -4,39 +4,44 @@ namespace MKW.Core.Common.Tests
 {
     public class MultipleResourcesTest
     {
-        private interface IA : IResource
+        private interface IDisposeCounter
+        {
+            int Disposed { get; }
+        }
+
+        private interface IA : IDisposeCounter, IDisposable
         {
             int PropA { get; }
         }
 
-        private interface IB : IResource
+        private interface IB : IDisposeCounter, IDisposable
         {
             int PropB { get; }
         }
 
-        private class A : Resource<A>, IA, IResource
+        private class A : IA, IDisposeCounter, IDisposable
         {
             public int PropA => 11;
             public int Disposed { get; private set; }
 
-            public override void Dispose(bool disposing)
+            public void Dispose()
             {
                 Disposed++;
             }
         }
 
-        private class B : Resource<B>, IB, IResource
+        private class B : IB, IDisposeCounter, IDisposable
         {
             public int PropB => 22;
             public int Disposed { get; private set; }
 
-            public override void Dispose(bool disposing)
+            public void Dispose()
             {
                 Disposed++;
             }
         }
 
-        private class Complex : Resource<Complex>, IA, IB, IResource
+        private class Complex : IA, IB, IDisposeCounter, IDisposable
         {
             private readonly Resource<IA> a;
             private readonly Resource<IB> b;
@@ -47,49 +52,52 @@ namespace MKW.Core.Common.Tests
                 this.b = b;
             }
 
+            public int Disposed { get; private set; }
+
             public int PropA => a.Value.PropA;
             public int PropB => b.Value.PropB;
 
-            public override void Dispose(bool disposing)
+            public void Dispose()
             {
                 a.Dispose();
                 b.Dispose();
+                Disposed++;
             }
         }
 
         [Test]
         public void Test()
         {
-            A a = new A();
-            B b = new B();
+            Resource<IA> a = Resource<IA>.Attach(new A());
+            Resource<IB> b = Resource<IB>.Attach(new B());
 
-            ClassicAssert.AreEqual(11, a.PropA);
-            ClassicAssert.AreEqual(22, b.PropB);
+            ClassicAssert.AreEqual(11, a.Value.PropA);
+            ClassicAssert.AreEqual(22, b.Value.PropB);
 
-            Complex complex = new Complex(a.Move<IA>(), b.Reference<IB>());
+            Complex complex = new Complex(a.Move(), b.Reference());
 
             ClassicAssert.AreEqual(11, complex.PropA);
             ClassicAssert.AreEqual(22, complex.PropB);
 
             complex.Dispose();
 
-            ClassicAssert.AreEqual(1, a.Disposed);
-            ClassicAssert.AreEqual(0, b.Disposed);
+            ClassicAssert.AreEqual(1, a.Value.Disposed);
+            ClassicAssert.AreEqual(0, b.Value.Disposed);
 
             ClassicAssert.AreEqual(11, complex.PropA); // todo: disposed exception
             ClassicAssert.AreEqual(22, complex.PropB); // todo: disposed exception
 
-            ClassicAssert.AreEqual(11, a.PropA); // todo: exception
-            ClassicAssert.AreEqual(22, b.PropB); // we are fine since it was passed as a reference
+            ClassicAssert.AreEqual(11, a.Value.PropA); // todo: exception
+            ClassicAssert.AreEqual(22, b.Value.PropB); // we are fine since it was passed as a reference
 
             a.Dispose();
             b.Dispose();
 
-            ClassicAssert.AreEqual(1, a.Disposed);
-            ClassicAssert.AreEqual(1, b.Disposed);
+            ClassicAssert.AreEqual(1, a.Value.Disposed);
+            ClassicAssert.AreEqual(1, b.Value.Disposed);
 
-            ClassicAssert.AreEqual(11, a.PropA); // todo: exception
-            ClassicAssert.AreEqual(22, b.PropB); // todo: exception
+            ClassicAssert.AreEqual(11, a.Value.PropA); // todo: exception
+            ClassicAssert.AreEqual(22, b.Value.PropB); // todo: exception
         }
     }
 }

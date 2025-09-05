@@ -4,16 +4,16 @@ namespace MKW.Core.Common.Tests
 {
     public class ResourceTests
     {
-        private interface ITestResource : IResource
+        private interface ITestResource : IDisposable
         {
             public int Disposed { get; }
         }
 
-        private class TestResource : Resource<ITestResource>, ITestResource
+        private class TestResource : ITestResource
         {
             public int Disposed { get; private set; }
 
-            public override void Dispose(bool disposing)
+            public void Dispose()
             {
                 Disposed++;
             }
@@ -22,39 +22,39 @@ namespace MKW.Core.Common.Tests
         [Test]
         public void SimpleTest()
         {
-            TestResource resource = new TestResource();
+            Resource<ITestResource> resource = Resource<ITestResource>.Attach(new TestResource());
 
-            ClassicAssert.AreEqual(0, resource.Disposed);
+            ClassicAssert.AreEqual(0, resource.Value.Disposed);
 
             resource.Dispose();
 
-            ClassicAssert.AreEqual(1, resource.Disposed);
+            ClassicAssert.AreEqual(1, resource.Value.Disposed);
         }
 
         [Test]
         public void SimpleMoveTest()
         {
-            TestResource resource = new TestResource();
-            ClassicAssert.AreEqual(0, resource.Disposed);
+            Resource<ITestResource> resource = Resource<ITestResource>.Attach(new TestResource());
+            ClassicAssert.AreEqual(0, resource.Value.Disposed);
 
-            Resource<ITestResource> moved = resource.Move<ITestResource>();
+            Resource<ITestResource> moved = resource.Move();
 
-            ClassicAssert.AreEqual(0, resource.Disposed);
+            ClassicAssert.AreEqual(0, resource.Value.Disposed);
             ClassicAssert.AreEqual(0, moved.Value.Disposed);
 
             moved.Dispose();
 
-            ClassicAssert.AreEqual(1, resource.Disposed);
+            ClassicAssert.AreEqual(1, resource.Value.Disposed);
             ClassicAssert.AreEqual(1, moved.Value.Disposed);
 
             resource.Dispose();
-            ClassicAssert.AreEqual(1, resource.Disposed);
+            ClassicAssert.AreEqual(1, resource.Value.Disposed);
             ClassicAssert.AreEqual(1, moved.Value.Disposed);
 
             moved.Dispose();
             resource.Dispose();
 
-            ClassicAssert.AreEqual(1, resource.Disposed);
+            ClassicAssert.AreEqual(1, resource.Value.Disposed);
             ClassicAssert.AreEqual(1, moved.Value.Disposed);
         }
     }
