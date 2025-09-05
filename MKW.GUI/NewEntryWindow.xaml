@@ -12,9 +12,9 @@
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
-      <RowDefinition Height="8" />
+      <RowDefinition Height="6" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="8" />
+      <RowDefinition Height="6" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
