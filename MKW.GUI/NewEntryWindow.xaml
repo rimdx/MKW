@@ -12,23 +12,22 @@
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
-      <RowDefinition Height="6" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="6" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
     <Label Grid.Row="0"
            Content="Entry content:"
-           Target="Payload" />
+           Target="Payload"
+           Margin="0,0,0,6" />
 
-    <TextBox Grid.Row="2"
+    <TextBox Grid.Row="1"
              x:Name="Payload"
              Text="{Binding Payload, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
              FontFamily="Consolas"
              AcceptsReturn="True" />
 
-    <Grid Grid.Row="4">
+    <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
