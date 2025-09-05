@@ -1,59 +1,37 @@
 ﻿namespace MKW.Core.Common
 {
-    public class Resource<T> : IResource, IDisposable where T : IResource
+    public class Resource<T> : IDisposable where T : IDisposable
     {
+        public T Value { get; }
         private ResourceState state;
-
-        protected Resource()
-        {
-            _value = this;
-            state = ResourceState.Original;
-        }
 
         private Resource(T value, ResourceState state)
         {
-            _value = value;
+            Value = value;
             this.state = state;
         }
 
-        private readonly object _value;
+        public static Resource<T> Attach(T value)
+        {
+            return new Resource<T>(value, ResourceState.Original);
+        }
 
-        public T Value => (T)_value;
-        IResource IResource.Value => (IResource)_value;
 
         public static implicit operator T(Resource<T> resource)
         {
-            return resource.As<T>();
+            return resource.Value;
         }
 
-        public C As<C>() where C : IResource
+
+        public Resource<T> Reference()
         {
-            return (C)(object)Value;
+            return new Resource<T>(Value, ResourceState.Reference);
         }
 
-        IResource IResource.Reference()
-        {
-            return Reference<T>();
-        }
-
-        public Resource<C> Reference<C>() where C : IResource
-        {
-            return new Resource<C>(As<C>(), ResourceState.Reference);
-        }
-
-        IResource IResource.Move()
-        {
-            return Move<T>();
-        }
-
-        public Resource<C> Move<C>() where C : IResource
+        public Resource<T> Move()
         {
             state = ResourceState.OriginalMovedOut;
-            return new Resource<C>(As<C>(), ResourceState.ReferenceOwned);
-        }
-
-        public virtual void Dispose(bool disposing)
-        {
+            return new Resource<T>(Value, ResourceState.ReferenceOwned);
         }
 
         public void Dispose()
@@ -61,7 +39,7 @@
             if (state == ResourceState.Original || state == ResourceState.ReferenceOwned)
             {
                 state = ResourceState.Disposed;
-                Value.Dispose(true);
+                Value.Dispose();
             }
         }
     }
