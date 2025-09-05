@@ -57,5 +57,21 @@ namespace MKW.Core.Common.Tests
             ClassicAssert.AreEqual(1, resource.Value.Disposed);
             ClassicAssert.AreEqual(1, moved.Value.Disposed);
         }
+
+        [Test]
+        public void ExceptionistTests()
+        {
+            Resource<ITestResource> resource = Resource<ITestResource>.Attach(new TestResource());
+
+            Resource<ITestResource> reference = resource.Reference();
+            Resource<ITestResource> owned = resource.Move();
+
+            Assert.Throws<ResourceNotOwnedException>(() => reference.Move());
+
+            owned.Dispose();
+            Assert.Throws<ResourceDisposedException>(() => owned.Move());
+
+            Assert.Throws<ResourceNotOwnedException>(() => resource.Move());
+        }
     }
 }
