@@ -59,11 +59,11 @@
 - [x] Create new users in workspace
 - [x] Authenticate user and access database
 - [x] View users
-- [ ] Trust management and verification
-- [ ] Delete users
+- [x] Trust management and verification
+- [x] Delete users
 - [ ] Display user names and metadata
 - [ ] Copy important stuff
-- [ ] 
+- [ ] Share records
 
 ### Enhancements
 
