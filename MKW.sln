@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.Testing.Client", "MKW.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKW.CommandLine.Tests", "MKW.CommandLine.Tests\MKW.CommandLine.Tests.csproj", "{D66752BD-AC41-49DF-ABE9-54B74AAFC1B5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E556B0CE-0BB8-486A-B8D3-54D956676578}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,8 +158,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MKW.Core.Cryptography.BouncyCastle.NETFramework\MKW.Core.Cryptography.BouncyCastle.NETFramework.projitems*{076fee77-d5c9-499c-9615-1947517e5f17}*SharedItemsImports = 13
