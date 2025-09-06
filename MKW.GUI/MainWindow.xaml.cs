@@ -177,6 +177,29 @@ namespace MKW.GUI
 
         }
 
+        // User
+
+        private void PromoteUser_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                PromoteUserWindowViewModel viewModel = model.Database!.CreatePromoteUserWindowViewModel();
+                PromoteUserWindow window = new PromoteUserWindow(viewModel);
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
+
+        private void UserPropertiesClick(object sender, RoutedEventArgs e)
+        {
+            using UserPropertyDialogViewModel viewModel = model.Database!.CreateUserPropertiesWindowViewModel();
+            UserPropertyDialog dialog = new UserPropertyDialog(viewModel, Window.GetWindow(this));
+            dialog.ShowDialog();
+        }
+
         // Help
 
         private void HelpAbout_Click(object sender, RoutedEventArgs e)
