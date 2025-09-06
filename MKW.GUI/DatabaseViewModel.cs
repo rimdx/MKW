@@ -135,6 +135,16 @@ namespace MKW.GUI
             return new UserPropertyDialogViewModel(Database, userEditor);
         }
 
+        public void DeleteUser()
+        {
+            if (SelectedUser == null)
+            {
+                throw new Exception("No user was selected.");
+            }
+
+            Database.DeleteUser(SelectedUser.Id);
+        }
+
         public void Dispose()
         {
             Entries.Dispose();

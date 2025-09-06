@@ -39,5 +39,24 @@ namespace MKW.GUI
             UserPropertyDialog dialog = new UserPropertyDialog(viewModel, Window.GetWindow(this));
             dialog.ShowDialog();
         }
+
+        private void DeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this user?",
+                                                          "Confirm Deletion",
+                                                          MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    model.DeleteUser();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
     }
 }

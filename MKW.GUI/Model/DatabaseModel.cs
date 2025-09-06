@@ -89,6 +89,12 @@ namespace MKW.GUI.Model
             return new UserEditorModel(this, user);
         }
 
+        public void DeleteUser(UserId id)
+        {
+            Database.DeleteUser(id);
+            OnUsersChanged?.Invoke(this, new EventArgs());
+        }
+
         public void Dispose()
         {
             Database?.Dispose();
