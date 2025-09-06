@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MKW.GUI"
-        xmlns:images="clr-namespace:MKW.GUI.Images"
+        xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:PromoteUserWindowViewModel}"
         Title="Promote New User"
