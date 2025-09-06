@@ -13,6 +13,7 @@
 - [x] User management
   - [x] Create, view properties, delete
   - [x] Add trust signature
+- [ ] Share records
 
 ## GUI
 
