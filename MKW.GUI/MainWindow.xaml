@@ -41,12 +41,12 @@
         <Separator />
         <MenuItem Header="_Exit" Click="Exit_Click" />
       </MenuItem>
-      <MenuItem Header="Entry">
+      <MenuItem Header="_Entry">
         <MenuItem Header="Add Entry" Click="AddEntry_Click" IsEnabled="{Binding IsDatabaseAttached}" />
         <MenuItem Header="Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
         <MenuItem Header="Delete Entry" Click="DeleteEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
       </MenuItem>
-      <MenuItem Header="User">
+      <MenuItem Header="_User">
         <MenuItem Header="Promote _New User..."
                   IsEnabled="{Binding IsDatabaseAttached}"
                   Click="PromoteUser_Click" />
