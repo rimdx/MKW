@@ -32,12 +32,21 @@
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
-        <ColumnDefinition Width="6" />
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="1" Content="OK" Width="70" Click="OK_Click" IsDefault="True" />
-      <Button Grid.Column="3" Content="Cancel" Width="70" Click="Cancel_Click" IsCancel="True" />
+      <Button Grid.Column="1"
+              Content="OK"
+              Width="70"
+              Click="OK_Click"
+              IsDefault="True"
+              Margin="0,0,6,0" />
+
+      <Button Grid.Column="2"
+              Content="Cancel"
+              Width="70"
+              Click="Cancel_Click"
+              IsCancel="True" />
     </Grid>
   </Grid>
 </Window>
