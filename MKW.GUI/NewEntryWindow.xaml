@@ -28,12 +28,9 @@
              FontFamily="Consolas"
              AcceptsReturn="True" />
 
-    <Grid Grid.Row="2">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
-        <ColumnDefinition Width="auto" />
-      </Grid.ColumnDefinitions>
+    <StackPanel Grid.Row="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
 
       <Button Grid.Column="1"
               Content="OK"
@@ -47,6 +44,6 @@
               Width="70"
               Click="Cancel_Click"
               IsCancel="True" />
-    </Grid>
+    </StackPanel>
   </Grid>
 </Window>
