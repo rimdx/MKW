@@ -198,7 +198,7 @@ namespace MKW.GUI
         private void UserPropertiesClick(object sender, RoutedEventArgs e)
         {
             using UserPropertyDialogViewModel viewModel = model.Database!.CreateUserPropertiesWindowViewModel();
-            UserPropertyDialog dialog = new UserPropertyDialog(viewModel, Window.GetWindow(this));
+            UserPropertyDialog dialog = new UserPropertyDialog(viewModel, GetWindow(this));
             dialog.ShowDialog();
         }
 
