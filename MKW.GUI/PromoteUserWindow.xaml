@@ -52,21 +52,21 @@
           <ControlTemplate TargetType="{x:Type local:PasswordRepeatInput}">
             <StackPanel Orientation="Vertical">
               <Label Padding="0"
-                   Target="{Binding ElementName=PART_PasswordBox}"
-                   Content="_Password:" />
+                     Target="{Binding ElementName=PART_PasswordBox}"
+                     Content="_Password:" />
 
               <PasswordBox x:Name="PART_PasswordBox"
-                         Padding="4"
-                         FontFamily="Consolas"
-                         Margin="0,0,0,6" />
+                           Padding="4"
+                           FontFamily="Consolas"
+                           Margin="0,0,0,6" />
 
               <Label Padding="0"
                      Target="{Binding ElementName=PART_PasswordRepeatBox}"
                      Content="_Repeat Password:" />
 
               <PasswordBox x:Name="PART_PasswordRepeatBox"
-                         Padding="4"
-                         FontFamily="Consolas"/>
+                           Padding="4"
+                           FontFamily="Consolas"/>
             </StackPanel>
           </ControlTemplate>
         </local:PasswordRepeatInput.Template>
