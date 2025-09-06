@@ -10,9 +10,9 @@
   - [x] About help
 - [x] Entry management
   - [x] Create, edit, delete
-- [ ] User management
-  - [ ] Create, view properties, delete
-  - [ ] Add trust signature
+- [x] User management
+  - [x] Create, view properties, delete
+  - [x] Add trust signature
 
 ## GUI
 
