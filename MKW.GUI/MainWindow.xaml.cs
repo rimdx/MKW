@@ -136,6 +136,7 @@ namespace MKW.GUI
                 NewEntryWindowViewModel viewModel = model.Database!.CreateNewEntryWindowViewModel();
                 NewEntryWindow window = new NewEntryWindow(viewModel);
                 window.ShowDialog();
+                model.Database!.IsPageEntries = true;
             }
             catch (Exception ex)
             {
@@ -186,6 +187,7 @@ namespace MKW.GUI
                 PromoteUserWindowViewModel viewModel = model.Database!.CreatePromoteUserWindowViewModel();
                 PromoteUserWindow window = new PromoteUserWindow(viewModel);
                 window.ShowDialog();
+                model.Database!.IsPageUsers = true;
             }
             catch (Exception ex)
             {
