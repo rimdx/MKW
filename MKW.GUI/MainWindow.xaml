@@ -46,6 +46,18 @@
         <MenuItem Header="Edit Entry" Click="EditEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
         <MenuItem Header="Delete Entry" Click="DeleteEntry_Click" IsEnabled="{Binding IsEntrySelected}" />
       </MenuItem>
+      <MenuItem Header="User">
+        <MenuItem Header="Promote _New User..."
+                  IsEnabled="{Binding IsDatabaseAttached}"
+                  Click="PromoteUser_Click" />
+
+        <MenuItem Header="_Properties..."
+                  IsEnabled="{Binding IsUserSelected}"
+                  Click="UserPropertiesClick" />
+
+        <MenuItem Header="_Delete..."
+                  IsEnabled="{Binding IsUserSelected}" />
+      </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet" Click="HelpAbout_Click" />
       </MenuItem>

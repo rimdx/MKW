@@ -45,12 +45,21 @@ namespace MKW.GUI
                 OnPropertyChanged(nameof(SelectedEntry));
                 OnPropertyChanged(nameof(IsEntrySelected));
             }
+
+            if (e.MatchProperty(nameof(_database.SelectedEntry)))
+            {
+                OnPropertyChanged(nameof(SelectedUser));
+                OnPropertyChanged(nameof(IsUserSelected));
+            }
         }
 
         public bool IsDatabaseAttached => _database != null;
 
         public DatabaseEntryModel? SelectedEntry => _database?.SelectedEntry;
         public bool IsEntrySelected => SelectedEntry != null;
+
+        public DatabaseUserModel? SelectedUser => _database?.SelectedUser;
+        public bool IsUserSelected => SelectedUser != null;
 
         public DatabaseModel GetDatabase()
         {
