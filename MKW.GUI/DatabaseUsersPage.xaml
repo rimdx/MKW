@@ -25,7 +25,7 @@
                     IsEnabled="{Binding IsUserSelected}"
                     Click="UserPropertiesClick" />
 
-          <MenuItem Header="_Delete..." IsEnabled="{Binding IsUserSelected}" />
+          <MenuItem Header="_Delete..." IsEnabled="{Binding IsUserSelected}" Click="DeleteUser_Click" />
           <Separator />
           <MenuItem Header="Select All" />
         </ContextMenu>

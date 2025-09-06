@@ -198,6 +198,25 @@ namespace MKW.GUI
             dialog.ShowDialog();
         }
 
+        private void DeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this user?",
+                                                          "Confirm Deletion",
+                                                          MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    model.Database!.DeleteUser();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
+        }
+
         // Help
 
         private void HelpAbout_Click(object sender, RoutedEventArgs e)

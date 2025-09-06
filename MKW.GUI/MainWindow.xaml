@@ -66,7 +66,8 @@
                   Click="UserPropertiesClick" />
 
         <MenuItem Header="_Delete..."
-                  IsEnabled="{Binding IsUserSelected}" />
+                  IsEnabled="{Binding IsUserSelected}"
+                  Click="DeleteUser_Click" />
       </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet"
