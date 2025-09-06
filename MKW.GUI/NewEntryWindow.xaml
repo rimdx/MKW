@@ -26,7 +26,8 @@
              x:Name="Payload"
              Text="{Binding Payload, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
              FontFamily="Consolas"
-             AcceptsReturn="True" />
+             AcceptsReturn="True"
+             Margin="0,0,0,6" />
 
     <StackPanel Grid.Row="2"
                 Orientation="Horizontal"
