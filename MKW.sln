@@ -67,6 +67,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E556B0CE-0
 	ProjectSection(SolutionItems) = preProject
 		docs\CHANGELOG.md = docs\CHANGELOG.md
 		docs\internal-design.md = docs\internal-design.md
+		docs\resource-managing-guidelines.md = docs\resource-managing-guidelines.md
 		docs\TODO.md = docs\TODO.md
 		docs\versioning.md = docs\versioning.md
 	EndProjectSection
@@ -162,8 +163,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {E27DAC7F-F638-4B1A-B5E0-C67658D3B524}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MKW.Core.Cryptography.BouncyCastle.NETFramework\MKW.Core.Cryptography.BouncyCastle.NETFramework.projitems*{076fee77-d5c9-499c-9615-1947517e5f17}*SharedItemsImports = 13
