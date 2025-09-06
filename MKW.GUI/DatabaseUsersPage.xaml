@@ -19,13 +19,16 @@
               local:ListViewBehaviours.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="Promote _New User..." Click="PromoteUser_Click" />
+          <MenuItem Header="Promote _New User..."
+                    Click="PromoteUser_Click" />
 
           <MenuItem Header="_Properties..."
                     IsEnabled="{Binding IsUserSelected}"
                     Click="UserPropertiesClick" />
 
-          <MenuItem Header="_Delete..." IsEnabled="{Binding IsUserSelected}" Click="DeleteUser_Click" />
+          <MenuItem Header="_Delete..."
+                    IsEnabled="{Binding IsUserSelected}"
+                    Click="DeleteUser_Click" />
           <Separator />
           <MenuItem Header="Select All" />
         </ContextMenu>
@@ -49,7 +52,9 @@
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
 
-            <GridViewColumn Header="User ID" Width="250" DisplayMemberBinding="{Binding Id}" />
+            <GridViewColumn Header="User ID"
+                            Width="250"
+                            DisplayMemberBinding="{Binding Id}" />
           </GridView.Columns>
         </GridView>
       </ListView.View>
