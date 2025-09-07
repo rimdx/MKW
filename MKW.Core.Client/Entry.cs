@@ -72,7 +72,7 @@ namespace MKW.Core.Client
             entry.Salt = payloadEncoder.ExportIV();
         }
 
-        public IEnumerable<UserInfo> EnumerateEncodedForUsers()
+        public IEnumerable<UserInfo> EnumerateAccess()
         {
             foreach (UserId id in entry.Keys.Keys)
             {
@@ -91,7 +91,7 @@ namespace MKW.Core.Client
             yield return client.GetUserInfo(newUserId);
         }
 
-        public virtual EntryInfo Share(UserId userId)
+        public virtual EntryInfo AddAccess(UserId userId)
         {
             EntryPayload? payload = OpenPayload();
 
