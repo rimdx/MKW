@@ -4,7 +4,11 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserEntry : Entry, IEntrySession
+    public class UserEntry
+        : Entry
+        , IEntrySession
+        , IEntryAccessController
+        , IDisposable
     {
         protected readonly UserSession user;
 

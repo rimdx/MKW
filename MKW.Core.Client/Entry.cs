@@ -4,7 +4,10 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class Entry : IEntrySession, IDisposable
+    public class Entry
+        : IEntrySession
+        , IEntryAccessController
+        , IDisposable
     {
         protected readonly ClientSession client;
         protected readonly ICryptographyProvider crypto;
