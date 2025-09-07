@@ -100,9 +100,7 @@ namespace MKW.Core.Client
                 throw new Exception("The entry is not encrypted for this user.");
             }
 
-            UserInfo[] users = [.. EnumeratedAccessAdd(userId)];
-
-            EncodeEntry(entry, payload, users);
+            EncodeEntry(entry, payload, EnumeratedAccessAdd(userId));
 
             entry.Save();
         }
