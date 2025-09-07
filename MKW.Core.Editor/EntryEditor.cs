@@ -46,6 +46,11 @@ namespace MKW.Core.Editor
             };
         }
 
+        public EntryInfo Share(UserId userId)
+        {
+            return proxy.Share(userId);
+        }
+
         public void Commit()
         {
             if (payloadBefore != payloadAfter && payloadAfter != null)

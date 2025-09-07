@@ -11,5 +11,7 @@ namespace MKW.Core.Client
         EntryPayload? OpenPayload();
 
         IEnumerable<UserInfo> EnumerateEncodedForUsers();
+
+        EntryInfo Share(UserId userId);
     }
 }
