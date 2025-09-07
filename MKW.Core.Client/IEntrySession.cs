@@ -3,15 +3,11 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public interface IEntrySession : IDisposable
+    public interface IEntrySession : IEntryAccessController, IDisposable
     {
         EntryId Id { get; }
 
         EntryInfo UpdatePayload(EntryPayload payload);
         EntryPayload? OpenPayload();
-
-        IEnumerable<UserInfo> EnumerateEncodedForUsers();
-
-        EntryInfo Share(UserId userId);
     }
 }
