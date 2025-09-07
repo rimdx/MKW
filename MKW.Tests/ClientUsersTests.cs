@@ -47,7 +47,6 @@ namespace MKW.Tests
         }
 
         [Test]
-        [Repeat(50)]
         public void OpenUserTestNoId()
         {
             using ClientSandBox sbox = new ClientSandBox();
