@@ -6,6 +6,6 @@ namespace MKW.Core.Client
     public interface IEntryAccessController : IDisposable
     {
         IEnumerable<UserInfo> EnumerateAccess();
-        EntryInfo AddAccess(UserId userId);
+        void AddAccess(UserId userId);
     }
 }

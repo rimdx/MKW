@@ -46,9 +46,9 @@ namespace MKW.Core.Editor
             };
         }
 
-        public EntryInfo AddAccess(UserId userId)
+        public void AddAccess(UserId userId)
         {
-            return proxy.AddAccess(userId);
+            proxy.AddAccess(userId);
         }
 
         public void Commit()

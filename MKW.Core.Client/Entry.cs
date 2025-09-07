@@ -91,7 +91,7 @@ namespace MKW.Core.Client
             yield return client.GetUserInfo(newUserId);
         }
 
-        public virtual EntryInfo AddAccess(UserId userId)
+        public virtual void AddAccess(UserId userId)
         {
             EntryPayload? payload = OpenPayload();
 
@@ -105,13 +105,6 @@ namespace MKW.Core.Client
             EncodeEntry(entry, payload, users);
 
             entry.Save();
-
-            return new EntryInfo
-            {
-                Id = entry.Id,
-                Action = ActionInfo.Updated,
-                EncodedForUsers = users,
-            };
         }
 
         public void Dispose()
