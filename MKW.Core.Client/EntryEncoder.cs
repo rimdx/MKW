@@ -1,0 +1,45 @@
+﻿using MKW.Core.Client.Notify;
+using MKW.Core.Cryptography;
+using MKW.Core.Storage;
+
+namespace MKW.Core.Client
+{
+    public class EntryEncoder : IDisposable
+    {
+        private readonly ICryptographyProvider crypto;
+        private readonly IEntryAccessController accessController;
+
+        public EntryEncoder(ICryptographyProvider crypto,
+                            IEntryAccessController accessController)
+        {
+            this.crypto = crypto;
+            this.accessController = accessController;
+        }
+
+        public void EncodeEntry(IDatabaseEntry entry, EntryPayload payload)
+        {
+            using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
+
+            Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
+
+            Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
+
+            foreach (UserInfo user in accessController.EnumerateAccess())
+            {
+                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(user.PublicKey.Span);
+
+                Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
+
+                keys.Add(user.Id, encyptedKey);
+            }
+
+            entry.Keys = keys;
+            entry.Data = data;
+            entry.Salt = payloadEncoder.ExportIV();
+        }
+
+        public void Dispose()
+        {
+        }
+    }
+}

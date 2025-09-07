@@ -16,6 +16,7 @@ namespace MKW.Core.Client
         protected readonly ITrustProvider trustProvider;
         protected readonly IDatabaseEntry entry;
         protected readonly IEntryAccessController accessController;
+        protected readonly EntryEncoder encoder;
 
         public EntryId Id => entry.Id;
 
@@ -30,13 +31,14 @@ namespace MKW.Core.Client
             this.entry = entry;
 
             accessController = new AccessController(client, trustProvider, entry);
+            encoder = new EntryEncoder(crypto, accessController);
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
             UserInfo[] users = accessController.EnumerateAccess().ToArray();
 
-            EncodeEntry(entry, payload, users);
+            encoder.EncodeEntry(entry, payload);
 
             entry.Save();
 
@@ -51,28 +53,6 @@ namespace MKW.Core.Client
         public virtual EntryPayload? OpenPayload()
         {
             return null;
-        }
-
-        internal void EncodeEntry(IDatabaseEntry entry, EntryPayload payload, IEnumerable<UserInfo> users)
-        {
-            using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
-
-            Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
-
-            Dictionary<UserId, ReadOnlyMemory<byte>> keys = new Dictionary<UserId, ReadOnlyMemory<byte>>();
-
-            foreach (UserInfo user in users)
-            {
-                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(user.PublicKey.Span);
-
-                Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
-
-                keys.Add(user.Id, encyptedKey);
-            }
-
-            entry.Keys = keys;
-            entry.Data = data;
-            entry.Salt = payloadEncoder.ExportIV();
         }
 
         public IEnumerable<UserInfo> EnumerateAccess()
@@ -93,7 +73,7 @@ namespace MKW.Core.Client
             }
 
             accessController.AddAccess(userId);
-            EncodeEntry(entry, payload, accessController.EnumerateAccess());
+            encoder.EncodeEntry(entry, payload);
 
             entry.Save();
         }
