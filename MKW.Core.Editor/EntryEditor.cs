@@ -21,9 +21,9 @@ namespace MKW.Core.Editor
             payloadAfter = payloadBefore;
         }
 
-        public IEnumerable<UserInfo> EnumerateEncodedForUsers()
+        public IEnumerable<UserInfo> EnumerateAccess()
         {
-            foreach (UserInfo user in EnumerateEncodedForUsers())
+            foreach (UserInfo user in EnumerateAccess())
             {
                 yield return user;
             }
@@ -46,9 +46,9 @@ namespace MKW.Core.Editor
             };
         }
 
-        public EntryInfo Share(UserId userId)
+        public EntryInfo AddAccess(UserId userId)
         {
-            return proxy.Share(userId);
+            return proxy.AddAccess(userId);
         }
 
         public void Commit()

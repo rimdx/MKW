@@ -138,7 +138,7 @@ namespace MKW.Tests
                 using IEntrySession entry = user.CreateEntry(entryId);
                 entry.UpdatePayload(new EntryPayload("data"));
 
-                UserInfo[] users = [.. entry.EnumerateEncodedForUsers()];
+                UserInfo[] users = [.. entry.EnumerateAccess()];
                 ClassicAssert.AreEqual(1, users.Length);
                 ClassicAssert.AreEqual(userInfo.Id, users[0].Id);
                 ClassicAssert.AreEqual(Trust.Unknown, users[0].Trust);
@@ -147,7 +147,7 @@ namespace MKW.Tests
             {
                 using IEntrySession entry = user.OpenEntry(entryId);
 
-                UserInfo[] users = [.. entry.EnumerateEncodedForUsers()];
+                UserInfo[] users = [.. entry.EnumerateAccess()];
                 ClassicAssert.AreEqual(1, users.Length);
                 ClassicAssert.AreEqual(userInfo.Id, users[0].Id);
                 ClassicAssert.AreEqual(Trust.Unknown, users[0].Trust);
@@ -198,7 +198,7 @@ namespace MKW.Tests
 
             {
                 using IEntrySession entry = admin.OpenEntry(entryId);
-                entry.Share(user.Id);
+                entry.AddAccess(user.Id);
             }
 
             {
