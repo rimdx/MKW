@@ -78,6 +78,39 @@ namespace MKW.Core.Client
             }
         }
 
+        private IEnumerable<UserInfo> EnumeratedAccessAdd(UserId newUserId)
+        {
+            foreach (UserId user in entry.Keys.Keys)
+            {
+                yield return client.GetUserInfo(user);
+            }
+
+            yield return client.GetUserInfo(newUserId);
+        }
+
+        public virtual EntryInfo Share(UserId userId)
+        {
+            EntryPayload? payload = OpenPayload();
+
+            if (payload == null)
+            {
+                throw new Exception("The entry is not encrypted for this user.");
+            }
+
+            UserInfo[] users = [.. EnumeratedAccessAdd(userId)];
+
+            EncodeEntry(entry, payload, users);
+
+            entry.Save();
+
+            return new EntryInfo
+            {
+                Id = entry.Id,
+                Action = ActionInfo.Updated,
+                EncodedForUsers = users,
+            };
+        }
+
         public void Dispose()
         {
         }

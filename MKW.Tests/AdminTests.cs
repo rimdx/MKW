@@ -172,5 +172,40 @@ namespace MKW.Tests
             // Assert.Throws<Exception>(() => entry.UpdatePayload(new EntryPayload("123")));
             // Assert.Throws<Exception>(() => client.OpenAdmin("123"));
         }
+
+        [Test]
+        public void ShareEntriesWithNewUsersTest()
+        {
+            using ClientSandBox sbox = new ClientSandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            using UserSession admin = sbox.OpenAdmin(client);
+
+            EntryId entryId;
+
+            {
+                using IEntrySession entry = admin.CreateEntry();
+                entry.UpdatePayload(new EntryPayload("data"));
+                entryId = entry.Id;
+            }
+
+            using UserSession user = sbox.CreateUser(client, "user1", out _);
+
+            {
+                using IEntrySession entry = user.OpenEntry(entryId);
+                ClassicAssert.AreEqual(null, entry.OpenPayload());
+            }
+
+            {
+                using IEntrySession entry = admin.OpenEntry(entryId);
+                entry.Share(user.Id);
+            }
+
+            {
+                using IEntrySession entry = user.OpenEntry(entryId);
+                ClassicAssert.AreEqual(new EntryPayload("data"),
+                                       entry.OpenPayload());
+            }
+        }
     }
 }
