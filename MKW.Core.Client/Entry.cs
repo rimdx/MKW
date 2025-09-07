@@ -15,6 +15,7 @@ namespace MKW.Core.Client
         // TODO: dispose
         protected readonly ITrustProvider trustProvider;
         protected readonly IDatabaseEntry entry;
+        protected readonly IEntryAccessController accessController;
 
         public EntryId Id => entry.Id;
 
@@ -27,11 +28,13 @@ namespace MKW.Core.Client
             this.crypto = crypto;
             this.trustProvider = trustProvider;
             this.entry = entry;
+
+            accessController = new AccessController(client, trustProvider, entry);
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
-            UserInfo[] users = trustProvider.EnumerateImplicitlyTrustedUsers().ToArray();
+            UserInfo[] users = accessController.EnumerateAccess().ToArray();
 
             EncodeEntry(entry, payload, users);
 
@@ -74,21 +77,10 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateAccess()
         {
-            foreach (UserId id in entry.Keys.Keys)
+            foreach (UserInfo user in accessController.EnumerateAccess())
             {
-                IDatabaseUser user = client.OpenDatabaseUser(id, true);
-                yield return UserInfo.FromDatabaseUser(user);
+                yield return user;
             }
-        }
-
-        private IEnumerable<UserInfo> EnumeratedAccessAdd(UserId newUserId)
-        {
-            foreach (UserId user in entry.Keys.Keys)
-            {
-                yield return client.GetUserInfo(user);
-            }
-
-            yield return client.GetUserInfo(newUserId);
         }
 
         public virtual void AddAccess(UserId userId)
@@ -100,13 +92,15 @@ namespace MKW.Core.Client
                 throw new Exception("The entry is not encrypted for this user.");
             }
 
-            EncodeEntry(entry, payload, EnumeratedAccessAdd(userId));
+            accessController.AddAccess(userId);
+            EncodeEntry(entry, payload, accessController.EnumerateAccess());
 
             entry.Save();
         }
 
         public void Dispose()
         {
+            accessController.Dispose();
         }
     }
 }
