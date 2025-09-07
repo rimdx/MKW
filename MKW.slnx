@@ -1,0 +1,43 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/CHANGELOG.md" />
+    <File Path="docs/internal-design.md" />
+    <File Path="docs/resource-managing-guidelines.md" />
+    <File Path="docs/TODO.md" />
+    <File Path="docs/versioning.md" />
+  </Folder>
+  <Folder Name="/GitHub Workflows/">
+    <File Path=".github/dependabot.yml" />
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.build.props" />
+    <File Path="Directory.build.targets" />
+    <File Path="README.md" />
+    <File Path="Version.props" />
+  </Folder>
+  <Project Path="MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj" />
+  <Project Path="MKW.Core.Client/MKW.Core.Client.csproj" />
+  <Project Path="MKW.Core.Common.NETFramework/MKW.Core.Common.NETFramework.shproj" />
+  <Project Path="MKW.Core.Common.Tests/MKW.Core.Common.Tests.csproj" />
+  <Project Path="MKW.Core.Common/MKW.Core.Common.csproj" />
+  <Project Path="MKW.Core.Cryptography.BouncyCastle.NETFramework/MKW.Core.Cryptography.BouncyCastle.NETFramework.shproj" />
+  <Project Path="MKW.Core.Cryptography.BouncyCastle/MKW.Core.Cryptography.BouncyCastle.csproj" />
+  <Project Path="MKW.Core.Cryptography.Loader/MKW.Core.Cryptography.Loader.csproj" />
+  <Project Path="MKW.Core.Cryptography.System/MKW.Core.Cryptography.System.csproj" />
+  <Project Path="MKW.Core.Cryptography.Tests/MKW.Core.Cryptography.Tests.csproj" />
+  <Project Path="MKW.Core.Cryptography/MKW.Core.Cryptography.csproj" />
+  <Project Path="MKW.Core.Editor.Tests/MKW.Core.Editor.Tests.csproj" />
+  <Project Path="MKW.Core.Editor/MKW.Core.Editor.csproj" />
+  <Project Path="MKW.Core.Storage.JSON/MKW.Core.Storage.JSON.csproj" />
+  <Project Path="MKW.Core.Storage/MKW.Core.Storage.csproj" />
+  <Project Path="MKW.GUI.Images/MKW.GUI.Images.csproj" />
+  <Project Path="MKW.GUI.Tests/MKW.GUI.Tests.csproj" />
+  <Project Path="MKW.GUI/MKW.GUI.csproj" />
+  <Project Path="MKW.Testing.Client/MKW.Testing.Client.csproj" />
+  <Project Path="MKW.Testing.Common/MKW.Testing.Common.csproj" />
+  <Project Path="MKW.Tests/MKW.Tests.csproj" />
+  <Project Path="MKW/MKW.csproj" />
+</Solution>
