@@ -1,5 +1,4 @@
-﻿using MKW.Core.Client.Notify;
-using MKW.Core.Cryptography;
+﻿using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -11,6 +10,7 @@ namespace MKW.Core.Client
         , IDisposable
     {
         protected readonly UserSession user;
+        protected readonly EntryDecoder entryDecoder;
 
         public UserEntry(ClientSession client,
                          ICryptographyProvider crypto,
@@ -19,24 +19,12 @@ namespace MKW.Core.Client
             : base(client, crypto, user.TrustController, entry)
         {
             this.user = user;
+            entryDecoder = new EntryDecoder(crypto, user);
         }
 
         public override EntryPayload? OpenPayload()
         {
-            if (entry.Keys.TryGetValue(user.Id, out ReadOnlyMemory<byte> encodedKey) == false)
-            {
-                // No key for this user, cannot decode the entry
-                return null;
-            }
-
-            Memory<byte> decryptedKey = user.Transformer.Decrypt(encodedKey.Span);
-
-            using ISymmetricTransformer dataDecoder = crypto.OpenSymmetricTransformer(
-                decryptedKey.Span, entry.Salt.Span);
-
-            Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
-
-            return new EntryPayload(decryptedData);
+            return entryDecoder.DecodeEntry(entry);
         }
     }
 }
