@@ -183,28 +183,93 @@ namespace MKW.Tests
 
             EntryId entryId;
 
+            // the admin creates an entry
             {
                 using IEntrySession entry = admin.CreateEntry();
                 entry.UpdatePayload(new EntryPayload("data"));
                 entryId = entry.Id;
+
+                CollectionAssert.AreEqual(
+                    new UserId[]
+                    {
+                        UserId.Admin(),
+                    },
+                    entry.EnumerateAccess().Select(value => value.Id));
             }
 
-            using UserSession user = sbox.CreateUser(client, "user1", out _, false);
+            using UserSession user1 = sbox.CreateUser(client, "user1", out _, false);
+            using UserSession user2 = sbox.CreateUser(client, "user2", out _, false);
 
+            // the users cannot see the entry
             {
-                using IEntrySession entry = user.OpenEntry(entryId);
+                using IEntrySession entry = user1.OpenEntry(entryId);
                 ClassicAssert.AreEqual(null, entry.OpenPayload());
+
+                CollectionAssert.AreEqual(
+                    new UserId[]
+                    {
+                        UserId.Admin(),
+                    },
+                    entry.EnumerateAccess().Select(value => value.Id));
             }
 
+            // the admin shares the entry with user1
             {
                 using IEntrySession entry = admin.OpenEntry(entryId);
-                entry.AddAccess(user.Id);
+                entry.AddAccess(user1.Id);
+
+                CollectionAssert.AreEqual(
+                    new UserId[]
+                    {
+                        UserId.Admin(),
+                        user1.Id,
+                    },
+                    entry.EnumerateAccess().Select(value => value.Id));
             }
 
+            // user1 can see the entry now
             {
-                using IEntrySession entry = user.OpenEntry(entryId);
+                using IEntrySession entry = user1.OpenEntry(entryId);
                 ClassicAssert.AreEqual(new EntryPayload("data"),
                                        entry.OpenPayload());
+
+                CollectionAssert.AreEqual(
+                    new UserId[]
+                    {
+                        UserId.Admin(),
+                        user1.Id,
+                    },
+                    entry.EnumerateAccess().Select(value => value.Id));
+            }
+
+            // user1 shares the entry with user2
+            {
+                using IEntrySession entry = user1.OpenEntry(entryId);
+                entry.AddAccess(user2.Id);
+
+                CollectionAssert.AreEqual(
+                    new UserId[]
+                    {
+                        UserId.Admin(),
+                        user1.Id,
+                        user2.Id,
+                    },
+                    entry.EnumerateAccess().Select(value => value.Id));
+            }
+
+            // share the entry with user2 again (should be a no-op)
+            {
+                using IEntrySession entry = admin.OpenEntry(entryId);
+                entry.AddAccess(user2.Id);
+
+                CollectionAssert.AreEqual(
+                    new UserId[]
+                    {
+                        UserId.Admin(),
+                        user1.Id,
+                        user2.Id,
+                    },
+                    entry.EnumerateAccess().Select(value => value.Id));
             }
         }
     }
