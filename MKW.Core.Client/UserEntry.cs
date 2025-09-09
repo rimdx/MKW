@@ -10,7 +10,7 @@ namespace MKW.Core.Client
         , IDisposable
     {
         protected readonly UserSession user;
-        protected readonly EntryDecoder entryDecoder;
+        protected readonly EntryDecoder decoder;
         protected readonly EntrySharer sharer;
 
         public UserEntry(ClientSession client,
@@ -20,13 +20,13 @@ namespace MKW.Core.Client
             : base(client, crypto, user.TrustController, entry)
         {
             this.user = user;
-            entryDecoder = new EntryDecoder(crypto, user);
-            sharer = new EntrySharer(accessController, entryDecoder, encoder);
+            decoder = new EntryDecoder(crypto, user);
+            sharer = new EntrySharer(accessController, decoder, encoder);
         }
 
         public override EntryPayload? OpenPayload()
         {
-            return entryDecoder.DecodeEntry(entry);
+            return decoder.DecodeEntry(entry);
         }
 
         public override void AddAccess(UserId userId)
