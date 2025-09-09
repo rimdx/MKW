@@ -34,7 +34,9 @@ namespace MKW.Core.Client
         {
             IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
             dbEntry.Save();
-            return Entry.Create(client, crypto, OpenTrustProvider(), dbEntry);
+
+            using ITrustProvider trustProvider = OpenTrustProvider();
+            return Entry.Create(client, crypto, trustProvider, dbEntry);
         }
 
         public IEntrySession CreateEntry()
