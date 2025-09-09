@@ -11,6 +11,7 @@ namespace MKW.Core.Client
     {
         protected readonly UserSession user;
         protected readonly EntryDecoder entryDecoder;
+        protected readonly EntrySharer sharer;
 
         public UserEntry(ClientSession client,
                          ICryptographyProvider crypto,
@@ -20,11 +21,18 @@ namespace MKW.Core.Client
         {
             this.user = user;
             entryDecoder = new EntryDecoder(crypto, user);
+            sharer = new EntrySharer(accessController, entryDecoder, encoder);
         }
 
         public override EntryPayload? OpenPayload()
         {
             return entryDecoder.DecodeEntry(entry);
+        }
+
+        public override void AddAccess(UserId userId)
+        {
+            sharer.ShareEntry(entry, userId);
+            entry.Save();
         }
     }
 }
