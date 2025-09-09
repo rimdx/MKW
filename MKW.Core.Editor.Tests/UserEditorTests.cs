@@ -19,7 +19,7 @@ namespace MKW.Core.Editor.Tests
             ClassicAssert.AreEqual(Trust.None, user1.GetImplicitTrust(user2.Id));
             // ClassicAssert.AreEqual(Trust.None, editor.GetImplicitTrust(user2.Id));
 
-            editor.UpdateTrust(user2.Id, Trust.ExplicitTrust);
+            editor.AddTrust(user2.Id);
             ClassicAssert.AreEqual(Trust.None, user1.GetImplicitTrust(user2.Id));
             // ClassicAssert.AreEqual(Trust.ExplicitTrust, editor.GetImplicitTrust(user2.Id));
 
@@ -31,12 +31,12 @@ namespace MKW.Core.Editor.Tests
             ClassicAssert.AreEqual(Trust.ExplicitTrust, user1.GetImplicitTrust(user2.Id));
             // ClassicAssert.AreEqual(Trust.ExplicitTrust, editor.GetImplicitTrust(user2.Id));
 
-            editor.UpdateTrust(user2.Id, Trust.None);
-            editor.UpdateTrust(user2.Id, Trust.ExplicitTrust);
+            editor.RemoveTrust(user2.Id);
+            editor.AddTrust(user2.Id);
             ClassicAssert.AreEqual(Trust.ExplicitTrust, user1.GetImplicitTrust(user2.Id));
             // ClassicAssert.AreEqual(Trust.ExplicitTrust, editor.GetImplicitTrust(user2.Id));
 
-            editor.UpdateTrust(user2.Id, Trust.None);
+            editor.RemoveTrust(user2.Id);
             ClassicAssert.AreEqual(Trust.ExplicitTrust, user1.GetImplicitTrust(user2.Id));
             // ClassicAssert.AreEqual(Trust.None, editor.GetImplicitTrust(user2.Id));
 

@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Client;
-using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using System.CommandLine;
 
@@ -20,7 +19,7 @@ namespace MKW
             using ClientSession session = OpenSession(argv);
             using AdminSession admin = session.OpenAdmin(GetPassword(argv));
 
-            admin.UpdateTrust(userId, Trust.ExplicitTrust);
+            admin.AddTrust(userId);
 
             Console.WriteLine($"Marked user '{userId}' as trusted.");
         }

@@ -1,5 +1,4 @@
-﻿using MKW.Core.Client.Notify;
-using MKW.Core.Cryptography;
+﻿using MKW.Core.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
@@ -20,25 +19,21 @@ namespace MKW.Core.Client
             privateKey = user.Transformer;
         }
 
-        public void UpdateTrust(UserId userId, Trust trust)
+        public void AddTrust(UserId userId)
         {
             IDatabaseUser user = client.OpenDatabaseUser(userId, true);
-
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
-            if (trust == Trust.ExplicitTrust)
-            {
-                me.AddTrust(signature);
-            }
-            else if (trust == Trust.None)
-            {
-                me.DeleteTrust(signature);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid trust value.", nameof(trust));
-            }
+            me.AddTrust(signature);
+            me.Save();
+        }
 
+        public void RemoveTrust(UserId userId)
+        {
+            IDatabaseUser user = client.OpenDatabaseUser(userId, true);
+            ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
+
+            me.DeleteTrust(signature);
             me.Save();
         }
 

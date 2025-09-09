@@ -63,9 +63,9 @@ namespace MKW.Tests
             using UserTrustController trustController3 = new UserTrustController(client, sbox.Crypto, user3);
             using UserTrustController trustController4 = new UserTrustController(client, sbox.Crypto, user4);
 
-            trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
-            trustController1.UpdateTrust(user3Info.Id, Trust.ExplicitTrust);
-            trustController2.UpdateTrust(user4Info.Id, Trust.ExplicitTrust);
+            trustController1.AddTrust(user2Info.Id);
+            trustController1.AddTrust(user3Info.Id);
+            trustController2.AddTrust(user4Info.Id);
 
             UserInfo adminInfo = client.GetAdminInfo();
 
@@ -125,10 +125,10 @@ namespace MKW.Tests
             using UserTrustController trustController3 = new UserTrustController(client, sbox.Crypto, user3);
             using UserTrustController trustController4 = new UserTrustController(client, sbox.Crypto, user4);
 
-            trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
-            trustController1.UpdateTrust(user3Info.Id, Trust.ExplicitTrust);
-            trustController2.UpdateTrust(user4Info.Id, Trust.ExplicitTrust);
-            trustController3.UpdateTrust(user4Info.Id, Trust.ExplicitTrust);
+            trustController1.AddTrust(user2Info.Id);
+            trustController1.AddTrust(user3Info.Id);
+            trustController2.AddTrust(user4Info.Id);
+            trustController3.AddTrust(user4Info.Id);
 
             UserInfo adminInfo = client.GetAdminInfo();
 
@@ -167,8 +167,8 @@ namespace MKW.Tests
             using UserTrustController trustController1 = new UserTrustController(client, sbox.Crypto, user1);
             using UserTrustController trustController2 = new UserTrustController(client, sbox.Crypto, user2);
 
-            trustController1.UpdateTrust(user2Info.Id, Trust.ExplicitTrust);
-            trustController2.UpdateTrust(user1Info.Id, Trust.ExplicitTrust);
+            trustController1.AddTrust(user2Info.Id);
+            trustController2.AddTrust(user1Info.Id);
 
             UserInfo adminInfo = client.GetAdminInfo();
 

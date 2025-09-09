@@ -142,7 +142,7 @@ namespace MKW.Tests
             client.PromoteUser("usersecret");
             using UserSession user = client.OpenUser("usersecret");
             using AdminSession admin = sbox.OpenAdmin(client);
-            admin.UpdateTrust(user.Id, Trust.ExplicitTrust);
+            admin.AddTrust(user.Id);
 
             // create
             using IEntrySession entry = client.CreateEntry();

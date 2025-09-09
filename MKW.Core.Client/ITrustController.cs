@@ -1,10 +1,10 @@
-﻿using MKW.Core.Client.Notify;
-using MKW.Core.Storage;
+﻿using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
     public interface ITrustController : IDisposable
     {
-        void UpdateTrust(UserId userId, Trust trust);
+        void AddTrust(UserId userId);
+        void RemoveTrust(UserId userId);
     }
 }
