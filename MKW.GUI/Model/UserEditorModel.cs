@@ -36,7 +36,7 @@ namespace MKW.GUI
         {
             if (initialTrust != newTrust)
             {
-                database.User!.UpdateTrust(user.Id, newTrust);
+                database.User!.AddTrust(user.Id);
             }
         }
 

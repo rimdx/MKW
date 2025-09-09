@@ -106,15 +106,16 @@ namespace MKW.Core.Client
 
         // ITrustController
 
-        public void UpdateTrust(UserId userId, Trust trust)
-        {
-            TrustController.UpdateTrust(userId, trust);
 
-            // TODO:
-            if (trust == Trust.ExplicitTrust)
-            {
-                accessController.AddAccess(userId);
-            }
+        public void AddTrust(UserId userId)
+        {
+            TrustController.AddTrust(userId);
+            accessController.AddAccess(userId);
+        }
+
+        public void RemoveTrust(UserId userId)
+        {
+            TrustController.RemoveTrust(userId);
         }
 
         public void Dispose()

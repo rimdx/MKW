@@ -51,8 +51,8 @@ namespace MKW.Testing.Client
 
             if (trusted)
             {
-                admin.UpdateTrust(user.Id, Trust.ExplicitTrust);
-                userSession.UpdateTrust(admin.Id, Trust.ExplicitTrust);
+                admin.AddTrust(user.Id);
+                userSession.AddTrust(admin.Id);
             }
 
             return userSession;

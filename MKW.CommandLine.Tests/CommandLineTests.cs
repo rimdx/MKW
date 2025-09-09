@@ -98,9 +98,9 @@ namespace MKW.CommandLine.Tests
                 admin.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
 
                 UserInfo oldUser = client.PromoteUser("iamanoldman");
-                admin.UpdateTrust(oldUser.Id, Trust.ExplicitTrust);
+                admin.AddTrust(oldUser.Id);
                 UserInfo newUser = client.PromoteUser("ihatehimbutcantseehisstuff");
-                admin.UpdateTrust(newUser.Id, Trust.None);
+                admin.RemoveTrust(newUser.Id);
             }
 
             {

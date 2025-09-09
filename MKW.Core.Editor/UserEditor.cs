@@ -97,9 +97,14 @@ namespace MKW.Core.Editor
 
         // ITrustController
 
-        public void UpdateTrust(UserId userId, Trust trust)
+        public void AddTrust(UserId userId)
         {
-            trustEditor.UpdateTrust(userId, trust);
+            trustEditor.AddTrust(userId);
+        }
+
+        public void RemoveTrust(UserId userId)
+        {
+            trustEditor.RemoveTrust(userId);
         }
     }
 }

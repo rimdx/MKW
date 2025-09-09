@@ -9,8 +9,14 @@ namespace MKW.Core.Editor
         , ITrustController
         , IDisposable
     {
+        private enum EditAction
+        {
+            Add,
+            Delete,
+        }
+
         private readonly IUserSession proxy;
-        private readonly Dictionary<UserId, Trust> edits;
+        private readonly Dictionary<UserId, EditAction> edits;
 
         public TrustEditor(IUserSession proxy /* todo: better type */)
         {
@@ -18,9 +24,14 @@ namespace MKW.Core.Editor
             edits = [];
         }
 
-        public void UpdateTrust(UserId userId, Trust trust)
+        public void AddTrust(UserId userId)
         {
-            edits[userId] = trust;
+            edits[userId] = EditAction.Add;
+        }
+
+        public void RemoveTrust(UserId userId)
+        {
+            edits[userId] = EditAction.Delete;
         }
 
         public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
@@ -50,9 +61,17 @@ namespace MKW.Core.Editor
 
         public void Commit()
         {
-            foreach (KeyValuePair<UserId, Trust> edit in edits)
+            foreach (KeyValuePair<UserId, EditAction> edit in edits)
             {
-                proxy.UpdateTrust(edit.Key, edit.Value);
+                switch (edit.Value)
+                {
+                    case EditAction.Add:
+                        proxy.AddTrust(edit.Key);
+                        break;
+                    case EditAction.Delete:
+                        proxy.RemoveTrust(edit.Key);
+                        break;
+                }
             }
         }
     }
