@@ -13,7 +13,6 @@ namespace MKW.Core.Client
         protected readonly ICryptographyProvider crypto;
 
         // TODO: dispose
-        protected readonly ITrustProvider trustProvider;
         protected readonly IDatabaseEntry entry;
         protected readonly IEntryAccessController accessController;
         protected readonly EntryEncoder encoder;
@@ -22,15 +21,14 @@ namespace MKW.Core.Client
 
         protected Entry(ClientSession client,
                         ICryptographyProvider crypto,
-                        ITrustProvider trustProvider,
-                        IDatabaseEntry entry)
+                        IDatabaseEntry entry,
+                        IEntryAccessController accessController)
         {
             this.client = client;
             this.crypto = crypto;
-            this.trustProvider = trustProvider;
             this.entry = entry;
+            this.accessController = accessController;
 
-            accessController = new AccessController(client, trustProvider, entry);
             encoder = new EntryEncoder(crypto, accessController);
         }
 
@@ -39,15 +37,24 @@ namespace MKW.Core.Client
                                    ITrustProvider trustProvider,
                                    IDatabaseEntry entry)
         {
-            return new Entry(client, crypto, trustProvider, entry);
+            AccessController accessController = AccessController.Create(client, trustProvider, entry);
+
+            return new Entry(client,
+                             crypto,
+                             entry,
+                             accessController /* move */);
         }
 
         public static Entry Open(ClientSession client,
-                                   ICryptographyProvider crypto,
-                                   ITrustProvider trustProvider,
-                                   IDatabaseEntry entry)
+                                 ICryptographyProvider crypto,
+                                 IDatabaseEntry entry)
         {
-            return new Entry(client, crypto, trustProvider, entry);
+            AccessController accessController = AccessController.Open(client, entry);
+
+            return new Entry(client,
+                             crypto,
+                             entry,
+                             accessController /* move */);
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)

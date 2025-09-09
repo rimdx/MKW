@@ -6,24 +6,32 @@ namespace MKW.Core.Client
     public class AccessController : IEntryAccessController, IDisposable
     {
         private readonly ClientSession client;
-        private readonly ITrustProvider trustProvider;
-        private readonly IDatabaseEntry entry;
         private readonly HashSet<UserId> access;
 
         public AccessController(ClientSession client,
-                                ITrustProvider trustProvider,
-                                IDatabaseEntry entry)
+                                IEnumerable<UserId> access)
         {
             this.client = client;
-            this.trustProvider = trustProvider;
-            this.entry = entry;
+            this.access = [..access];
+        }
 
-            // TODO: access = [.. entry.Keys.Keys];
-            access = [];
+        public static AccessController Create(ClientSession client,
+                                              ITrustProvider trustProvider,
+                                              IDatabaseEntry entry)
+        {
+            HashSet<UserId> access = [];
             foreach (UserInfo user in trustProvider.EnumerateImplicitlyTrustedUsers())
             {
                 access.Add(user.Id);
             }
+
+            return new AccessController(client, access);
+        }
+
+        public static AccessController Open(ClientSession client,
+                                            IDatabaseEntry entry)
+        {
+            return new AccessController(client, entry.Keys.Keys);
         }
 
         public void AddAccess(UserId userId)
