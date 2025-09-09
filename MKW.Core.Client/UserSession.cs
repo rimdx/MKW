@@ -22,6 +22,8 @@ namespace MKW.Core.Client
         public IAsymmetricPrivateTransformer Transformer { get; }
         public UserTrustController TrustController { get; }
 
+        private UserAccessController accessController;
+
         public UserSession(ClientSession client /* reference */,
                            ICryptographyProvider crypto,
                            IDatabase database /* reference */,
@@ -36,6 +38,7 @@ namespace MKW.Core.Client
             entryController = new UserEntryController(client, crypto, database, this);
             Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
             TrustController = new UserTrustController(client, crypto, this);
+            accessController = new UserAccessController(this);
         }
 
         // IEntryController
@@ -106,6 +109,12 @@ namespace MKW.Core.Client
         public void UpdateTrust(UserId userId, Trust trust)
         {
             TrustController.UpdateTrust(userId, trust);
+
+            // TODO:
+            if (trust == Trust.ExplicitTrust)
+            {
+                accessController.AddAccess(userId);
+            }
         }
 
         public void Dispose()

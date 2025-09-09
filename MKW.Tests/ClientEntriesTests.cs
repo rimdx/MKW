@@ -49,7 +49,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession session = sbox.OpenSession();
 
-            using UserSession oldSession = sbox.CreateUser(session, "iamanoldman", out _);
+            using UserSession oldSession = sbox.CreateUser(session, "iamanoldman", out _, false);
 
             oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
             oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
@@ -75,7 +75,7 @@ namespace MKW.Tests
                 })
             );
 
-            using UserSession newSession = sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out _);
+            using UserSession newSession = sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out _, false);
 
             newSession.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
 
@@ -85,17 +85,17 @@ namespace MKW.Tests
                     new
                     {
                         Id = EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")),
-                        Payload = new EntryPayload("entry1")
+                        Payload = (EntryPayload?)new EntryPayload("entry1")
                     },
                     new
                     {
                         Id = EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")),
-                        Payload = new EntryPayload("entry2")
+                        Payload = (EntryPayload?)new EntryPayload("entry2")
                     },
                     new
                     {
                         Id = EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")),
-                        Payload = new EntryPayload("entry3")
+                        Payload = (EntryPayload?)null
                     },
                 },
                 oldSession.EnumerateEntries().Select(entry => new
