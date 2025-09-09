@@ -189,7 +189,7 @@ namespace MKW.Tests
                 entryId = entry.Id;
             }
 
-            using UserSession user = sbox.CreateUser(client, "user1", out _);
+            using UserSession user = sbox.CreateUser(client, "user1", out _, false);
 
             {
                 using IEntrySession entry = user.OpenEntry(entryId);
