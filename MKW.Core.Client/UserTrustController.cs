@@ -4,7 +4,11 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserTrustController : UserTrustProvider, ITrustProvider, ITrustController, IDisposable
+    public class UserTrustController
+        : UserTrustProvider
+        , ITrustProvider
+        , ITrustController
+        , IDisposable
     {
         protected readonly IAsymmetricPrivateTransformer privateKey;
 
