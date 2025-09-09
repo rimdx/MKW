@@ -65,17 +65,7 @@ namespace MKW.Core.Client
 
         public virtual void AddAccess(UserId userId)
         {
-            EntryPayload? payload = OpenPayload();
-
-            if (payload == null)
-            {
-                throw new Exception("The entry is not encrypted for this user.");
-            }
-
-            accessController.AddAccess(userId);
-            encoder.EncodeEntry(entry, payload);
-
-            entry.Save();
+            throw new NotSupportedException();
         }
 
         public void Dispose()
