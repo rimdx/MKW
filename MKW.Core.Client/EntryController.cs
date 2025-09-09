@@ -37,7 +37,10 @@ namespace MKW.Core.Client
             return Entry.Create(client, crypto, OpenTrustProvider(), dbEntry);
         }
 
-        public IEntrySession CreateEntry() => CreateEntry(EntryId.Create());
+        public IEntrySession CreateEntry()
+        {
+            return CreateEntry(EntryId.Create());
+        }
 
         public EntryInfo DeleteEntry(EntryId id)
         {
