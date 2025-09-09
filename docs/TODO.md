@@ -14,6 +14,10 @@
   - [x] Create, view properties, delete
   - [x] Add trust signature
 - [ ] Share records
+  - [ ] Each specific entry
+  - [ ] Admins shares all entries when verify user
+- [ ] Trust admins on user creation
+  - [ ] Verification form
 
 ## GUI
 
