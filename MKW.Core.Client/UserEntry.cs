@@ -16,10 +16,12 @@ namespace MKW.Core.Client
         protected UserEntry(ClientSession client,
                             ICryptographyProvider crypto,
                             UserSession user,
-                            IDatabaseEntry entry)
-            : base(client, crypto, user.TrustController, entry)
+                            IDatabaseEntry entry,
+                            IEntryAccessController accessController)
+            : base(client, crypto, entry, accessController)
         {
             this.user = user;
+
             decoder = new EntryDecoder(crypto, user);
             sharer = new EntrySharer(accessController, decoder, encoder);
         }
@@ -29,10 +31,13 @@ namespace MKW.Core.Client
                                        UserSession user,
                                        IDatabaseEntry entry)
         {
+            AccessController accessController = AccessController.Create(client, user, entry);
+
             return new UserEntry(client,
                                  crypto,
                                  user,
-                                 entry);
+                                 entry,
+                                 accessController /* move */);
         }
 
         public static UserEntry Open(ClientSession client,
@@ -40,10 +45,13 @@ namespace MKW.Core.Client
                                      UserSession user,
                                      IDatabaseEntry entry)
         {
+            AccessController accessController = AccessController.Open(client, entry);
+
             return new UserEntry(client,
                                  crypto,
                                  user,
-                                 entry);
+                                 entry,
+                                 accessController /* move */);
         }
 
         public override EntryPayload? OpenPayload()
