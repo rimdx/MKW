@@ -20,10 +20,10 @@ namespace MKW.Core.Client
 
         public EntryId Id => entry.Id;
 
-        public Entry(ClientSession client,
-                     ICryptographyProvider crypto,
-                     ITrustProvider trustProvider,
-                     IDatabaseEntry entry)
+        protected Entry(ClientSession client,
+                        ICryptographyProvider crypto,
+                        ITrustProvider trustProvider,
+                        IDatabaseEntry entry)
         {
             this.client = client;
             this.crypto = crypto;
@@ -32,6 +32,22 @@ namespace MKW.Core.Client
 
             accessController = new AccessController(client, trustProvider, entry);
             encoder = new EntryEncoder(crypto, accessController);
+        }
+
+        public static Entry Create(ClientSession client,
+                                   ICryptographyProvider crypto,
+                                   ITrustProvider trustProvider,
+                                   IDatabaseEntry entry)
+        {
+            return new Entry(client, crypto, trustProvider, entry);
+        }
+
+        public static Entry Open(ClientSession client,
+                                   ICryptographyProvider crypto,
+                                   ITrustProvider trustProvider,
+                                   IDatabaseEntry entry)
+        {
+            return new Entry(client, crypto, trustProvider, entry);
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)
