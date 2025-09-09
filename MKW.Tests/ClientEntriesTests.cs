@@ -49,16 +49,14 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession session = sbox.OpenSession();
 
-            sbox.CreateUser(session, "iamanoldman", out UserInfo oldUser).Dispose();
+            using UserSession oldSession = sbox.CreateUser(session, "iamanoldman", out _);
 
-            session.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
-            session.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
+            oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
+            oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
 
-            sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out UserInfo newUser).Dispose();
+            using UserSession newSession = sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out _);
 
-            session.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
-
-            using UserSession oldSession = session.OpenUser("iamanoldman");
+            newSession.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
 
             CollectionAssert.AreEqual(
                 new[]
@@ -85,8 +83,6 @@ namespace MKW.Tests
                     Payload = entry.OpenPayload()
                 })
             );
-
-            using UserSession newSession = session.OpenUser("ihatehimbutcantseehisstuff");
 
             CollectionAssert.AreEqual(
                 new[]
