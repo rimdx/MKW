@@ -93,16 +93,14 @@ namespace MKW.CommandLine.Tests
             {
                 using AdminSession admin = sbox.OpenAdmin(client);
 
+                admin.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
+                admin.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
+                admin.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
+
                 UserInfo oldUser = client.PromoteUser("iamanoldman");
                 admin.UpdateTrust(oldUser.Id, Trust.ExplicitTrust);
-
-                client.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
-                client.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
-
                 UserInfo newUser = client.PromoteUser("ihatehimbutcantseehisstuff");
-                admin.UpdateTrust(newUser.Id, Trust.ExplicitTrust);
-
-                client.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
+                admin.UpdateTrust(newUser.Id, Trust.None);
             }
 
             {
@@ -135,7 +133,7 @@ namespace MKW.CommandLine.Tests
                     -- f36e862f-c445-4edd-9d5d-7414414330d9:
                     [hidden]
                     -- 77498c4f-60cc-4d6b-bdc8-204eb187ae26:
-                    entry3
+                    [hidden]
 
                     """,
                     output);
@@ -170,8 +168,6 @@ namespace MKW.CommandLine.Tests
                 """,
                 output1);
 
-            sbox.Run($"mkw admin trust {sbox.DatabasePath} --password {sbox.AdminSecret} --userid {userId1}");
-
             ClassicAssert.AreEqual(
                 $"""
                   -- EXIT CODE: 0
@@ -179,6 +175,18 @@ namespace MKW.CommandLine.Tests
                 -- {entryId1}:
                 [hidden]
                 
+                """,
+                sbox.Run($"mkw entry list {sbox.DatabasePath} --password test1"));
+
+            sbox.Run($"mkw admin trust {sbox.DatabasePath} --password {sbox.AdminSecret} --userid {userId1}");
+
+            ClassicAssert.AreEqual(
+                $"""
+                  -- EXIT CODE: 0
+                  -- STDOUT:
+                -- {entryId1}:
+                data1
+
                 """,
                 sbox.Run($"mkw entry list {sbox.DatabasePath} --password test1"));
 
@@ -205,7 +213,7 @@ namespace MKW.CommandLine.Tests
                   -- EXIT CODE: 0
                   -- STDOUT:
                 -- {entryId1}:
-                [hidden]
+                data1
                 -- {entryId2}:
                 data2
 
