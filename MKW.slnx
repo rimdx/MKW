@@ -25,9 +25,9 @@
   </Folder>
   <Project Path="MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj" />
   <Project Path="MKW.Core.Client/MKW.Core.Client.csproj" />
-  <Project Path="MKW.Core.Common.NETFramework/MKW.Core.Common.NETFramework.shproj" />
-  <Project Path="MKW.Core.Common.Tests/MKW.Core.Common.Tests.csproj" />
-  <Project Path="MKW.Core.Common/MKW.Core.Common.csproj" />
+  <Project Path="MKW.Common.NETFramework/MKW.Common.NETFramework.shproj" />
+  <Project Path="MKW.Common.Tests/MKW.Common.Tests.csproj" />
+  <Project Path="MKW.Common/MKW.Common.csproj" />
   <Project Path="MKW.Core.Cryptography.BouncyCastle.NETFramework/MKW.Core.Cryptography.BouncyCastle.NETFramework.shproj" />
   <Project Path="MKW.Core.Cryptography.BouncyCastle/MKW.Core.Cryptography.BouncyCastle.csproj" />
   <Project Path="MKW.Core.Cryptography.Loader/MKW.Core.Cryptography.Loader.csproj" />

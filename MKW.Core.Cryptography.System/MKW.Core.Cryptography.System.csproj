@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
+    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
     <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
   </ItemGroup>
 
