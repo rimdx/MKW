@@ -1,10 +1,15 @@
 <Solution>
   <Folder Name="/docs/">
+    <File Path="api-client.md" />
+    <File Path="api-crypto.md" />
+    <File Path="api-editor.md" />
+    <File Path="api-storage.md" />
     <File Path="docs/CHANGELOG.md" />
     <File Path="docs/internal-design.md" />
     <File Path="docs/resource-managing-guidelines.md" />
     <File Path="docs/TODO.md" />
     <File Path="docs/versioning.md" />
+    <File Path="project-structure.md" />
   </Folder>
   <Folder Name="/GitHub Workflows/">
     <File Path=".github/dependabot.yml" />
