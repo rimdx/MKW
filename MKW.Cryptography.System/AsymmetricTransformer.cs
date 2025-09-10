@@ -1,7 +1,9 @@
-﻿using MKW.Core.Cryptography.Exceptions;
+﻿using MKW.Core.Cryptography;
+using MKW.Core.Cryptography.Exceptions;
+using MKW.Core.Cryptography.System;
 using System.Security.Cryptography;
 
-namespace MKW.Core.Cryptography.System
+namespace MKW.Cryptography.System
 {
     public class AsymmetricTransformer : IAsymmetricPrivateTransformer, IAsymmetricPublicTransformer, IDisposable
     {

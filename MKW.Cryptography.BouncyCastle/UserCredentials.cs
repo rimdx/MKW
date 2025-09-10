@@ -1,10 +1,12 @@
-﻿using Org.BouncyCastle.Asn1.Nist;
+﻿using MKW.Core.Cryptography;
+using MKW.Core.Cryptography.BouncyCastle;
+using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 
-namespace MKW.Core.Cryptography.BouncyCastle
+namespace MKW.Cryptography.BouncyCastle
 {
     public class UserCredentials : IUserCredentials, IDisposable
     {

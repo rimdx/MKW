@@ -1,6 +1,7 @@
-﻿using MKW.Core.Cryptography.BouncyCastle;
+﻿using MKW.Core.Cryptography;
+using MKW.Core.Cryptography.BouncyCastle;
 
-namespace MKW.Core.Cryptography.Loader
+namespace MKW.Cryptography.Loader
 {
     public static class BouncyCastleLoader
     {

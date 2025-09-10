@@ -2,7 +2,7 @@
 using MKW.Core.Cryptography.Loader;
 using NUnit.Framework.Legacy;
 
-namespace MKW.Tests
+namespace MKW.Cryptography.Tests
 {
     [Parallelizable]
 #if !NETFRAMEWORK

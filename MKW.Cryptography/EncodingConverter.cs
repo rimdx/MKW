@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace MKW.Core.Cryptography
+namespace MKW.Cryptography
 {
     public static class EncodingConverter
     {
