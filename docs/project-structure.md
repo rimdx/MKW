@@ -13,20 +13,20 @@ configuration, platform, etc.
 ### Interface
 
 The cryptography provider API along with several common helpers are defined
-in the `MKW.Core.Cryptography` library.  Each cryptography provider should
-reference this assembly, and implement the `MKW.Core.Cryptography.ICryptographyProvider`
+in the `MKW.Cryptography` library.  Each cryptography provider should
+reference this assembly, and implement the `MKW.Cryptography.ICryptographyProvider`
 interface.
 
 Currently, we have the following cryptography providers:
 
 ### Bouncy Castle
 
-The `MKW.Core.Cryptography.BouncyCastle` library implements the abstract
+The `MKW.Cryptography.BouncyCastle` library implements the abstract
 cryptography provider using the Bouncy Castle library.
 
 ### .NET Cryptography
 
-The `MKW.Core.Cryptography.System` library implements the cryptography
+The `MKW.Cryptography.System` library implements the cryptography
 provider using built-in .NET Cryptography API, available in the
 `System.Security.Cryptography` namespace.
 
@@ -37,7 +37,7 @@ framework projects.  Please consider using Bouncy Castle provider instead.
 ### The Loader
 
 When referencing cryptography providers from outside, please consider using
-the `MKW.Core.Cryptography.Loader` library, which will handle all platform
+the `MKW.Cryptography.Loader` library, which will handle all platform
 specific logic and produce an abstract `ICryptographyProvider` based on user's
 needs.
 
