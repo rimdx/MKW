@@ -1,5 +1,4 @@
-﻿using MKW.Core.Common;
-using System.Collections;
+﻿using System.Collections;
 using System.Security.Cryptography;
 
 namespace MKW.Common

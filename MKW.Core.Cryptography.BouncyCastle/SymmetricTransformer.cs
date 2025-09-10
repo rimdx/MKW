@@ -1,4 +1,4 @@
-﻿using MKW.Core.Common;
+﻿using MKW.Common;
 using MKW.Core.Cryptography.Exceptions;
 using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;

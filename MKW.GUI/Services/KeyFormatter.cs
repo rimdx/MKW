@@ -1,4 +1,4 @@
-﻿using MKW.Core.Common;
+﻿using MKW.Common;
 using System.Text;
 
 namespace MKW.GUI.Services
