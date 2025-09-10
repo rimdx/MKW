@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace MKW.GUI
+namespace MKW.GUI.Services
 {
     public class RegistryService : IDisposable
     {

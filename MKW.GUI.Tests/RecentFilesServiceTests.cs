@@ -1,4 +1,5 @@
-﻿using NUnit.Framework.Legacy;
+﻿using MKW.GUI.Services;
+using NUnit.Framework.Legacy;
 
 namespace MKW.GUI.Tests
 {

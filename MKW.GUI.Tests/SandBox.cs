@@ -1,4 +1,5 @@
-﻿using MKW.Testing.Common;
+﻿using MKW.GUI.Services;
+using MKW.Testing.Common;
 
 namespace MKW.GUI.Tests
 {
