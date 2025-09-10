@@ -1,6 +1,6 @@
 ﻿using MKW.Common;
-using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.Exceptions;
+using MKW.Cryptography;
+using MKW.Cryptography.Exceptions;
 using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.IO;

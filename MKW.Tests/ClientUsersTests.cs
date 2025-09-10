@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Client.Notify;
-using MKW.Core.Cryptography.Exceptions;
+using MKW.Cryptography.Exceptions;
 using MKW.Core.Storage;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;

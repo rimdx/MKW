@@ -1,5 +1,5 @@
-﻿using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.Exceptions;
+﻿using MKW.Cryptography;
+using MKW.Cryptography.Exceptions;
 using System.Security.Cryptography;
 
 namespace MKW.Cryptography.System

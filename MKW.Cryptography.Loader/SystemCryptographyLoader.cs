@@ -1,4 +1,4 @@
-﻿using MKW.Core.Cryptography;
+﻿using MKW.Cryptography;
 
 namespace MKW.Cryptography.Loader
 {

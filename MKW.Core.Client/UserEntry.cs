@@ -1,4 +1,4 @@
-﻿using MKW.Core.Cryptography;
+﻿using MKW.Cryptography;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client

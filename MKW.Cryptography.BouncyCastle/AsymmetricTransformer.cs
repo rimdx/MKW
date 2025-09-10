@@ -1,7 +1,7 @@
 ﻿using MKW.Common;
-using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.BouncyCastle;
-using MKW.Core.Cryptography.Exceptions;
+using MKW.Cryptography;
+using MKW.Cryptography.BouncyCastle;
+using MKW.Cryptography.Exceptions;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;

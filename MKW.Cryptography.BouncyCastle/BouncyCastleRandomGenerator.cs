@@ -1,4 +1,4 @@
-﻿using MKW.Core.Cryptography;
+﻿using MKW.Cryptography;
 using Org.BouncyCastle.Security;
 
 namespace MKW.Cryptography.BouncyCastle

@@ -1,4 +1,4 @@
-﻿using MKW.Core.Cryptography.Exceptions;
+﻿using MKW.Cryptography.Exceptions;
 
 namespace MKW.Cryptography.Exceptions
 {

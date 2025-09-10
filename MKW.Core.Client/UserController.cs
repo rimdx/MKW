@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Client.Notify;
-using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.Exceptions;
+using MKW.Cryptography;
+using MKW.Cryptography.Exceptions;
 using MKW.Core.Storage;
 
 namespace MKW.Core.Client
