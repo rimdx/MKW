@@ -6,7 +6,7 @@
     <SharedGUID>076fee77-d5c9-499c-9615-1947517e5f17</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>MKW.Core.Cryptography.BouncyCastle.NETFramework</Import_RootNamespace>
+    <Import_RootNamespace>MKW.Cryptography.BouncyCastle.NETFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ISignerExtensions.cs" />
