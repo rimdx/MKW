@@ -18,8 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
-    <ProjectReference Include="..\MKW.Core.Cryptography.Loader\MKW.Core.Cryptography.Loader.csproj" />
-    <ProjectReference Include="..\MKW.Core.Cryptography\MKW.Core.Cryptography.csproj" />
+    <ProjectReference Include="..\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
+    <ProjectReference Include="..\MKW.Cryptography\MKW.Cryptography.csproj" />
   </ItemGroup>
 
   <ItemGroup>
