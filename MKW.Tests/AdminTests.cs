@@ -272,5 +272,40 @@ namespace MKW.Tests
                     entry.EnumerateAccess().Select(value => value.Id));
             }
         }
+
+        [Test]
+        public void ShareAllEntriesWithNewUsers()
+        {
+            using ClientSandBox sbox = new ClientSandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            using UserSession admin = sbox.OpenAdmin(client);
+
+            using IEntrySession entry1 = admin.CreateEntry();
+            entry1.UpdatePayload(new EntryPayload("data1"));
+
+            using IEntrySession entry2 = admin.CreateEntry();
+            entry2.UpdatePayload(new EntryPayload("data2"));
+
+            using IEntrySession entry3 = admin.CreateEntry();
+            entry3.UpdatePayload(new EntryPayload("data3"));
+
+            using UserSession user = sbox.CreateUser(client, "user1", out _, false);
+
+            CollectionAssert.AreEquivalent(
+                new EntryPayload?[] { null, null, null },
+                user.EnumerateEntries().Select(value => value.OpenPayload()));
+
+            admin.AddTrust(user.Id);
+
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    new EntryPayload("data1"),
+                    new EntryPayload("data2"),
+                    new EntryPayload("data3"),
+                },
+                user.EnumerateEntries().Select(value => value.OpenPayload()));
+        }
     }
 }
