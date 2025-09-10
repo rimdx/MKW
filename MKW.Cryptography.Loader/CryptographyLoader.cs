@@ -1,5 +1,5 @@
-﻿using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.Loader;
+﻿using MKW.Cryptography;
+using MKW.Cryptography.Loader;
 
 namespace MKW.Cryptography.Loader
 {

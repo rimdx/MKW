@@ -1,4 +1,4 @@
-﻿using MKW.Core.Cryptography;
+﻿using MKW.Cryptography;
 using System.Security.Cryptography;
 
 namespace MKW.Cryptography.System

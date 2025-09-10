@@ -1,5 +1,5 @@
-﻿using MKW.Core.Cryptography;
-using MKW.Core.Cryptography.BouncyCastle;
+﻿using MKW.Cryptography;
+using MKW.Cryptography.BouncyCastle;
 
 namespace MKW.Cryptography.Loader
 {
