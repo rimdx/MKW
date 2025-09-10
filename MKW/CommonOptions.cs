@@ -1,36 +1,35 @@
-﻿using MKW.Core.Storage;
-using System.CommandLine;
+﻿using System.CommandLine;
 
 namespace MKW
 {
     public static class CommonOptions
     {
-        public readonly static Argument<string> File = new("file")
+        public static readonly Argument<string> File = new("file")
         {
             Description = "path to the database file",
         };
 
-        public readonly static Argument<string> Payload = new("payload")
+        public static readonly Argument<string> Payload = new("payload")
         {
             Description = "secret payload of the entry",
         };
 
-        public readonly static Option<string> Password = new("--password")
+        public static readonly Option<string> Password = new("--password")
         {
             Description = "password to perform operation with",
         };
 
-        public readonly static Option<Guid> UserId = new("--userid")
+        public static readonly Option<Guid> UserId = new("--userid")
         {
             Description = "user id",
         };
 
-        public readonly static Option<bool> NonInteractive = new("--non-interactive")
+        public static readonly Option<bool> NonInteractive = new("--non-interactive")
         {
             Description = "do no interactive prompting (default is to prompt only if standard input is a terminal device)"
         };
 
-        public readonly static Option<bool> ForceInteractive = new("--force-interactive")
+        public static readonly Option<bool> ForceInteractive = new("--force-interactive")
         {
             Description = "do interactive prompting even if standard input is not a terminal device"
         };
