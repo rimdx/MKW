@@ -1,5 +1,4 @@
-﻿using MKW.Cryptography;
-using MKW.Cryptography.Loader;
+﻿using MKW.Cryptography.Loader;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Cryptography.Tests
