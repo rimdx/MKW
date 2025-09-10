@@ -6,7 +6,7 @@
     <SharedGUID>3d0581d4-05d7-463c-a3c0-59bb64ce4691</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>MKW.Core.Common.NETFramework</Import_RootNamespace>
+    <Import_RootNamespace>MKW.Common.NETFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CompilerFeatureRequiredAttribute.cs" />
