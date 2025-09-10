@@ -6,7 +6,7 @@ The cryptography interface is defined in the `MKW.Core.Cryptography` library.
 
 To begin using the cryptography API, please reference the following assemblies:
 
-- `MKW.Core.Common`
+- `MKW.Common`
 - `MKW.Core.Cryptography`
 - `MKW.Core.Cryptography.Loader`
 
@@ -58,7 +58,7 @@ Please name the project as `MKW.Core.Cryptography.<CryptoLibrary>`.
 
 Reference the following assemblies:
 
-- `MKW.Core.Common` (optional)
+- `MKW.Common` (optional)
 - `MKW.Core.Cryptography` (the interfaces)
 - `MKW.Core.Cryptography.Loader` (TODO: to register loader)
 
