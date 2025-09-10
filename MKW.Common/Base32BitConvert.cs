@@ -27,9 +27,9 @@ namespace MKW.Common
             {
                 for (int j = 0; j < BufferNumberWidth; j++)
                 {
-                    int mask = 1 << BufferNumberWidth - 1 - j;
+                    int mask = 1 << (BufferNumberWidth - 1 - j);
                     bool bit = (input[i] & mask) > 0;
-                    output[i * BufferNumberWidth + j] = bit;
+                    output[(i * BufferNumberWidth) + j] = bit;
                 }
             }
 
@@ -57,7 +57,7 @@ namespace MKW.Common
 
                 for (int j = 0; j < Base32NumberWidth; j++, bitIndex++)
                 {
-                    int mask = 1 << Base32NumberWidth - 1 - j;
+                    int mask = 1 << (Base32NumberWidth - 1 - j);
                     int bit = bits[bitIndex] ? 1 : 0;
                     c += bit * mask;
                 }
