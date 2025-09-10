@@ -1,6 +1,4 @@
-﻿using MKW.Cryptography.Exceptions;
-
-namespace MKW.Cryptography.Exceptions
+﻿namespace MKW.Cryptography.Exceptions
 {
     [Serializable]
     public class SymmetricOperationFailedException(Exception innerException)

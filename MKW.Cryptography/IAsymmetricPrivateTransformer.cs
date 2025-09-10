@@ -1,6 +1,4 @@
-﻿using MKW.Cryptography;
-
-namespace MKW.Cryptography
+﻿namespace MKW.Cryptography
 {
     public interface IAsymmetricPrivateTransformer : IAsymmetricPublicTransformer, IDisposable
     {

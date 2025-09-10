@@ -1,7 +1,4 @@
-﻿using MKW.Cryptography;
-using MKW.Cryptography.BouncyCastle;
-
-namespace MKW.Cryptography.BouncyCastle
+﻿namespace MKW.Cryptography.BouncyCastle
 {
     public class BouncyCastleCryptographyProvider : ICryptographyProvider
     {
