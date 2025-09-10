@@ -18,7 +18,7 @@
         public override long Length => proxy.Length;
 
         public override long Position
-        { 
+        {
             get => proxy.Position;
             set => proxy.Position = value;
         }

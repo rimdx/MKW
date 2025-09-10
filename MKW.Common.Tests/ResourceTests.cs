@@ -6,7 +6,7 @@ namespace MKW.Common.Tests
     {
         private interface ITestResource : IDisposable
         {
-            public int Disposed { get; }
+            int Disposed { get; }
         }
 
         private class TestResource : ITestResource
