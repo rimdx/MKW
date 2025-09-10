@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using MKW.Core.Common;
+using System.Collections;
 using System.Security.Cryptography;
 
-namespace MKW.Core.Common
+namespace MKW.Common
 {
     public class Base32EncodeTransformer : ICryptoTransform
     {

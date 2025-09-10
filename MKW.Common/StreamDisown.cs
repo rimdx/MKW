@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Common
+﻿namespace MKW.Common
 {
     /// <summary>
     /// Similar to Subversion's svn_stream_disown().

@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Common
+﻿namespace MKW.Common
 {
     [Serializable]
     public class ResourceNotOwnedException()

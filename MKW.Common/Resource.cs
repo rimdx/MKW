@@ -1,4 +1,6 @@
-﻿namespace MKW.Core.Common
+﻿using MKW.Core.Common;
+
+namespace MKW.Common
 {
     public class Resource<T> : IDisposable where T : IDisposable
     {

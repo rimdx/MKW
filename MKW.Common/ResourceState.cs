@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Common
+﻿namespace MKW.Common
 {
     internal enum ResourceState
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Text;
 
-namespace MKW.Core.Common.Tests
+namespace MKW.Common.Tests
 {
     [TestFixture]
     [Parallelizable]

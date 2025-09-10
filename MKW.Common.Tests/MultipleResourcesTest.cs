@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework.Legacy;
 
-namespace MKW.Core.Common.Tests
+namespace MKW.Common.Tests
 {
     public class MultipleResourcesTest
     {
