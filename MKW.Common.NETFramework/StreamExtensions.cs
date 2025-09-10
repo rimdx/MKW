@@ -1,6 +1,6 @@
 ﻿using System.Buffers;
 
-namespace MKW.Core.Common
+namespace MKW.Core
 {
     public static class StreamExtensions
     {

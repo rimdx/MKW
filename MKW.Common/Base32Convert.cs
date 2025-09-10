@@ -1,7 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using MKW.Core.Common;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace MKW.Core.Common
+namespace MKW.Common
 {
     public static class Base32Convert
     {
