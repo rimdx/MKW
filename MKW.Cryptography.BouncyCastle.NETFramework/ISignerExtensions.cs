@@ -1,7 +1,7 @@
 ﻿using Org.BouncyCastle.Crypto;
 using System.Buffers;
 
-namespace MKW.Core.Cryptography.BouncyCastle
+namespace MKW.Cryptography.BouncyCastle
 {
     public static class ISignerExtensions
     {

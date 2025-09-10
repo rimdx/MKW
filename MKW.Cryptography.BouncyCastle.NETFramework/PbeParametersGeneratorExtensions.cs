@@ -1,6 +1,6 @@
 ﻿using Org.BouncyCastle.Crypto.Generators;
 
-namespace MKW.Core.Cryptography.BouncyCastle
+namespace MKW.Cryptography.BouncyCastle
 {
     public static class PbeParametersGeneratorExtensions
     {
