@@ -1,4 +1,4 @@
-﻿namespace MKW.GUI
+﻿namespace MKW.GUI.Services
 {
     public class RecentFilesService
     {
