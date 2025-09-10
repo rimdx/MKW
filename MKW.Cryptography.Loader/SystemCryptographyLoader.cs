@@ -1,4 +1,6 @@
-﻿namespace MKW.Core.Cryptography.Loader
+﻿using MKW.Core.Cryptography;
+
+namespace MKW.Cryptography.Loader
 {
     public class SystemCryptographyLoader
     {

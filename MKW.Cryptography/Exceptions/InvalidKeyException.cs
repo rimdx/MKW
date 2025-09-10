@@ -1,4 +1,6 @@
-﻿namespace MKW.Core.Cryptography.Exceptions
+﻿using MKW.Core.Cryptography.Exceptions;
+
+namespace MKW.Cryptography.Exceptions
 {
     [Serializable]
     public class InvalidKeyException : CryptographyException

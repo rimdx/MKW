@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Cryptography.Exceptions
+﻿namespace MKW.Cryptography.Exceptions
 {
     [Serializable]
     public class CryptographyException(string message, Exception? innerException)

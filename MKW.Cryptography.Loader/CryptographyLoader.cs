@@ -1,4 +1,7 @@
-﻿namespace MKW.Core.Cryptography.Loader
+﻿using MKW.Core.Cryptography;
+using MKW.Core.Cryptography.Loader;
+
+namespace MKW.Cryptography.Loader
 {
     public static class CryptographyLoader
     {

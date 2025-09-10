@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace MKW.Core.Cryptography.System
+namespace MKW.Cryptography.System
 {
     public static class CryptographicConstants
     {

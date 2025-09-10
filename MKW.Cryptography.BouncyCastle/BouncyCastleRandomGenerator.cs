@@ -1,6 +1,7 @@
-﻿using Org.BouncyCastle.Security;
+﻿using MKW.Core.Cryptography;
+using Org.BouncyCastle.Security;
 
-namespace MKW.Core.Cryptography.BouncyCastle
+namespace MKW.Cryptography.BouncyCastle
 {
     internal class BouncyCastleRandomGenerator : IRandomGenerator
     {

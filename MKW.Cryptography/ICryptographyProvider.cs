@@ -1,4 +1,6 @@
-﻿namespace MKW.Core.Cryptography
+﻿using MKW.Core.Cryptography;
+
+namespace MKW.Cryptography
 {
     public interface ICryptographyProvider
     {

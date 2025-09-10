@@ -1,6 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿using MKW.Core.Cryptography;
+using System.Security.Cryptography;
 
-namespace MKW.Core.Cryptography.System
+namespace MKW.Cryptography.System
 {
     internal class SystemRandomGenerator : IRandomGenerator
     {
