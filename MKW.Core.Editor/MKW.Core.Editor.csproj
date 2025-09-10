@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
-    <ProjectReference Include="..\MKW.Core.Common\MKW.Core.Common.csproj" />
+    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
   </ItemGroup>
 
 </Project>
