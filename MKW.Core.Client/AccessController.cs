@@ -12,7 +12,7 @@ namespace MKW.Core.Client
                                 IEnumerable<UserId> access)
         {
             this.client = client;
-            this.access = [..access];
+            this.access = [.. access];
         }
 
         public static AccessController Create(ClientSession client,

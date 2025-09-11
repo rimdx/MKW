@@ -158,12 +158,12 @@ namespace MKW.Cryptography.Tests
 
             for (int i = 0; i < iterations; i++)
             {
-                using var t2 = crypto.OpenAsymmetricTransformer(pub.Span);
+                using IAsymmetricPublicTransformer t2 = crypto.OpenAsymmetricTransformer(pub.Span);
             }
 
             for (int i = 0; i < iterations; i++)
             {
-                using var t2 = crypto.OpenAsymmetricTransformer(pub.Span, priv.Span);
+                using IAsymmetricPrivateTransformer t2 = crypto.OpenAsymmetricTransformer(pub.Span, priv.Span);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace MKW.Cryptography.BouncyCastle
     {
         private readonly ReadOnlyMemory<byte> password;
         private readonly ReadOnlyMemory<byte> salt;
-        private Pkcs5S2ParametersGenerator generator;
+        private readonly Pkcs5S2ParametersGenerator generator;
 
         protected UserCredentials(ReadOnlyMemory<byte> password, ReadOnlyMemory<byte> salt)
         {

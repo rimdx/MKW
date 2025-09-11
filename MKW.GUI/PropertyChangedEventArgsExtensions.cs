@@ -6,7 +6,7 @@ namespace MKW.GUI
     {
         public static bool MatchProperty(this PropertyChangedEventArgs eventArgs, string propertyName)
         {
-            return 
+            return
                 eventArgs.PropertyName == null ||
                 eventArgs.PropertyName.Length == 0 ||
                 eventArgs.PropertyName == propertyName;

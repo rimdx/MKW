@@ -22,7 +22,7 @@ namespace MKW.Core.Client
         {
             if (trustVerifier == null)
             {
-                trustVerifier = new UserTrustVerifier(crypto,  user);
+                trustVerifier = new UserTrustVerifier(crypto, user);
             }
 
             // todo:
