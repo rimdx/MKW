@@ -22,7 +22,7 @@ namespace MKW.Core.Client
         public IAsymmetricPrivateTransformer Transformer { get; }
         public UserTrustController TrustController { get; }
 
-        private UserAccessController accessController;
+        private readonly UserAccessController accessController;
 
         public UserSession(ClientSession client /* reference */,
                            ICryptographyProvider crypto,

@@ -4,7 +4,7 @@ namespace MKW.GUI.Services
 {
     public class RegistryService : IDisposable
     {
-        private RegistryKey rootKey;
+        private readonly RegistryKey rootKey;
 
         public RegistryService(string rootKeyPath)
         {
