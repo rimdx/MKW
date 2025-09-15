@@ -25,6 +25,7 @@
   </Folder>
   <Project Path="cli/MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj" />
   <Project Path="client/MKW.Core.Client/MKW.Core.Client.csproj" />
+  <Project Path="client/MKW.Core/MKW.Core.csproj" />
   <Project Path="common/MKW.Common.NETFramework/MKW.Common.NETFramework.shproj" />
   <Project Path="common/MKW.Common.Tests/MKW.Common.Tests.csproj" />
   <Project Path="common/MKW.Common/MKW.Common.csproj" />
