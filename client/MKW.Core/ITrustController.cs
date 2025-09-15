@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Storage;
 
-namespace MKW.Core.Client
+namespace MKW.Core
 {
     public interface ITrustController : IDisposable
     {

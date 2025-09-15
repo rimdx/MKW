@@ -1,6 +1,6 @@
-﻿using MKW.Core.Client.Notify;
+﻿using MKW.Core.Notify;
 
-namespace MKW.Core.Client
+namespace MKW.Core
 {
     public interface IAdminController : IDisposable
     {
