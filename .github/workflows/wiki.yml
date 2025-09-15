@@ -1,4 +1,4 @@
-name: Build, Test, Publish
+name: Update GitHub Wikis
 
 on:
   push:
