@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\cli\MKW\MKW.csproj" />
+    <ProjectReference Include="..\..\common\MKW.Testing.Common\MKW.Testing.Common.csproj" />
+    <ProjectReference Include="..\..\core\MKW.Core.Client\MKW.Core.Client.csproj" />
     <ProjectReference Include="..\..\crypto\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
     <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
-    <ProjectReference Include="..\..\core\MKW.Core.Client\MKW.Core.Client.csproj" />
-    <ProjectReference Include="..\..\common\MKW.Testing.Common\MKW.Testing.Common.csproj" />
-    <ProjectReference Include="..\..\cli\MKW\MKW.csproj" />
   </ItemGroup>
 
   <ItemGroup>

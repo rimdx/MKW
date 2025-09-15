@@ -12,9 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
-    <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
     <ProjectReference Include="..\..\core\MKW.Core.Client\MKW.Core.Client.csproj" />
     <ProjectReference Include="..\..\gui\MKW.GUI.Images\MKW.GUI.Images.csproj" />
+    <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
   </ItemGroup>
 
 </Project>
