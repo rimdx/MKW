@@ -22,5 +22,5 @@ jobs:
       - run: |
           Remove-Item mkw-wiki/* -Exclude .git
           Copy-Item -Recurse mkw-trunk/docs/* mkw-wiki
-          git -C mkw-wiki commit --all -m "[automatic] update wiki"
+          git -C mkw-wiki commit --all --message "[automatic] update wiki"
           git -C mkw-wiki push
