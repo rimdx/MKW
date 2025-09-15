@@ -25,7 +25,7 @@ jobs:
       - run: |
           Remove-Item mkw-wiki/* -Exclude .git
           Copy-Item -Recurse mkw-trunk/docs/* mkw-wiki
-          git add mkw-wiki
+          git -C mkw-wiki add .
 
       - name: Check status
         id: check_status
