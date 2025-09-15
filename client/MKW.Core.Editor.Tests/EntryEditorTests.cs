@@ -12,7 +12,7 @@ namespace MKW.Core.Editor.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user = sbox.CreateUser(client, "123", out _);
+            using IUserSession user = sbox.CreateUser(client, "123", out _);
 
             EntryId id = EntryId.Create();
             using EntryEditor editor = new EntryEditor(user.CreateEntry(id));

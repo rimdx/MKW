@@ -5,7 +5,7 @@ namespace MKW.Core.Client
     public interface IAdminController : IDisposable
     {
         UserInfo PromoteAdmin(string password);
-        AdminSession OpenAdmin(string password);
+        IUserSession OpenAdmin(string password);
         UserInfo GetAdminInfo();
     }
 }

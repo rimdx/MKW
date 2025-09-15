@@ -41,7 +41,7 @@ namespace MKW.Core.Client
             return UserInfo.FromDatabaseUser(user);
         }
 
-        public UserSession OpenUser(UserId id, string password)
+        public IUserSession OpenUser(UserId id, string password)
         {
             if (id.IsAdmin)
             {
@@ -59,7 +59,7 @@ namespace MKW.Core.Client
             }
         }
 
-        public UserSession OpenUser(string password)
+        public IUserSession OpenUser(string password)
         {
             foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
             {
@@ -78,7 +78,7 @@ namespace MKW.Core.Client
             throw new Exception("No valid user found with the provided password.");
         }
 
-        public UserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
+        public IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
         {
             try
             {
