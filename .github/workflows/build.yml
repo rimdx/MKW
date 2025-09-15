@@ -28,11 +28,11 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish /p:RuntimeIdentifier=win-x64 --framework net8.0 MKW ${{ env.Parameters }}
-          dotnet publish /p:RuntimeIdentifier=win-x64 --framework net8.0-windows MKW ${{ env.Parameters }}
-          dotnet publish /p:RuntimeIdentifier=win-x64 --framework net8.0-windows MKW.GUI ${{ env.Parameters }}
-          dotnet publish --no-build --framework net472 MKW ${{ env.Parameters }}
-          dotnet publish --no-build --framework net472 MKW.GUI ${{ env.Parameters }}
+          dotnet publish cli/MKW        /p:RuntimeIdentifier=win-x64  --framework net8.0          ${{ env.Parameters }}
+          dotnet publish cli/MKW        /p:RuntimeIdentifier=win-x64  --framework net8.0-windows  ${{ env.Parameters }}
+          dotnet publish gui/MKW.GUI    /p:RuntimeIdentifier=win-x64  --framework net8.0-windows  ${{ env.Parameters }}
+          dotnet publish cli/MKW        --no-build                    --framework net472          ${{ env.Parameters }}
+          dotnet publish gui/MKW.GUI    --no-build                    --framework net472          ${{ env.Parameters }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
