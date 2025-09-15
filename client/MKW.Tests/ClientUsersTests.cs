@@ -34,7 +34,7 @@ namespace MKW.Tests
 
             UserInfo user = client.PromoteUser("awesomesecretno1willeverguess");
 
-            using UserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
+            using IUserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
             Assert.Throws<Exception>(
                 () => client.OpenUser(UserId.Create(),
@@ -56,9 +56,9 @@ namespace MKW.Tests
             UserInfo user2 = client.PromoteUser("cred2");
             UserInfo user3 = client.PromoteUser("cred3");
 
-            using UserSession userSession1 = client.OpenUser("cred1");
-            using UserSession userSession2 = client.OpenUser("cred2");
-            using UserSession userSession3 = client.OpenUser("cred3");
+            using IUserSession userSession1 = client.OpenUser("cred1");
+            using IUserSession userSession2 = client.OpenUser("cred2");
+            using IUserSession userSession3 = client.OpenUser("cred3");
 
             Assert.Throws<Exception>(
                 () => client.OpenUser("nonexistingpassword")

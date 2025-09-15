@@ -17,7 +17,7 @@ namespace MKW.Tests
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
             using ClientSession client = ClientSession.Create(db, "adminsecret");
 
-            using AdminSession adminSession = client.OpenAdmin("adminsecret");
+            using IUserSession adminSession = client.OpenAdmin("adminsecret");
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace MKW.Tests
             using ClientSession client = ClientSession.Create(db, "adminsecret");
 
             UserInfo admin = client.GetAdminInfo();
-            AdminSession adminSession = client.OpenAdmin("adminsecret");
+            IUserSession adminSession = client.OpenAdmin("adminsecret");
 
             UserInfo user1 = client.PromoteUser("user1");
             UserInfo user2 = client.PromoteUser("user2");
@@ -65,20 +65,20 @@ namespace MKW.Tests
             UserInfo trusted = client.PromoteUser("trusted");
             UserInfo untrusted = client.PromoteUser("untrusted");
 
-            using AdminSession admin = sbox.OpenAdmin(client);
+            using IUserSession admin = sbox.OpenAdmin(client);
 
             admin.AddTrust(trusted.Id);
             EntryInfo entry = client.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
 
             {
-                using UserSession user = client.OpenUser("trusted");
+                using IUserSession user = client.OpenUser("trusted");
                 using IEntrySession entrySession = user.OpenEntry(entry.Id);
 
                 ClassicAssert.AreEqual(new EntryPayload("test data"), entrySession.OpenPayload());
             }
 
             {
-                using UserSession user = client.OpenUser("untrusted");
+                using IUserSession user = client.OpenUser("untrusted");
                 using IEntrySession entrySession = user.OpenEntry(entry.Id);
 
                 ClassicAssert.AreEqual(null, entrySession.OpenPayload());
@@ -91,11 +91,11 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using (UserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
+            using (IUserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
             {
             }
 
-            using (UserSession admin = client.OpenUser(sbox.AdminSecret))
+            using (IUserSession admin = client.OpenUser(sbox.AdminSecret))
             {
             }
         }
@@ -109,14 +109,14 @@ namespace MKW.Tests
             EntryId entryId;
 
             {
-                using UserSession user = sbox.CreateUser(client, "user1", out _);
+                using IUserSession user = sbox.CreateUser(client, "user1", out _);
                 using IEntrySession entry = user.CreateEntry();
                 entry.UpdatePayload(new EntryPayload("data"));
                 entryId = entry.Id;
             }
 
             {
-                using UserSession admin = sbox.OpenAdmin(client);
+                using IUserSession admin = sbox.OpenAdmin(client);
                 using IEntrySession entry = admin.OpenEntry(entryId);
 
                 ClassicAssert.AreEqual(new EntryPayload("data"),
@@ -130,7 +130,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user = sbox.CreateUser(client, "user1", out UserInfo userInfo, false);
+            using IUserSession user = sbox.CreateUser(client, "user1", out UserInfo userInfo, false);
 
             EntryId entryId = EntryId.Create();
 
@@ -179,7 +179,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession admin = sbox.OpenAdmin(client);
+            using IUserSession admin = sbox.OpenAdmin(client);
 
             EntryId entryId;
 
@@ -197,8 +197,8 @@ namespace MKW.Tests
                     entry.EnumerateAccess().Select(value => value.Id));
             }
 
-            using UserSession user1 = sbox.CreateUser(client, "user1", out _, false);
-            using UserSession user2 = sbox.CreateUser(client, "user2", out _, false);
+            using IUserSession user1 = sbox.CreateUser(client, "user1", out _, false);
+            using IUserSession user2 = sbox.CreateUser(client, "user2", out _, false);
 
             // the users cannot see the entry
             {
@@ -279,7 +279,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession admin = sbox.OpenAdmin(client);
+            using IUserSession admin = sbox.OpenAdmin(client);
 
             using IEntrySession entry1 = admin.CreateEntry();
             entry1.UpdatePayload(new EntryPayload("data1"));
@@ -290,7 +290,7 @@ namespace MKW.Tests
             using IEntrySession entry3 = admin.CreateEntry();
             entry3.UpdatePayload(new EntryPayload("data3"));
 
-            using UserSession user = sbox.CreateUser(client, "user1", out _, false);
+            using IUserSession user = sbox.CreateUser(client, "user1", out _, false);
 
             CollectionAssert.AreEquivalent(
                 new EntryPayload?[] { null, null, null },

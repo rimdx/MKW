@@ -19,7 +19,7 @@ namespace MKW.Tests
 
             sbox.CreateUser(session, "secretprotector", out UserInfo user).Dispose();
             IDatabaseUser[] users = db.EnumerateUsers().ToArray();
-            using UserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
+            using IUserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
 
             EntryInfo entry = session.UpdateEntry(EntryId.FromGuid(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}")),
                                                   new EntryPayload("secret"));
@@ -49,7 +49,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession session = sbox.OpenSession();
 
-            using UserSession oldSession = sbox.CreateUser(session, "iamanoldman", out _, false);
+            using IUserSession oldSession = sbox.CreateUser(session, "iamanoldman", out _, false);
 
             oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
             oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
@@ -75,7 +75,7 @@ namespace MKW.Tests
                 })
             );
 
-            using UserSession newSession = sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out _, false);
+            using IUserSession newSession = sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out _, false);
 
             newSession.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
 
@@ -140,8 +140,8 @@ namespace MKW.Tests
             using ClientSession client = sbox.OpenSession();
 
             client.PromoteUser("usersecret");
-            using UserSession user = client.OpenUser("usersecret");
-            using AdminSession admin = sbox.OpenAdmin(client);
+            using IUserSession user = client.OpenUser("usersecret");
+            using IUserSession admin = sbox.OpenAdmin(client);
             admin.AddTrust(user.Id);
 
             // create
@@ -201,7 +201,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user = sbox.CreateUser(client, "usersecret", out _);
+            using IUserSession user = sbox.CreateUser(client, "usersecret", out _);
 
             // create
             EntryId id = EntryId.Create();
@@ -232,7 +232,7 @@ namespace MKW.Tests
 
             using (ClientSession client = sbox.OpenSession())
             {
-                using UserSession user = sbox.CreateUser(client, "usersecret", out _);
+                using IUserSession user = sbox.CreateUser(client, "usersecret", out _);
 
                 // create
                 using IEntrySession entry = user.CreateEntry();
@@ -261,7 +261,7 @@ namespace MKW.Tests
             // blank session
             using (ClientSession client = sbox.OpenSession())
             {
-                using UserSession user = client.OpenUser("usersecret");
+                using IUserSession user = client.OpenUser("usersecret");
                 using IEntrySession entry = user.OpenEntry(entryId);
                 ClassicAssert.AreEqual(new EntryPayload("data2"),
                                        user.OpenEntry(entry.Id).OpenPayload());

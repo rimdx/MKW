@@ -109,7 +109,7 @@ namespace MKW.Core.Client
             return userController.PromoteUser(password);
         }
 
-        public UserSession OpenUser(UserId id, string password)
+        public IUserSession OpenUser(UserId id, string password)
         {
             return userController.OpenUser(id, password);
         }
@@ -122,12 +122,12 @@ namespace MKW.Core.Client
             }
         }
 
-        public UserSession OpenUser(string password)
+        public IUserSession OpenUser(string password)
         {
             return userController.OpenUser(password);
         }
 
-        public UserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
+        public IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
         {
             return userController.OpenUser(user, creds);
         }
@@ -144,7 +144,7 @@ namespace MKW.Core.Client
             return adminController.PromoteAdmin(password);
         }
 
-        public AdminSession OpenAdmin(string password)
+        public IUserSession OpenAdmin(string password)
         {
             return adminController.OpenAdmin(password);
         }

@@ -91,7 +91,7 @@ namespace MKW.CommandLine.Tests
 
             using (ClientSession client = sbox.OpenSession())
             {
-                using AdminSession admin = sbox.OpenAdmin(client);
+                using IUserSession admin = sbox.OpenAdmin(client);
 
                 admin.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
                 admin.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
@@ -249,7 +249,7 @@ namespace MKW.CommandLine.Tests
 
             using ClientSession session = ClientSession.Open(db);
 
-            UserSession user = session.OpenUser("test3");
+            IUserSession user = session.OpenUser("test3");
         }
 
         [Test]
@@ -260,7 +260,7 @@ namespace MKW.CommandLine.Tests
             sbox.Run($"mkw create {sbox.DatabasePath} --password {sbox.AdminSecret}");
 
             using ClientSession client = sbox.OpenSession();
-            using AdminSession admin = sbox.OpenAdmin(client);
+            using IUserSession admin = sbox.OpenAdmin(client);
         }
     }
 }

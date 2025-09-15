@@ -8,9 +8,9 @@ namespace MKW.Core.Client
     {
         UserInfo PromoteUser(string password);
 
-        UserSession OpenUser(string password);
-        UserSession OpenUser(UserId id, string password);
-        UserSession OpenUser(IDatabaseUser user, IUserCredentials creds);
+        IUserSession OpenUser(string password);
+        IUserSession OpenUser(UserId id, string password);
+        IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds);
 
         IEnumerable<UserInfo> EnumerateUsers();
         UserInfo GetUserInfo(UserId id);

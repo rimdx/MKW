@@ -17,7 +17,7 @@ namespace MKW
             UserId userId = UserId.FromGuid(argv.GetRequiredValue(CommonOptions.UserId));
 
             using ClientSession session = OpenSession(argv);
-            using AdminSession admin = session.OpenAdmin(GetPassword(argv));
+            using IUserSession admin = session.OpenAdmin(GetPassword(argv));
 
             admin.AddTrust(userId);
 

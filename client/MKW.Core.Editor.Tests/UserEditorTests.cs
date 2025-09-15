@@ -12,10 +12,10 @@ namespace MKW.Core.Editor.Tests
             using SandBox sbox = new SandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using UserSession user1 = sbox.CreateUser(client, "user1", out UserInfo userInfo1, false);
+            using IUserSession user1 = sbox.CreateUser(client, "user1", out UserInfo userInfo1, false);
             using UserEditor editor = new UserEditor(user1);
 
-            using UserSession user2 = sbox.CreateUser(client, "user2", out UserInfo userInfo2, false);
+            using IUserSession user2 = sbox.CreateUser(client, "user2", out UserInfo userInfo2, false);
             ClassicAssert.AreEqual(Trust.None, user1.GetImplicitTrust(user2.Id));
             // ClassicAssert.AreEqual(Trust.None, editor.GetImplicitTrust(user2.Id));
 

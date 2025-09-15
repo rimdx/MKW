@@ -12,8 +12,8 @@ namespace MKW.GUI.Model
         public IDatabase Database { get; }
         public ClientSession Client { get; }
 
-        public UserSession? User { get; private set; }
-        public AdminSession? Admin { get; private set; }
+        public IUserSession? User { get; private set; }
+        public IUserSession? Admin { get; private set; }
 
         public event EventHandler? OnEntriesChanged;
         public event EventHandler? OnUsersChanged;

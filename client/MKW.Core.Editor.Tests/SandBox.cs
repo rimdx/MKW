@@ -35,21 +35,21 @@ namespace MKW.Core.Editor.Tests
             return ClientSession.Open(OpenDatabase(), true);
         }
 
-        public AdminSession OpenAdmin(ClientSession client)
+        public IUserSession OpenAdmin(ClientSession client)
         {
             return client.OpenAdmin(AdminSecret);
         }
 
-        public UserSession CreateUser(ClientSession client,
-                                      string password,
-                                      out UserInfo user,
-                                      bool trusted = true)
+        public IUserSession CreateUser(ClientSession client,
+                                       string password,
+                                       out UserInfo user,
+                                       bool trusted = true)
         {
-            using AdminSession admin = OpenAdmin(client);
+            using IUserSession admin = OpenAdmin(client);
 
             user = client.PromoteUser(password);
 
-            UserSession userSession = client.OpenUser(user.Id, password);
+            IUserSession userSession = client.OpenUser(user.Id, password);
 
             if (trusted)
             {

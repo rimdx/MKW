@@ -13,7 +13,7 @@ namespace MKW
         protected override void Execute(ParseResult argv)
         {
             using ClientSession session = OpenSession(argv);
-            using UserSession userSession = session.OpenUser(GetPassword(argv));
+            using IUserSession userSession = session.OpenUser(GetPassword(argv));
 
             foreach (IEntrySession entry in userSession.EnumerateEntries())
             {
