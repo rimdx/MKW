@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\..\MKW.Common\MKW.Common.csproj" />
     <ProjectReference Include="..\MKW.Cryptography\MKW.Cryptography.csproj" />
   </ItemGroup>
 
