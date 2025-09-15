@@ -11,10 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
-    <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
-    <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
-    <ProjectReference Include="..\MKW.GUI.Images\MKW.GUI.Images.csproj" />
+    <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
+    <ProjectReference Include="..\..\client\MKW.Core.Client\MKW.Core.Client.csproj" />
+    <ProjectReference Include="..\..\gui\MKW.GUI.Images\MKW.GUI.Images.csproj" />
   </ItemGroup>
 
 </Project>

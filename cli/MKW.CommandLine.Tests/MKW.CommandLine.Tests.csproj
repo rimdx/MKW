@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MKW.Testing.Client\MKW.Testing.Client.csproj" />
-    <ProjectReference Include="..\MKW.Testing.Common\MKW.Testing.Common.csproj" />
-    <ProjectReference Include="..\MKW\MKW.csproj" />
+    <ProjectReference Include="..\..\common\MKW.Testing.Client\MKW.Testing.Client.csproj" />
+    <ProjectReference Include="..\..\common\MKW.Testing.Common\MKW.Testing.Common.csproj" />
+    <ProjectReference Include="..\..\cli\MKW\MKW.csproj" />
   </ItemGroup>
 
   <ItemGroup>

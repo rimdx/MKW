@@ -5,8 +5,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MKW.Common\MKW.Common.csproj" />
-    <ProjectReference Include="..\MKW.Cryptography\MKW.Cryptography.csproj" />
+    <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\..\crypto\MKW.Cryptography\MKW.Cryptography.csproj" />
   </ItemGroup>
 
   <Import Project="..\MKW.Cryptography.BouncyCastle.NETFramework\MKW.Cryptography.BouncyCastle.NETFramework.projitems" Label="Shared" />

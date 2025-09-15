@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Condition="'$(TargetFramework)' == 'net472'" Project="..\MKW.Common.NETFramework\MKW.Common.NETFramework.projitems" Label="Shared" />
+  <Import Condition="'$(TargetFramework)' == 'net472'" Project="..\..\common\MKW.Common.NETFramework\MKW.Common.NETFramework.projitems" Label="Shared" />
 
   <ItemGroup>
     <PackageReference Condition="'$(TargetFramework)' == 'net472'" Include="System.Memory" Version="4.6.3" />
