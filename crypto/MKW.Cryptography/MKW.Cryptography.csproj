@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
   </ItemGroup>
 
 </Project>
