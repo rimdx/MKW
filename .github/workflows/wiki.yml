@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  wiki:
     runs-on: windows-latest
 
     steps:
