@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\client\MKW.Core.Editor\MKW.Core.Editor.csproj" />
+    <ProjectReference Include="..\..\core\MKW.Core.Editor\MKW.Core.Editor.csproj" />
     <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
   </ItemGroup>
 
