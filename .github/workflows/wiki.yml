@@ -19,8 +19,10 @@ jobs:
         with:
           path: mkw-trunk
 
-      - name: checkout wikis
-        run: git clone https://github.com/rimdx/MKW.wiki.git mkw-wiki
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: mkw-wiki
 
       - run: |
           Remove-Item mkw-wiki/* -Exclude .git
