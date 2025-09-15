@@ -22,13 +22,23 @@ jobs:
       - name: checkout wikis
         run: git clone https://github.com/rimdx/MKW.wiki.git mkw-wiki
 
-      - name: setup git
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
       - run: |
           Remove-Item mkw-wiki/* -Exclude .git
           Copy-Item -Recurse mkw-trunk/docs/* mkw-wiki
-          git -C mkw-wiki commit --all --message "[automatic] update wiki"
+          git add mkw-wiki
+
+      - name: Check status
+        id: check_status
+        working-directory: mkw-wiki
+        run: |
+          if (git status --porcelain) {
+            Write-Output "Changes were found."
+            Add-Content -Encoding UTF8 -Path $env:GITHUB_OUTPUT -Value "has_changed=true"
+          }
+
+      - if: steps.check_status.outputs.has_changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C mkw-wiki commit --message "[automatic] update wiki"
           git -C mkw-wiki push
