@@ -19,6 +19,11 @@ jobs:
       - name: checkout wikis
         run: git clone https://github.com/rimdx/MKW.wiki.git mkw-wiki
 
+      - name: setup git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
       - run: |
           Remove-Item mkw-wiki/* -Exclude .git
           Copy-Item -Recurse mkw-trunk/docs/* mkw-wiki
