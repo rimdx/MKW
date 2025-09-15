@@ -13,7 +13,7 @@ namespace MKW.Core.Client.Notify
         {
         }
 
-        internal static UserInfo FromDatabaseUser(IDatabaseUser user)
+        public static UserInfo FromDatabaseUser(IDatabaseUser user)
         {
             return new UserInfo
             {
@@ -22,7 +22,7 @@ namespace MKW.Core.Client.Notify
             };
         }
 
-        internal static UserInfo FromDatabaseUser(IDatabaseUser user, Trust trust)
+        public static UserInfo FromDatabaseUser(IDatabaseUser user, Trust trust)
         {
             return new UserInfo
             {
