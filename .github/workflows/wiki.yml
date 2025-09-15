@@ -3,6 +3,9 @@ name: Update GitHub Wikis
 on:
   push:
     branches: ["trunk"]
+    paths:
+      - .github/workflows/wiki.yml
+      - docs/**
 
 permissions:
   contents: write
