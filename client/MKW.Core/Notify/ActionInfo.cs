@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Client.Notify
+﻿namespace MKW.Core.Notify
 {
     public enum ActionInfo
     {

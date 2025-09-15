@@ -1,7 +1,7 @@
-﻿using MKW.Core.Client.Notify;
+﻿using MKW.Core.Notify;
 using MKW.Core.Storage;
 
-namespace MKW.Core.Client
+namespace MKW.Core
 {
     /// <summary>
     /// Used to evaluate trust network.

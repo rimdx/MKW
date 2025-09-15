@@ -1,4 +1,4 @@
-﻿using MKW.Core.Client;
+﻿using MKW.Core;
 using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 

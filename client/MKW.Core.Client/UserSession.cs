@@ -1,4 +1,4 @@
-﻿using MKW.Core.Client.Notify;
+﻿using MKW.Core.Notify;
 using MKW.Core.Storage;
 using MKW.Cryptography;
 

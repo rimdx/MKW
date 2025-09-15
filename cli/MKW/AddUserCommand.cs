@@ -1,5 +1,5 @@
 ﻿using MKW.Core.Client;
-using MKW.Core.Client.Notify;
+using MKW.Core.Notify;
 using System.CommandLine;
 
 namespace MKW

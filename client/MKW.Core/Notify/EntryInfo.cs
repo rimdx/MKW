@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Storage;
 
-namespace MKW.Core.Client.Notify
+namespace MKW.Core.Notify
 {
     public class EntryInfo
     {
