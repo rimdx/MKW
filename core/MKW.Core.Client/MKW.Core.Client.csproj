@@ -2,10 +2,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\..\core\MKW.Core\MKW.Core.csproj" />
     <ProjectReference Include="..\..\crypto\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
     <ProjectReference Include="..\..\crypto\MKW.Cryptography\MKW.Cryptography.csproj" />
     <ProjectReference Include="..\..\storage\MKW.Core.Storage\MKW.Core.Storage.csproj" />
-    <ProjectReference Include="..\..\core\MKW.Core\MKW.Core.csproj" />
   </ItemGroup>
 
 </Project>
