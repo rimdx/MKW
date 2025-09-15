@@ -38,7 +38,7 @@ jobs:
 
       - if: steps.check_status.outputs.has_changed == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C mkw-wiki config user.name "github-actions[bot]"
+          git -C mkw-wiki config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git -C mkw-wiki commit --message "[automatic] update wiki"
           git -C mkw-wiki push
