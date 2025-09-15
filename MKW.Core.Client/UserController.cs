@@ -69,13 +69,9 @@ namespace MKW.Core.Client
 
                     return OpenUser(client.OpenDatabaseUser(user.Id, false), creds);
                 }
-                catch (SymmetricOperationFailedException)
+                catch (Exceptions.InvalidPasswordException)
                 {
                     // Ignore this user if the credentials are invalid
-                }
-                catch (InvalidKeyException)
-                {
-                    // Possible occurrence, as experiments have shown. Fails in 1/~35 times.
                 }
             }
 
@@ -84,16 +80,28 @@ namespace MKW.Core.Client
 
         public UserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
         {
-            // Private data of the user is encrypted symmetrically using our creds (decoder
-            // also needs some data stored in the public section of the object).
-            using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
-                creds.GetSecretKey().Span, creds.ExportSalt().Span);
+            try
+            {
+                // Private data of the user is encrypted symmetrically using our creds (decoder
+                // also needs some data stored in the public section of the object).
+                using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
+                    creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
-            // Let's try'N decode the private key. We could potentially fail here. So
-            // some validation may be required.
-            Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.Span);
+                // Let's try'N decode the private key. We could potentially fail here. So
+                // some validation may be required.
+                Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.Span);
 
-            return new UserSession(client, crypto, database, user, privateKeyBytes.Span);
+                return new UserSession(client, crypto, database, user, privateKeyBytes.Span);
+            }
+            catch (SymmetricOperationFailedException ex)
+            {
+                throw new Exceptions.InvalidPasswordException(ex);
+            }
+            catch (InvalidKeyException ex)
+            {
+                // Possible occurrence, as experiments have shown. Fails in 1/~35 times.
+                throw new Exceptions.InvalidPasswordException(ex);
+            }
         }
 
         public IEnumerable<UserInfo> EnumerateUsers()
