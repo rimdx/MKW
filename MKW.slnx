@@ -24,8 +24,8 @@
     <File Path="Version.props" />
   </Folder>
   <Project Path="cli/MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj" />
-  <Project Path="client/MKW.Core.Client/MKW.Core.Client.csproj" />
-  <Project Path="client/MKW.Core/MKW.Core.csproj" />
+  <Project Path="core/MKW.Core.Client/MKW.Core.Client.csproj" />
+  <Project Path="core/MKW.Core/MKW.Core.csproj" />
   <Project Path="common/MKW.Common.NETFramework/MKW.Common.NETFramework.shproj" />
   <Project Path="common/MKW.Common.Tests/MKW.Common.Tests.csproj" />
   <Project Path="common/MKW.Common/MKW.Common.csproj" />
@@ -35,8 +35,8 @@
   <Project Path="crypto/MKW.Cryptography.System/MKW.Cryptography.System.csproj" />
   <Project Path="crypto/MKW.Cryptography.Tests/MKW.Cryptography.Tests.csproj" />
   <Project Path="crypto/MKW.Cryptography/MKW.Cryptography.csproj" />
-  <Project Path="client/MKW.Core.Editor.Tests/MKW.Core.Editor.Tests.csproj" />
-  <Project Path="client/MKW.Core.Editor/MKW.Core.Editor.csproj" />
+  <Project Path="core/MKW.Core.Editor.Tests/MKW.Core.Editor.Tests.csproj" />
+  <Project Path="core/MKW.Core.Editor/MKW.Core.Editor.csproj" />
   <Project Path="storage/MKW.Core.Storage.JSON/MKW.Core.Storage.JSON.csproj" />
   <Project Path="storage/MKW.Core.Storage/MKW.Core.Storage.csproj" />
   <Project Path="gui/MKW.GUI.Images/MKW.GUI.Images.csproj" />
@@ -44,6 +44,6 @@
   <Project Path="gui/MKW.GUI/MKW.GUI.csproj" />
   <Project Path="common/MKW.Testing.Client/MKW.Testing.Client.csproj" />
   <Project Path="common/MKW.Testing.Common/MKW.Testing.Common.csproj" />
-  <Project Path="client/MKW.Tests/MKW.Tests.csproj" />
+  <Project Path="core/MKW.Tests/MKW.Tests.csproj" />
   <Project Path="cli/MKW/MKW.csproj" />
 </Solution>
