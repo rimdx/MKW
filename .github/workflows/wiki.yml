@@ -1,0 +1,29 @@
+name: Build, Test, Publish
+
+on:
+  push:
+    branches: ["trunk"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: mkw-trunk
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          repository: https://github.com/rimdx/MKW.wiki.git
+          path: mkw-wiki
+
+      - run: |
+          Remove-Item mkw-wiki/* -Exclude .git
+          Copy-Item -Recurse mkw-trunk/docs/* mkw-wiki
+          git -C mkw-wiki commit --all -m "[automatic] update wiki"
+          git -C mkw-wiki push
