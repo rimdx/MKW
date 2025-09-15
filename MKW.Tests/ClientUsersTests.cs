@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Client;
+using MKW.Core.Client.Exceptions;
 using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using MKW.Cryptography.Exceptions;
@@ -40,7 +41,7 @@ namespace MKW.Tests
                                       "awesomesecretno1willeverguess")
             );
 
-            Assert.Throws<SymmetricOperationFailedException>(
+            Assert.Throws<InvalidPasswordException>(
                 () => client.OpenUser(user.Id, "randomheckerpwdhaha")
             );
         }

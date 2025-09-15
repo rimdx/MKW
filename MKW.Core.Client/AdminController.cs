@@ -1,6 +1,7 @@
 ﻿using MKW.Core.Client.Notify;
 using MKW.Core.Storage;
 using MKW.Cryptography;
+using MKW.Cryptography.Exceptions;
 
 namespace MKW.Core.Client
 {
@@ -39,16 +40,28 @@ namespace MKW.Core.Client
 
         public AdminSession OpenAdmin(string password)
         {
-            IDatabaseUser admin = database.OpenAdmin(false);
+            try
+            {
+                IDatabaseUser admin = database.OpenAdmin(false);
 
-            IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
+                IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
 
-            using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
-                creds.GetSecretKey().Span, creds.ExportSalt().Span);
+                using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
+                    creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
-            Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
+                Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
 
-            return new AdminSession(client, crypto, database, admin, privateKeyBytes.Span);
+                return new AdminSession(client, crypto, database, admin, privateKeyBytes.Span);
+            }
+            catch (SymmetricOperationFailedException ex)
+            {
+                throw new Exceptions.InvalidPasswordException(ex);
+            }
+            catch (InvalidKeyException ex)
+            {
+                // Possible occurrence, as experiments have shown. Fails in 1/~35 times.
+                throw new Exceptions.InvalidPasswordException(ex);
+            }
         }
 
         public UserInfo GetAdminInfo()
