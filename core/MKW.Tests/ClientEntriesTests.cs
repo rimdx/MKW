@@ -140,7 +140,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            client.PromoteUser("usersecret");
+            client.CreateUser("usersecret");
             using IUserSession user = client.OpenUser("usersecret");
             using IUserSession admin = sbox.OpenAdmin(client);
             admin.AddTrust(user.Id);

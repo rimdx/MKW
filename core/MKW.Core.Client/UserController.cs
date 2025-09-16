@@ -20,7 +20,7 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserInfo PromoteUser(string password)
+        public UserInfo CreateUser(string password)
         {
             // TODO: sign admin
             IDatabaseUser admin = database.OpenAdmin(true);

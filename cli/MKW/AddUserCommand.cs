@@ -15,7 +15,7 @@ namespace MKW
         {
             using ClientSession session = OpenSession(argv);
 
-            UserInfo user = session.PromoteUser(GetPassword(argv));
+            UserInfo user = session.CreateUser(GetPassword(argv));
 
             Console.WriteLine($"User added with ID: {user.Id}");
         }

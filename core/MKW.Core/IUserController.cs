@@ -6,7 +6,7 @@ namespace MKW.Core
 {
     public interface IUserController : IDisposable
     {
-        UserInfo PromoteUser(string password);
+        UserInfo CreateUser(string password);
 
         IUserSession OpenUser(string password);
         IUserSession OpenUser(UserId id, string password);

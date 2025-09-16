@@ -47,7 +47,7 @@ namespace MKW.Core.Editor.Tests
         {
             using IUserSession admin = OpenAdmin(client);
 
-            user = client.PromoteUser(password);
+            user = client.CreateUser(password);
 
             IUserSession userSession = client.OpenUser(user.Id, password);
 
