@@ -104,9 +104,9 @@ namespace MKW.Core.Client
 
         // IUserController
 
-        public UserInfo PromoteUser(string password)
+        public UserInfo CreateUser(string password)
         {
-            return userController.PromoteUser(password);
+            return userController.CreateUser(password);
         }
 
         public IUserSession OpenUser(UserId id, string password)

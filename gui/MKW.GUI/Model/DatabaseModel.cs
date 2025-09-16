@@ -80,7 +80,7 @@ namespace MKW.GUI.Model
 
         public void PromoteUser(string password)
         {
-            Client.PromoteUser(password);
+            Client.CreateUser(password);
             OnUsersChanged?.Invoke(this, new EventArgs());
         }
 

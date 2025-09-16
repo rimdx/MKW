@@ -17,7 +17,7 @@ namespace MKW.Tests
             using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
-            UserInfo user = session.PromoteUser("whattheheckamidoing");
+            UserInfo user = session.CreateUser("whattheheckamidoing");
 
             IDatabaseUser[] users = db.EnumerateUsers().ToArray();
             ClassicAssert.AreEqual(1, users.Length);
@@ -32,7 +32,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserInfo user = client.PromoteUser("awesomesecretno1willeverguess");
+            UserInfo user = client.CreateUser("awesomesecretno1willeverguess");
 
             using IUserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
@@ -52,9 +52,9 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserInfo user1 = client.PromoteUser("cred1");
-            UserInfo user2 = client.PromoteUser("cred2");
-            UserInfo user3 = client.PromoteUser("cred3");
+            UserInfo user1 = client.CreateUser("cred1");
+            UserInfo user2 = client.CreateUser("cred2");
+            UserInfo user3 = client.CreateUser("cred3");
 
             using IUserSession userSession1 = client.OpenUser("cred1");
             using IUserSession userSession2 = client.OpenUser("cred2");
