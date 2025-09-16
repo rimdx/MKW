@@ -72,7 +72,6 @@ namespace MKW.Core.Client
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }
