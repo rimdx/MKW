@@ -49,7 +49,7 @@ namespace MKW.Core.Client
         public static ClientSession Create(IDatabase db, bool ownsDb, string adminPassword)
         {
             ClientSession client = new ClientSession(db, ownsDb);
-            client.PromoteAdmin(adminPassword);
+            client.CreateAdmin(adminPassword);
             return client;
         }
 
@@ -139,9 +139,9 @@ namespace MKW.Core.Client
 
         // IAdminController
 
-        public UserInfo PromoteAdmin(string password)
+        public UserInfo CreateAdmin(string password)
         {
-            return adminController.PromoteAdmin(password);
+            return adminController.CreateAdmin(password);
         }
 
         public IUserSession OpenAdmin(string password)
