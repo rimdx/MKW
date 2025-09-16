@@ -20,7 +20,7 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserInfo PromoteAdmin(string password)
+        public UserInfo CreateAdmin(string password)
         {
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
