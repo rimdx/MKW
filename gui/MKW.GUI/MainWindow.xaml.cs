@@ -144,9 +144,12 @@ namespace MKW.GUI
         {
             try
             {
-                using EditEntryWindowViewModel viewModel = model.Database!.CreateEditEntryWindowViewModel();
-                EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
-                window.ShowDialog();
+                if (model.SelectedEntry != null)
+                {
+                    using EditEntryWindowViewModel viewModel = model.Database!.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
+                    EditEntryWindow window = new EditEntryWindow(viewModel, GetWindow(this));
+                    window.ShowDialog();
+                }
             }
             catch (Exception ex)
             {

@@ -37,9 +37,12 @@ namespace MKW.GUI
         {
             try
             {
-                using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel();
-                EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
-                window.ShowDialog();
+                if (model.SelectedEntry != null)
+                {
+                    using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
+                    EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
+                    window.ShowDialog();
+                }
             }
             catch (Exception ex)
             {
