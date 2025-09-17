@@ -13,10 +13,11 @@ namespace MKW.Core.Client
 
         public UserTrustController(ClientSession client,
                                    ICryptographyProvider crypto,
-                                   UserSession user)
-            : base(client, crypto, user.DatabaseUser)
+                                   IDatabaseUser me,
+                                   IAsymmetricPrivateTransformer privateKey)
+            : base(client, crypto, me)
         {
-            privateKey = user.Transformer;
+            this.privateKey = privateKey;
         }
 
         public void AddTrust(UserId userId)
