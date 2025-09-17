@@ -176,12 +176,12 @@ namespace MKW.GUI
 
         // User
 
-        private void PromoteUser_Click(object sender, RoutedEventArgs e)
+        private void NewUser_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                PromoteUserWindowViewModel viewModel = model.Database!.CreatePromoteUserWindowViewModel();
-                PromoteUserWindow window = new PromoteUserWindow(viewModel);
+                NewUserWindowViewModel viewModel = model.Database!.CreateNewUserWindowViewModel();
+                NewUserWindow window = new NewUserWindow(viewModel);
                 window.ShowDialog();
                 model.Database!.IsPageUsers = true;
             }

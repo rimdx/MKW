@@ -57,9 +57,9 @@
       </MenuItem>
 
       <MenuItem Header="_User">
-        <MenuItem Header="Promote _New User..."
+        <MenuItem Header="_New User..."
                   IsEnabled="{Binding IsDatabaseAttached}"
-                  Click="PromoteUser_Click" />
+                  Click="NewUser_Click" />
 
         <MenuItem Header="_Properties..."
                   IsEnabled="{Binding IsUserSelected}"

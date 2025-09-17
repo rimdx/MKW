@@ -19,12 +19,12 @@ namespace MKW.GUI
 
         }
 
-        private void PromoteUser_Click(object sender, RoutedEventArgs e)
+        private void NewUser_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                PromoteUserWindowViewModel viewModel = model.CreatePromoteUserWindowViewModel();
-                PromoteUserWindow window = new PromoteUserWindow(viewModel);
+                NewUserWindowViewModel viewModel = model.CreateNewUserWindowViewModel();
+                NewUserWindow window = new NewUserWindow(viewModel);
                 window.ShowDialog();
             }
             catch (Exception ex)

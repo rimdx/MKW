@@ -2,11 +2,11 @@
 
 namespace MKW.GUI
 {
-    public partial class PromoteUserWindow : Window
+    public partial class NewUserWindow : Window
     {
-        private readonly PromoteUserWindowViewModel model;
+        private readonly NewUserWindowViewModel model;
 
-        public PromoteUserWindow(PromoteUserWindowViewModel model)
+        public NewUserWindow(NewUserWindowViewModel model)
         {
             this.model = model;
             DataContext = model;
