@@ -1,2 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MKW.Core\MKW.Core.csproj" />
+  </ItemGroup>
+
 </Project>
