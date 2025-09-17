@@ -43,7 +43,7 @@ namespace MKW.CommandLine.Tests
             ClassicAssert.AreEqual(
                 $"  -- EXIT CODE: 0\r\n" +
                 $"  -- STDOUT:\r\n" +
-                $"User added with ID: {db.EnumerateUsers().First().Id}\r\n",
+                $"User added with ID: {db.EnumerateUsers().ToArray()[1].Id}\r\n",
                 output
             );
         }
@@ -156,8 +156,8 @@ namespace MKW.CommandLine.Tests
             UserId userId1;
             using (IDatabase db = sbox.OpenDatabase())
             {
-                entryId1 = db.EnumerateEntries().First().Id;
-                userId1 = db.EnumerateUsers().First().Id;
+                entryId1 = db.EnumerateEntries().ToArray()[0].Id;
+                userId1 = db.EnumerateUsers().ToArray()[1].Id;
             }
 
             ClassicAssert.AreEqual(
@@ -246,7 +246,7 @@ namespace MKW.CommandLine.Tests
 
             using IDatabase db = sbox.OpenDatabase();
 
-            ClassicAssert.AreEqual(1, db.EnumerateUsers().Count());
+            ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
 
             using ClientSession session = ClientSession.Open(db);
 

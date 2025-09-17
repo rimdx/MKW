@@ -23,7 +23,7 @@ namespace MKW.Core.Client
         public UserInfo CreateUser(string password)
         {
             // TODO: sign admin
-            IDatabaseUser admin = database.OpenAdmin(true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
 
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 

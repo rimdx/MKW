@@ -20,12 +20,12 @@ namespace MKW.Tests
 
             sbox.CreateUser(session, "secretprotector", out UserInfo user).Dispose();
             IDatabaseUser[] users = db.EnumerateUsers().ToArray();
-            using IUserSession userSession = session.OpenUser(users[0].Id, "secretprotector");
+            using IUserSession userSession = session.OpenUser(users[1].Id, "secretprotector");
 
             EntryInfo entry = session.UpdateEntry(EntryId.FromGuid(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}")),
                                                   new EntryPayload("secret"));
 
-            ClassicAssert.AreEqual(1, db.EnumerateUsers().Count());
+            ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
             ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
             ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
 

@@ -19,27 +19,59 @@ namespace MKW.Core.Storage.JSON
 
         public IDatabaseUser CreateUser(UserId id)
         {
-            if (Database.Users.ContainsKey(id.GetGuid()))
+            if (id.IsAdmin)
             {
-                throw new Exception("User already exists.");
+                if (Database.Admin == null)
+                {
+                    return new DatabaseAdminUser(this);
+                }
+                else
+                {
+                    throw new Exception("Admin user already exists.");
+                }
             }
-
-            return new DatabaseUser(id, this);
+            else
+            {
+                if (!Database.Users.ContainsKey(id.GetGuid()))
+                {
+                    return new DatabaseUser(id, this);
+                }
+                else
+                {
+                    throw new Exception("User already exists.");
+                }
+            }
         }
 
         public IDatabaseUser OpenUser(UserId id, bool readOnly)
         {
-            DatabaseUser result = readOnly ? new DatabaseUser(id)
-                                           : new DatabaseUser(id, this);
-
-            if (Database.Users.TryGetValue(id.GetGuid(), out JSONDatabaseUser? user))
+            if (id.IsAdmin)
             {
-                result.CopyFrom(user);
-                return result;
+                if (Database.Admin != null)
+                {
+                    DatabaseUser result = new DatabaseAdminUser(this);
+                    result.CopyFrom(Database.Admin);
+                    return result;
+                }
+                else
+                {
+                    throw new Exception("Admin user does not exist.");
+                }
             }
             else
             {
-                throw new Exception("User doesn't exist.");
+                DatabaseUser result = readOnly ? new DatabaseUser(id)
+                                               : new DatabaseUser(id, this);
+
+                if (Database.Users.TryGetValue(id.GetGuid(), out JSONDatabaseUser? user))
+                {
+                    result.CopyFrom(user);
+                    return result;
+                }
+                else
+                {
+                    throw new Exception("User doesn't exist.");
+                }
             }
         }
 
@@ -55,38 +87,14 @@ namespace MKW.Core.Storage.JSON
 
         public IEnumerable<IDatabaseUser> EnumerateUsers()
         {
+            yield return OpenUser(UserId.Admin(), true);
+
             foreach (KeyValuePair<Guid, JSONDatabaseUser> item in Database.Users)
             {
                 DatabaseUser result = new DatabaseUser(UserId.FromGuid(item.Key));
                 result.CopyFrom(item.Value);
                 yield return result;
             }
-        }
-
-        // Admin
-
-        public IDatabaseUser OpenAdmin(bool readOnly)
-        {
-            if (Database.Admin == null)
-            {
-                throw new Exception("Admin user does not exist.");
-            }
-
-            DatabaseUser result = new DatabaseAdminUser(this);
-
-            result.CopyFrom(Database.Admin);
-
-            return result;
-        }
-
-        public IDatabaseUser CreateAdmin()
-        {
-            if (Database.Admin != null)
-            {
-                throw new Exception("Admin user already exists.");
-            }
-
-            return new DatabaseAdminUser(this);
         }
 
         // Entry

@@ -20,10 +20,10 @@ namespace MKW.Tests
             UserInfo user = session.CreateUser("whattheheckamidoing");
 
             IDatabaseUser[] users = db.EnumerateUsers().ToArray();
-            ClassicAssert.AreEqual(1, users.Length);
+            ClassicAssert.AreEqual(2, users.Length);
 
-            ClassicAssert.AreEqual(user.Id, users[0].Id);
-            ClassicAssert.AreEqual(user.PublicKey, users[0].PublicKey);
+            ClassicAssert.AreEqual(user.Id, users[1].Id);
+            ClassicAssert.AreEqual(user.PublicKey, users[1].PublicKey);
         }
 
         [Test]
