@@ -33,6 +33,7 @@
   <Project Path="core/MKW.Core.Client/MKW.Core.Client.csproj" />
   <Project Path="core/MKW.Core.Editor.Tests/MKW.Core.Editor.Tests.csproj" />
   <Project Path="core/MKW.Core.Editor/MKW.Core.Editor.csproj" />
+  <Project Path="core/MKW.Core.Implementation/MKW.Core.Implementation.csproj" />
   <Project Path="core/MKW.Core/MKW.Core.csproj" />
   <Project Path="core/MKW.Tests/MKW.Tests.csproj" />
   <Project Path="crypto/MKW.Cryptography.BouncyCastle.NETFramework/MKW.Cryptography.BouncyCastle.NETFramework.shproj" />
