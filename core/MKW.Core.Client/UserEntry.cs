@@ -22,7 +22,7 @@ namespace MKW.Core.Client
         {
             this.user = user;
 
-            decoder = new EntryDecoder(crypto, user);
+            decoder = new EntryDecoder(crypto, user, user.Transformer);
             sharer = new EntrySharer(accessController, decoder, encoder);
         }
 

@@ -6,13 +6,16 @@ namespace MKW.Core.Client
     public class EntryDecoder : IDisposable
     {
         private readonly ICryptographyProvider crypto;
-        private readonly UserSession user;
+        private readonly IUserSession user;
+        private readonly IAsymmetricPrivateTransformer transformer;
 
         public EntryDecoder(ICryptographyProvider crypto,
-                            UserSession user)
+                            IUserSession user,
+                            IAsymmetricPrivateTransformer transformer)
         {
             this.crypto = crypto;
             this.user = user;
+            this.transformer = transformer;
         }
 
         public EntryPayload? DecodeEntry(IDatabaseEntry entry)
@@ -23,7 +26,7 @@ namespace MKW.Core.Client
                 return null;
             }
 
-            Memory<byte> decryptedKey = user.Transformer.Decrypt(encodedKey.Span);
+            Memory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
 
             using ISymmetricTransformer dataDecoder = crypto.OpenSymmetricTransformer(
                 decryptedKey.Span, entry.Salt.Span);
