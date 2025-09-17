@@ -20,7 +20,7 @@ namespace MKW.GUI.Model
         public string Name => IsAdmin ? "Admin" : "User";
         public object Icon => IsAdmin ? new Admin() : new User();
 
-        public string Status => trust switch
+        public string StatusText => trust switch
         {
             Trust.SelfTrust => "Verified",
             Trust.ExplicitTrust => "Verified",

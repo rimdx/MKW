@@ -60,7 +60,7 @@
                   <StackPanel Orientation="Horizontal">
                     <ContentControl Content="{Binding StatusIcon}"
                                     Margin="0,0,6,0" />
-                    <TextBlock Text="{Binding Status}" />
+                    <TextBlock Text="{Binding StatusText}" />
                   </StackPanel>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
