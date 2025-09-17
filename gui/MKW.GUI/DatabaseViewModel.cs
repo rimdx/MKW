@@ -78,10 +78,27 @@ namespace MKW.GUI
                 _selectedUser = value;
                 SetProperty(ref _selectedUser, value);
                 OnPropertyChanged(nameof(IsUserSelected));
+                OnPropertyChanged(nameof(IsVerifiable));
             }
         }
 
         public bool IsUserSelected => _selectedUser != null;
+
+        public bool IsVerifiable
+        {
+            get
+            {
+                if (Database.User != null && Database.User.Id.IsAdmin)
+                {
+                    if (SelectedUser != null)
+                    {
+                        return SelectedUser.IsVerifiable;
+                    }
+                }
+
+                return false;
+            }
+        }
 
         // Entry
 
