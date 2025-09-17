@@ -36,7 +36,7 @@ namespace MKW.Core.Client
 
             // ensure the admin actually exists
             // a database without admin is invalid
-            client.Database.OpenAdmin(true);
+            client.Database.OpenUser(UserId.Admin(), true);
 
             return client;
         }
@@ -55,8 +55,6 @@ namespace MKW.Core.Client
 
         internal IEnumerable<IDatabaseUser> EnumerateDatabaseUsers()
         {
-            yield return Database.OpenAdmin(true);
-
             foreach (IDatabaseUser user in Database.EnumerateUsers())
             {
                 yield return user;
@@ -65,21 +63,14 @@ namespace MKW.Core.Client
 
         internal IDatabaseUser OpenDatabaseUser(UserId id, bool readOnly)
         {
-            if (id.IsAdmin)
-            {
-                return Database.OpenAdmin(readOnly);
-            }
-            else
-            {
-                return Database.OpenUser(id, readOnly);
-            }
+            return Database.OpenUser(id, readOnly);
         }
 
         // todo: ITrustProvider
 
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
-            IDatabaseUser admin = Database.OpenAdmin(true);
+            IDatabaseUser admin = Database.OpenUser(UserId.Admin(), true);
             using UserTrustProvider trustProvider = new UserTrustProvider(this, crypto, admin);
 
             IEnumerable<UserInfo> trust = trustProvider.EnumerateImplicitlyTrustedUsers();
@@ -158,7 +149,7 @@ namespace MKW.Core.Client
 
         private EntryController OpenEntryController()
         {
-            return new EntryController(this, crypto, Database.OpenAdmin(true));
+            return new EntryController(this, crypto, Database.OpenUser(UserId.Admin(), true));
         }
 
         public IEntrySession OpenEntry(EntryId id)

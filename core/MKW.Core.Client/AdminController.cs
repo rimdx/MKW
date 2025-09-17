@@ -27,7 +27,7 @@ namespace MKW.Core.Client
             IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            IDatabaseUser admin = database.CreateAdmin();
+            IDatabaseUser admin = database.CreateUser(UserId.Admin());
 
             admin.PublicKey = systemCreds.PublicKey;
             admin.PrivateKey = systemCreds.PrivateKey;
@@ -42,7 +42,7 @@ namespace MKW.Core.Client
         {
             try
             {
-                IDatabaseUser admin = database.OpenAdmin(false);
+                IDatabaseUser admin = database.OpenUser(UserId.Admin(), false);
 
                 IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
 
@@ -66,7 +66,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetAdminInfo()
         {
-            IDatabaseUser admin = database.OpenAdmin(true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
             return UserInfo.FromDatabaseUser(admin);
         }
 
