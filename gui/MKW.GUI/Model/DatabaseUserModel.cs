@@ -37,5 +37,7 @@ namespace MKW.GUI.Model
             Trust.None => new StatusWarning(),
             Trust.Unknown => new StatusWarning(),
         };
+
+        public bool IsVerifiable => trust == Trust.None;
     }
 }
