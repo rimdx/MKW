@@ -19,8 +19,8 @@
               local:ListViewBehaviours.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="Promote _New User..."
-                    Click="PromoteUser_Click" />
+          <MenuItem Header="_New User..."
+                    Click="NewUser_Click" />
 
           <MenuItem Header="_Properties..."
                     IsEnabled="{Binding IsUserSelected}"

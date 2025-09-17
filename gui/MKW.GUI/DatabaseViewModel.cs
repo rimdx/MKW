@@ -116,9 +116,9 @@ namespace MKW.GUI
 
         // User
 
-        public PromoteUserWindowViewModel CreatePromoteUserWindowViewModel()
+        public NewUserWindowViewModel CreateNewUserWindowViewModel()
         {
-            return new PromoteUserWindowViewModel(Database);
+            return new NewUserWindowViewModel(Database);
         }
 
         public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()

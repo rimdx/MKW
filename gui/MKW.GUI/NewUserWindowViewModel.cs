@@ -2,11 +2,11 @@
 
 namespace MKW.GUI
 {
-    public class PromoteUserWindowViewModel : ViewModelBase
+    public class NewUserWindowViewModel : ViewModelBase
     {
         private readonly DatabaseModel database;
 
-        public PromoteUserWindowViewModel(DatabaseModel database)
+        public NewUserWindowViewModel(DatabaseModel database)
         {
             this.database = database;
         }
@@ -26,7 +26,7 @@ namespace MKW.GUI
                 throw new ArgumentNullException(nameof(Password));
             }
 
-            database.PromoteUser(Password);
+            database.NewUser(Password);
 
             return true;
         }

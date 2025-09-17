@@ -78,7 +78,7 @@ namespace MKW.GUI.Model
             }
         }
 
-        public void PromoteUser(string password)
+        public void NewUser(string password)
         {
             Client.CreateUser(password);
             OnUsersChanged?.Invoke(this, new EventArgs());

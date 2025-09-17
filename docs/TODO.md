@@ -109,7 +109,7 @@
   - [ ] LoginWindow
   - [x] MainWindow
   - [ ] NewEntryWindow
-  - [ ] PromoteUserWindow
+  - [ ] NewUserWindow
   - [x] StartPage
 
 ## Core database
