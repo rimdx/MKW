@@ -52,6 +52,22 @@
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
 
+            <GridViewColumn Header="Status" Width="120">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate DataType="local:DatabaseUserModel">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="24" />
+                      <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ContentControl Content="{Binding StatusIcon}" />
+                    <TextBlock Grid.Column="1" Text="{Binding Status}" />
+                  </Grid>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+
             <GridViewColumn Header="User ID"
                             Width="250"
                             DisplayMemberBinding="{Binding Id}" />
