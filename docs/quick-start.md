@@ -1,15 +1,7 @@
 # Quick Start
 
-## Summary
-
 This article explains basic concepts and guides how to begin using the
 Multi-Key Wallet application for yourself.
-
-1. [Get Multi-Key Wallet client](#get-multi-key-wallet-client)
-2. [Create Database](#create-entries)
-3. [Opening an Existing Database](#opening-an-existing-database)
-4. [Create Entries](#create-entries)
-5. [Create Users](#create-users)
 
 ## Get Multi-Key Wallet client
 
