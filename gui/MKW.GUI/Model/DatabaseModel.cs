@@ -70,11 +70,23 @@ namespace MKW.GUI.Model
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
+        private Trust GetTrust(UserInfo user)
+        {
+            if (User == null)
+            {
+                return Trust.Unknown;
+            }
+            else
+            {
+                return User.GetImplicitTrust(user.Id);
+            }
+        }
+
         public IEnumerable<DatabaseUserModel> EnumerateUsers()
         {
             foreach (UserInfo user in Client.EnumerateUsers())
             {
-                yield return new DatabaseUserModel(user);
+                yield return new DatabaseUserModel(user, GetTrust(user));
             }
         }
 
