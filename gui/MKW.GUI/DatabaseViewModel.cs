@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.Core.Storage;
 using MKW.GUI.Model;
 
 namespace MKW.GUI
@@ -107,14 +108,9 @@ namespace MKW.GUI
             return new NewEntryWindowViewModel(Database);
         }
 
-        public EditEntryWindowViewModel CreateEditEntryWindowViewModel()
+        public EditEntryWindowViewModel CreateEditEntryWindowViewModel(EntryId id)
         {
-            if (SelectedEntry == null)
-            {
-                throw new Exception("No entry was selected.");
-            }
-
-            IEntrySession entry = Database.User!.OpenEntry(SelectedEntry.Id);
+            IEntrySession entry = Database.User!.OpenEntry(id);
 
             return new EditEntryWindowViewModel(Database, entry /* move */);
         }
