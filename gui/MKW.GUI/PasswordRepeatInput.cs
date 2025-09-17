@@ -38,9 +38,11 @@ namespace MKW.GUI
                 _passwordRepeatBox.Password = Password;
                 _passwordRepeatBox.PasswordChanged += PasswordChanged;
             }
+
+            Update();
         }
 
-        protected override void PasswordChanged(object sender, RoutedEventArgs e)
+        protected override void Update()
         {
             if (_passwordBox != null)
             {
