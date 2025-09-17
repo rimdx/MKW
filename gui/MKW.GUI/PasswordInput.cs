@@ -44,14 +44,21 @@ namespace MKW.GUI
                 _passwordBox.Password = Password;
                 _passwordBox.PasswordChanged += PasswordChanged;
             }
+
+            Update();
         }
 
-        protected virtual void PasswordChanged(object sender, RoutedEventArgs e)
+        protected virtual void Update()
         {
             if (_passwordBox != null)
             {
                 SetValue(PasswordProperty, _passwordBox.Password);
             }
+        }
+
+        protected void PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            Update();
         }
 
         protected override void OnGotFocus(RoutedEventArgs e)
