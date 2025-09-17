@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MKW.GUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:NewEntryWindowViewModel}"
-        Title="Create new secret entry"
+        Title="Create New Secret Entry"
         Height="300" Width="400"
         WindowStartupLocation="CenterScreen">
   <Grid Margin="12">
