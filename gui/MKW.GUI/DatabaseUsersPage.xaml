@@ -39,15 +39,11 @@
             <GridViewColumn Header="Name" Width="300">
               <GridViewColumn.CellTemplate>
                 <DataTemplate DataType="local:DatabaseUserModel">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="24" />
-                      <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ContentControl Content="{Binding Icon}" />
-                    <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                  </Grid>
+                  <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{Binding Icon}"
+                                    Margin="0,0,6,0" />
+                    <TextBlock Text="{Binding Name}" />
+                  </StackPanel>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
@@ -55,15 +51,11 @@
             <GridViewColumn Header="Status" Width="120">
               <GridViewColumn.CellTemplate>
                 <DataTemplate DataType="local:DatabaseUserModel">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="24" />
-                      <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ContentControl Content="{Binding StatusIcon}" />
-                    <TextBlock Grid.Column="1" Text="{Binding Status}" />
-                  </Grid>
+                  <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{Binding StatusIcon}"
+                                    Margin="0,0,6,0" />
+                    <TextBlock Text="{Binding Status}" />
+                  </StackPanel>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
