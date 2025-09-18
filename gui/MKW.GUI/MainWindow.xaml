@@ -17,6 +17,8 @@
     <CommandBinding Command="ApplicationCommands.Close"
                     Executed="FileClose_Executed"
                     CanExecute="FileClose_CanExecute"/>
+    <CommandBinding Command="{x:Static local:AppCommands.Exit}"
+                    Executed="FileExit_Executed" />
     <CommandBinding Command="ApplicationCommands.Open"
                     Executed="FileOpenCommand_Executed" />
     <CommandBinding Command="{x:Static local:AppCommands.OpenRecent}"
@@ -55,7 +57,7 @@
         <Separator />
         <MenuItem Header="_Close" Command="ApplicationCommands.Close" />
         <Separator />
-        <MenuItem Header="_Exit" Click="Exit_Click" />
+        <MenuItem Header="_Exit" Command="{x:Static local:AppCommands.Exit}" />
       </MenuItem>
 
       <MenuItem Header="_Entry">

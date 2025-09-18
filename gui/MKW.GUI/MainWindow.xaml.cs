@@ -134,7 +134,7 @@ namespace MKW.GUI
             }
         }
 
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        private void FileExit_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Close();
         }
