@@ -15,7 +15,8 @@
   </Window.Resources>
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Close"
-                    Executed="FileClose_Executed" />
+                    Executed="FileClose_Executed"
+                    CanExecute="FileClose_CanExecute"/>
     <CommandBinding Command="ApplicationCommands.Open"
                     Executed="FileOpenCommand_Executed" />
     <CommandBinding Command="ApplicationCommands.New"

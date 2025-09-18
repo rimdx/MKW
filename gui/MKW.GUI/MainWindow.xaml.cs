@@ -94,6 +94,26 @@ namespace MKW.GUI
             }
         }
 
+        private void FileClose_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            bool canExecute;
+
+            if (e.Parameter != null)
+            {
+                canExecute = true;
+            }
+            else if (model.SelectedTab != null)
+            {
+                canExecute = true;
+            }
+            else
+            {
+                canExecute = false;
+            }
+
+            e.CanExecute = canExecute;
+        }
+
         private void FileClose_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
