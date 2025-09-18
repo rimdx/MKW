@@ -70,7 +70,8 @@
                   Grid.Column="1"
                   Width="6"
                   HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch" />
+                  VerticalAlignment="Stretch"
+                  IsTabStop="False" />
 
     <Border Grid.Row="1"
             Grid.Column="2"
