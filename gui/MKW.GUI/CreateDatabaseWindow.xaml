@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
         Title="Create Database"
-        Height="350" Width="400"
+        Height="380" Width="520"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Loaded="Window_Loaded">
@@ -19,24 +19,16 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Vertical">
-      <Label Content="Create Master Key"
+      <Label Content="_Location:"
              Padding="0"
              Margin="0,0,0,3" />
-      
-      <TextBox IsReadOnly="True"
-               Text="{Binding DatabasePath, Mode=OneWay}"
+
+      <TextBox Text="{Binding DatabasePath, Mode=TwoWay}"
                d:Text="C:\path\to\database.mkw"
-               Margin="8,0,0,6">
-        <TextBox.Style>
-          <Style TargetType="TextBox">
-            <Setter Property="IsReadOnly" Value="True" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-          </Style>
-        </TextBox.Style>
+               Padding="3"
+               Margin="0,0,0,6">
       </TextBox>
-      
+
       <TextBox IsReadOnly="True"
                Margin="0,0,0,6">
         <TextBox.Style>

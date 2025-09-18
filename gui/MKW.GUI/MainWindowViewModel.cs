@@ -72,9 +72,9 @@ namespace MKW.GUI
             return _database.Database;
         }
 
-        public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel(string filename)
+        public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel()
         {
-            return new CreateDatabaseWindowViewModel(filename);
+            return new CreateDatabaseWindowViewModel();
         }
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)

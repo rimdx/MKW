@@ -43,20 +43,12 @@ namespace MKW.GUI
         {
             try
             {
-                FileDialog dialog = FileDialogUtils.CreateSaveDatabaseDialog();
+                CreateDatabaseWindowViewModel createDatabaseViewModel = model.CreateCreateDatabaseViewModel();
+                CreateDatabaseWindow createDatabaseWindow = new CreateDatabaseWindow(createDatabaseViewModel);
 
-                if (dialog.ShowDialog() == true)
-                {
-                    CreateDatabaseWindowViewModel createDatabaseViewModel =
-                        model.CreateCreateDatabaseViewModel(dialog.FileName);
+                createDatabaseWindow.ShowDialog();
 
-                    CreateDatabaseWindow createDatabaseWindow =
-                        new CreateDatabaseWindow(createDatabaseViewModel);
-
-                    createDatabaseWindow.ShowDialog();
-
-                    model.OpenDatabase(createDatabaseViewModel);
-                }
+                model.OpenDatabase(createDatabaseViewModel);
             }
             catch (Exception ex)
             {
