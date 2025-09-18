@@ -40,7 +40,7 @@
 
         <images:OpenFile Grid.Row="2" />
         <TextBlock Grid.Column="1" Grid.Row="2">
-        <Hyperlink Click="OpenDatabase_Click">Open Database</Hyperlink>
+        <Hyperlink Command="ApplicationCommands.Open">Open Database</Hyperlink>
         </TextBlock>
       </Grid>
 

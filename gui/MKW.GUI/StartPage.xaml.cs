@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using MKW.GUI.Wizard;
+﻿using MKW.GUI.Wizard;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -15,29 +14,6 @@ namespace MKW.GUI
             this.model = model;
             DataContext = model;
             InitializeComponent();
-        }
-
-        private void OpenDatabase_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                FileDialog dialog = FileDialogUtils.CreateOpenDatabaseDialog();
-
-                if (dialog.ShowDialog() == true)
-                {
-                    LoginWindowViewModel loginWindowViewModel =
-                        model.CreateLoginViewModel(dialog.FileName);
-                    LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
-
-                    window.ShowDialog();
-
-                    model.OpenDatabase(loginWindowViewModel);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
         }
 
         private void NewDatabase_Click(object sender, RoutedEventArgs e)

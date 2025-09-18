@@ -1,8 +1,8 @@
 ﻿using Microsoft.Win32;
 using MKW.GUI.Wizard;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MKW.GUI
 {
@@ -37,7 +37,7 @@ namespace MKW.GUI
             }
         }
 
-        private void OpenDatabase_Click(object sender, RoutedEventArgs e)
+        private void FileOpenCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
