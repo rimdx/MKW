@@ -6,6 +6,7 @@ namespace MKW.GUI
     {
         public DialogWindow()
         {
+            ShowInTaskbar = false;
         }
     }
 }
