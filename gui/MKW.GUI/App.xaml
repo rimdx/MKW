@@ -308,7 +308,7 @@
                 <Setter TargetName="Border" Property="BorderBrush"
                         Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                 <Setter TargetName="Border" Property="BorderThickness"
-                        Value="0,1.5,0,0" />
+                        Value="0,2,0,0" />
 
                 <Setter Property="FontWeight" Value="SemiBold" />
               </Trigger>
