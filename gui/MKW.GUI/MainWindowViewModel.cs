@@ -1,76 +1,76 @@
 ﻿using MKW.GUI.Model;
 using MKW.GUI.Services;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Controls;
 
 namespace MKW.GUI
 {
+    public interface ITabItemViewModel
+    {
+        public string Header { get; }
+        public ContentControl Content { get; }
+        public void OnClose();
+    }
+
+    public class WelcomeTabItemViewModel : ViewModelBase, ITabItemViewModel
+    {
+        public string Header { get; }
+        public ContentControl Content { get; }
+
+        public WelcomeTabItemViewModel(MainWindowViewModel mainWindow)
+        {
+            Header = "Welcome";
+            Content = new StartPage(mainWindow);
+        }
+
+        public void OnClose()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DatabaseTabItemViewModel : ViewModelBase, ITabItemViewModel
+    {
+        private readonly DatabaseViewModel databaseViewModel;
+        public string Header { get; }
+        public ContentControl Content { get; }
+
+        public DatabaseTabItemViewModel(DatabaseViewModel databaseViewModel)
+        {
+            this.databaseViewModel = databaseViewModel;
+
+            Header = Path.GetFileNameWithoutExtension(databaseViewModel.Database.Path);
+            Content = new DatabasePage(databaseViewModel);
+        }
+
+
+        public void OnClose()
+        {
+            databaseViewModel.Dispose();
+        }
+    }
+
     public class MainWindowViewModel : ViewModelBase, IDisposable
     {
         private readonly RegistryService registryService;
         private readonly RecentFilesService recentFilesService;
+
+        public ObservableCollection<ITabItemViewModel> TabItems { get; }
 
         public MainWindowViewModel()
         {
             registryService = new RegistryService(RegistryKeys.RootKeyPath);
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
+            TabItems = new ObservableCollection<ITabItemViewModel>();
+            TabItems.Add(new WelcomeTabItemViewModel(this));
         }
 
         public RecentFilesCollectionViewModel RecentFiles { get; }
 
         public string Title => "Multi-Key Wallet";
         public string Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString();
-
-        private DatabaseViewModel? _database;
-        public DatabaseViewModel? Database
-        {
-            get => _database;
-            set
-            {
-                _database?.Dispose();
-                SetProperty(ref _database, value);
-                OnPropertyChanged(nameof(IsDatabaseAttached));
-                OnPropertyChanged(nameof(IsEntrySelected));
-
-                if (_database != null)
-                {
-                    _database.PropertyChanged += Database_PropertyChanged;
-                }
-            }
-        }
-
-        private void Database_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.MatchProperty(nameof(_database.SelectedEntry)))
-            {
-                OnPropertyChanged(nameof(SelectedEntry));
-                OnPropertyChanged(nameof(IsEntrySelected));
-            }
-
-            if (e.MatchProperty(nameof(_database.SelectedEntry)))
-            {
-                OnPropertyChanged(nameof(SelectedUser));
-                OnPropertyChanged(nameof(IsUserSelected));
-            }
-        }
-
-        public bool IsDatabaseAttached => _database != null;
-
-        public DatabaseEntryModel? SelectedEntry => _database?.SelectedEntry;
-        public bool IsEntrySelected => SelectedEntry != null;
-
-        public DatabaseUserModel? SelectedUser => _database?.SelectedUser;
-        public bool IsUserSelected => SelectedUser != null;
-
-        public DatabaseModel GetDatabase()
-        {
-            if (_database == null)
-            {
-                throw new Exception("No database is attached.");
-            }
-
-            return _database.Database;
-        }
 
         public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel()
         {
@@ -88,7 +88,9 @@ namespace MKW.GUI
             if (createDatabaseViewModel.Database != null)
             {
                 recentFilesService.OnFileOpened(createDatabaseViewModel.Database.Path);
-                Database = new DatabaseViewModel(createDatabaseViewModel.Database /* move */);
+                DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(createDatabaseViewModel.Database /* move */));
+                TabItems.Add(tabViewModel);
+                SelectedTab = tabViewModel;
             }
             else
             {
@@ -106,20 +108,30 @@ namespace MKW.GUI
             }
             else
             {
-                Database = new DatabaseViewModel(loginWindowViewModel.Database /* move */);
+                DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(loginWindowViewModel.Database /* move */));
+                TabItems.Add(tabViewModel);
+                SelectedTab = tabViewModel;
             }
         }
 
-        public void OnCloseDatabase()
+        public void OnCloseTab(ITabItemViewModel selectedTab)
         {
-            Database = null;
+            selectedTab.OnClose();
+            TabItems.Remove(selectedTab);
         }
 
         public void Dispose()
         {
-            Database?.Dispose();
             registryService.Dispose();
             RecentFiles.Dispose();
+        }
+
+        private ITabItemViewModel? selectedTab;
+
+        public ITabItemViewModel? SelectedTab
+        { 
+            get => selectedTab; 
+            set => SetProperty(ref selectedTab, value); 
         }
     }
 }
