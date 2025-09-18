@@ -13,7 +13,7 @@ namespace MKW.Core.Storage.JSON
             this.path = path;
         }
 
-        public static JSONDatabaseSession Open(string path, bool readOnly)
+        public static JSONDatabaseSession Open(string path)
         {
             using FileStream file = File.Open(path,
                                               FileMode.Open,

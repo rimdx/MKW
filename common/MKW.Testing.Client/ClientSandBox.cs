@@ -26,7 +26,7 @@ namespace MKW.Testing.Client
 
         public IDatabase OpenDatabase()
         {
-            return JSONDatabaseSession.Open(DatabasePath, false);
+            return JSONDatabaseSession.Open(DatabasePath);
         }
 
         public ClientSession OpenSession()
