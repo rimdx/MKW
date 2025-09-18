@@ -28,7 +28,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
 
@@ -42,7 +42,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
 
@@ -59,7 +59,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
 
@@ -67,7 +67,8 @@ namespace MKW.GUI
         {
             try
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this entry?",
+                MessageBoxResult result = MessageBox.Show(Window.GetWindow(this),
+                                                          "Are you sure you want to delete this entry?",
                                                           "Confirm Deletion",
                                                           MessageBoxButton.OKCancel);
 
@@ -78,7 +79,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
 

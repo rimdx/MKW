@@ -36,7 +36,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
 
@@ -53,7 +53,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
 
@@ -73,7 +73,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(ex);
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
     }
