@@ -6,10 +6,9 @@ namespace MKW.GUI
     {
         private readonly UserPropertyDialogViewModel model;
 
-        public UserPropertyDialog(UserPropertyDialogViewModel model, Window window)
+        public UserPropertyDialog(UserPropertyDialogViewModel model, Window owner) : base(owner)
         {
             this.model = model;
-            Owner = window;
             DataContext = model;
             InitializeComponent();
         }

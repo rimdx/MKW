@@ -4,9 +4,10 @@ namespace MKW.GUI
 {
     public partial class DialogWindow : Window
     {
-        public DialogWindow()
+        public DialogWindow(Window owner)
         {
             ShowInTaskbar = false;
+            Owner = owner;
         }
     }
 }
