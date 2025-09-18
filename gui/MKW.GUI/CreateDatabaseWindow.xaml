@@ -19,12 +19,22 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Vertical">
+      <Label Content="File _Name:"
+             Padding="0"
+             Margin="0,0,0,3" />
+
+      <TextBox Text="{Binding DatabaseName, Mode=TwoWay}"
+               d:Text="New Database.mkw"
+               Padding="3"
+               Margin="0,0,0,6">
+      </TextBox>
+
       <Label Content="_Location:"
              Padding="0"
              Margin="0,0,0,3" />
 
-      <TextBox Text="{Binding DatabasePath, Mode=TwoWay}"
-               d:Text="C:\path\to\database.mkw"
+      <TextBox Text="{Binding DatabaseDirectory, Mode=TwoWay}"
+               d:Text="C:\tima\Documents"
                Padding="3"
                Margin="0,0,0,6">
       </TextBox>
