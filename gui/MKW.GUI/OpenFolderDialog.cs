@@ -84,10 +84,10 @@ namespace MKW.GUI
 
             Marshal.ThrowExceptionForHR(dialog.GetResults(out IShellItemArray? items));
 
-            items.GetCount(out var count);
+            items.GetCount(out int count);
             for (int i = 0; i < count; i++)
             {
-                items.GetItemAt(i, out var item);
+                items.GetItemAt(i, out IShellItem? item);
 
                 Marshal.ThrowExceptionForHR(item.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING, out string? path));
                 Marshal.ThrowExceptionForHR(item.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEEDITING, out string? name));
