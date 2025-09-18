@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace MKW.GUI
 {
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : DialogWindow
     {
         private readonly LoginWindowViewModel model;
 

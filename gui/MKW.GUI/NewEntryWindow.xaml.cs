@@ -2,7 +2,7 @@
 
 namespace MKW.GUI
 {
-    public partial class NewEntryWindow : Window
+    public partial class NewEntryWindow : DialogWindow
     {
         private readonly NewEntryWindowViewModel model;
 

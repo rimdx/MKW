@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace MKW.GUI.Wizard
 {
-    public partial class WizardWindow : Window
+    public partial class WizardWindow : DialogWindow
     {
         private readonly WizardViewModel viewModel;
 
