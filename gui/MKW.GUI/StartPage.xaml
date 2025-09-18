@@ -79,7 +79,7 @@
               <images:OpenFile Grid.Row="2" />
 
               <TextBlock Grid.Column="1" Grid.Row="4">
-                <Hyperlink Click="Hyperlink_Click">
+                <Hyperlink Command="ApplicationCommands.Open" CommandParameter="{Binding FullPath}">
                   <Run Text="{Binding FileName, Mode=OneWay}" />
                 </Hyperlink>
               </TextBlock>

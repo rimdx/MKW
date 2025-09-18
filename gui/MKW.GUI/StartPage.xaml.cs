@@ -1,7 +1,4 @@
-﻿using MKW.GUI.Wizard;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 
 namespace MKW.GUI
 {
@@ -14,26 +11,6 @@ namespace MKW.GUI
             this.model = model;
             DataContext = model;
             InitializeComponent();
-        }
-
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            Hyperlink hyperlink = (Hyperlink)e.Source;
-            RecentFileItemViewModel item = (RecentFileItemViewModel)hyperlink.DataContext;
-
-            try
-            {
-                LoginWindowViewModel loginWindowViewModel = model.CreateLoginViewModel(item.FullPath);
-                LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
-
-                window.ShowDialog();
-
-                model.OpenDatabase(loginWindowViewModel);
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
         }
     }
 }
