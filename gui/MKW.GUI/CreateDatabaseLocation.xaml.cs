@@ -32,5 +32,15 @@ namespace MKW.GUI
                 return true;
             }
         }
+
+        private void SelectFolder_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog dialog = FileDialogUtils.CreateSelectFolderDialog(viewModel.DatabaseDirectory);
+
+            if (dialog.ShowDialog(Window.GetWindow(this)) == true)
+            {
+                viewModel.DatabaseDirectory = dialog.ResultPath;
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    xmlns:local="clr-namespace:MKW.GUI"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
                    d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
@@ -27,11 +28,21 @@
              Padding="0"
              Margin="0,0,0,3" />
 
-      <TextBox Text="{Binding DatabaseDirectory, Mode=TwoWay}"
-               d:Text="C:\tima\Documents"
-               Padding="3"
-               Margin="0,0,0,6">
-      </TextBox>
+      <Grid Margin="0,0,0,6">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Text="{Binding DatabaseDirectory, Mode=TwoWay}"
+                 d:Text="C:\tima\Documents"
+                 Padding="3"
+                 Margin="0,0,3,0" />
+
+        <Button Grid.Column="1" Padding="3" Click="SelectFolder_Click">
+          <images:OpenFolder />
+        </Button>
+      </Grid>
     </StackPanel>
   </Grid>
 </wizard:WizardPage>
