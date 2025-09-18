@@ -90,7 +90,7 @@ namespace MKW.GUI
                 Marshal.ThrowExceptionForHR(item.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING, out string? path));
                 Marshal.ThrowExceptionForHR(item.GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEEDITING, out string? name));
 
-                if (path != null || name != null)
+                if (path != null && name != null)
                 {
                     resultPaths.Add(path);
                     resultNames.Add(name);
