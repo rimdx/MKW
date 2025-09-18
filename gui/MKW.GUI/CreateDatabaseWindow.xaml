@@ -14,77 +14,72 @@
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Row="0"
-           Content="Create Master Key" />
-
-    <TextBox Grid.Row="1"
-             IsReadOnly="True"
-             Text="{Binding DatabasePath, Mode=OneWay}"
-             d:Text="C:\path\to\database.mkw"
-             Margin="8,0,0,8">
-      <TextBox.Style>
-        <Style TargetType="TextBox">
-          <Setter Property="IsReadOnly" Value="True" />
-          <Setter Property="BorderThickness" Value="0" />
-          <Setter Property="TextWrapping" Value="Wrap" />
-          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-        </Style>
-      </TextBox.Style>
-    </TextBox>
-
-    <TextBox Grid.Row="2"
-             IsReadOnly="True"
-             Margin="0,0,0,8">
-      <TextBox.Style>
-        <Style TargetType="TextBox">
-          <Setter Property="IsReadOnly" Value="True" />
-          <Setter Property="BorderThickness" Value="0" />
-          <Setter Property="TextWrapping" Value="Wrap" />
-          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-        </Style>
-      </TextBox.Style>
-      This is the mater password that protects your database. It will be
-      required every time you unlock or access your stored passwords.
-      Choose a strong, memorable password — if you forget it, your data
-      cannot be recovered.
-    </TextBox>
-
-    <local:PasswordRepeatInput x:Name="PasswordInput"
-                               Grid.Row="3"
-                               Password="{Binding Password, Mode=OneWayToSource}"
-                               IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}">
-      <local:PasswordRepeatInput.Template>
-        <ControlTemplate TargetType="{x:Type local:PasswordRepeatInput}">
-          <StackPanel Orientation="Vertical">
-            <Label Padding="0"
-                   Target="{Binding ElementName=PART_PasswordBox}"
-                   Content="_Password:" />
-
-            <PasswordBox x:Name="PART_PasswordBox"
-                         Padding="4"
-                         FontFamily="Consolas"
-                         Margin="0,0,0,8" />
-
-            <Label Padding="0"
-                   Target="{Binding ElementName=PART_PasswordRepeatBox}"
-                   Content="_Repeat Password:" />
-
-            <PasswordBox x:Name="PART_PasswordRepeatBox"
-                         Padding="4"
-                         FontFamily="Consolas"/>
-          </StackPanel>
-        </ControlTemplate>
-      </local:PasswordRepeatInput.Template>
-    </local:PasswordRepeatInput>
-
-    <Grid Grid.Row="5">
+    <StackPanel Orientation="Vertical">
+      <Label Content="Create Master Key" />
+      
+      <TextBox IsReadOnly="True"
+               Text="{Binding DatabasePath, Mode=OneWay}"
+               d:Text="C:\path\to\database.mkw"
+               Margin="8,0,0,8">
+        <TextBox.Style>
+          <Style TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+          </Style>
+        </TextBox.Style>
+      </TextBox>
+      
+      <TextBox IsReadOnly="True"
+               Margin="0,0,0,8">
+        <TextBox.Style>
+          <Style TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+          </Style>
+        </TextBox.Style>
+        This is the mater password that protects your database. It will be
+        required every time you unlock or access your stored passwords.
+        Choose a strong, memorable password — if you forget it, your data
+        cannot be recovered.
+      </TextBox>
+      
+      <local:PasswordRepeatInput x:Name="PasswordInput"
+                                 Password="{Binding Password, Mode=OneWayToSource}"
+                                 IsPasswordMatch="{Binding IsPasswordMatch, Mode=OneWayToSource}">
+        <local:PasswordRepeatInput.Template>
+          <ControlTemplate TargetType="{x:Type local:PasswordRepeatInput}">
+            <StackPanel Orientation="Vertical">
+              <Label Padding="0"
+                     Target="{Binding ElementName=PART_PasswordBox}"
+                     Content="_Password:" />
+      
+              <PasswordBox x:Name="PART_PasswordBox"
+                           Padding="4"
+                           FontFamily="Consolas"
+                           Margin="0,0,0,8" />
+      
+              <Label Padding="0"
+                     Target="{Binding ElementName=PART_PasswordRepeatBox}"
+                     Content="_Repeat Password:" />
+      
+              <PasswordBox x:Name="PART_PasswordRepeatBox"
+                           Padding="4"
+                           FontFamily="Consolas"/>
+            </StackPanel>
+          </ControlTemplate>
+        </local:PasswordRepeatInput.Template>
+      </local:PasswordRepeatInput>
+    </StackPanel>
+    
+    <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
