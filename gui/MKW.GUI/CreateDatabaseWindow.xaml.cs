@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MKW.GUI
@@ -18,6 +19,20 @@ namespace MKW.GUI
         {
             try
             {
+                if (File.Exists(model.DatabasePath))
+                {
+                    MessageBoxResult result = MessageBox.Show(this,
+                                                              $"{model.DatabaseName} already exists. Do you want to replace it?",
+                                                              "Confirm Creation",
+                                                              MessageBoxButton.YesNo,
+                                                              MessageBoxImage.Warning);
+
+                    if (result != MessageBoxResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
                 if (model.DoCreateDatabase())
                 {
                     Close();
