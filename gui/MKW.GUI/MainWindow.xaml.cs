@@ -143,7 +143,7 @@ namespace MKW.GUI
 
         private void HelpAbout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            AboutDialog window = new AboutDialog(model);
+            AboutDialog window = new AboutDialog(model, Window.GetWindow(this));
             window.ShowDialog();
         }
 
