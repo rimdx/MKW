@@ -11,18 +11,18 @@ namespace MKW.Core.Client
     {
         protected readonly IAsymmetricPrivateTransformer privateKey;
 
-        public UserTrustController(ClientSession client,
+        public UserTrustController(IDatabase database,
                                    ICryptographyProvider crypto,
                                    IDatabaseUser me,
                                    IAsymmetricPrivateTransformer privateKey)
-            : base(client, crypto, me)
+            : base(database, crypto, me)
         {
             this.privateKey = privateKey;
         }
 
         public void AddTrust(UserId userId)
         {
-            IDatabaseUser user = client.Database.OpenUser(userId, true);
+            IDatabaseUser user = database.OpenUser(userId, true);
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
             me.AddTrust(signature);
@@ -31,7 +31,7 @@ namespace MKW.Core.Client
 
         public void RemoveTrust(UserId userId)
         {
-            IDatabaseUser user = client.Database.OpenUser(userId, true);
+            IDatabaseUser user = database.OpenUser(userId, true);
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
             me.DeleteTrust(signature);

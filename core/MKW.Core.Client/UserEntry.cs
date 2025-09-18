@@ -13,12 +13,12 @@ namespace MKW.Core.Client
         protected readonly EntryDecoder decoder;
         protected readonly EntrySharer sharer;
 
-        protected UserEntry(ClientSession client,
+        protected UserEntry(IDatabase database,
                             ICryptographyProvider crypto,
                             UserSession user,
                             IDatabaseEntry entry,
                             IEntryAccessController accessController)
-            : base(client, crypto, entry, accessController)
+            : base(database, crypto, entry, accessController)
         {
             this.user = user;
 
@@ -26,28 +26,28 @@ namespace MKW.Core.Client
             sharer = new EntrySharer(accessController, decoder, encoder);
         }
 
-        public static UserEntry Create(ClientSession client,
+        public static UserEntry Create(IDatabase database,
                                        ICryptographyProvider crypto,
                                        UserSession user,
                                        IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Create(client, user, entry);
+            AccessController accessController = AccessController.Create(database, user, entry);
 
-            return new UserEntry(client,
+            return new UserEntry(database,
                                  crypto,
                                  user,
                                  entry,
                                  accessController /* move */);
         }
 
-        public static UserEntry Open(ClientSession client,
+        public static UserEntry Open(IDatabase database,
                                      ICryptographyProvider crypto,
                                      UserSession user,
                                      IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Open(client, entry);
+            AccessController accessController = AccessController.Open(database, entry);
 
-            return new UserEntry(client,
+            return new UserEntry(database,
                                  crypto,
                                  user,
                                  entry,

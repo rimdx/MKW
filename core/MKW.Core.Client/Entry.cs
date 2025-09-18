@@ -9,7 +9,7 @@ namespace MKW.Core.Client
         , IEntryAccessController
         , IDisposable
     {
-        protected readonly ClientSession client;
+        protected readonly IDatabase database;
         protected readonly ICryptographyProvider crypto;
 
         // TODO: dispose
@@ -19,12 +19,12 @@ namespace MKW.Core.Client
 
         public EntryId Id => entry.Id;
 
-        protected Entry(ClientSession client,
+        protected Entry(IDatabase database,
                         ICryptographyProvider crypto,
                         IDatabaseEntry entry,
                         IEntryAccessController accessController)
         {
-            this.client = client;
+            this.database = database;
             this.crypto = crypto;
             this.entry = entry;
             this.accessController = accessController;
@@ -32,26 +32,26 @@ namespace MKW.Core.Client
             encoder = new EntryEncoder(crypto, accessController);
         }
 
-        public static Entry Create(ClientSession client,
+        public static Entry Create(IDatabase database,
                                    ICryptographyProvider crypto,
                                    ITrustProvider trustProvider,
                                    IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Create(client, trustProvider, entry);
+            AccessController accessController = AccessController.Create(database, trustProvider, entry);
 
-            return new Entry(client,
+            return new Entry(database,
                              crypto,
                              entry,
                              accessController /* move */);
         }
 
-        public static Entry Open(ClientSession client,
+        public static Entry Open(IDatabase database,
                                  ICryptographyProvider crypto,
                                  IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Open(client, entry);
+            AccessController accessController = AccessController.Open(database, entry);
 
-            return new Entry(client,
+            return new Entry(database,
                              crypto,
                              entry,
                              accessController /* move */);

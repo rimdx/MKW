@@ -5,17 +5,17 @@ namespace MKW.Core.Client
 {
     public class AccessController : IEntryAccessController, IDisposable
     {
-        private readonly ClientSession client;
+        private readonly IDatabase database;
         private readonly HashSet<UserId> access;
 
-        public AccessController(ClientSession client,
+        public AccessController(IDatabase database,
                                 IEnumerable<UserId> access)
         {
-            this.client = client;
+            this.database = database;
             this.access = [.. access];
         }
 
-        public static AccessController Create(ClientSession client,
+        public static AccessController Create(IDatabase database,
                                               ITrustProvider trustProvider,
                                               IDatabaseEntry entry)
         {
@@ -25,13 +25,13 @@ namespace MKW.Core.Client
                 access.Add(user.Id);
             }
 
-            return new AccessController(client, access);
+            return new AccessController(database, access);
         }
 
-        public static AccessController Open(ClientSession client,
+        public static AccessController Open(IDatabase database,
                                             IDatabaseEntry entry)
         {
-            return new AccessController(client, entry.Keys.Keys);
+            return new AccessController(database, entry.Keys.Keys);
         }
 
         public void AddAccess(UserId userId)
@@ -43,7 +43,7 @@ namespace MKW.Core.Client
         {
             foreach (UserId user in access)
             {
-                IDatabaseUser databaseUser = client.Database.OpenUser(user, true);
+                IDatabaseUser databaseUser = database.OpenUser(user, true);
                 yield return UserInfo.FromDatabaseUser(databaseUser);
             }
         }

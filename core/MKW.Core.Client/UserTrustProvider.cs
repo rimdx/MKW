@@ -8,16 +8,16 @@ namespace MKW.Core.Client
     {
         public UserId UserId => me.Id;
 
-        protected readonly ClientSession client;
+        protected readonly IDatabase database;
         protected readonly ICryptographyProvider crypto;
         protected readonly IDatabaseUser me;
         protected readonly ITrustVerifier trustVerifier;
 
-        public UserTrustProvider(ClientSession client,
+        public UserTrustProvider(IDatabase database,
                                  ICryptographyProvider crypto,
                                  IDatabaseUser me)
         {
-            this.client = client;
+            this.database = database;
             this.crypto = crypto;
             this.me = me;
             trustVerifier = new UserTrustVerifier(crypto, me);
@@ -25,7 +25,7 @@ namespace MKW.Core.Client
 
         private IEnumerable<ITrustWorkerNode> EnumerateWorkerNodes()
         {
-            foreach (IDatabaseUser user in client.Database.EnumerateUsers())
+            foreach (IDatabaseUser user in database.EnumerateUsers())
             {
                 yield return new UserTrustProviderWorkerNode(crypto, user);
             }
@@ -43,7 +43,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
         {
-            foreach (IDatabaseUser user in client.Database.EnumerateUsers())
+            foreach (IDatabaseUser user in database.EnumerateUsers())
             {
                 if (trustVerifier.GetTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
                 {
