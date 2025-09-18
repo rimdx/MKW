@@ -41,18 +41,31 @@ namespace MKW.GUI
         {
             try
             {
-                FileDialog dialog = FileDialogUtils.CreateOpenDatabaseDialog();
+                string fullPath;
 
-                if (dialog.ShowDialog() == true)
+                if (e.Parameter != null)
                 {
-                    LoginWindowViewModel loginWindowViewModel =
-                        model.CreateLoginViewModel(dialog.FileName);
-                    LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
-
-                    window.ShowDialog();
-
-                    model.OpenDatabase(loginWindowViewModel);
+                    fullPath = (string)e.Parameter;
                 }
+                else
+                {
+                    FileDialog dialog = FileDialogUtils.CreateOpenDatabaseDialog();
+
+                    if (dialog.ShowDialog() != true)
+                    {
+                        return;
+                    }
+
+                    fullPath = dialog.FileName;
+                }
+
+                LoginWindowViewModel loginWindowViewModel =
+                        model.CreateLoginViewModel(fullPath);
+                LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
+
+                window.ShowDialog();
+
+                model.OpenDatabase(loginWindowViewModel);
             }
             catch (Exception ex)
             {

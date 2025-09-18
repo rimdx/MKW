@@ -39,7 +39,8 @@
                 <Setter.Value>
                   <ControlTemplate TargetType="MenuItem">
                     <MenuItem Header="{Binding FileName}"
-                              Click="RecentFileItem_Click" />
+                              Command="ApplicationCommands.Open"
+                              CommandParameter="{Binding FullPath}"/>
                   </ControlTemplate>
                 </Setter.Value>
               </Setter>
