@@ -110,10 +110,10 @@ namespace MKW.GUI
             }
         }
 
-        public bool OnCloseDatabase() => RunAction(() =>
+        public void OnCloseDatabase()
         {
             Database = null;
-        });
+        }
 
         public void Dispose()
         {

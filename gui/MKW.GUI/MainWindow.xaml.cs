@@ -107,7 +107,14 @@ namespace MKW.GUI
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            model.OnCloseDatabase();
+            try
+            {
+                model.OnCloseDatabase();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
+            }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
