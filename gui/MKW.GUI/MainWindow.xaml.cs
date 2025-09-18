@@ -94,28 +94,24 @@ namespace MKW.GUI
             }
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private void FileClose_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
-                if (model.SelectedTab != null)
+                DatabaseTabItemViewModel? tab;
+                if (e.Parameter != null)
                 {
-                    model.OnCloseTab(model.SelectedTab);
+                    tab = (DatabaseTabItemViewModel)e.Parameter;
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
+                else
+                {
+                    tab = model.SelectedTab;
+                }
 
-        private void TabClose_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                FrameworkElement element = (Control)sender;
-                DatabaseTabItemViewModel tab = (DatabaseTabItemViewModel)element.DataContext;
-                model.OnCloseTab(tab);
+                if (tab != null)
+                {
+                    model.OnCloseTab(tab);
+                }
             }
             catch (Exception ex)
             {
