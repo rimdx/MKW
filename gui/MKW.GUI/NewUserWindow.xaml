@@ -10,8 +10,7 @@
         Title="Create New User"
         SizeToContent="Height" 
         Width="350"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        ResizeMode="NoResize">
   <local:DialogWindow.Resources>
     <Style x:Key="SelectBoxPrimary" TargetType="TextBox">
       <Setter Property="IsReadOnly" Value="True" />

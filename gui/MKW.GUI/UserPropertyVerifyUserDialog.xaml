@@ -8,8 +8,7 @@
         Title="Verify User"
         Width="350" Height="280"
         d:DataContext="{d:DesignInstance Type=local:UserPropertyDialogViewModel}"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        ResizeMode="NoResize">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
