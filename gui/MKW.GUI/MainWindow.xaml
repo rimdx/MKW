@@ -100,7 +100,7 @@
                     BorderThickness="0"
                     Command="ApplicationCommands.Close"
                     CommandParameter="{Binding}">
-              <images:Close Width="12" Height="12" />
+              <images:Close MaxWidth="12" MaxHeight="12" />
             </Button>
           </StackPanel>
         </DataTemplate>
