@@ -41,7 +41,7 @@ namespace MKW.GUI
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
             TabItems = new ObservableCollection<DatabaseTabItemViewModel>();
-            StartPage = new StartPage(this);
+            StartPage = new StartPage();
 
             ((INotifyPropertyChanged)TabItems).PropertyChanged += TabItems_PropertyChanged;
             TabItems_PropertyChanged(TabItems, new PropertyChangedEventArgs(null));
