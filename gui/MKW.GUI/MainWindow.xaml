@@ -91,7 +91,9 @@
     <local:StartPage Grid.Row="1"
                      Visibility="{Binding IsStartPageVisible,
                                           Converter={StaticResource BooleanToVisibilityConverter}}"
-                     Background="White" />
+                     Background="White"
+                     KeyboardNavigation.DirectionalNavigation="Contained"
+                     KeyboardNavigation.TabNavigation="Contained"/>
 
     <TabControl Grid.Row="1"
                 Margin="6"
