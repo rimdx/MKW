@@ -14,6 +14,8 @@
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </Window.Resources>
   <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Close"
+                    Executed="FileClose_Executed" />
     <CommandBinding Command="ApplicationCommands.Open"
                     Executed="FileOpenCommand_Executed" />
     <CommandBinding Command="ApplicationCommands.New"
@@ -48,7 +50,7 @@
           </MenuItem.ItemContainerStyle>
         </MenuItem>
         <Separator />
-        <MenuItem Header="_Close" Click="Close_Click" />
+        <MenuItem Header="_Close" Command="ApplicationCommands.Close" />
         <Separator />
         <MenuItem Header="_Exit" Click="Exit_Click" />
       </MenuItem>
@@ -95,7 +97,8 @@
                     Background="Transparent"
                     Foreground="Transparent"
                     BorderThickness="0"
-                    Click="TabClose_Click">
+                    Command="ApplicationCommands.Close"
+                    CommandParameter="{Binding}">
               <images:Close Width="12" Height="12" />
             </Button>
           </StackPanel>
