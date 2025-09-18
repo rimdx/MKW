@@ -19,6 +19,8 @@
                     CanExecute="FileClose_CanExecute"/>
     <CommandBinding Command="ApplicationCommands.Open"
                     Executed="FileOpenCommand_Executed" />
+    <CommandBinding Command="{x:Static local:AppCommands.OpenRecent}"
+                    Executed="FileOpenRecentCommand_Executed" />
     <CommandBinding Command="ApplicationCommands.New"
                     Executed="FileNew_Executed" />
   </Window.CommandBindings>
@@ -42,7 +44,7 @@
                 <Setter.Value>
                   <ControlTemplate TargetType="MenuItem">
                     <MenuItem Header="{Binding FileName}"
-                              Command="ApplicationCommands.Open"
+                              Command="{x:Static local:AppCommands.OpenRecent}"
                               CommandParameter="{Binding FullPath}"/>
                   </ControlTemplate>
                 </Setter.Value>
