@@ -6,7 +6,7 @@ namespace MKW.GUI
     {
         private readonly NewUserWindowViewModel model;
 
-        public NewUserWindow(NewUserWindowViewModel model)
+        public NewUserWindow(NewUserWindowViewModel model, Window owner) : base(owner)
         {
             this.model = model;
             DataContext = model;

@@ -37,7 +37,7 @@ namespace MKW.GUI
             try
             {
                 NewEntryWindowViewModel viewModel = model.CreateNewEntryWindowViewModel();
-                NewEntryWindow window = new NewEntryWindow(viewModel);
+                NewEntryWindow window = new NewEntryWindow(viewModel, Window.GetWindow(this));
                 window.ShowDialog();
             }
             catch (Exception ex)

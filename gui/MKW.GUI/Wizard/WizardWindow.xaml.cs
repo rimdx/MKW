@@ -7,10 +7,9 @@ namespace MKW.GUI.Wizard
     {
         private readonly WizardViewModel viewModel;
 
-        public WizardWindow(WizardViewModel viewModel, Window owner)
+        public WizardWindow(WizardViewModel viewModel, Window owner) : base(owner)
         {
             this.viewModel = viewModel;
-            Owner = owner;
 
             DataContext = viewModel;
             InitializeComponent();

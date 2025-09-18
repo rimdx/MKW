@@ -7,10 +7,9 @@ namespace MKW.GUI
     {
         private readonly LoginWindowViewModel model;
 
-        public LoginWindow(LoginWindowViewModel model, Window owner)
+        public LoginWindow(LoginWindowViewModel model, Window owner) : base(owner)
         {
             this.model = model;
-            this.Owner = owner;
             DataContext = model;
             InitializeComponent();
         }

@@ -25,7 +25,7 @@ namespace MKW.GUI
             try
             {
                 NewUserWindowViewModel viewModel = model.CreateNewUserWindowViewModel();
-                NewUserWindow window = new NewUserWindow(viewModel);
+                NewUserWindow window = new NewUserWindow(viewModel, Window.GetWindow(this));
                 window.ShowDialog();
             }
             catch (Exception ex)
