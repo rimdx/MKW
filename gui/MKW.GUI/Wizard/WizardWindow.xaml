@@ -23,7 +23,7 @@
 
     <Border BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlDarkBrushKey}}"
             BorderThickness="1">
-      <ContentControl x:Name="PageContent" />
+      <ContentPresenter x:Name="PageContent" />
     </Border>
 
     <StackPanel Orientation="Horizontal"
