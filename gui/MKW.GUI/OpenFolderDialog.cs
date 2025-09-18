@@ -44,10 +44,10 @@ namespace MKW.GUI
 
             if (InputPath != null)
             {
-                Marshal.ThrowExceptionForHR(SHCreateItemFromParsingName(InputPath,
-                                                                        null,
-                                                                        typeof(IShellItem).GUID,
-                                                                        out IShellItem item));
+                Marshal.ThrowExceptionForHR(Shell32.SHCreateItemFromParsingName(InputPath,
+                                                                                null,
+                                                                                typeof(IShellItem).GUID,
+                                                                                out IShellItem item));
 
                 dialog.SetFolder(item);
             }
@@ -98,12 +98,6 @@ namespace MKW.GUI
             }
             return true;
         }
-
-        [DllImport("shell32")]
-        private static extern int SHCreateItemFromParsingName([MarshalAs(UnmanagedType.LPWStr)] string pszPath,
-                                                              IBindCtx? pbc,
-                                                              [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-                                                              out IShellItem ppv);
 
         private const int ERROR_CANCELLED = unchecked((int)0x800704C7);
     }
