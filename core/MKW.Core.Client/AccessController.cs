@@ -43,7 +43,7 @@ namespace MKW.Core.Client
         {
             foreach (UserId user in access)
             {
-                IDatabaseUser databaseUser = client.OpenDatabaseUser(user, true);
+                IDatabaseUser databaseUser = client.Database.OpenUser(user, true);
                 yield return UserInfo.FromDatabaseUser(databaseUser);
             }
         }

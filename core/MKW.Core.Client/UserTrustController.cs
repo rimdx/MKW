@@ -22,7 +22,7 @@ namespace MKW.Core.Client
 
         public void AddTrust(UserId userId)
         {
-            IDatabaseUser user = client.OpenDatabaseUser(userId, true);
+            IDatabaseUser user = client.Database.OpenUser(userId, true);
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
             me.AddTrust(signature);
@@ -31,7 +31,7 @@ namespace MKW.Core.Client
 
         public void RemoveTrust(UserId userId)
         {
-            IDatabaseUser user = client.OpenDatabaseUser(userId, true);
+            IDatabaseUser user = client.Database.OpenUser(userId, true);
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
             me.DeleteTrust(signature);

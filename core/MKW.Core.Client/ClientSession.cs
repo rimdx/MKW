@@ -53,19 +53,6 @@ namespace MKW.Core.Client
             return client;
         }
 
-        internal IEnumerable<IDatabaseUser> EnumerateDatabaseUsers()
-        {
-            foreach (IDatabaseUser user in Database.EnumerateUsers())
-            {
-                yield return user;
-            }
-        }
-
-        internal IDatabaseUser OpenDatabaseUser(UserId id, bool readOnly)
-        {
-            return Database.OpenUser(id, readOnly);
-        }
-
         // todo: ITrustProvider
 
         public IEnumerable<UserInfo> EnumerateUsersTrust()
@@ -84,7 +71,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
         {
-            IDatabaseUser user = OpenDatabaseUser(userId, true);
+            IDatabaseUser user = Database.OpenUser(userId, true);
             using UserTrustProvider trustProvider = new UserTrustProvider(this, crypto, user);
 
             foreach (UserInfo trust in trustProvider.EnumerateImplicitlyTrustedUsers())
