@@ -1,9 +1,10 @@
 ﻿using MKW.GUI.Model;
+using MKW.GUI.Wizard;
 using System.IO;
 
 namespace MKW.GUI
 {
-    public class CreateDatabaseWindowViewModel : ViewModelBase
+    public class CreateDatabaseWindowViewModel : WizardViewModel
     {
         public DatabaseModel? Database { get; private set; }
 
@@ -14,6 +15,9 @@ namespace MKW.GUI
 
             databaseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             databaseName = "New Database.mkw";
+
+            AddPage(new CreateDatabaseLocation(this));
+            AddPage(new CreateDatabaseMasterPassword(this));
         }
 
         public string Password { get; set; }
@@ -40,7 +44,7 @@ namespace MKW.GUI
             return File.Exists(DatabasePath);
         }
 
-        public bool DoCreateDatabase()
+        public override bool Finish()
         {
             if (!IsPasswordMatch)
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MKW.GUI.Wizard;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -44,7 +45,7 @@ namespace MKW.GUI
             try
             {
                 CreateDatabaseWindowViewModel createDatabaseViewModel = model.CreateCreateDatabaseViewModel();
-                CreateDatabaseWindow createDatabaseWindow = new CreateDatabaseWindow(createDatabaseViewModel);
+                WizardWindow createDatabaseWindow = new WizardWindow(createDatabaseViewModel);
 
                 createDatabaseWindow.ShowDialog();
 
