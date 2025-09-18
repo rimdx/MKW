@@ -1,21 +1,29 @@
 ﻿using MKW.GUI.Model;
+using System.IO;
 
 namespace MKW.GUI
 {
     public class CreateDatabaseWindowViewModel : ViewModelBase
     {
-        private readonly string path;
-
         public DatabaseModel? Database { get; private set; }
 
-        public CreateDatabaseWindowViewModel(string path)
+        public CreateDatabaseWindowViewModel()
         {
-            this.path = path;
+            // TODO: factor out
+            // TODO: save latest directory to registry storage
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            m_databasePath = Path.Combine(documentsPath, "New Database.mkw");
         }
 
         public string Password { get; set; }
         public bool IsPasswordMatch { get; set; }
-        public string DatabasePath => path;
+
+        private string m_databasePath;
+        public string DatabasePath
+        {
+            get => m_databasePath;
+            set => SetProperty(ref m_databasePath, value);
+        }
 
         public bool DoCreateDatabase() => RunAction(() =>
         {
@@ -29,7 +37,7 @@ namespace MKW.GUI
                 throw new ArgumentNullException(nameof(Password));
             }
 
-            Database = DatabaseModel.Create(path, Password);
+            Database = DatabaseModel.Create(DatabasePath, Password);
         });
     }
 }
