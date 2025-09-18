@@ -27,10 +27,5 @@ namespace MKW.GUI
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public void ReportError(Exception ex)
-        {
-            ErrorReporter.HandleException(ex);
-        }
     }
 }
