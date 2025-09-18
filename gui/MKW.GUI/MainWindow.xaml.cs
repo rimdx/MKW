@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,38 +7,13 @@ namespace MKW.GUI
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel model;
-        private DatabasePage? databasePage;
 
         public MainWindow()
         {
             model = new MainWindowViewModel();
-            model.PropertyChanged += Model_PropertyChanged;
             DataContext = model;
 
             InitializeComponent();
-
-            UpdateDatabasePage();
-        }
-
-        private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.MatchProperty(nameof(model.Database)))
-            {
-                UpdateDatabasePage();
-            }
-        }
-
-        private void UpdateDatabasePage()
-        {
-            if (model.Database == null)
-            {
-                Database.Content = new StartPage(model);
-            }
-            else
-            {
-                databasePage = new DatabasePage(model.Database /* reference */);
-                Database.Content = databasePage;
-            }
         }
 
         // File
@@ -109,7 +83,10 @@ namespace MKW.GUI
         {
             try
             {
-                model.OnCloseDatabase();
+                if (model.SelectedTab != null)
+                {
+                    model.OnCloseTab(model.SelectedTab);
+                }
             }
             catch (Exception ex)
             {
@@ -120,103 +97,6 @@ namespace MKW.GUI
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        // Entry
-
-        private void AddEntry_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NewEntryWindowViewModel viewModel = model.Database!.CreateNewEntryWindowViewModel();
-                NewEntryWindow window = new NewEntryWindow(viewModel);
-                window.ShowDialog();
-                model.Database!.IsPageEntries = true;
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(ex);
-            }
-        }
-
-        private void EditEntry_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (model.SelectedEntry != null)
-                {
-                    using EditEntryWindowViewModel viewModel = model.Database!.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
-                    EditEntryWindow window = new EditEntryWindow(viewModel, GetWindow(this));
-                    window.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(ex);
-            }
-        }
-
-        private void DeleteEntry_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this entry?",
-                                                          "Confirm Deletion",
-                                                          MessageBoxButton.OKCancel);
-
-                if (result == MessageBoxResult.OK)
-                {
-                    model.Database!.DeleteEntry();
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(ex);
-            }
-
-        }
-
-        // User
-
-        private void NewUser_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NewUserWindowViewModel viewModel = model.Database!.CreateNewUserWindowViewModel();
-                NewUserWindow window = new NewUserWindow(viewModel);
-                window.ShowDialog();
-                model.Database!.IsPageUsers = true;
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(ex);
-            }
-        }
-
-        private void UserPropertiesClick(object sender, RoutedEventArgs e)
-        {
-            using UserPropertyDialogViewModel viewModel = model.Database!.CreateUserPropertiesWindowViewModel();
-            UserPropertyDialog dialog = new UserPropertyDialog(viewModel, GetWindow(this));
-            dialog.ShowDialog();
-        }
-
-        private void DeleteUser_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this user?",
-                                                          "Confirm Deletion",
-                                                          MessageBoxButton.OKCancel);
-
-                if (result == MessageBoxResult.OK)
-                {
-                    model.Database!.DeleteUser();
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(ex);
-            }
         }
 
         // Help

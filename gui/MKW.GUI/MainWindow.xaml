@@ -43,31 +43,19 @@
       </MenuItem>
 
       <MenuItem Header="_Entry">
-        <MenuItem Header="Add Entry"
-                  Click="AddEntry_Click"
-                  IsEnabled="{Binding IsDatabaseAttached}" />
+        <MenuItem Header="Add Entry" />
 
-        <MenuItem Header="Edit Entry"
-                  Click="EditEntry_Click"
-                  IsEnabled="{Binding IsEntrySelected}" />
+        <MenuItem Header="Edit Entry" />
 
-        <MenuItem Header="Delete Entry"
-                  Click="DeleteEntry_Click"
-                  IsEnabled="{Binding IsEntrySelected}" />
+        <MenuItem Header="Delete Entry" />
       </MenuItem>
 
       <MenuItem Header="_User">
-        <MenuItem Header="_New User..."
-                  IsEnabled="{Binding IsDatabaseAttached}"
-                  Click="NewUser_Click" />
+        <MenuItem Header="_New User..." />
 
-        <MenuItem Header="_Properties..."
-                  IsEnabled="{Binding IsUserSelected}"
-                  Click="UserPropertiesClick" />
+        <MenuItem Header="_Properties..." />
 
-        <MenuItem Header="_Delete..."
-                  IsEnabled="{Binding IsUserSelected}"
-                  Click="DeleteUser_Click" />
+        <MenuItem Header="_Delete..." />
       </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet"
@@ -75,6 +63,24 @@
       </MenuItem>
     </Menu>
 
-    <ContentControl Grid.Row="1" x:Name="Database" />
+    <TabControl Grid.Row="1" 
+                ItemsSource="{Binding TabItems}"
+                SelectedItem="{Binding SelectedTab}">
+      <TabControl.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Header}" />
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.Resources>
+        <DataTemplate DataType="{x:Type local:WelcomeTabItemViewModel}">
+          <StackPanel>
+            <ContentControl Content="{Binding Content}" />
+          </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
+          <ContentControl Content="{Binding Content}" />
+        </DataTemplate>
+      </TabControl.Resources>
+    </TabControl>
   </Grid>
 </Window>
