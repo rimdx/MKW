@@ -83,7 +83,7 @@
         </local:PasswordRepeatInput.Template>
       </local:PasswordRepeatInput>
     </StackPanel>
-    
+
     <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
