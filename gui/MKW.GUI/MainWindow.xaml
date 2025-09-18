@@ -9,6 +9,9 @@
         Title="{Binding Title}"
         Height="450" Width="800"
         Closed="Window_Closed">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+  </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
@@ -63,20 +66,22 @@
       </MenuItem>
     </Menu>
 
+    <ContentPresenter
+      Grid.Row="1"
+      Content="{Binding StartPage}"
+      Visibility="{Binding IsStartPageVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+      />
+
     <TabControl Grid.Row="1" 
                 ItemsSource="{Binding TabItems}"
-                SelectedItem="{Binding SelectedTab}">
+                SelectedItem="{Binding SelectedTab}"
+                Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
       <TabControl.ItemTemplate>
         <DataTemplate>
           <TextBlock Text="{Binding Header}" />
         </DataTemplate>
       </TabControl.ItemTemplate>
       <TabControl.Resources>
-        <DataTemplate DataType="{x:Type local:WelcomeTabItemViewModel}">
-          <StackPanel>
-            <ContentControl Content="{Binding Content}" />
-          </StackPanel>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
           <ContentControl Content="{Binding Content}" />
         </DataTemplate>
