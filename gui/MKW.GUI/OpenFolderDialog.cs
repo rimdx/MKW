@@ -105,9 +105,6 @@ namespace MKW.GUI
                                                               [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
                                                               out IShellItem ppv);
 
-        [DllImport("user32")]
-        private static extern IntPtr GetDesktopWindow();
-
         private const int ERROR_CANCELLED = unchecked((int)0x800704C7);
     }
 }
