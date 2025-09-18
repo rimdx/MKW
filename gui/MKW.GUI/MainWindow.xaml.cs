@@ -96,6 +96,20 @@ namespace MKW.GUI
             }
         }
 
+        private void TabClose_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FrameworkElement element = (Control)sender;
+                DatabaseTabItemViewModel tab = (DatabaseTabItemViewModel)element.DataContext;
+                model.OnCloseTab(tab);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
