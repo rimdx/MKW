@@ -27,7 +27,7 @@ namespace MKW.Core.Storage.JSON
         public static JSONDatabaseSession Create(string path)
         {
             JSONDatabase database = new JSONDatabase();
-            JSONDatabaseSession session = new JSONDatabaseSession(database, path /* move */);
+            JSONDatabaseSession session = new JSONDatabaseSession(database, path);
 
             using (File.Create(path))
             {
