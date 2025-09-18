@@ -61,13 +61,13 @@ namespace MKW.Core.Client
 
         public IUserSession OpenUser(string password)
         {
-            foreach (IDatabaseUser user in client.Database.EnumerateUsers())
+            foreach (IDatabaseUser user in database.EnumerateUsers())
             {
                 try
                 {
                     IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
-                    return OpenUser(client.Database.OpenUser(user.Id, false), creds);
+                    return OpenUser(database.OpenUser(user.Id, false), creds);
                 }
                 catch (Exceptions.InvalidPasswordException)
                 {
@@ -106,7 +106,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
-            foreach (IDatabaseUser user in client.Database.EnumerateUsers())
+            foreach (IDatabaseUser user in database.EnumerateUsers())
             {
                 yield return UserInfo.FromDatabaseUser(user);
             }
@@ -114,7 +114,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            IDatabaseUser user = client.Database.OpenUser(id, true);
+            IDatabaseUser user = database.OpenUser(id, true);
             return UserInfo.FromDatabaseUser(user);
         }
 

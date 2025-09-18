@@ -6,37 +6,37 @@ namespace MKW.Core.Client
 {
     public class EntryController : IEntryController, IDisposable
     {
-        private readonly ClientSession client;
+        private readonly IDatabase database;
         private readonly ICryptographyProvider crypto;
         private readonly IDatabaseUser user;
 
-        public EntryController(ClientSession client /* reference */,
+        public EntryController(IDatabase database /* reference */,
                                ICryptographyProvider crypto,
                                IDatabaseUser user)
         {
-            this.client = client;
+            this.database = database;
             this.crypto = crypto;
             this.user = user;
         }
 
         private ITrustProvider OpenTrustProvider()
         {
-            return new UserTrustProvider(client, crypto, user);
+            return new UserTrustProvider(database, crypto, user);
         }
 
         public IEntrySession OpenEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = client.Database.OpenEntry(id, false);
-            return Entry.Open(client, crypto, dbEntry);
+            IDatabaseEntry dbEntry = database.OpenEntry(id, false);
+            return Entry.Open(database, crypto, dbEntry);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = client.Database.CreateEntry(id);
+            IDatabaseEntry dbEntry = database.CreateEntry(id);
             dbEntry.Save();
 
             using ITrustProvider trustProvider = OpenTrustProvider();
-            return Entry.Create(client, crypto, trustProvider, dbEntry);
+            return Entry.Create(database, crypto, trustProvider, dbEntry);
         }
 
         public IEntrySession CreateEntry()
@@ -46,7 +46,7 @@ namespace MKW.Core.Client
 
         public EntryInfo DeleteEntry(EntryId id)
         {
-            client.Database.DeleteEntry(id);
+            database.DeleteEntry(id);
 
             return new EntryInfo
             {
@@ -58,7 +58,7 @@ namespace MKW.Core.Client
 
         public IEntrySession EnsureEntry(EntryId id, out bool created)
         {
-            created = !client.Database.HasEntry(id);
+            created = !database.HasEntry(id);
 
             if (created)
             {
@@ -93,9 +93,9 @@ namespace MKW.Core.Client
 
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
-            foreach (IDatabaseEntry entry in client.Database.EnumerateEntries())
+            foreach (IDatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return Entry.Open(client, crypto, entry);
+                yield return Entry.Open(database, crypto, entry);
             }
         }
 

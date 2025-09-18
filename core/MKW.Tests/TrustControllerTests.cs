@@ -12,7 +12,7 @@ namespace MKW.Tests
                                                         ClientSession client,
                                                         IUserSession user)
         {
-            return new UserTrustController(client,
+            return new UserTrustController(client.Database,
                                            sbox.Crypto,
                                            client.Database.OpenUser(user.Id, false),
                                            ((UserSession)user).Transformer);

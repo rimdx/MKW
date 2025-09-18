@@ -37,7 +37,7 @@ namespace MKW.Core.Client
 
             entryController = new UserEntryController(client, crypto, database, this);
             Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
-            TrustController = new UserTrustController(client, crypto, user, Transformer);
+            TrustController = new UserTrustController(database, crypto, user, Transformer);
             accessController = new UserAccessController(this);
         }
 
