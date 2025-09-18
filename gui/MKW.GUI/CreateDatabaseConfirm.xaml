@@ -1,0 +1,21 @@
+﻿<wizard:WizardPage x:Class="MKW.GUI.CreateDatabaseConfirm"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                   xmlns:local="clr-namespace:MKW.GUI"
+                   xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+                   d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
+                   mc:Ignorable="d"
+                   d:DesignHeight="380" d:DesignWidth="520"
+                   d:Background="White">
+  <Grid Margin="12">
+    <StackPanel Orientation="Vertical">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Location: " />
+        <TextBlock Text="{Binding DatabasePath}" />
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</wizard:WizardPage>

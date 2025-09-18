@@ -23,6 +23,7 @@ namespace MKW.GUI
 
             AddPage(new CreateDatabaseLocation(this));
             AddPage(new CreateDatabaseMasterPassword(this));
+            AddPage(new CreateDatabaseConfirm(this));
         }
 
         public string Password { get; set; }
