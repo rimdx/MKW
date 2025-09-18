@@ -12,17 +12,17 @@ namespace MKW.GUI
             // TODO: factor out
             // TODO: save latest directory to registry storage
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            m_databasePath = Path.Combine(documentsPath, "New Database.mkw");
+            databasePath = Path.Combine(documentsPath, "New Database.mkw");
         }
 
         public string Password { get; set; }
         public bool IsPasswordMatch { get; set; }
 
-        private string m_databasePath;
+        private string databasePath;
         public string DatabasePath
         {
-            get => m_databasePath;
-            set => SetProperty(ref m_databasePath, value);
+            get => databasePath;
+            set => SetProperty(ref databasePath, value);
         }
 
         public bool DoCreateDatabase()
