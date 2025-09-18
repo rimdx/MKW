@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MKW.GUI"
+        xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="{Binding Title}"
@@ -78,7 +79,20 @@
                 Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
       <TabControl.ItemTemplate>
         <DataTemplate>
-          <TextBlock Text="{Binding Header}" />
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Header}"
+                       Margin="0,0,3,0" />
+
+            <Button Padding="1"
+                    Margin="0,2,0,0"
+                    Height="14"
+                    Background="Transparent"
+                    Foreground="Transparent"
+                    BorderThickness="0"
+                    Click="TabClose_Click">
+              <images:Close Width="12" Height="12" />
+            </Button>
+          </StackPanel>
         </DataTemplate>
       </TabControl.ItemTemplate>
       <TabControl.Resources>
