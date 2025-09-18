@@ -13,6 +13,10 @@
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </Window.Resources>
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Open"
+                    Executed="FileOpenCommand_Executed" />
+  </Window.CommandBindings>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
@@ -22,7 +26,7 @@
     <Menu Grid.Column="0" Grid.Row="0">
       <MenuItem Header="_File" >
         <MenuItem Header="_New" Click="NewDatabase_Click" />
-        <MenuItem Header="_Open" Click="OpenDatabase_Click" />
+        <MenuItem Header="_Open" Command="ApplicationCommands.Open" />
 
         <MenuItem Header="_Recent Files"
                   ItemsSource="{Binding RecentFiles}"
