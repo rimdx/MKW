@@ -10,7 +10,7 @@
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White"
                    FocusManager.FocusedElement="{Binding ElementName=ctlDatabaseName}">
-  <Grid Margin="6">
+  <Grid Margin="12">
     <StackPanel Orientation="Vertical">
       <Label Content="File _Name:"
              Padding="0"

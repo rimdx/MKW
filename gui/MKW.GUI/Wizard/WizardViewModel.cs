@@ -15,6 +15,7 @@ namespace MKW.GUI.Wizard
                 if (SetProperty(ref currentPageIndex, value))
                 {
                     OnPropertyChanged(nameof(CurrentPage));
+                    OnPropertyChanged(nameof(PageHeader));
                     OnPropertyChanged(nameof(CanGoBack));
                     OnPropertyChanged(nameof(CanGoNext));
                     OnPropertyChanged(nameof(CanFinish));
@@ -27,6 +28,8 @@ namespace MKW.GUI.Wizard
         public virtual bool CanGoBack => (CurrentPageIndex > 0);
         public virtual bool CanGoNext => (CurrentPageIndex < Pages.Count - 1);
         public virtual bool CanFinish => (CurrentPageIndex == Pages.Count - 1);
+
+        public string PageHeader => CurrentPage.Header;
 
         public WizardViewModel()
         {

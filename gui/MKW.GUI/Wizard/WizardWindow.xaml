@@ -10,50 +10,65 @@
         Title="WizardWindow"
         Height="380" Width="520"
         WindowStartupLocation="CenterOwner">
-  <Grid Margin="12">
+  <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="12" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-    
+
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <Border BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlDarkBrushKey}}"
-            BorderThickness="1">
+    <Border Background="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
+            BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlDarkBrushKey}}"
+            BorderThickness="0,0,0,1"
+            Margin="0,0,0,6"
+            Padding="12">
+
+      <Label Content="{Binding PageHeader}"
+             Padding="0"
+             FontWeight="SemiBold" />
+    </Border>
+
+    <Border Grid.Row="1">
       <ContentPresenter x:Name="PageContent" />
     </Border>
 
-    <StackPanel Orientation="Horizontal"
-                HorizontalAlignment="Right"
-                Grid.Row="2">
+    <Border Grid.Row="3" Padding="12"
+            Background="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}"
+            BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlDarkBrushKey}}"
+            BorderThickness="0,1,0,0">
+      <StackPanel Orientation="Horizontal"
+                  HorizontalAlignment="Right">
       
-      <Button Content="_Back"
-              Width="70"
-              Margin="0,0,6,0"
-              Click="Back_Click"
-              IsEnabled="{Binding CanGoBack}"/>
+        <Button Content="_Back"
+                Width="70"
+                Margin="0,0,6,0"
+                Click="Back_Click"
+                IsEnabled="{Binding CanGoBack}"/>
 
-      <Button Content="_Next"
-              Width="70"
-              IsDefault="True"
-              Margin="0,0,12,0"
-              Click="Next_Click"
-              IsEnabled="{Binding CanGoNext}"/>
+        <Button Content="_Next"
+                Width="70"
+                IsDefault="True"
+                Margin="0,0,12,0"
+                Click="Next_Click"
+                IsEnabled="{Binding CanGoNext}"/>
 
-      <Button Content="_Finish"
-              Width="70"
-              IsDefault="True"
-              Margin="0,0,6,0"
-              Click="Finish_Click"
-              IsEnabled="{Binding CanFinish}" />
+        <Button Content="_Finish"
+                Width="70"
+                IsDefault="True"
+                Margin="0,0,6,0"
+                Click="Finish_Click"
+                IsEnabled="{Binding CanFinish}" />
       
-      <Button Content="_Cancel"
-              Width="70"
-              IsCancel="True"
-              Click="Cancel_Click" />
-    </StackPanel>
+        <Button Content="_Cancel"
+                Width="70"
+                IsCancel="True"
+                Click="Cancel_Click" />
+      </StackPanel>
+    </Border>
   </Grid>
 </Window>
