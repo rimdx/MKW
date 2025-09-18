@@ -18,31 +18,17 @@
     </Grid.RowDefinitions>
     
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="135" />
-      <ColumnDefinition Width="6" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <ListView Grid.Column="0"
-              ItemContainerStyle="{StaticResource ListViewItemStyle}"
-              BorderThickness="1,0,1,1"
-              SnapsToDevicePixels="True">
-      <ListViewItem>First Page</ListViewItem>
-      <ListViewItem>Second Page</ListViewItem>
-      <ListViewItem>Confirmation Page</ListViewItem>
-    </ListView>
-
-    <Border Grid.Column="2"
-            BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlDarkBrushKey}}"
+    <Border BorderBrush="{DynamicResource ResourceKey={x:Static SystemColors.ControlDarkBrushKey}}"
             BorderThickness="1">
       <ContentControl x:Name="PageContent" />
     </Border>
 
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Right"
-                Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="3">
+                Grid.Row="2">
       
       <Button Content="_Back"
               Width="70"
