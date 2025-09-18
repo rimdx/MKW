@@ -25,7 +25,7 @@ namespace MKW.Core.Client
 
         private IEnumerable<ITrustWorkerNode> EnumerateWorkerNodes()
         {
-            foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
+            foreach (IDatabaseUser user in client.Database.EnumerateUsers())
             {
                 yield return new UserTrustProviderWorkerNode(crypto, user);
             }
@@ -43,7 +43,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
         {
-            foreach (IDatabaseUser user in client.EnumerateDatabaseUsers())
+            foreach (IDatabaseUser user in client.Database.EnumerateUsers())
             {
                 if (trustVerifier.GetTrust(user.PublicKey.Span) == Trust.ExplicitTrust)
                 {
