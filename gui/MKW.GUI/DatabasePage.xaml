@@ -81,14 +81,14 @@
             BorderThickness="1"
             BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
       <Grid>
-        <ContentControl x:Name="InfoPage"
-                        Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <ContentPresenter x:Name="InfoPage"
+                          Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <ContentControl x:Name="EntriesPage"
-                        Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <ContentPresenter x:Name="EntriesPage"
+                          Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <ContentControl x:Name="UsersPage"
-                        Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <ContentPresenter x:Name="UsersPage"
+                          Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
       </Grid>
     </Border>
   </Grid>
