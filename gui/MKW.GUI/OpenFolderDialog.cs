@@ -71,7 +71,7 @@ namespace MKW.GUI
 
             int hr = dialog.Show(owner);
 
-            if (hr == ERROR_CANCELLED)
+            if (hr == ErrorCodes.ERROR_CANCELLED)
             {
                 return null;
             }
@@ -98,7 +98,5 @@ namespace MKW.GUI
             }
             return true;
         }
-
-        private const int ERROR_CANCELLED = unchecked((int)0x800704C7);
     }
 }
