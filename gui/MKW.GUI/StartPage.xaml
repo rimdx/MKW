@@ -61,7 +61,7 @@
 
       <Label FontWeight="Bold">Recent files</Label>
 
-      <ItemsControl ItemsSource="{Binding RecentFiles}">
+      <ItemsControl ItemsSource="{Binding RecentFiles}" IsTabStop="False">
         <ItemsControl.ItemsPanel>
           <ItemsPanelTemplate>
             <WrapPanel Orientation="Vertical" />
