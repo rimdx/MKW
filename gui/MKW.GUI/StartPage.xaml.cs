@@ -16,23 +16,6 @@ namespace MKW.GUI
             InitializeComponent();
         }
 
-        private void NewDatabase_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                CreateDatabaseWindowViewModel createDatabaseViewModel = model.CreateCreateDatabaseViewModel();
-                WizardWindow createDatabaseWindow = new WizardWindow(createDatabaseViewModel, Window.GetWindow(this));
-
-                createDatabaseWindow.ShowDialog();
-
-                model.OpenDatabase(createDatabaseViewModel);
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
-
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             Hyperlink hyperlink = (Hyperlink)e.Source;

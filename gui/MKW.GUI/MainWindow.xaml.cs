@@ -20,7 +20,7 @@ namespace MKW.GUI
 
         // File
 
-        private void NewDatabase_Click(object sender, RoutedEventArgs e)
+        private void FileNew_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {

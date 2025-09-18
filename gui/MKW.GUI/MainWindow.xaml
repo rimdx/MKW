@@ -16,6 +16,8 @@
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Open"
                     Executed="FileOpenCommand_Executed" />
+    <CommandBinding Command="ApplicationCommands.New"
+                    Executed="FileNew_Executed" />
   </Window.CommandBindings>
   <Grid>
     <Grid.RowDefinitions>
@@ -25,7 +27,7 @@
 
     <Menu Grid.Column="0" Grid.Row="0">
       <MenuItem Header="_File" >
-        <MenuItem Header="_New" Click="NewDatabase_Click" />
+        <MenuItem Header="_New" Command="ApplicationCommands.New" />
         <MenuItem Header="_Open" Command="ApplicationCommands.Open" />
 
         <MenuItem Header="_Recent Files"

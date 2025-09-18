@@ -53,7 +53,7 @@
         <images:NewDocument Grid.Row="4" />
 
         <TextBlock Grid.Column="1" Grid.Row="4">
-          <Hyperlink Click="NewDatabase_Click">Create New Database</Hyperlink>
+          <Hyperlink Command="ApplicationCommands.New">Create New Database</Hyperlink>
         </TextBlock>
       </Grid>
       
