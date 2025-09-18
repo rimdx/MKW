@@ -6,12 +6,12 @@ namespace MKW.GUI
 {
     public partial class CreateDatabaseWindow : Window
     {
-        private readonly CreateDatabaseWindowViewModel model;
+        private readonly CreateDatabaseWindowViewModel viewModel;
 
-        public CreateDatabaseWindow(CreateDatabaseWindowViewModel model)
+        public CreateDatabaseWindow(CreateDatabaseWindowViewModel viewModel)
         {
-            this.model = model;
-            DataContext = model;
+            this.viewModel = viewModel;
+            DataContext = viewModel;
             InitializeComponent();
         }
 
@@ -19,10 +19,10 @@ namespace MKW.GUI
         {
             try
             {
-                if (model.Exists())
+                if (viewModel.Exists())
                 {
                     MessageBoxResult result = MessageBox.Show(this,
-                                                              $"{model.DatabaseName} already exists. Do you want to replace it?",
+                                                              $"{viewModel.DatabaseName} already exists. Do you want to replace it?",
                                                               "Confirm Creation",
                                                               MessageBoxButton.YesNo,
                                                               MessageBoxImage.Warning);
@@ -33,7 +33,7 @@ namespace MKW.GUI
                     }
                 }
 
-                if (model.DoCreateDatabase())
+                if (viewModel.DoCreateDatabase())
                 {
                     Close();
                 }
