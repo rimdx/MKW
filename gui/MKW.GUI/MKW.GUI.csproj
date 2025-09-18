@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <ApplicationIcon>../../assets/icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
 </Project>
