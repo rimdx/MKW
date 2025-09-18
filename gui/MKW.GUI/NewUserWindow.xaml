@@ -8,7 +8,9 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:NewUserWindowViewModel}"
         Title="Create New User"
-        Height="350" Width="300"
+        SizeToContent="Height" 
+        Width="350"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
   <Window.Resources>
     <Style x:Key="SelectBoxPrimary" TargetType="TextBox">
@@ -21,11 +23,8 @@
 
   <Grid Margin="12">
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
-
 
     <StackPanel Orientation="Vertical"
                 Grid.Row="0">
@@ -73,22 +72,22 @@
           </ControlTemplate>
         </local:PasswordRepeatInput.Template>
       </local:PasswordRepeatInput>
-    </StackPanel>
 
-    <StackPanel Grid.Row="4"
-                Orientation="Horizontal"
-                HorizontalAlignment="Right">
+      <StackPanel Orientation="Horizontal"
+                  Margin="0,12,0,0"
+                  HorizontalAlignment="Right">
 
-      <Button Content="OK"
-              Width="70"
-              Click="OK_Click"
-              IsDefault="True"
-              Margin="0,0,6,0" />
+        <Button Content="OK"
+                Width="70"
+                Click="OK_Click"
+                IsDefault="True"
+                Margin="0,0,6,0" />
 
-      <Button Content="Cancel"
-              Width="70"
-              Click="Cancel_Click"
-              IsCancel="True" />
+        <Button Content="Cancel"
+                Width="70"
+                Click="Cancel_Click"
+                IsCancel="True" />
+      </StackPanel>
     </StackPanel>
   </Grid>
 </Window>
