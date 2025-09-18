@@ -7,10 +7,11 @@ namespace MKW.GUI
     {
         private readonly MainWindowViewModel model;
 
-        public AboutDialog(MainWindowViewModel model)
+        public AboutDialog(MainWindowViewModel model, Window owner)
         {
             this.model = model;
             DataContext = model;
+            Owner = owner;
             InitializeComponent();
         }
 
