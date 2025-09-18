@@ -28,7 +28,6 @@ namespace MKW.GUI
             Content = new DatabasePage(databaseViewModel);
         }
 
-
         public void OnClose()
         {
             databaseViewModel.Dispose();
