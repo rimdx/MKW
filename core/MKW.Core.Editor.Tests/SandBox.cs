@@ -27,7 +27,7 @@ namespace MKW.Core.Editor.Tests
 
         public IDatabase OpenDatabase()
         {
-            return JSONDatabaseSession.Open(DatabasePath, false);
+            return JSONDatabaseSession.Open(DatabasePath);
         }
 
         public ClientSession OpenSession()

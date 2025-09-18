@@ -28,7 +28,7 @@ namespace MKW.GUI.Model
 
         public static DatabaseModel Open(string path)
         {
-            JSONDatabaseSession db = JSONDatabaseSession.Open(path, false);
+            JSONDatabaseSession db = JSONDatabaseSession.Open(path);
             ClientSession client = ClientSession.Open(db);
             return new DatabaseModel(db, path, client);
         }
