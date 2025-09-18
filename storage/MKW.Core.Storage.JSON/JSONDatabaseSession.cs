@@ -29,7 +29,10 @@ namespace MKW.Core.Storage.JSON
             JSONDatabase database = new JSONDatabase();
             JSONDatabaseSession session = new JSONDatabaseSession(database, path /* move */);
 
-            // Writes empty database to file to the disk
+            using (File.Create(path))
+            {
+            }
+
             session.Save();
 
             return session;
