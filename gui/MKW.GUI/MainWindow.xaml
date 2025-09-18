@@ -9,7 +9,8 @@
         mc:Ignorable="d"
         Title="{Binding Title}"
         Height="450" Width="800"
-        Closed="Window_Closed">
+        Closed="Window_Closed"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </Window.Resources>
@@ -88,7 +89,8 @@
       Visibility="{Binding IsStartPageVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
       />
 
-    <TabControl Grid.Row="1" 
+    <TabControl Grid.Row="1"
+                Margin="6"
                 ItemsSource="{Binding TabItems}"
                 SelectedItem="{Binding SelectedTab}"
                 Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
