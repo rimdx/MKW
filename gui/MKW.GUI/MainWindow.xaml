@@ -83,7 +83,7 @@
       </TabControl.ItemTemplate>
       <TabControl.Resources>
         <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
-          <ContentControl Content="{Binding Content}" />
+          <ContentPresenter Content="{Binding Content}" />
         </DataTemplate>
       </TabControl.Resources>
     </TabControl>
