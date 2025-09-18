@@ -2,7 +2,7 @@
 
 namespace MKW.GUI
 {
-    public partial class UserPropertyDialog : Window
+    public partial class UserPropertyDialog : DialogWindow
     {
         private readonly UserPropertyDialogViewModel model;
 

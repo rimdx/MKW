@@ -2,7 +2,7 @@
 
 namespace MKW.GUI
 {
-    public partial class EditEntryWindow : Window
+    public partial class EditEntryWindow : DialogWindow
     {
         private readonly EditEntryWindowViewModel model;
 
