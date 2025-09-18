@@ -22,5 +22,13 @@ namespace MKW.GUI
                 Filter = "Multi-Key Wallet Database File|*.mkw"
             };
         }
+
+        public static OpenFolderDialog CreateSelectFolderDialog(string folderName)
+        {
+            return new OpenFolderDialog
+            {
+                InputPath = folderName,
+            };
+        }
     }
 }
