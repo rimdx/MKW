@@ -7,14 +7,7 @@ using System.Windows.Controls;
 
 namespace MKW.GUI
 {
-    public interface ITabItemViewModel
-    {
-        public string Header { get; }
-        public ContentControl Content { get; }
-        public void OnClose();
-    }
-
-    public class DatabaseTabItemViewModel : ViewModelBase, ITabItemViewModel
+    public class DatabaseTabItemViewModel : ViewModelBase
     {
         private readonly DatabaseViewModel databaseViewModel;
         public string Header { get; }
@@ -39,7 +32,7 @@ namespace MKW.GUI
         private readonly RegistryService registryService;
         private readonly RecentFilesService recentFilesService;
 
-        public ObservableCollection<ITabItemViewModel> TabItems { get; }
+        public ObservableCollection<DatabaseTabItemViewModel> TabItems { get; }
         public ContentControl StartPage { get; }
 
         public MainWindowViewModel()
@@ -47,7 +40,7 @@ namespace MKW.GUI
             registryService = new RegistryService(RegistryKeys.RootKeyPath);
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
-            TabItems = new ObservableCollection<ITabItemViewModel>();
+            TabItems = new ObservableCollection<DatabaseTabItemViewModel>();
             StartPage = new StartPage(this);
 
             ((INotifyPropertyChanged)TabItems).PropertyChanged += TabItems_PropertyChanged;
@@ -107,7 +100,7 @@ namespace MKW.GUI
             }
         }
 
-        public void OnCloseTab(ITabItemViewModel selectedTab)
+        public void OnCloseTab(DatabaseTabItemViewModel selectedTab)
         {
             selectedTab.OnClose();
             TabItems.Remove(selectedTab);
@@ -119,9 +112,9 @@ namespace MKW.GUI
             RecentFiles.Dispose();
         }
 
-        private ITabItemViewModel? selectedTab;
+        private DatabaseTabItemViewModel? selectedTab;
 
-        public ITabItemViewModel? SelectedTab
+        public DatabaseTabItemViewModel? SelectedTab
         { 
             get => selectedTab; 
             set => SetProperty(ref selectedTab, value); 
