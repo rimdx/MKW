@@ -19,12 +19,14 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Vertical">
-      <Label Content="Create Master Key" />
+      <Label Content="Create Master Key"
+             Padding="0"
+             Margin="0,0,0,3" />
       
       <TextBox IsReadOnly="True"
                Text="{Binding DatabasePath, Mode=OneWay}"
                d:Text="C:\path\to\database.mkw"
-               Margin="8,0,0,8">
+               Margin="8,0,0,6">
         <TextBox.Style>
           <Style TargetType="TextBox">
             <Setter Property="IsReadOnly" Value="True" />
@@ -36,7 +38,7 @@
       </TextBox>
       
       <TextBox IsReadOnly="True"
-               Margin="0,0,0,8">
+               Margin="0,0,0,6">
         <TextBox.Style>
           <Style TargetType="TextBox">
             <Setter Property="IsReadOnly" Value="True" />
@@ -59,20 +61,23 @@
             <StackPanel Orientation="Vertical">
               <Label Padding="0"
                      Target="{Binding ElementName=PART_PasswordBox}"
-                     Content="_Password:" />
+                     Content="_Password:"
+                     Margin="0,0,0,3" />
       
               <PasswordBox x:Name="PART_PasswordBox"
                            Padding="4"
                            FontFamily="Consolas"
-                           Margin="0,0,0,8" />
+                           Margin="0,0,0,6" />
       
               <Label Padding="0"
                      Target="{Binding ElementName=PART_PasswordRepeatBox}"
-                     Content="_Repeat Password:" />
+                     Content="_Repeat Password:"
+                     Margin="0,0,0,3" />
       
               <PasswordBox x:Name="PART_PasswordRepeatBox"
                            Padding="4"
-                           FontFamily="Consolas"/>
+                           FontFamily="Consolas"
+                           Margin="0,0,0,6" />
             </StackPanel>
           </ControlTemplate>
         </local:PasswordRepeatInput.Template>
