@@ -19,7 +19,7 @@ namespace MKW.GUI.Model
         public event EventHandler? OnEntriesChanged;
         public event EventHandler? OnUsersChanged;
 
-        public DatabaseModel(IDatabase database, string path, ClientSession client)
+        private DatabaseModel(IDatabase database, string path, ClientSession client)
         {
             Path = path;
             Database = database;
