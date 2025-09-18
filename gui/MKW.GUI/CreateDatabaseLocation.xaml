@@ -8,7 +8,8 @@
                    d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
-                   d:Background="White">
+                   d:Background="White"
+                   FocusManager.FocusedElement="{Binding ElementName=ctlDatabaseName}">
   <Grid Margin="6">
     <StackPanel Orientation="Vertical">
       <Label Content="File _Name:"
@@ -17,6 +18,7 @@
 
       <TextBox Text="{Binding DatabaseName, Mode=TwoWay}"
                d:Text="New Database.mkw"
+               x:Name="ctlDatabaseName"
                Padding="3"
                Margin="0,0,0,6">
       </TextBox>
