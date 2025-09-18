@@ -9,7 +9,7 @@
         Height="250" Width="400"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterOwner">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
