@@ -12,9 +12,6 @@
         ResizeMode="NoResize"
         Loaded="Window_Loaded">
   <Grid Margin="12">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="auto" />
