@@ -74,9 +74,8 @@
       </MenuItem>
     </Menu>
 
-    <ContentPresenter
+    <local:StartPage
       Grid.Row="1"
-      Content="{Binding StartPage}"
       Visibility="{Binding IsStartPageVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
       />
 
