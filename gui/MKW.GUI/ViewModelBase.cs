@@ -32,19 +32,5 @@ namespace MKW.GUI
         {
             ErrorReporter.HandleException(ex);
         }
-
-        public bool RunAction(Action action)
-        {
-            try
-            {
-                action();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ReportError(ex);
-                return false;
-            }
-        }
     }
 }
