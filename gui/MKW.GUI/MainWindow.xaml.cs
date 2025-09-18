@@ -141,7 +141,7 @@ namespace MKW.GUI
 
         // Help
 
-        private void HelpAbout_Click(object sender, RoutedEventArgs e)
+        private void HelpAbout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             AboutDialog window = new AboutDialog(model);
             window.ShowDialog();
