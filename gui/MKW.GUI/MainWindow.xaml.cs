@@ -41,31 +41,26 @@ namespace MKW.GUI
         {
             try
             {
-                string fullPath;
+                FileDialog dialog = FileDialogUtils.CreateOpenDatabaseDialog();
 
-                if (e.Parameter != null)
+                if (dialog.ShowDialog() == true)
                 {
-                    fullPath = (string)e.Parameter;
+                    DoOpenDatabase(dialog.FileName);
                 }
-                else
-                {
-                    FileDialog dialog = FileDialogUtils.CreateOpenDatabaseDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
 
-                    if (dialog.ShowDialog() != true)
-                    {
-                        return;
-                    }
+        private void FileOpenRecentCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                string fullPath = (string)e.Parameter;
 
-                    fullPath = dialog.FileName;
-                }
-
-                LoginWindowViewModel loginWindowViewModel =
-                        model.CreateLoginViewModel(fullPath);
-                LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
-
-                window.ShowDialog();
-
-                model.OpenDatabase(loginWindowViewModel);
+                DoOpenDatabase(fullPath);
             }
             catch (Exception ex)
             {
@@ -155,6 +150,16 @@ namespace MKW.GUI
         private void Window_Closed(object sender, EventArgs e)
         {
             model.Dispose();
+        }
+
+        private void DoOpenDatabase(string fullPath)
+        {
+            LoginWindowViewModel loginWindowViewModel = model.CreateLoginViewModel(fullPath);
+            LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
+
+            window.ShowDialog();
+
+            model.OpenDatabase(loginWindowViewModel);
         }
     }
 }
