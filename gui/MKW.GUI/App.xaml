@@ -286,5 +286,34 @@
       </Setter>
     </Style>
 
+    <Style TargetType="{x:Type TabItem}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type TabItem}">
+            <Border Padding="8,4" x:Name="Border">
+              <ContentPresenter ContentSource="Header" />
+            </Border>
+
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Border" Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+              </Trigger>
+
+              <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="Border" Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+
+                <Setter TargetName="Border" Property="BorderBrush"
+                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                <Setter TargetName="Border" Property="BorderThickness"
+                        Value="0,1,0,0" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
   </Application.Resources>
 </Application>
