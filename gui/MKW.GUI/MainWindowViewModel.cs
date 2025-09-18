@@ -60,7 +60,7 @@ namespace MKW.GUI
 
         public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel()
         {
-            return new CreateDatabaseWindowViewModel();
+            return new CreateDatabaseWindowViewModel(registryService);
         }
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)

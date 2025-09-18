@@ -21,6 +21,17 @@ namespace MKW.GUI.Services
             SetValue(RegistryKeys.RecentFilesKeyName, recentFiles);
         }
 
+        public string GetLastDatabaseDirectory()
+        {
+            string docsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            return GetValue(RegistryKeys.LastDatabaseDirectoryKeyName, docsPath);
+        }
+
+        public void SetLastDatabaseDirectory(string path)
+        {
+            SetValue(RegistryKeys.LastDatabaseDirectoryKeyName, path);
+        }
+
         private T GetValue<T>(string key, T defaultValue) where T : class
         {
             object? value = rootKey.GetValue(key);

@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Model;
+using MKW.GUI.Services;
 using MKW.GUI.Wizard;
 using System.IO;
 
@@ -8,12 +9,16 @@ namespace MKW.GUI
     {
         public DatabaseModel? Database { get; private set; }
 
-        public CreateDatabaseWindowViewModel()
+        private readonly RegistryService registry;
+
+        public CreateDatabaseWindowViewModel(RegistryService registry)
         {
             // TODO: factor out
             // TODO: save latest directory to registry storage
 
-            databaseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            this.registry = registry;
+
+            databaseDirectory = registry.GetLastDatabaseDirectory();
             databaseName = "New Database.mkw";
 
             AddPage(new CreateDatabaseLocation(this));
@@ -33,10 +38,22 @@ namespace MKW.GUI
         }
 
         private string databaseDirectory;
+
         public string DatabaseDirectory
         {
             get => databaseDirectory;
-            set => SetProperty(ref databaseDirectory, value);
+            set
+            {
+                if (SetProperty(ref databaseDirectory, value))
+                {
+                    DirectoryInfo info = new DirectoryInfo(value);
+
+                    if (info.Exists)
+                    {
+                        registry.SetLastDatabaseDirectory(info.FullName);
+                    }
+                }
+            }
         }
 
         public bool Exists()
