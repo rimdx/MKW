@@ -10,7 +10,7 @@
         Height="380" Width="520"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Loaded="Window_Loaded">
+        FocusManager.FocusedElement="{Binding ElementName=PasswordInput}">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
