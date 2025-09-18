@@ -319,6 +319,7 @@
     </Style>
 
     <Style TargetType="{x:Type TabControl}">
+      <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type TabControl}">
@@ -331,20 +332,17 @@
               <TabPanel x:Name="HeaderPanel"
                         Grid.Row="0"
                         Panel.ZIndex="1"
-                        Margin="0,0,4,-1"
                         IsItemsHost="True"
                         KeyboardNavigation.TabIndex="1"
-                        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                        Background="{TemplateBinding Background}" />
 
               <Border x:Name="Border"
                       Grid.Row="1"
-                      BorderThickness="1"
-                      CornerRadius="2"
                       KeyboardNavigation.TabNavigation="Local"
                       KeyboardNavigation.DirectionalNavigation="Contained"
-                      KeyboardNavigation.TabIndex="2">
+                      KeyboardNavigation.TabIndex="2"
+                      Background="White">
                 <ContentPresenter x:Name="PART_SelectedContentHost"
-                                  Margin="4"
                                   ContentSource="SelectedContent" />
               </Border>
             </Grid>
