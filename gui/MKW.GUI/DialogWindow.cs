@@ -8,6 +8,7 @@ namespace MKW.GUI
         {
             ShowInTaskbar = false;
             Owner = owner;
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
     }
 }

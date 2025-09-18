@@ -8,8 +8,7 @@
         Title="About Multi-Key Wallet"
         Height="250" Width="400"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        ResizeMode="NoResize">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
