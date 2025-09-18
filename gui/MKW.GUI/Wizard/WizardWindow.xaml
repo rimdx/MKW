@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type wizard:WizardViewModel}}"
         Title="WizardWindow"
-        Height="380" Width="520">
+        Height="380" Width="520"
+        WindowStartupLocation="CenterOwner">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
