@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 
 namespace MKW.GUI
 {
@@ -32,11 +31,6 @@ namespace MKW.GUI
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Keyboard.Focus(PasswordInput);
         }
     }
 }

@@ -9,7 +9,7 @@
         Title="Open Database"
         Height="250" Width="400"
         ResizeMode="NoResize"
-        Loaded="Window_Loaded">
+        FocusManager.FocusedElement="{Binding ElementName=PasswordInput}">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
