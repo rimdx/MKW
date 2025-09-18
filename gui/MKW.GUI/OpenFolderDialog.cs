@@ -40,8 +40,6 @@ namespace MKW.GUI
         // for all .NET
         public bool? ShowDialog(IntPtr owner)
         {
-            int hr;
-
             IFileOpenDialog dialog = (IFileOpenDialog)new FileOpenDialog();
 
             if (InputPath != null)
@@ -71,7 +69,7 @@ namespace MKW.GUI
                 dialog.SetFileName(FileNameLabel);
             }
 
-            hr = dialog.Show(owner);
+            int hr = dialog.Show(owner);
 
             if (hr == ERROR_CANCELLED)
             {
