@@ -1,6 +1,7 @@
 ﻿using MKW.GUI.Model;
 using MKW.GUI.Services;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Controls;
 
@@ -11,23 +12,6 @@ namespace MKW.GUI
         public string Header { get; }
         public ContentControl Content { get; }
         public void OnClose();
-    }
-
-    public class WelcomeTabItemViewModel : ViewModelBase, ITabItemViewModel
-    {
-        public string Header { get; }
-        public ContentControl Content { get; }
-
-        public WelcomeTabItemViewModel(MainWindowViewModel mainWindow)
-        {
-            Header = "Welcome";
-            Content = new StartPage(mainWindow);
-        }
-
-        public void OnClose()
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class DatabaseTabItemViewModel : ViewModelBase, ITabItemViewModel
@@ -57,6 +41,7 @@ namespace MKW.GUI
         private readonly RecentFilesService recentFilesService;
 
         public ObservableCollection<ITabItemViewModel> TabItems { get; }
+        public ContentControl StartPage { get; }
 
         public MainWindowViewModel()
         {
@@ -64,7 +49,16 @@ namespace MKW.GUI
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
             TabItems = new ObservableCollection<ITabItemViewModel>();
-            TabItems.Add(new WelcomeTabItemViewModel(this));
+            StartPage = new StartPage(this);
+
+            ((INotifyPropertyChanged)TabItems).PropertyChanged += TabItems_PropertyChanged;
+            TabItems_PropertyChanged(TabItems, new PropertyChangedEventArgs(null));
+        }
+
+        private void TabItems_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            IsTabControlVisible = (TabItems.Count > 0);
+            IsStartPageVisible = (TabItems.Count <= 0);
         }
 
         public RecentFilesCollectionViewModel RecentFiles { get; }
@@ -132,6 +126,22 @@ namespace MKW.GUI
         { 
             get => selectedTab; 
             set => SetProperty(ref selectedTab, value); 
+        }
+
+        private bool isStartPageVisible;
+
+        public bool IsStartPageVisible
+        { 
+            get => isStartPageVisible; 
+            set => SetProperty(ref isStartPageVisible, value); 
+        }
+
+        private bool  isTabControlVisible;
+
+        public bool IsTabControlVisible
+        { 
+            get => isTabControlVisible; 
+            set => SetProperty(ref isTabControlVisible, value); 
         }
     }
 }
