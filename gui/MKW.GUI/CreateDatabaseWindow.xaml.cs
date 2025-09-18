@@ -3,9 +3,6 @@ using System.Windows.Input;
 
 namespace MKW.GUI
 {
-    /// <summary>
-    /// Interaction logic for CreateDatabaseWindow.xaml
-    /// </summary>
     public partial class CreateDatabaseWindow : Window
     {
         private readonly CreateDatabaseWindowViewModel model;
