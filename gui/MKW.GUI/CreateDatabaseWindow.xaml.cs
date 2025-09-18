@@ -19,7 +19,7 @@ namespace MKW.GUI
         {
             try
             {
-                if (File.Exists(model.DatabasePath))
+                if (model.Exists())
                 {
                     MessageBoxResult result = MessageBox.Show(this,
                                                               $"{model.DatabaseName} already exists. Do you want to replace it?",

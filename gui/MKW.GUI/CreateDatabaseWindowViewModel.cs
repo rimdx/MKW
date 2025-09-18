@@ -35,6 +35,11 @@ namespace MKW.GUI
             set => SetProperty(ref databaseDirectory, value);
         }
 
+        public bool Exists()
+        {
+            return File.Exists(DatabasePath);
+        }
+
         public bool DoCreateDatabase()
         {
             if (!IsPasswordMatch)
