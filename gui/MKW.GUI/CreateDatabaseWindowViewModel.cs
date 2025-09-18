@@ -25,7 +25,7 @@ namespace MKW.GUI
             set => SetProperty(ref m_databasePath, value);
         }
 
-        public bool DoCreateDatabase() => RunAction(() =>
+        public bool DoCreateDatabase()
         {
             if (!IsPasswordMatch)
             {
@@ -38,6 +38,8 @@ namespace MKW.GUI
             }
 
             Database = DatabaseModel.Create(DatabasePath, Password);
-        });
+
+            return true;
+        }
     }
 }

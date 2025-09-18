@@ -19,9 +19,16 @@ namespace MKW.GUI
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            if (model.DoCreateDatabase())
+            try
             {
-                Close();
+                if (model.DoCreateDatabase())
+                {
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(ex);
             }
         }
 
