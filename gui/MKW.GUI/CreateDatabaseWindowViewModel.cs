@@ -27,8 +27,8 @@ namespace MKW.GUI
             AddPage(new CreateDatabaseConfirm(this));
         }
 
-        public string Password { get; set; }
-        public bool IsPasswordMatch { get; set; }
+        public string Password { get; set; } = "";
+        public bool IsPasswordMatch { get; set; } = true;
 
         public string DatabasePath => Path.Combine(DatabaseDirectory, DatabaseName);
 
