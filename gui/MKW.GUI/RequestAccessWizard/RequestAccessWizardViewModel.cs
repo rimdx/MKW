@@ -38,10 +38,11 @@ namespace MKW.GUI.RequestAccessWizard
                 throw new Exception("Password and repeated password don't match.");
             }
 
+            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password);
+
             IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
             KeyFormatter keyFormatter = new KeyFormatter(52);
 
-            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password);
             ReadOnlyMemory<byte> data = serializer.Serialize(request);
 
             RequestString = keyFormatter.GetBase64String(data.Span);
