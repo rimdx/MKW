@@ -16,11 +16,7 @@ namespace MKW.GUI.Wizard
             {
                 if (SetProperty(ref currentPageIndex, value))
                 {
-                    OnPropertyChanged(nameof(CurrentPage));
-                    OnPropertyChanged(nameof(PageHeader));
-                    OnPropertyChanged(nameof(CanGoBack));
-                    OnPropertyChanged(nameof(CanGoNext));
-                    OnPropertyChanged(nameof(CanFinish));
+                    OnPageChanged();
                 }
             }
         }
@@ -82,6 +78,16 @@ namespace MKW.GUI.Wizard
         public virtual bool Cancel()
         {
             return true;
+        }
+
+        protected virtual void OnPageChanged()
+        {
+            OnPropertyChanged(nameof(CurrentPage));
+            OnPropertyChanged(nameof(PageHeader));
+
+            OnPropertyChanged(nameof(CanGoBack));
+            OnPropertyChanged(nameof(CanGoNext));
+            OnPropertyChanged(nameof(CanFinish));
         }
     }
 }
