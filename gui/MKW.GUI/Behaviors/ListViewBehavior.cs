@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace MKW.GUI
+namespace MKW.GUI.Behaviors
 {
     public static class ListViewBehavior
     {

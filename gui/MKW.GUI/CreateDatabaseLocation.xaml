@@ -5,6 +5,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    xmlns:local="clr-namespace:MKW.GUI"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
                    xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
                    d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
                    mc:Ignorable="d"
@@ -22,7 +23,7 @@
                x:Name="DatabaseNameInput"
                Padding="3"
                Margin="0,0,0,6"
-               local:TextBoxBehavior.SelectAllTextOnFocus="True">
+               behaviors:TextBoxBehavior.SelectAllTextOnFocus="True">
       </TextBox>
 
       <Label Content="_Location:"
@@ -39,7 +40,7 @@
                  d:Text="C:\tima\Documents"
                  Padding="3"
                  Margin="0,0,3,0"
-                 local:TextBoxBehavior.SelectAllTextOnFocus="True" />
+                 behaviors:TextBoxBehavior.SelectAllTextOnFocus="True" />
 
         <Button Grid.Column="1" Padding="3" Click="SelectFolder_Click">
           <images:OpenFolder />
