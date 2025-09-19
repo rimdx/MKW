@@ -28,7 +28,8 @@
              Text="{Binding RequestString, Mode=TwoWay}"
              Margin="0,0,0,6"
              FontFamily="Consolas"
-             TextWrapping="Wrap" />
+             TextWrapping="Wrap"
+             AcceptsReturn="True" />
 
     <StackPanel Grid.Row="2"
                 Orientation="Vertical">
