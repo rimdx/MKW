@@ -18,7 +18,7 @@
               BorderThickness="0"
               MouseDoubleClick="EntryListView_MouseDoubleClick"
               SnapsToDevicePixels="True"
-              local:ListViewBehaviours.DeselectOnClickAway="True">
+              local:ListViewBehavior.DeselectOnClickAway="True">
 
       <ListView.ContextMenu>
         <ContextMenu>

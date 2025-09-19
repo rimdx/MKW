@@ -6,7 +6,7 @@ using System.Windows.Media.Media3D;
 
 namespace MKW.GUI
 {
-    public static class ListViewBehaviours
+    public static class ListViewBehavior
     {
         public const string DeselectOnClickAwayPropertyName = "DeselectOnClickAway";
 
@@ -14,7 +14,7 @@ namespace MKW.GUI
             DependencyProperty.RegisterAttached(
                 nameof(DeselectOnClickAwayPropertyName),
                 typeof(bool),
-                typeof(ListViewBehaviours),
+                typeof(ListViewBehavior),
                 new PropertyMetadata(false, OnDeselectOnClickAwayChanged));
 
         public static void SetDeselectOnClickAway(UIElement element, bool value)

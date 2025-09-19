@@ -16,7 +16,7 @@
               MouseDoubleClick="ListView_MouseDoubleClick"
               BorderThickness="0"
               SnapsToDevicePixels="True"
-              local:ListViewBehaviours.DeselectOnClickAway="True">
+              local:ListViewBehavior.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_New User..."
