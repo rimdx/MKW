@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Model;
+using MKW.GUI.RequestAccessWizard;
 using System.Collections.ObjectModel;
 
 namespace MKW.GUI
@@ -45,6 +46,11 @@ namespace MKW.GUI
             Database.Authenticate(SelectedUser.Id, Password);
 
             return true;
+        }
+
+        public RequestAccessWizardViewModel CreateRequestAccessViewModel()
+        {
+            return new RequestAccessWizardViewModel(Database);
         }
     }
 }
