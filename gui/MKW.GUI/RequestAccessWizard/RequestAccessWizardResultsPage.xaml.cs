@@ -7,7 +7,7 @@ namespace MKW.GUI.RequestAccessWizard
         private readonly RequestAccessWizardViewModel viewModel;
 
         public RequestAccessWizardResultsPage(RequestAccessWizardViewModel viewModel)
-            : base("Export Access Request")
+            : base("Database Access Request is Ready!")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;
