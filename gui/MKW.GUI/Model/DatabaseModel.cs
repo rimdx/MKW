@@ -101,6 +101,20 @@ namespace MKW.GUI.Model
             OnUsersChanged?.Invoke(this, new EventArgs());
         }
 
+        public void AddUser(UserAccessRequest request)
+        {
+            if (Admin == null)
+            {
+                throw new Exception("Not an admin.");
+            }
+
+            UserInfo user = Client.CreateUser(request);
+            // TODO: rollback if failed
+            Admin.AddTrust(user.Id);
+
+            OnUsersChanged?.Invoke(this, new EventArgs());
+        }
+
         public UserEditorModel CreateUserEditor(UserId userId)
         {
             UserInfo user = Client.GetUserInfo(userId);

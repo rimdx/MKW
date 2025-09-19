@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Client.AccessRequest;
+using MKW.Core.Notify;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
 
@@ -47,6 +48,18 @@ namespace MKW.GUI.AddUserWizard
                 Request = null;
                 throw;
             }
+        }
+
+        public override bool Finish()
+        {
+            if (Request == null)
+            {
+                throw new Exception("Request is not valid or not specified.");
+            }
+
+            model.AddUser(Request);
+
+            return true;
         }
     }
 }
