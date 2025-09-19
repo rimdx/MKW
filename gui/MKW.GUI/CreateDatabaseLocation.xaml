@@ -7,7 +7,7 @@
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
                    xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
                    xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
-                   d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWindowViewModel}"
+                   d:DataContext="{d:DesignInstance Type=local:CreateDatabaseWizardViewModel}"
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White"

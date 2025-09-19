@@ -4,9 +4,9 @@ namespace MKW.GUI
 {
     public partial class CreateDatabaseMasterPassword : WizardPage
     {
-        private readonly CreateDatabaseWindowViewModel viewModel;
+        private readonly CreateDatabaseWizardViewModel viewModel;
 
-        public CreateDatabaseMasterPassword(CreateDatabaseWindowViewModel viewModel)
+        public CreateDatabaseMasterPassword(CreateDatabaseWizardViewModel viewModel)
             : base("Create Master Password")
         {
             this.viewModel = viewModel;

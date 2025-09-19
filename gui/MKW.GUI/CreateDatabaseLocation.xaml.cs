@@ -5,9 +5,9 @@ namespace MKW.GUI
 {
     public partial class CreateDatabaseLocation : WizardPage
     {
-        private readonly CreateDatabaseWindowViewModel viewModel;
+        private readonly CreateDatabaseWizardViewModel viewModel;
 
-        public CreateDatabaseLocation(CreateDatabaseWindowViewModel viewModel)
+        public CreateDatabaseLocation(CreateDatabaseWizardViewModel viewModel)
             : base("Choose Location")
         {
             this.viewModel = viewModel;

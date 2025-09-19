@@ -5,13 +5,13 @@ using System.IO;
 
 namespace MKW.GUI
 {
-    public class CreateDatabaseWindowViewModel : WizardViewModel
+    public class CreateDatabaseWizardViewModel : WizardViewModel
     {
         public DatabaseModel? Database { get; private set; }
 
         private readonly RegistryService registry;
 
-        public CreateDatabaseWindowViewModel(RegistryService registry)
+        public CreateDatabaseWizardViewModel(RegistryService registry)
             : base("Create New Database")
         {
             this.registry = registry;

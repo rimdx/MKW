@@ -56,9 +56,9 @@ namespace MKW.GUI
         public string Title => "Multi-Key Wallet";
         public string Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
-        public CreateDatabaseWindowViewModel CreateCreateDatabaseViewModel()
+        public CreateDatabaseWizardViewModel CreateCreateDatabaseViewModel()
         {
-            return new CreateDatabaseWindowViewModel(registryService);
+            return new CreateDatabaseWizardViewModel(registryService);
         }
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)
@@ -67,7 +67,7 @@ namespace MKW.GUI
             return new LoginWindowViewModel(database /* move */);
         }
 
-        public void OpenDatabase(CreateDatabaseWindowViewModel createDatabaseViewModel)
+        public void OpenDatabase(CreateDatabaseWizardViewModel createDatabaseViewModel)
         {
             if (createDatabaseViewModel.Database != null)
             {
