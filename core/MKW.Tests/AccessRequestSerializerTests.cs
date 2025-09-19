@@ -30,6 +30,7 @@ namespace MKW.Tests
             CollectionAssert.AreEqual(req1.Salt.ToArray(), req2.Salt.ToArray());
             CollectionAssert.AreEqual(req1.PublicKey.ToArray(), req2.PublicKey.ToArray());
             CollectionAssert.AreEqual(req1.EncryptedPrivateKey.ToArray(), req2.EncryptedPrivateKey.ToArray());
+            CollectionAssert.AreEqual(req1.AdminSignature.ToArray(), req2.AdminSignature.ToArray());
         }
     }
 }

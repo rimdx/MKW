@@ -8,5 +8,7 @@
 
         /* encrypted */
         public ReadOnlyMemory<byte> EncryptedPrivateKey { get; init; }
+
+        public ReadOnlyMemory<byte> AdminSignature { get; init; }
     }
 }

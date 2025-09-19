@@ -43,7 +43,6 @@ namespace MKW.Core.Client
 
         public UserAccessRequest CreateUserAccessRequest(string password)
         {
-            // TODO: sign admin
             IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
 
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
@@ -51,11 +50,15 @@ namespace MKW.Core.Client
             IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
+            // TODO: prompt user?
+            Memory<byte> signature = systemCreds.Transformer.Sign(admin.PublicKey.Span);
+
             return new UserAccessRequest
             {
                 Salt = systemCreds.Salt,
                 PublicKey = systemCreds.PublicKey,
                 EncryptedPrivateKey = systemCreds.PrivateKey,
+                AdminSignature = signature,
             };
         }
 
@@ -66,6 +69,7 @@ namespace MKW.Core.Client
             user.Salt = request.Salt;
             user.PublicKey = request.PublicKey;
             user.PrivateKey = request.EncryptedPrivateKey;
+            user.AddTrust(request.AdminSignature);
 
             user.Save();
 

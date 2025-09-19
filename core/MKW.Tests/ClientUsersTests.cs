@@ -122,12 +122,11 @@ namespace MKW.Tests
                 newEntryId = entry.Id;
             }
 
-            // TODO:
-            //using (IEntrySession entry = admin.OpenEntry(newEntryId))
-            //{
-            //    ClassicAssert.AreEqual(new EntryPayload("new entry"),
-            //                           entry.OpenPayload());
-            //}
+            using (IEntrySession entry = admin.OpenEntry(newEntryId))
+            {
+                ClassicAssert.AreEqual(new EntryPayload("new entry"),
+                                       entry.OpenPayload());
+            }
         }
     }
 }
