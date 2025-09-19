@@ -76,7 +76,7 @@
       </MenuItem>
 
       <MenuItem Header="_User">
-        <MenuItem Header="_New User..." />
+        <MenuItem Header="_Add User..." />
 
         <MenuItem Header="_Properties..." />
 
