@@ -1,9 +1,16 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MKW.Core.Client.AccessRequest
 {
-    public class JSONAccessRequestSerializer : IAccessRequestSerializer
+    public partial class JSONAccessRequestSerializer : IAccessRequestSerializer
     {
+        [JsonSourceGenerationOptions()]
+        [JsonSerializable(typeof(JSONAccessRequestData))]
+        private partial class SerializerContext : JsonSerializerContext
+        {
+        }
+
         public JSONAccessRequestSerializer()
         {
         }
@@ -17,12 +24,12 @@ namespace MKW.Core.Client.AccessRequest
                 PrivateKey = data.PrivateKey,
             };
 
-            return JsonSerializer.SerializeToUtf8Bytes(obj);
+            return JsonSerializer.SerializeToUtf8Bytes(obj, SerializerContext.Default.JSONAccessRequestData);
         }
 
         public UserAccessRequest Deserialize(ReadOnlySpan<byte> data)
         {
-            JSONAccessRequestData? parsed = JsonSerializer.Deserialize<JSONAccessRequestData>(data);
+            JSONAccessRequestData? parsed = JsonSerializer.Deserialize(data, SerializerContext.Default.JSONAccessRequestData);
 
             if (parsed == null)
             {
