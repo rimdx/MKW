@@ -40,7 +40,7 @@ namespace MKW.GUI
             try
             {
                 RequestAccessWizardViewModel dialogModel = model.CreateRequestAccessViewModel();
-                WizardWindow dialog = new WizardWindow(dialogModel, this);
+                RequestAccessWizardDialog dialog = new RequestAccessWizardDialog(dialogModel, this);
                 dialog.ShowDialog();
             }
             catch (Exception ex)
