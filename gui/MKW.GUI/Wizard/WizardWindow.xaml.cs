@@ -88,7 +88,7 @@ namespace MKW.GUI.Wizard
 
         public void SetIcon(Viewbox icon)
         {
-            WizardIcon.Content = icon;
+            WizardIcon.Child = icon;
         }
     }
 }
