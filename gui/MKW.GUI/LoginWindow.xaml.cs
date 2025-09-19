@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using MKW.GUI.RequestAccessWizard;
+using MKW.GUI.Wizard;
+using System.Windows;
 
 namespace MKW.GUI
 {
@@ -31,6 +33,20 @@ namespace MKW.GUI
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void RequestAccess_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                RequestAccessWizardViewModel dialogModel = model.CreateRequestAccessViewModel();
+                WizardWindow dialog = new WizardWindow(dialogModel, this);
+                dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
         }
     }
 }
