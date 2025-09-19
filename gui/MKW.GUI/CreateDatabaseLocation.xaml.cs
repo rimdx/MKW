@@ -19,13 +19,13 @@ namespace MKW.GUI
         {
             if (viewModel.Exists())
             {
-                MessageBoxResult result = MessageBox.Show(Window.GetWindow(this),
-                                                          $"{viewModel.DatabaseName} already exists. Do you want to replace it?",
-                                                          "Confirm Creation",
-                                                          MessageBoxButton.YesNo,
-                                                          MessageBoxImage.Warning);
+                MessageBox.Show(Window.GetWindow(this),
+                                $"{viewModel.DatabaseName} already exists. Please choose another location.",
+                                "File already exists.",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
 
-                return result == MessageBoxResult.Yes;
+                return false;
             }
             else
             {
