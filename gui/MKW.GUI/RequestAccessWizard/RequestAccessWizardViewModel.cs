@@ -1,4 +1,7 @@
-﻿using MKW.GUI.Model;
+﻿using MKW.Core;
+using MKW.Core.Client.AccessRequest;
+using MKW.Cryptography;
+using MKW.GUI.Model;
 using MKW.GUI.Wizard;
 using System.IO;
 
@@ -18,14 +21,44 @@ namespace MKW.GUI.RequestAccessWizard
 
         public DatabaseModel Database { get; private set; }
 
-        public string RequestString { get; } = "abc";
+        private string requestString = "";
+        public string RequestString
+        {
+            get => requestString;
+            private set => SetProperty(ref requestString, value);
+        }
 
         public string Password { get; set; } = "";
         public bool IsPasswordMatch { get; set; } = true;
 
+        public void GenerateRequest()
+        {
+            if (!IsPasswordMatch)
+            {
+                throw new Exception("Password and repeated password don't match.");
+            }
+
+            IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
+
+            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password);
+            ReadOnlyMemory<byte> data = serializer.Serialize(request);
+
+            RequestString = EncodingConverter.GetString(data.Span);
+        }
+
         private static string MakeTitle(DatabaseModel database)
         {
             return $"Request Access - { Path.GetFileName(database.Path) }";
+        }
+
+        protected override void OnPageChanged()
+        {
+            base.OnPageChanged();
+
+            if (CurrentPage is RequestAccessWizardResultsPage)
+            {
+                GenerateRequest();
+            }
         }
     }
 }
