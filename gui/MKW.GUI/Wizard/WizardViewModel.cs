@@ -33,10 +33,10 @@ namespace MKW.GUI.Wizard
 
         public string PageHeader => CurrentPage.Header;
 
-        public WizardViewModel(string header)
+        public WizardViewModel(string title)
         {
             Pages = [];
-            Title = header;
+            Title = title;
         }
 
         protected void AddPage(WizardPage page)
