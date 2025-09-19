@@ -20,7 +20,7 @@
               behaviors:ListViewBehavior.DeselectOnClickAway="True">
       <ListView.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="_New User..."
+          <MenuItem Header="_Add User..."
                     Click="NewUser_Click" />
 
           <MenuItem Header="_Properties..."
