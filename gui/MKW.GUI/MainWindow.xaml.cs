@@ -33,7 +33,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                ErrorReporter.HandleException(GetWindow(this), ex);
             }
         }
 
@@ -50,7 +50,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                ErrorReporter.HandleException(GetWindow(this), ex);
             }
         }
 
@@ -64,7 +64,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                ErrorReporter.HandleException(GetWindow(this), ex);
             }
         }
 
@@ -77,7 +77,7 @@ namespace MKW.GUI
             {
                 LoginWindowViewModel loginWindowViewModel =
                     model.CreateLoginViewModel(file.FullPath);
-                LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
+                LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
 
                 window.ShowDialog();
 
@@ -85,7 +85,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                ErrorReporter.HandleException(GetWindow(this), ex);
             }
         }
 
@@ -130,7 +130,7 @@ namespace MKW.GUI
             }
             catch (Exception ex)
             {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                ErrorReporter.HandleException(GetWindow(this), ex);
             }
         }
 
@@ -143,7 +143,7 @@ namespace MKW.GUI
 
         private void HelpAbout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            AboutDialog window = new AboutDialog(model, Window.GetWindow(this));
+            AboutDialog window = new AboutDialog(model, GetWindow(this));
             window.ShowDialog();
         }
 
@@ -155,7 +155,7 @@ namespace MKW.GUI
         private void DoOpenDatabase(string fullPath)
         {
             LoginWindowViewModel loginWindowViewModel = model.CreateLoginViewModel(fullPath);
-            LoginWindow window = new LoginWindow(loginWindowViewModel, Window.GetWindow(this));
+            LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
 
             window.ShowDialog();
 
