@@ -27,9 +27,21 @@
             Margin="0,0,0,6"
             Padding="12">
 
-      <Label Content="{Binding PageHeader}"
-             Padding="0"
-             FontWeight="SemiBold" />
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0"
+               Content="{Binding PageHeader}"
+               Padding="0"
+               FontWeight="SemiBold" />
+
+        <ContentPresenter x:Name="WizardIcon"
+                          Grid.Column="2" />
+      </Grid>
     </Border>
 
     <Border Grid.Row="1">

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MKW.GUI.Wizard
 {
@@ -83,6 +84,11 @@ namespace MKW.GUI.Wizard
             {
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
+        }
+
+        public void SetIcon(Viewbox icon)
+        {
+            WizardIcon.Content = icon;
         }
     }
 }
