@@ -34,10 +34,7 @@ namespace MKW.GUI.RequestAccessWizard
 
         public void GenerateRequest()
         {
-            if (!IsPasswordMatch)
-            {
-                throw new Exception("Password and repeated password don't match.");
-            }
+            EnsurePassword();
 
             UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password);
 
@@ -52,6 +49,24 @@ namespace MKW.GUI.RequestAccessWizard
         private static string MakeTitle(DatabaseModel database)
         {
             return $"Request Access - { Path.GetFileName(database.Path) }";
+        }
+
+        public void EnsurePassword()
+        {
+            if (!IsPasswordMatch)
+            {
+                throw new Exception("Password and repeated password don't match.");
+            }
+
+            if (Password == null)
+            {
+                throw new ArgumentNullException(nameof(Password));
+            }
+
+            if (Password.Length == 0)
+            {
+                throw new Exception("Password cannot be empty.");
+            }
         }
     }
 }
