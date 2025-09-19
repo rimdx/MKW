@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+             xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -18,7 +19,7 @@
               BorderThickness="0"
               MouseDoubleClick="EntryListView_MouseDoubleClick"
               SnapsToDevicePixels="True"
-              local:ListViewBehavior.DeselectOnClickAway="True">
+              behaviors:ListViewBehavior.DeselectOnClickAway="True">
 
       <ListView.ContextMenu>
         <ContextMenu>
