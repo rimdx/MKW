@@ -1,4 +1,10 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
   <Folder Name="/docs/">
     <File Path="api-client.md" />
     <File Path="api-crypto.md" />
@@ -23,28 +29,116 @@
     <File Path="README.md" />
     <File Path="Version.props" />
   </Folder>
-  <Project Path="cli/MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj" />
-  <Project Path="cli/MKW/MKW.csproj" />
+  <Project Path="cli/MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="cli/MKW/MKW.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
   <Project Path="common/MKW.Common.NETFramework/MKW.Common.NETFramework.shproj" />
-  <Project Path="common/MKW.Common.Tests/MKW.Common.Tests.csproj" />
-  <Project Path="common/MKW.Common/MKW.Common.csproj" />
-  <Project Path="common/MKW.Testing.Client/MKW.Testing.Client.csproj" />
-  <Project Path="common/MKW.Testing.Common/MKW.Testing.Common.csproj" />
-  <Project Path="core/MKW.Core.Client/MKW.Core.Client.csproj" />
-  <Project Path="core/MKW.Core.Editor.Tests/MKW.Core.Editor.Tests.csproj" />
-  <Project Path="core/MKW.Core.Editor/MKW.Core.Editor.csproj" />
-  <Project Path="core/MKW.Core.Implementation/MKW.Core.Implementation.csproj" />
-  <Project Path="core/MKW.Core/MKW.Core.csproj" />
-  <Project Path="core/MKW.Tests/MKW.Tests.csproj" />
+  <Project Path="common/MKW.Common.Tests/MKW.Common.Tests.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="common/MKW.Common/MKW.Common.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="common/MKW.Testing.Client/MKW.Testing.Client.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="common/MKW.Testing.Common/MKW.Testing.Common.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="core/MKW.Core.Client/MKW.Core.Client.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="core/MKW.Core.Editor.Tests/MKW.Core.Editor.Tests.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="core/MKW.Core.Editor/MKW.Core.Editor.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="core/MKW.Core.Implementation/MKW.Core.Implementation.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="core/MKW.Core/MKW.Core.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="core/MKW.Tests/MKW.Tests.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
   <Project Path="crypto/MKW.Cryptography.BouncyCastle.NETFramework/MKW.Cryptography.BouncyCastle.NETFramework.shproj" />
-  <Project Path="crypto/MKW.Cryptography.BouncyCastle/MKW.Cryptography.BouncyCastle.csproj" />
-  <Project Path="crypto/MKW.Cryptography.Loader/MKW.Cryptography.Loader.csproj" />
-  <Project Path="crypto/MKW.Cryptography.System/MKW.Cryptography.System.csproj" />
-  <Project Path="crypto/MKW.Cryptography.Tests/MKW.Cryptography.Tests.csproj" />
-  <Project Path="crypto/MKW.Cryptography/MKW.Cryptography.csproj" />
-  <Project Path="gui/MKW.GUI.Images/MKW.GUI.Images.csproj" />
-  <Project Path="gui/MKW.GUI.Tests/MKW.GUI.Tests.csproj" />
-  <Project Path="gui/MKW.GUI/MKW.GUI.csproj" />
-  <Project Path="storage/MKW.Core.Storage.JSON/MKW.Core.Storage.JSON.csproj" />
-  <Project Path="storage/MKW.Core.Storage/MKW.Core.Storage.csproj" />
+  <Project Path="crypto/MKW.Cryptography.BouncyCastle/MKW.Cryptography.BouncyCastle.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="crypto/MKW.Cryptography.Loader/MKW.Cryptography.Loader.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="crypto/MKW.Cryptography.System/MKW.Cryptography.System.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="crypto/MKW.Cryptography.Tests/MKW.Cryptography.Tests.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="crypto/MKW.Cryptography/MKW.Cryptography.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="gui/MKW.GUI.Images/MKW.GUI.Images.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="gui/MKW.GUI.Tests/MKW.GUI.Tests.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="gui/MKW.GUI/MKW.GUI.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="storage/MKW.Core.Storage.JSON/MKW.Core.Storage.JSON.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="storage/MKW.Core.Storage/MKW.Core.Storage.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
 </Solution>
