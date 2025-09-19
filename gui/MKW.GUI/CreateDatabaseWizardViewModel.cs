@@ -55,12 +55,7 @@ namespace MKW.GUI
             }
         }
 
-        public bool Exists()
-        {
-            return File.Exists(DatabasePath);
-        }
-
-        public override bool Finish()
+        public void EnsurePassword()
         {
             if (!IsPasswordMatch)
             {
@@ -71,6 +66,16 @@ namespace MKW.GUI
             {
                 throw new ArgumentNullException(nameof(Password));
             }
+        }
+
+        public bool Exists()
+        {
+            return File.Exists(DatabasePath);
+        }
+
+        public override bool Finish()
+        {
+            EnsurePassword();
 
             Database = DatabaseModel.Create(DatabasePath, Password);
 
