@@ -22,6 +22,7 @@ namespace MKW.Core.Client.AccessRequest
                 Salt = data.Salt,
                 PublicKey = data.PublicKey,
                 PrivateKey = data.EncryptedPrivateKey,
+                AdminSignature = data.AdminSignature,
             };
 
             return JsonSerializer.SerializeToUtf8Bytes(obj, SerializerContext.Default.JSONAccessRequestData);
@@ -41,6 +42,7 @@ namespace MKW.Core.Client.AccessRequest
                 Salt = parsed.Salt,
                 PublicKey = parsed.PublicKey,
                 EncryptedPrivateKey = parsed.PrivateKey,
+                AdminSignature = parsed.AdminSignature,
             };
         }
     }
