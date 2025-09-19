@@ -41,12 +41,14 @@
       
       <StackPanel Orientation="Horizontal">
 
-        <Button Margin="0,0,6,0"
+        <Button Content="_Copy to Clipboard"
+                Margin="0,0,6,0"
                 MinWidth="70"
-                Padding="12,1">_Copy to Clipboard</Button>
+                Padding="12,1" />
 
-        <Button MinWidth="70"
-                Padding="12,1">_Save to File...</Button>
+        <Button Content="_Save to File..."
+                MinWidth="70"
+                Padding="12,1" />
       </StackPanel>
     </StackPanel>
 
