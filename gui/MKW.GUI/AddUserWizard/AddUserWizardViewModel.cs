@@ -17,10 +17,11 @@ namespace MKW.GUI.AddUserWizard
             AddPage(new AddUserWizardConfirmationPage(this));
         }
 
-        public string AccessRequestTextBox
+        private string requestString = "";
+        public string RequestString
         {
-            get;
-            set;
+            get => requestString;
+            set => SetProperty(ref requestString, value);
         }
     }
 }
