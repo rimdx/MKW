@@ -32,7 +32,7 @@
             <TextBlock Text="This user is not verified. " />
           </StackPanel>
 
-          <TextBlock Text="Only the database administrator can verify other users."
+          <TextBlock Text="Only the database owner can verify other users."
                      Visibility="{Binding IsUser, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
           <TextBlock Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">

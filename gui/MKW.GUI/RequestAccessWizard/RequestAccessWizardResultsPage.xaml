@@ -34,7 +34,7 @@
 
       <TextBlock TextWrapping="Wrap"
                  Margin="0,0,0,12">
-        Please share it with the database administrator to activate your credentials.
+        Please share it with the database owner to activate your credentials.
       </TextBlock>
       
       <StackPanel Orientation="Horizontal">
