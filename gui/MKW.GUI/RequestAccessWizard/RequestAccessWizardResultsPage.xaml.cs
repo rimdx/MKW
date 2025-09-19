@@ -13,5 +13,15 @@ namespace MKW.GUI.RequestAccessWizard
             DataContext = viewModel;
             InitializeComponent();
         }
+
+        private void CopyToClipboard_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SaveToFile_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
