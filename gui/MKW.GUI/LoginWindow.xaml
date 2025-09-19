@@ -83,7 +83,7 @@
       </local:PasswordInput>
 
       <TextBlock>
-        <Hyperlink Click="RequestAccess_Click">Request Access...</Hyperlink>
+        <Hyperlink Click="RequestAccess_Click">Request access...</Hyperlink>
       </TextBlock>
     </StackPanel>
 
