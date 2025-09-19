@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Wizard;
+using System.Windows;
 
 namespace MKW.GUI.RequestAccessWizard
 {
@@ -14,12 +15,12 @@ namespace MKW.GUI.RequestAccessWizard
             InitializeComponent();
         }
 
-        private void CopyToClipboard_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void SaveToFile_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void SaveToFile_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
