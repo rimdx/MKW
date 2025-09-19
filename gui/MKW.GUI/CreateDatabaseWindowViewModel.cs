@@ -14,9 +14,6 @@ namespace MKW.GUI
         public CreateDatabaseWindowViewModel(RegistryService registry)
             : base("Create New Database")
         {
-            // TODO: factor out
-            // TODO: save latest directory to registry storage
-
             this.registry = registry;
 
             databaseDirectory = registry.GetLastDatabaseDirectory();
