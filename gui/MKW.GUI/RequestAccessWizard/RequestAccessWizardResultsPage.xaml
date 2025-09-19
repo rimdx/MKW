@@ -5,10 +5,48 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    xmlns:local="clr-namespace:MKW.GUI.RequestAccessWizard"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
-                   mc:Ignorable="d" 
+                   mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
-                   d:Background="White">
-  <Grid>
+                   d:Background="White"
+                   d:DataContext="{d:DesignInstance Type=local:RequestAccessWizardViewModel}">
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0"
+                Orientation="Vertical">
+      <Label Margin="0,0,0,3" Padding="0"
+             Content="Database access _request:"
+             Target="{Binding ElementName=AccessRequestTextBox}" />
+    </StackPanel>
+
+    <TextBox x:Name="AccessRequestTextBox"
+             Grid.Row="1"
+             Text="{Binding RequestString, Mode=OneWay}"
+             Margin="0,0,0,6"
+             IsReadOnly="True" />
+
+    <StackPanel Grid.Row="2"
+                Orientation="Vertical">
+
+      <TextBlock TextWrapping="Wrap"
+                 Margin="0,0,0,12">
+        Please share it with the database administrator to activate your credentials.
+      </TextBlock>
+      
+      <StackPanel Orientation="Horizontal">
+
+        <Button Margin="0,0,6,0"
+                MinWidth="70"
+                Padding="12,1">_Copy to Clipboard</Button>
+
+        <Button MinWidth="70"
+                Padding="12,1">_Save to File...</Button>
+      </StackPanel>
+    </StackPanel>
 
   </Grid>
 </wizard:WizardPage>

@@ -16,5 +16,10 @@ namespace MKW.GUI.RequestAccessWizard
         }
 
         public DatabaseModel Database { get; private set; }
+
+        public string RequestString { get; } = "abc";
+
+        public string Password { get; set; } = "";
+        public bool IsPasswordMatch { get; set; } = true;
     }
 }
