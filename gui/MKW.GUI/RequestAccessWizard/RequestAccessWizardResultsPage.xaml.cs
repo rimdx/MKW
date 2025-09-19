@@ -17,7 +17,7 @@ namespace MKW.GUI.RequestAccessWizard
 
         private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Clipboard.SetText(viewModel.RequestString);
         }
 
         private void SaveToFile_Click(object sender, RoutedEventArgs e)
