@@ -49,6 +49,11 @@ namespace MKW.GUI.Model
         public void Authenticate(UserId id, string password)
         {
             User = Client.OpenUser(id, password);
+
+            if (User.Id.IsAdmin)
+            {
+                Admin = User;
+            }
         }
 
         public void CreateEntry(string payload)
