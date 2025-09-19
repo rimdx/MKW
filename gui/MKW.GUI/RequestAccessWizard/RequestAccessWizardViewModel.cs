@@ -1,7 +1,7 @@
 ﻿using MKW.Core;
 using MKW.Core.Client.AccessRequest;
-using MKW.Cryptography;
 using MKW.GUI.Model;
+using MKW.GUI.Services;
 using MKW.GUI.Wizard;
 using System.IO;
 
@@ -39,11 +39,12 @@ namespace MKW.GUI.RequestAccessWizard
             }
 
             IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
+            KeyFormatter keyFormatter = new KeyFormatter(52);
 
             UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password);
             ReadOnlyMemory<byte> data = serializer.Serialize(request);
 
-            RequestString = EncodingConverter.GetString(data.Span);
+            RequestString = keyFormatter.GetBase64String(data.Span);
         }
 
         private static string MakeTitle(DatabaseModel database)
