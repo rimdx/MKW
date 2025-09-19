@@ -9,7 +9,20 @@
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
-  <Grid>
+  <Grid Margin="12">
+    <StackPanel Orientation="Vertical">
+      <TextBlock TextWrapping="Wrap"
+                 Margin="0,0,0,12">
+        This will add the user to the database and share all existing and future
+        entries in the database. Please verify that the information below is
+        correct and you trust this user.
+      </TextBlock>
 
+      <Label Margin="0,0,0,3" Padding="0" Content="User name:" />
+      <TextBox Margin="0,0,0,6" Padding="3" IsReadOnly="True">TODO</TextBox>
+
+      <Label Margin="0,0,0,3" Padding="0" Content="Public key fingerprint:" />
+      <TextBox Margin="0,0,0,6" Padding="3" IsReadOnly="True">TODO</TextBox>
+    </StackPanel>
   </Grid>
 </wizard:WizardPage>

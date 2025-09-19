@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Wizard;
+using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
 {
@@ -12,6 +13,18 @@ namespace MKW.GUI.AddUserWizard
             this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        private void ImportFromFile_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
         }
     }
 }

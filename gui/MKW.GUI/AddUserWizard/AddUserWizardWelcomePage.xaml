@@ -9,7 +9,33 @@
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
-  <Grid>
+  <Grid Margin="12">
+    <StackPanel Orientation="Vertical">
+      <StackPanel.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+      </StackPanel.Resources>
 
+      <TextBlock Margin="0,0,0,12">
+        This wizard will guide you through the process of adding a
+        user to the database. Please follow the steps to complete the
+        setup.
+      </TextBlock>
+
+      <TextBlock Margin="0,0,0,3"
+                 Text="Prequisites:" />
+
+      <TextBlock Margin="6,0,0,3"
+                 Text="- Obtain access request file of the user you would like to add." />
+      <TextBlock Margin="6,0,0,3"
+                 Text="- Authenticate user via trusted communication channel." />
+    </StackPanel>
+
+    <TextBlock TextWrapping="Wrap"
+               VerticalAlignment="Bottom">
+        The user will gain access to all existing and future secrets in the
+        database. Please verify their identity before proceeding.
+    </TextBlock>
   </Grid>
 </wizard:WizardPage>
