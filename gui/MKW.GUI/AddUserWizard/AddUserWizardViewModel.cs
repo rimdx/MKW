@@ -1,4 +1,6 @@
-﻿using MKW.GUI.Model;
+﻿using MKW.Core;
+using MKW.Core.Client.AccessRequest;
+using MKW.GUI.Model;
 using MKW.GUI.Wizard;
 
 namespace MKW.GUI.AddUserWizard
@@ -22,6 +24,29 @@ namespace MKW.GUI.AddUserWizard
         {
             get => requestString;
             set => SetProperty(ref requestString, value);
+        }
+
+        private UserAccessRequest? request;
+        public UserAccessRequest? Request
+        {
+            get => request;
+            set => SetProperty(ref request, value);
+        }
+
+        public void ParseAccessRequest()
+        {
+            IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
+
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(RequestString);
+                Request = serializer.Deserialize(bytes);
+            }
+            catch (Exception)
+            {
+                Request = null;
+                throw;
+            }
         }
     }
 }
