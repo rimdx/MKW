@@ -7,7 +7,7 @@
         xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type wizard:WizardViewModel}}"
-        Title="WizardWindow"
+        Title="{Binding Header}"
         Height="380" Width="520">
   <Grid>
     <Grid.RowDefinitions>

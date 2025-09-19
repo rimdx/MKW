@@ -4,6 +4,8 @@ namespace MKW.GUI.Wizard
 {
     public abstract class WizardViewModel : ViewModelBase
     {
+        public virtual string Header { get; }
+
         public ObservableCollection<WizardPage> Pages;
 
         private int currentPageIndex = 0;
@@ -31,9 +33,10 @@ namespace MKW.GUI.Wizard
 
         public string PageHeader => CurrentPage.Header;
 
-        public WizardViewModel()
+        public WizardViewModel(string header)
         {
             Pages = [];
+            Header = header;
         }
 
         protected void AddPage(WizardPage page)
