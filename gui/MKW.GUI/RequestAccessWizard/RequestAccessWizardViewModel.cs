@@ -16,6 +16,7 @@ namespace MKW.GUI.RequestAccessWizard
 
             AddPage(new RequestAccessWizardWelcomePage(this));
             AddPage(new RequestAccessWizardPasswordPage(this));
+            AddPage(new RequestAccessWizardConfirmationPage(this));
             AddPage(new RequestAccessWizardResultsPage(this));
         }
 
@@ -51,16 +52,6 @@ namespace MKW.GUI.RequestAccessWizard
         private static string MakeTitle(DatabaseModel database)
         {
             return $"Request Access - { Path.GetFileName(database.Path) }";
-        }
-
-        protected override void OnPageChanged()
-        {
-            base.OnPageChanged();
-
-            if (CurrentPage is RequestAccessWizardResultsPage)
-            {
-                GenerateRequest();
-            }
         }
     }
 }
