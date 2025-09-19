@@ -115,6 +115,16 @@ namespace MKW.Core.Client
             return userController.GetUserInfo(id);
         }
 
+        public UserAccessRequest CreateUserAccessRequest(string password)
+        {
+            return userController.CreateUserAccessRequest(password);
+        }
+
+        public UserInfo CreateUser(UserAccessRequest request)
+        {
+            return userController.CreateUser(request);
+        }
+
         // IAdminController
 
         public UserInfo CreateAdmin(string password)
