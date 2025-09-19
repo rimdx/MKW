@@ -44,11 +44,13 @@
         <Button Content="_Copy to Clipboard"
                 Margin="0,0,6,0"
                 MinWidth="70"
-                Padding="12,1" />
+                Padding="12,1"
+                Click="CopyToClipboard_Click" />
 
         <Button Content="_Save to File..."
                 MinWidth="70"
-                Padding="12,1" />
+                Padding="12,1"
+                Click="SaveToFile_Click" />
       </StackPanel>
     </StackPanel>
 
