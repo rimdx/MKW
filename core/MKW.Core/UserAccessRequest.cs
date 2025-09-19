@@ -7,6 +7,6 @@
         public ReadOnlyMemory<byte> PublicKey { get; init; }
 
         /* encrypted */
-        public ReadOnlyMemory<byte> PrivateKey { get; init; }
+        public ReadOnlyMemory<byte> EncryptedPrivateKey { get; init; }
     }
 }

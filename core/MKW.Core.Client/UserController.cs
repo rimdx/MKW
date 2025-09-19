@@ -55,7 +55,7 @@ namespace MKW.Core.Client
             {
                 Salt = systemCreds.Salt,
                 PublicKey = systemCreds.PublicKey,
-                PrivateKey = systemCreds.PrivateKey,
+                EncryptedPrivateKey = systemCreds.PrivateKey,
             };
         }
 
@@ -65,7 +65,7 @@ namespace MKW.Core.Client
 
             user.Salt = request.Salt;
             user.PublicKey = request.PublicKey;
-            user.PrivateKey = request.PrivateKey;
+            user.PrivateKey = request.EncryptedPrivateKey;
 
             user.Save();
 
