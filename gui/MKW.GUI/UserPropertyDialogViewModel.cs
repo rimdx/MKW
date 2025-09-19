@@ -34,7 +34,7 @@ namespace MKW.GUI
             return true;
         }
 
-        public string PublicKey => keyFormatter.GetString(user.PublicKey);
+        public string PublicKey => keyFormatter.GetBase32String(user.PublicKey);
 
         public bool IsUntrusted => user.Trust == Trust.None;
 

@@ -12,14 +12,24 @@ namespace MKW.GUI.Services
             this.lineLength = lineLength;
         }
 
-        public string GetString(ReadOnlySpan<byte> data)
+        public string GetBase64String(ReadOnlySpan<byte> data)
+        {
+            string encoded = Convert.ToBase64String(data.ToArray());
+            return InsertLineBreaks(encoded);
+        }
+
+        public string GetBase32String(ReadOnlySpan<byte> data)
+        {
+            string encoded = Base32Convert.Encode(data);
+            return InsertLineBreaks(encoded);
+        }
+
+        private string InsertLineBreaks(string str)
         {
             StringBuilder sb = new StringBuilder();
 
-            string base32string = Base32Convert.Encode(data);
-
             int i = 0;
-            foreach (char c in base32string)
+            foreach (char c in str)
             {
                 if (i >= lineLength)
                 {
