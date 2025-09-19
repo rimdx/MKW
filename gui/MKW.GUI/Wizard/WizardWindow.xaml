@@ -37,10 +37,13 @@
         <Label Grid.Column="0"
                Content="{Binding PageHeader}"
                Padding="0"
-               FontWeight="SemiBold" />
+               FontWeight="SemiBold"
+               VerticalAlignment="Center"/>
 
-        <ContentPresenter x:Name="WizardIcon"
-                          Grid.Column="2" />
+        <Viewbox
+          Height="32"
+          x:Name="WizardIcon"
+          Grid.Column="2" />
       </Grid>
     </Border>
 
