@@ -21,7 +21,8 @@
                d:Text="New Database.mkw"
                x:Name="DatabaseNameInput"
                Padding="3"
-               Margin="0,0,0,6">
+               Margin="0,0,0,6"
+               local:TextBoxBehavior.SelectAllTextOnFocus="True">
       </TextBox>
 
       <Label Content="_Location:"
@@ -37,7 +38,8 @@
         <TextBox Text="{Binding DatabaseDirectory, Mode=TwoWay}"
                  d:Text="C:\tima\Documents"
                  Padding="3"
-                 Margin="0,0,3,0" />
+                 Margin="0,0,3,0"
+                 local:TextBoxBehavior.SelectAllTextOnFocus="True" />
 
         <Button Grid.Column="1" Padding="3" Click="SelectFolder_Click">
           <images:OpenFolder />
