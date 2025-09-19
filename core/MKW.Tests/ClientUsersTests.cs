@@ -64,5 +64,70 @@ namespace MKW.Tests
                 () => client.OpenUser("nonexistingpassword")
             );
         }
+
+        [Test]
+        public void AccessRequestTests()
+        {
+            using ClientSandBox sbox = new ClientSandBox();
+            using ClientSession client = sbox.OpenSession();
+
+            using IUserSession admin = sbox.OpenAdmin(client);
+
+            EntryId entryId;
+            using (IEntrySession entry = admin.CreateEntry())
+            {
+                entry.UpdatePayload(new EntryPayload("secret stuff"));
+                entryId = entry.Id;
+            }
+
+            // create request
+            UserAccessRequest request = client.CreateUserAccessRequest("secret");
+
+            // nothing changed yet
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    client.GetAdminInfo(),
+                },
+                client.EnumerateUsers());
+
+            // approve request
+            UserInfo addedUser = client.CreateUser(request);
+            admin.AddTrust(addedUser.Id);
+
+            // verify
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    client.GetAdminInfo(),
+                    addedUser,
+                },
+                client.EnumerateUsers());
+
+            CollectionAssert.AreEqual(addedUser.PublicKey.ToArray(),
+                                      request.PublicKey.ToArray());
+
+            using IUserSession userSession = client.OpenUser(addedUser.Id, "secret");
+
+            using (IEntrySession entry = userSession.OpenEntry(entryId))
+            {
+                ClassicAssert.AreEqual(new EntryPayload("secret stuff"),
+                                       entry.OpenPayload());
+            }
+
+            EntryId newEntryId;
+            using (IEntrySession entry = userSession.CreateEntry())
+            {
+                entry.UpdatePayload(new EntryPayload("new entry"));
+                newEntryId = entry.Id;
+            }
+
+            // TODO:
+            //using (IEntrySession entry = admin.OpenEntry(newEntryId))
+            //{
+            //    ClassicAssert.AreEqual(new EntryPayload("new entry"),
+            //                           entry.OpenPayload());
+            //}
+        }
     }
 }
