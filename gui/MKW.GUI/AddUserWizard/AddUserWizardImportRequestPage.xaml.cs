@@ -26,5 +26,19 @@ namespace MKW.GUI.AddUserWizard
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
+
+        public override bool Next()
+        {
+            try
+            {
+                viewModel.ParseAccessRequest();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                return false;
+            }
+        }
     }
 }
