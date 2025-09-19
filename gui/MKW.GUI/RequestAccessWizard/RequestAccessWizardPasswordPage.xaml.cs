@@ -17,19 +17,16 @@ namespace MKW.GUI.RequestAccessWizard
 
         public override bool Next()
         {
-            if (viewModel.Password.Length == 0)
+            try
             {
-                MessageBox.Show(Window.GetWindow(this), "Password cannot be empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                viewModel.EnsurePassword();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
                 return false;
             }
-
-            if (!viewModel.IsPasswordMatch)
-            {
-                MessageBox.Show(Window.GetWindow(this), "Password doesn't match.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            return true;
         }
     }
 }
