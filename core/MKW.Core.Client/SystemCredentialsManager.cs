@@ -14,7 +14,7 @@ namespace MKW.Core.Client
         public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            using IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer();
+            IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer();
 
             // Symmetric encoder for secret section.
             using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(
@@ -30,6 +30,7 @@ namespace MKW.Core.Client
                 PublicKey = publicKeyBytes,
                 PrivateKey = privateKeyEncrypted,
                 Salt = userCredentials.ExportSalt().ToArray(),
+                Transformer = userKey /* move */,
             };
         }
     }

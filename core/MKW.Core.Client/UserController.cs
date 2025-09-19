@@ -28,7 +28,7 @@ namespace MKW.Core.Client
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
             IUserCredentials userCreds = crypto.CreateUserCredentials(password);
-            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
+            using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             IDatabaseUser user = database.CreateUser(UserId.Create());
 
@@ -49,7 +49,7 @@ namespace MKW.Core.Client
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
             IUserCredentials userCreds = crypto.CreateUserCredentials(password);
-            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
+            using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             return new UserAccessRequest
             {

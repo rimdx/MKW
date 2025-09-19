@@ -1,6 +1,8 @@
-﻿namespace MKW.Core.Client
+﻿using MKW.Cryptography;
+
+namespace MKW.Core.Client
 {
-    public record class SystemCredentials
+    public record class SystemCredentials : IDisposable
     {
         public required ReadOnlyMemory<byte> Salt { get; set; }
 
@@ -8,5 +10,12 @@
 
         // Encrypted using user's password
         public required ReadOnlyMemory<byte> PrivateKey { get; set; }
+
+        public required IAsymmetricPrivateTransformer Transformer { get; set; }
+
+        public void Dispose()
+        {
+            Transformer.Dispose();
+        }
     }
 }
