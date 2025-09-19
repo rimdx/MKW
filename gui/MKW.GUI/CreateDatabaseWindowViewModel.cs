@@ -12,6 +12,7 @@ namespace MKW.GUI
         private readonly RegistryService registry;
 
         public CreateDatabaseWindowViewModel(RegistryService registry)
+            : base("Create New Database")
         {
             // TODO: factor out
             // TODO: save latest directory to registry storage
