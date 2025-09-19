@@ -9,7 +9,41 @@
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
-  <Grid>
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0"
+                Orientation="Vertical">
+      <Label Margin="0,0,0,3" Padding="0"
+             Content="Database access _request:"
+             Target="{Binding ElementName=AccessRequestTextBox}" />
+    </StackPanel>
+
+    <TextBox x:Name="AccessRequestTextBox"
+             Grid.Row="1"
+             Text="{Binding RequestString, Mode=TwoWay}"
+             Margin="0,0,0,6"
+             FontFamily="Consolas"
+             TextWrapping="Wrap" />
+
+    <StackPanel Grid.Row="2"
+                Orientation="Vertical">
+
+      <!--<TextBlock TextWrapping="Wrap"
+                 Margin="0,0,0,12">
+      </TextBlock>-->
+
+      <StackPanel Orientation="Horizontal">
+        <Button Content="Import from _File..."
+                MinWidth="70"
+                Padding="12,1"
+                Click="ImportFromFile_Click" />
+      </StackPanel>
+    </StackPanel>
 
   </Grid>
 </wizard:WizardPage>
