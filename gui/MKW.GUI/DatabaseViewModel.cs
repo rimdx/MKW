@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Storage;
+using MKW.GUI.AddUserWizard;
 using MKW.GUI.Model;
 
 namespace MKW.GUI
@@ -129,9 +130,9 @@ namespace MKW.GUI
 
         // User
 
-        public NewUserWindowViewModel CreateNewUserWindowViewModel()
+        public AddUserWizardViewModel CreateNewUserWindowViewModel()
         {
-            return new NewUserWindowViewModel(Database);
+            return new AddUserWizardViewModel(Database);
         }
 
         public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()

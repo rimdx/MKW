@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MKW.GUI.AddUserWizard;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -24,8 +25,8 @@ namespace MKW.GUI
         {
             try
             {
-                NewUserWindowViewModel viewModel = model.CreateNewUserWindowViewModel();
-                NewUserWindow window = new NewUserWindow(viewModel, Window.GetWindow(this));
+                AddUserWizardViewModel viewModel = model.CreateNewUserWindowViewModel();
+                AddUserWizardWindow window = new AddUserWizardWindow(viewModel, Window.GetWindow(this));
                 window.ShowDialog();
             }
             catch (Exception ex)
