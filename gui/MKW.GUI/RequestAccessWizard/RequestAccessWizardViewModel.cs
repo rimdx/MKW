@@ -14,6 +14,7 @@ namespace MKW.GUI.RequestAccessWizard
             : base(FormatTitle(database), ImageMoniker.NewUser)
         {
             Database = database;
+            Password = new PasswordViewModel();
 
             AddPage(new RequestAccessWizardWelcomePage(this));
             AddPage(new RequestAccessWizardPasswordPage(this));
@@ -30,14 +31,13 @@ namespace MKW.GUI.RequestAccessWizard
             private set => SetProperty(ref requestString, value);
         }
 
-        public string Password { get; set; } = "";
-        public bool IsPasswordMatch { get; set; } = true;
+        public PasswordViewModel Password { get; }
 
         public void GenerateRequest()
         {
             EnsurePassword();
 
-            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password);
+            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password.Password);
 
             IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
             KeyFormatter keyFormatter = new KeyFormatter(52);
@@ -54,17 +54,12 @@ namespace MKW.GUI.RequestAccessWizard
 
         public void EnsurePassword()
         {
-            if (!IsPasswordMatch)
+            if (Password.PasswordMismatch)
             {
                 throw new Exception("Password and repeated password don't match.");
             }
 
-            if (Password == null)
-            {
-                throw new ArgumentNullException(nameof(Password));
-            }
-
-            if (Password.Length == 0)
+            if (Password.PasswordLength == 0)
             {
                 throw new Exception("Password cannot be empty.");
             }
