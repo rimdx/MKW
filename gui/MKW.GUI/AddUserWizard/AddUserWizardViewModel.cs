@@ -18,10 +18,10 @@ namespace MKW.GUI.AddUserWizard
 
             this.model = model;
 
-            AddPage(new WelcomePage(this));
-            AddPage(new ImportRequestPage(this));
-            AddPage(new UserDetailsPage(this));
-            AddPage(new ConfirmationPage(this));
+            AddPage(new PageWelcome(this));
+            AddPage(new PageImportRequest(this));
+            AddPage(new PageUserDetails(this));
+            AddPage(new PageConfirmation(this));
         }
 
         private string requestString = "";

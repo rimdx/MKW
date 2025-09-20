@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
 {
-    public partial class UserDetailsPage : WizardPage
+    public partial class PageUserDetails : WizardPage
     {
         private readonly AddUserWizardViewModel viewModel;
 
-        public UserDetailsPage(AddUserWizardViewModel viewModel) : base("User details")
+        public PageUserDetails(AddUserWizardViewModel viewModel) : base("User details")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;

@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
 {
-    public partial class ImportRequestPage : WizardPage
+    public partial class PageImportRequest : WizardPage
     {
         private readonly AddUserWizardViewModel viewModel;
 
-        public ImportRequestPage(AddUserWizardViewModel viewModel)
+        public PageImportRequest(AddUserWizardViewModel viewModel)
             : base("Import User Request")
         {
             this.viewModel = viewModel;
