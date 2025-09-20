@@ -1,6 +1,6 @@
 ﻿namespace MKW.GUI.Images
 {
-    public enum Moniker
+    public enum ImageMoniker
     {
         None,
         AddDatabase,
