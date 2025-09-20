@@ -95,14 +95,14 @@ namespace MKW.GUI.Model
             }
         }
 
-        public void AddUser(UserAccessRequest request)
+        public void AddUser(UserAccessRequest request, UserMetadata userMetadata)
         {
             if (Admin == null)
             {
                 throw new Exception("Not an admin.");
             }
 
-            UserInfo user = Client.CreateUser(request, null);
+            UserInfo user = Client.CreateUser(request, userMetadata);
             // TODO: rollback if failed
             Admin.AddTrust(user.Id);
 

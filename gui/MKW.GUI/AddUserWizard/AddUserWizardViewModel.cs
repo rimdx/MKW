@@ -77,6 +77,17 @@ namespace MKW.GUI.AddUserWizard
             }
         }
 
+        private UserMetadata MakeMetadata()
+        {
+            VerifyDetails();
+
+            return new UserMetadata
+            {
+                UserId = UserName,
+                DisplayName = UserDisplayName,
+            };
+        }
+
         public void DoAddUser()
         {
             if (Request == null)
@@ -84,7 +95,7 @@ namespace MKW.GUI.AddUserWizard
                 throw new Exception("Request is not valid or not specified.");
             }
 
-            model.AddUser(Request);
+            model.AddUser(Request, MakeMetadata());
         }
     }
 }
