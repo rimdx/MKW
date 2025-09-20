@@ -150,7 +150,7 @@ namespace MKW.CommandLine.Tests
             sbox.Run($"mkw user add {sbox.DatabasePath} --password test1");
             sbox.Run($"mkw user add {sbox.DatabasePath} --password test2");
 
-            string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} data1");
+            string output1 = sbox.Run($"mkw entry add {sbox.DatabasePath} data1 --password {sbox.AdminSecret}");
 
             EntryId entryId1;
             UserId userId1;
@@ -201,7 +201,7 @@ namespace MKW.CommandLine.Tests
                 """,
                 sbox.Run($"mkw entry list {sbox.DatabasePath} --password test2"));
 
-            string output2 = sbox.Run($"mkw entry add {sbox.DatabasePath} data2");
+            string output2 = sbox.Run($"mkw entry add {sbox.DatabasePath} data2 --password {sbox.AdminSecret}");
 
             EntryId entryId2;
             using (IDatabase db = sbox.OpenDatabase())
