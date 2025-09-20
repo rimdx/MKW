@@ -10,6 +10,7 @@ namespace MKW
     {
         public AddEntryCommand() : base(/* entry */ "add", "adds an encrypted entry to the database")
         {
+            Add(CommonOptions.Password);
             Add(CommonOptions.Payload);
         }
 
@@ -17,9 +18,10 @@ namespace MKW
         {
             string payload = argv.GetRequiredValue(CommonOptions.Payload);
 
-            using ClientSession session = OpenSession(argv);
+            using ClientSession client = OpenSession(argv);
+            using IUserSession user = client.OpenUser(GetPassword(argv));
 
-            EntryInfo entry = session.UpdateEntry(EntryId.Create(), new EntryPayload(payload));
+            EntryInfo entry = user.UpdateEntry(EntryId.Create(), new EntryPayload(payload));
 
             Console.WriteLine($"{entry.Action}: {entry.Id} for {entry.EncodedForUsers.Count} users");
         }
