@@ -1,5 +1,4 @@
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
-$ascii = [System.Text.Encoding]::ASCII
 $files = Get-ChildItem $PSScriptRoot *.xaml
 
 ### ImageMoniker.cs
@@ -61,7 +60,7 @@ namespace MKW.GUI.Images
     ### [Name].xaml
     $content = Get-Content -Path $path
     $content = $content.Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=")
-    [System.IO.File]::WriteAllLines("$path", $content, $ascii)
+    [System.IO.File]::WriteAllLines("$path", $content, $Utf8NoBomEncoding)
 
     svn add "$path.cs" --force
 }
