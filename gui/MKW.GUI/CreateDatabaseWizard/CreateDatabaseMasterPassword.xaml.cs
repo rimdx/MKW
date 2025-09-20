@@ -19,15 +19,10 @@ namespace MKW.GUI
         {
             try
             {
-                string password = ctlPassword.Password;
-                string passwordRepeat = ctlPasswordRepeat.Password;
-
-                if (password != passwordRepeat)
+                if (viewModel.PasswordMismatch)
                 {
                     throw new Exception("Password and repeated password don't match.");
                 }
-
-                viewModel.Password = password;
 
                 return true;
             }
@@ -36,6 +31,16 @@ namespace MKW.GUI
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
                 return false;
             }
+        }
+
+        private void ctlPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModel.Password = ctlPassword.Password;
+        }
+
+        private void ctlPasswordRepeat_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModel.PasswordRepeat = ctlPasswordRepeat.Password;
         }
     }
 }
