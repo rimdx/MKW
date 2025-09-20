@@ -1,4 +1,5 @@
-﻿using MKW.Core.Client;
+﻿using MKW.Core;
+using MKW.Core.Client;
 using MKW.Core.Notify;
 using System.CommandLine;
 
@@ -15,7 +16,10 @@ namespace MKW
         {
             using ClientSession session = OpenSession(argv);
 
-            UserInfo user = session.CreateUser(GetPassword(argv));
+            // TODO:
+
+            UserAccessRequest request = session.CreateUserAccessRequest(GetPassword(argv));
+            UserInfo user = session.CreateUser(request);
 
             Console.WriteLine($"User added with ID: {user.Id}");
         }

@@ -82,11 +82,6 @@ namespace MKW.Core.Client
 
         // IUserController
 
-        public UserInfo CreateUser(string password)
-        {
-            return userController.CreateUser(password);
-        }
-
         public IUserSession OpenUser(UserId id, string password)
         {
             return userController.OpenUser(id, password);

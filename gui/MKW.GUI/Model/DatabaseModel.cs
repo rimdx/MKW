@@ -95,12 +95,6 @@ namespace MKW.GUI.Model
             }
         }
 
-        public void NewUser(string password)
-        {
-            Client.CreateUser(password);
-            OnUsersChanged?.Invoke(this, new EventArgs());
-        }
-
         public void AddUser(UserAccessRequest request)
         {
             if (Admin == null)
