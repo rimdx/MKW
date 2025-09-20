@@ -62,11 +62,11 @@ namespace MKW.CommandLine.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            sbox.CreateUser(client, "amogus", out UserInfo user1).Dispose();
-            sbox.CreateUser(client, "r34", out UserInfo user2).Dispose();
+            IUserSession s1 = sbox.CreateUser(client, "amogus", out _);
+            IUserSession s2 = sbox.CreateUser(client, "r34", out _);
 
-            client.UpdateEntry(EntryId.FromGuid(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}")), new EntryPayload("sus1"));
-            client.UpdateEntry(EntryId.FromGuid(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}")), new EntryPayload("sus2"));
+            s1.UpdateEntry(EntryId.FromGuid(new Guid("{9FC58C78-005D-47B6-82DA-4054D079B536}")), new EntryPayload("sus1"));
+            s2.UpdateEntry(EntryId.FromGuid(new Guid("{A909CB08-25EF-4C3C-8913-959140E86BDA}")), new EntryPayload("sus2"));
 
             client.Dispose();
 
