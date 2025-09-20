@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.AddUserWizard;
+using MKW.GUI.RequestAccessWizard;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,6 +29,20 @@ namespace MKW.GUI.Database
                 AddUserWizardViewModel viewModel = model.CreateNewUserWindowViewModel();
                 AddUserWizardWindow window = new AddUserWizardWindow(viewModel, Window.GetWindow(this));
                 window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
+
+        private void NewAccessRequest_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                RequestAccessWizardViewModel dialogModel = model.CreateRequestAccessViewModel();
+                RequestAccessWizardDialog dialog = new RequestAccessWizardDialog(dialogModel, Window.GetWindow(this));
+                dialog.ShowDialog();
             }
             catch (Exception ex)
             {
