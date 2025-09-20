@@ -16,9 +16,9 @@ namespace MKW.Tests
         {
             using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
-            using ClientSession client = ClientSession.Create(db, "adminsecret");
+            using ClientSession client = ClientSession.Create(db, sbox.AdminSecret);
 
-            using IUserSession adminSession = client.OpenAdmin("adminsecret");
+            using IUserSession adminSession = client.OpenAdmin(sbox.AdminSecret);
         }
 
         [Test]
@@ -26,10 +26,10 @@ namespace MKW.Tests
         {
             using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
-            using ClientSession client = ClientSession.Create(db, "adminsecret");
+            using ClientSession client = ClientSession.Create(db,  sbox.AdminSecret);
 
             UserInfo admin = client.GetAdminInfo();
-            IUserSession adminSession = client.OpenAdmin("adminsecret");
+            IUserSession adminSession = client.OpenAdmin(sbox.AdminSecret);
 
             UserInfo user1 = client.CreateUser("user1");
             UserInfo user2 = client.CreateUser("user2");
