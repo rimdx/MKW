@@ -10,13 +10,19 @@ namespace MKW.GUI.RequestAccessWizard
 {
     public class RequestAccessWizardViewModel : WizardViewModel
     {
+        private string userName;
+        private string userDisplayName;
+
         public RequestAccessWizardViewModel(DatabaseModel database)
             : base(FormatTitle(database), ImageMoniker.NewUser)
         {
             Database = database;
             Password = new PasswordViewModel();
+            userName = "";
+            userDisplayName = "";
 
             AddPage(new RequestAccessWizardWelcomePage(this));
+            AddPage(new RequestAccessWizardUserDetailsPage(this));
             AddPage(new RequestAccessWizardPasswordPage(this));
             AddPage(new RequestAccessWizardConfirmationPage(this));
             AddPage(new RequestAccessWizardResultsPage(this));
@@ -33,6 +39,18 @@ namespace MKW.GUI.RequestAccessWizard
 
         public PasswordViewModel Password { get; }
 
+        public string UserName
+        {
+            get => userName;
+            set => SetProperty(ref userName, value);
+        }
+
+        public string UserDisplayName
+        {
+            get => userDisplayName;
+            set => SetProperty(ref userDisplayName, value);
+        }
+
         public void GenerateRequest()
         {
             EnsurePassword();
@@ -41,9 +59,8 @@ namespace MKW.GUI.RequestAccessWizard
                 Password.Password,
                 new UserMetadata
                 {
-                    // chemodax, do it!
-                    DisplayName = "",
-                    UserId = ""
+                    UserId = userName,
+                    DisplayName = userDisplayName,
                 }
             );
 

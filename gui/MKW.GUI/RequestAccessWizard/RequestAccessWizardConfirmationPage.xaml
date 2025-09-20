@@ -13,19 +13,32 @@
     <StackPanel Orientation="Vertical">
       <TextBlock TextWrapping="Wrap"
                  Margin="0,0,0,6">
-        This will create a request file that you can send to database owner
-        to request access to the database.
-      </TextBlock>
-
-      <TextBlock TextWrapping="Wrap"
-                 Margin="0,0,0,6">
         Please verify that the information below is correct before proceeding.
       </TextBlock>
 
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Text="User name: " />
-        <TextBlock Text="TODO" />
-      </StackPanel>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="6"/>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="6"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Text="User details" FontWeight="SemiBold" />
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Identifier:" />
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding UserName}" d:Text="john@contoso.com" />
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Display name:" />
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding UserDisplayName}" d:Text="John Doe" />
+      </Grid>
     </StackPanel>
   </Grid>
 </wizard:WizardPage>
