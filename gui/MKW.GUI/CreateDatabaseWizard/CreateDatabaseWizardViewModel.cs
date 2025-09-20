@@ -26,6 +26,7 @@ namespace MKW.GUI
             this.passwordRepeat = "";
             
             passwordEntropy = GetPasswordEntropy(password);
+            passwordQualityIcon = GetPasswordQualityIcon(passwordEntropy);
             passwordLength = GetPasswordLength(password);
             passwordMismatch = GetPasswordMismatch(password, passwordRepeat);
 
@@ -72,7 +73,13 @@ namespace MKW.GUI
         public double PasswordEntropy
         {
             get => passwordEntropy;
-            private set => SetProperty(ref passwordEntropy, value);
+            private set
+            {
+                if (SetProperty(ref passwordEntropy, value))
+                {
+                    PasswordQualityIcon = GetPasswordQualityIcon(value);
+                }
+            }
         }
 
         public int PasswordLength
@@ -153,5 +160,24 @@ namespace MKW.GUI
             return password != passwordRepeat;
         }
 
+        private static ImageMoniker GetPasswordQualityIcon(double passwordEntropy)
+        {
+            if (passwordEntropy >= 75)
+            {
+                return ImageMoniker.StatusOK;
+            }
+            else
+            {
+                return ImageMoniker.StatusWarning;
+            }
+        }
+
+        private ImageMoniker passwordQualityIcon;
+
+        public ImageMoniker PasswordQualityIcon
+        { 
+            get => passwordQualityIcon;
+            private set => SetProperty(ref passwordQualityIcon, value);
+        }
     }
 }
