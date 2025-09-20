@@ -13,10 +13,14 @@ namespace MKW.GUI.AddUserWizard
         public AddUserWizardViewModel(DatabaseModel model)
             : base("Add User", ImageMoniker.AddUser)
         {
+            userName = "";
+            userDisplayName = "";
+
             this.model = model;
 
             AddPage(new AddUserWizardWelcomePage(this));
             AddPage(new AddUserWizardImportRequestPage(this));
+            AddPage(new AddUserWizardUserDetailsPage(this));
             AddPage(new AddUserWizardConfirmationPage(this));
         }
 
@@ -32,6 +36,20 @@ namespace MKW.GUI.AddUserWizard
         {
             get => request;
             set => SetProperty(ref request, value);
+        }
+
+        private string userName;
+        public string UserName
+        {
+            get => userName;
+            set => SetProperty(ref userName, value);
+        }
+
+        private string userDisplayName;
+        public string UserDisplayName
+        {
+            get => userDisplayName;
+            set => SetProperty(ref userDisplayName, value);
         }
 
         public void ParseAccessRequest()

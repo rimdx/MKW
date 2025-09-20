@@ -1,13 +1,13 @@
 ﻿using MKW.GUI.Wizard;
 using System.Windows;
 
-namespace MKW.GUI.RequestAccessWizard
+namespace MKW.GUI.AddUserWizard
 {
-    public partial class RequestAccessWizardUserDetailsPage : WizardPage
+    public partial class AddUserWizardUserDetailsPage : WizardPage
     {
-        private readonly RequestAccessWizardViewModel viewModel;
+        private readonly AddUserWizardViewModel viewModel;
 
-        public RequestAccessWizardUserDetailsPage(RequestAccessWizardViewModel viewModel) : base("User details")
+        public AddUserWizardUserDetailsPage(AddUserWizardViewModel viewModel) : base("User details")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;

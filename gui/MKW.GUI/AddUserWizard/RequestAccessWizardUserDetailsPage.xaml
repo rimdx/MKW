@@ -1,12 +1,12 @@
-﻿<wizard:WizardPage x:Class="MKW.GUI.RequestAccessWizard.RequestAccessWizardUserDetailsPage"
+﻿<wizard:WizardPage x:Class="MKW.GUI.AddUserWizard.AddUserWizardUserDetailsPage"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
-                   xmlns:local="clr-namespace:MKW.GUI.RequestAccessWizard"
+                   xmlns:local="clr-namespace:MKW.GUI.AddUserWizard"
                    xmlns:gui="clr-namespace:MKW.GUI"
-                   d:DataContext="{d:DesignInstance Type=local:RequestAccessWizardViewModel}"
+                   d:DataContext="{d:DesignInstance Type=local:AddUserWizardViewModel}"
                    mc:Ignorable="d"
                    Background="White"
                    d:DesignHeight="301.667" d:DesignWidth="487">
@@ -34,8 +34,7 @@
 
         <TextBlock Grid.Column="1"
                    TextWrapping="Wrap">
-          User ID can be in any format accepted by database owner, but it's
-          recommended to your email.
+          User ID can be in any format, but it's recommended to your email.
         </TextBlock>
       </Grid>
 
