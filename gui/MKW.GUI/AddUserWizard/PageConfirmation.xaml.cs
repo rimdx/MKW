@@ -2,12 +2,12 @@
 
 namespace MKW.GUI.AddUserWizard
 {
-    public partial class WelcomePage : WizardPage
+    public partial class PageConfirmation : WizardPage
     {
         private readonly AddUserWizardViewModel viewModel;
 
-        public WelcomePage(AddUserWizardViewModel viewModel)
-            : base("Welcome")
+        public PageConfirmation(AddUserWizardViewModel viewModel)
+            : base("Confirmation")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;
