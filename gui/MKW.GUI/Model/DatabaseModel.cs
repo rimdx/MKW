@@ -58,7 +58,7 @@ namespace MKW.GUI.Model
 
         public void CreateEntry(string payload)
         {
-            using IEntrySession entry = Client.CreateEntry();
+            using IEntrySession entry = User!.CreateEntry();
             entry.UpdatePayload(new EntryPayload(payload));
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
