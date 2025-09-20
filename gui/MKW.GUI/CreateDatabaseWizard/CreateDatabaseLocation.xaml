@@ -14,12 +14,12 @@
                    FocusManager.FocusedElement="{Binding ElementName=DatabaseNameInput}">
   <Grid Margin="12">
     <StackPanel Orientation="Vertical">
-      <Label Content="File _Name:"
+      <Label Content="Database _Name:"
              Padding="0"
              Margin="0,0,0,3" />
 
       <TextBox Text="{Binding DatabaseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-               d:Text="New Database.mkw"
+               d:Text="New Database"
                x:Name="DatabaseNameInput"
                Padding="3"
                Margin="0,0,0,6"

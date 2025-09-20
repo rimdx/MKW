@@ -20,7 +20,7 @@ namespace MKW.GUI
             if (viewModel.Exists())
             {
                 MessageBox.Show(Window.GetWindow(this),
-                                $"{viewModel.DatabaseName} already exists. Please choose another location.",
+                                $"File '{viewModel.DatabasePath}' already exists. Please choose another location.",
                                 "File already exists.",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);

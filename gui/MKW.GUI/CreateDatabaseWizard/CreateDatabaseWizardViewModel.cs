@@ -30,7 +30,7 @@ namespace MKW.GUI
             passwordMismatch = GetPasswordMismatch(password, passwordRepeat);
 
             databaseDirectory = registry.GetLastDatabaseDirectory();
-            databaseName = "New Database.mkw";
+            databaseName = "New Database";
 
             AddPage(new CreateDatabaseLocation(this));
             AddPage(new CreateDatabaseMasterPassword(this));
@@ -81,7 +81,24 @@ namespace MKW.GUI
             private set => SetProperty(ref passwordLength, value);
         }
 
-        public string DatabasePath => Path.Combine(DatabaseDirectory, DatabaseName);
+        public string DatabasePath
+        {
+            get
+            {
+                string databaseFilename;
+
+                if (string.Equals(Path.GetExtension(databaseName), ".mkw", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    databaseFilename = databaseName;
+                }
+                else
+                {
+                    databaseFilename = databaseName + ".mkw";
+                }
+
+                return Path.Combine(DatabaseDirectory, databaseFilename);
+            }
+        }
 
         private string databaseName;
         public string DatabaseName
