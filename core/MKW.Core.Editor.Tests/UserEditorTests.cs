@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Notify;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Core.Editor.Tests
@@ -9,7 +10,7 @@ namespace MKW.Core.Editor.Tests
         [Test]
         public void SimpleTrustEditTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             using IUserSession user1 = sbox.CreateUser(client, "user1", out UserInfo userInfo1, false);
