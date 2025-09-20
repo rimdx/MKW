@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.RequestAccessWizard
 {
-    public partial class ConfirmationPage : WizardPage
+    public partial class PageConfirmation : WizardPage
     {
         private readonly RequestAccessWizardViewModel viewModel;
 
-        public ConfirmationPage(RequestAccessWizardViewModel viewModel)
+        public PageConfirmation(RequestAccessWizardViewModel viewModel)
             : base("Confirm Access Request Creation")
         {
             this.viewModel = viewModel;
