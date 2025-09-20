@@ -36,6 +36,7 @@ namespace MKW.GUI.Images
             ImageMoniker.Save => new Save(),
             ImageMoniker.SaveAs => new SaveAs(),
             ImageMoniker.StatusHelp => new StatusHelp(),
+            ImageMoniker.StatusInformation => new StatusInformation(),
             ImageMoniker.StatusOK => new StatusOK(),
             ImageMoniker.StatusWarning => new StatusWarning(),
             ImageMoniker.Team => new Team(),
