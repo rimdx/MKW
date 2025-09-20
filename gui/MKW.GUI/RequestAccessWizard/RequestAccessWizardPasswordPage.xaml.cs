@@ -28,5 +28,15 @@ namespace MKW.GUI.RequestAccessWizard
                 return false;
             }
         }
+
+        private void ctlPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModel.Password.Password = ctlPassword.Password;
+        }
+
+        private void ctlPasswordRepeat_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModel.Password.PasswordRepeat = ctlPasswordRepeat.Password;
+        }
     }
 }
