@@ -16,12 +16,16 @@ namespace MKW.GUI.AddUserWizard
 
         public override bool Next()
         {
-            if (viewModel.UserName.Length == 0)
+            try
             {
-                MessageBox.Show(Window.GetWindow(this), "User ID cannot be empty.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                viewModel.VerifyDetails();
+                return true;
             }
-
-            return base.Next();
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                return false;
+            }
         }
     }
 }

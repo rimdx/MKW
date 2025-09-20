@@ -3,6 +3,7 @@ using MKW.Core.Client.AccessRequest;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
+using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
 {
@@ -66,6 +67,14 @@ namespace MKW.GUI.AddUserWizard
             {
                 Request = null;
                 throw;
+            }
+        }
+
+        public void VerifyDetails()
+        {
+            if (UserName.Length == 0)
+            {
+                throw new Exception("User ID cannot be empty.");
             }
         }
 
