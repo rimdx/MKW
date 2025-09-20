@@ -24,6 +24,11 @@
           <MenuItem Header="_Add User..."
                     Click="NewUser_Click" />
 
+          <MenuItem Header="New access _request..."
+                    Click="NewAccessRequest_Click" />
+
+          <Separator />
+
           <MenuItem Header="_Properties..."
                     IsEnabled="{Binding IsUserSelected}"
                     Click="UserPropertiesClick" />

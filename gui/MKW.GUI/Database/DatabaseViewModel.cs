@@ -2,6 +2,7 @@
 using MKW.Core.Storage;
 using MKW.GUI.AddUserWizard;
 using MKW.GUI.Model;
+using MKW.GUI.RequestAccessWizard;
 
 namespace MKW.GUI.Database
 {
@@ -133,6 +134,11 @@ namespace MKW.GUI.Database
         public AddUserWizardViewModel CreateNewUserWindowViewModel()
         {
             return new AddUserWizardViewModel(Database);
+        }
+
+        public RequestAccessWizardViewModel CreateRequestAccessViewModel()
+        {
+            return new RequestAccessWizardViewModel(Database);
         }
 
         public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()
