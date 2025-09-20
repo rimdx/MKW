@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MKW.GUI
+namespace MKW.GUI.Database
 {
     public partial class DatabaseInfoPage : UserControl
     {

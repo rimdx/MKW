@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 using MKW.GUI.AddUserWizard;
 using MKW.GUI.Model;
 
-namespace MKW.GUI
+namespace MKW.GUI.Database
 {
     public class DatabaseViewModel : ViewModelBase, IDisposable
     {

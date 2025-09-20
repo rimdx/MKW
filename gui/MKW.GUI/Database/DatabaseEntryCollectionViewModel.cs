@@ -2,7 +2,7 @@
 using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 
-namespace MKW.GUI
+namespace MKW.GUI.Database
 {
     public class DatabaseEntryCollectionViewModel : ObservableCollection<DatabaseEntryModel>, IDisposable
     {
