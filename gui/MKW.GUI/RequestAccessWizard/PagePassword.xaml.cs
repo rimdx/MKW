@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.RequestAccessWizard
 {
-    public partial class PasswordPage : WizardPage
+    public partial class PagePassword : WizardPage
     {
         private readonly RequestAccessWizardViewModel viewModel;
 
-        public PasswordPage(RequestAccessWizardViewModel viewModel)
+        public PagePassword(RequestAccessWizardViewModel viewModel)
             : base("Create Password")
         {
             this.viewModel = viewModel;
