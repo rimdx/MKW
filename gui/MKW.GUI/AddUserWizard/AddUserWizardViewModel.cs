@@ -11,7 +11,7 @@ namespace MKW.GUI.AddUserWizard
         private readonly DatabaseModel model;
 
         public AddUserWizardViewModel(DatabaseModel model)
-            : base("Add User", Moniker.AddUser)
+            : base("Add User", ImageMoniker.AddUser)
         {
             this.model = model;
 

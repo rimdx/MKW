@@ -19,7 +19,7 @@ namespace MKW.GUI
         private bool passwordMismatch;
 
         public CreateDatabaseWizardViewModel(RegistryService registry)
-            : base("Create New Database", Moniker.AddDatabase)
+            : base("Create New Database", ImageMoniker.AddDatabase)
         {
             this.registry = registry;
             this.password = "";

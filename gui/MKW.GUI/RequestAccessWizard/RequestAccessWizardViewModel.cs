@@ -11,7 +11,7 @@ namespace MKW.GUI.RequestAccessWizard
     public class RequestAccessWizardViewModel : WizardViewModel
     {
         public RequestAccessWizardViewModel(DatabaseModel database)
-            : base(MakeTitle(database), Moniker.NewUser)
+            : base(MakeTitle(database), ImageMoniker.NewUser)
         {
             Database = database;
 

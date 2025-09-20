@@ -6,7 +6,7 @@ namespace MKW.GUI.Wizard
     public abstract class WizardViewModel : ViewModelBase
     {
         public virtual string Title { get; }
-        public virtual Moniker Icon { get; }
+        public virtual ImageMoniker Icon { get; }
 
         public ObservableCollection<WizardPage> Pages;
 
@@ -31,7 +31,7 @@ namespace MKW.GUI.Wizard
 
         public string PageHeader => CurrentPage.Header;
 
-        public WizardViewModel(string title, Moniker icon)
+        public WizardViewModel(string title, ImageMoniker icon)
         {
             Pages = [];
             Title = title;

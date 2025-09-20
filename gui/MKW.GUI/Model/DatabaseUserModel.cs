@@ -18,7 +18,7 @@ namespace MKW.GUI.Model
         public UserId Id => user.Id;
         public bool IsAdmin => Id.IsAdmin;
         public string Name => IsAdmin ? "Admin" : "User";
-        public object Icon => IsAdmin ? new Admin() : new User();
+        public ImageMoniker Icon => IsAdmin ? ImageMoniker.Admin : ImageMoniker.User;
 
         public string StatusText => trust switch
         {
