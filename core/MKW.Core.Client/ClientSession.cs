@@ -5,7 +5,7 @@ using MKW.Cryptography.Loader;
 
 namespace MKW.Core.Client
 {
-    public class ClientSession : IUserController, IAdminController, IEntryController, IDisposable
+    public class ClientSession : IUserController, IAdminController, IDisposable
     {
         public IDatabase Database { get; }
 
@@ -135,53 +135,6 @@ namespace MKW.Core.Client
         public UserInfo GetAdminInfo()
         {
             return adminController.GetAdminInfo();
-        }
-
-        // IEntryController
-
-        private EntryController OpenEntryController()
-        {
-            return new EntryController(Database, crypto, Database.OpenUser(UserId.Admin(), true));
-        }
-
-        public IEntrySession OpenEntry(EntryId id)
-        {
-            using EntryController entryController = OpenEntryController();
-            return entryController.OpenEntry(id);
-        }
-
-        public IEntrySession CreateEntry(EntryId id)
-        {
-            using EntryController entryController = OpenEntryController();
-            return entryController.CreateEntry(id);
-        }
-
-        public IEntrySession CreateEntry()
-        {
-            using EntryController entryController = OpenEntryController();
-            return entryController.CreateEntry();
-        }
-
-        public EntryInfo DeleteEntry(EntryId id)
-        {
-            using EntryController entryController = OpenEntryController();
-            return entryController.DeleteEntry(id);
-        }
-
-        public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
-        {
-            using EntryController entryController = OpenEntryController();
-            return entryController.UpdateEntry(id, payload);
-        }
-
-        public IEnumerable<IEntrySession> EnumerateEntries()
-        {
-            using EntryController entryController = OpenEntryController();
-
-            foreach (IEntrySession entry in entryController.EnumerateEntries())
-            {
-                yield return entry;
-            }
         }
 
         public void Dispose()
