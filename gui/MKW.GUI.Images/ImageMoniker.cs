@@ -32,6 +32,7 @@ namespace MKW.GUI.Images
         Save,
         SaveAs,
         StatusHelp,
+        StatusInformation,
         StatusOK,
         StatusWarning,
         Team,
