@@ -5,7 +5,7 @@ using MKW.GUI.Services;
 using MKW.GUI.Wizard;
 using System.IO;
 
-namespace MKW.GUI
+namespace MKW.GUI.CreateDatabaseWizard
 {
     public class CreateDatabaseWizardViewModel : WizardViewModel
     {

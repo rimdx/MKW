@@ -1,6 +1,6 @@
 ﻿using MKW.GUI.Wizard;
 
-namespace MKW.GUI
+namespace MKW.GUI.CreateDatabaseWizard
 {
     public partial class CreateDatabaseConfirm : WizardPage
     {

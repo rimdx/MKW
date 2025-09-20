@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MKW.GUI.CreateDatabaseWizard;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
