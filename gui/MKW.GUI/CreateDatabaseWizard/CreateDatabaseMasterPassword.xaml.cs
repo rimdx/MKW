@@ -19,7 +19,16 @@ namespace MKW.GUI
         {
             try
             {
-                viewModel.EnsurePassword();
+                string password = ctlPassword.Password;
+                string passwordRepeat = ctlPasswordRepeat.Password;
+
+                if (password != passwordRepeat)
+                {
+                    throw new Exception("Password and repeated password don't match.");
+                }
+
+                viewModel.Password = password;
+
                 return true;
             }
             catch (Exception ex)

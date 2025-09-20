@@ -25,7 +25,6 @@ namespace MKW.GUI
         }
 
         public string Password { get; set; } = "";
-        public bool IsPasswordMatch { get; set; } = true;
 
         public string DatabasePath => Path.Combine(DatabaseDirectory, DatabaseName);
 
@@ -55,19 +54,6 @@ namespace MKW.GUI
             }
         }
 
-        public void EnsurePassword()
-        {
-            if (!IsPasswordMatch)
-            {
-                throw new Exception("Password and repeated password don't match.");
-            }
-
-            if (Password == null)
-            {
-                throw new ArgumentNullException(nameof(Password));
-            }
-        }
-
         public bool Exists()
         {
             return File.Exists(DatabasePath);
@@ -75,8 +61,6 @@ namespace MKW.GUI
 
         public override bool Finish()
         {
-            EnsurePassword();
-
             Database = DatabaseModel.Create(DatabasePath, Password);
 
             return true;
