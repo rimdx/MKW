@@ -1,6 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Client.AccessRequest;
-using MKW.Core.Notify;
+using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
 
@@ -11,7 +11,7 @@ namespace MKW.GUI.AddUserWizard
         private readonly DatabaseModel model;
 
         public AddUserWizardViewModel(DatabaseModel model)
-            : base("Add User")
+            : base("Add User", Moniker.AddUser)
         {
             this.model = model;
 

@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using MKW.GUI.Images;
+using System.Collections.ObjectModel;
 
 namespace MKW.GUI.Wizard
 {
     public abstract class WizardViewModel : ViewModelBase
     {
         public virtual string Title { get; }
+        public virtual Moniker Icon { get; }
 
         public ObservableCollection<WizardPage> Pages;
 
@@ -29,10 +31,11 @@ namespace MKW.GUI.Wizard
 
         public string PageHeader => CurrentPage.Header;
 
-        public WizardViewModel(string title)
+        public WizardViewModel(string title, Moniker icon)
         {
             Pages = [];
             Title = title;
+            Icon = icon;
         }
 
         protected void AddPage(WizardPage page)

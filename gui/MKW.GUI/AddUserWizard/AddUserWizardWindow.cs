@@ -1,5 +1,4 @@
-﻿using MKW.GUI.Images;
-using MKW.GUI.Wizard;
+﻿using MKW.GUI.Wizard;
 using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
@@ -12,8 +11,6 @@ namespace MKW.GUI.AddUserWizard
             : base(viewModel, owner)
         {
             this.viewModel = viewModel;
-
-            SetIcon(new AddUser());
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using MKW.GUI.Images;
-using MKW.GUI.Wizard;
+﻿using MKW.GUI.Wizard;
 using System.Windows;
 
 namespace MKW.GUI.RequestAccessWizard
@@ -9,7 +8,6 @@ namespace MKW.GUI.RequestAccessWizard
         public RequestAccessWizardDialog(RequestAccessWizardViewModel viewModel, Window owner)
             : base(viewModel, owner)
         {
-            SetIcon(new NewUser());
         }
     }
 }
