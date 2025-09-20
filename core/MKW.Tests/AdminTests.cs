@@ -31,8 +31,8 @@ namespace MKW.Tests
             UserInfo admin = client.GetAdminInfo();
             IUserSession adminSession = client.OpenAdmin(sbox.AdminSecret);
 
-            UserInfo user1 = client.CreateUser("user1");
-            UserInfo user2 = client.CreateUser("user2");
+            using IUserSession s1 = sbox.CreateUser(client, "user1", out UserInfo user1, false);
+            using IUserSession s2 = sbox.CreateUser(client, "user2", out UserInfo user2, false);
 
             admin.Trust = Trust.SelfTrust;
             user1.Trust = Trust.ExplicitTrust;
@@ -63,8 +63,8 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserInfo trusted = client.CreateUser("trusted");
-            UserInfo untrusted = client.CreateUser("untrusted");
+            using IUserSession trusted = sbox.CreateUser(client, "trusted", out _, false);
+            using IUserSession untrusted = sbox.CreateUser(client, "untrusted", out _, false);
 
             using IUserSession admin = sbox.OpenAdmin(client);
 

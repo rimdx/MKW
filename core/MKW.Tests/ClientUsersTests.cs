@@ -17,7 +17,7 @@ namespace MKW.Tests
             using IDatabase db = sbox.OpenDatabase();
             using ClientSession session = ClientSession.Open(db);
 
-            UserInfo user = session.CreateUser("whattheheckamidoing");
+            using IUserSession s1 = sbox.CreateUser(session, "whattheheckamidoing", out UserInfo user);
 
             IDatabaseUser[] users = db.EnumerateUsers().ToArray();
             ClassicAssert.AreEqual(2, users.Length);
@@ -32,7 +32,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserInfo user = client.CreateUser("awesomesecretno1willeverguess");
+            using IUserSession user = sbox.CreateUser(client, "awesomesecretno1willeverguess", out _);
 
             using IUserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
@@ -52,9 +52,9 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserInfo user1 = client.CreateUser("cred1");
-            UserInfo user2 = client.CreateUser("cred2");
-            UserInfo user3 = client.CreateUser("cred3");
+            using IUserSession user1 = sbox.CreateUser(client, "cred1", out _);
+            using IUserSession user2 = sbox.CreateUser(client, "cred2", out _);
+            using IUserSession user3 = sbox.CreateUser(client, "cred3", out _);
 
             using IUserSession userSession1 = client.OpenUser("cred1");
             using IUserSession userSession2 = client.OpenUser("cred2");
