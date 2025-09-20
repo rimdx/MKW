@@ -4,7 +4,7 @@ $ImageMonikerCS = "$PSScriptRoot/ImageMoniker.cs"
 {
     public enum ImageMoniker
     {
-        None," | Out-File $ImageMonikerCS -Encoding utf8BOM
+        None," | Out-File $ImageMonikerCS -Encoding utf8
 
 Get-ChildItem $PSScriptRoot *.xaml | ForEach-Object {
     $name = $_.BaseName
@@ -20,17 +20,17 @@ namespace MKW.GUI.Images
             InitializeComponent();
         }
     }
-}" | Out-File -FilePath "$_.cs" -Encoding utf8BOM
+}" | Out-File -FilePath "$_.cs" -Encoding utf8
 
-    (Get-Content -Path $_).Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=") | Out-File -FilePath $_ -Encoding ansi
+    (Get-Content -Path $_).Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=") | Out-File -FilePath $_ -Encoding ascii
 
-    "        $name," | Add-Content $ImageMonikerCS -Encoding utf8BOM
+    "        $name," | Add-Content $ImageMonikerCS -Encoding utf8
 
     svn add "$_.cs" --force
 }
 
 "    }
-}" | Add-Content $ImageMonikerCS -Encoding utf8BOM
+}" | Add-Content $ImageMonikerCS -Encoding utf8
 
 Write-Host "-----"
 

@@ -1,4 +1,4 @@
-﻿namespace MKW.GUI.Images
+namespace MKW.GUI.Images
 {
     public enum ImageMoniker
     {
