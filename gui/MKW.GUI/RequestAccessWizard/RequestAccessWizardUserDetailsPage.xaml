@@ -4,7 +4,9 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
-                   xmlns:local="clr-namespace:MKW.GUI.RequestAccessWizard" xmlns:gui="clr-namespace:MKW.GUI" d:DataContext="{d:DesignInstance Type=local:RequestAccessWizardViewModel}"
+                   xmlns:local="clr-namespace:MKW.GUI.RequestAccessWizard"
+                   xmlns:gui="clr-namespace:MKW.GUI"
+                   d:DataContext="{d:DesignInstance Type=local:RequestAccessWizardViewModel}"
                    mc:Ignorable="d"
                    Background="White"
                    d:DesignHeight="301.667" d:DesignWidth="487">
