@@ -10,82 +10,22 @@ namespace MKW.GUI
     public class CreateDatabaseWizardViewModel : WizardViewModel
     {
         public DatabaseModel? Database { get; private set; }
-
+        public PasswordViewModel Password { get; }
         private readonly RegistryService registry;
-        private string password;
-        private string passwordRepeat;
-        private double passwordEntropy;
-        private int passwordLength;
-        private bool passwordMismatch;
 
         public CreateDatabaseWizardViewModel(RegistryService registry)
             : base("Create New Database", ImageMoniker.AddDatabase)
         {
             this.registry = registry;
-            this.password = "";
-            this.passwordRepeat = "";
-            
-            passwordEntropy = GetPasswordEntropy(password);
-            passwordQualityIcon = GetPasswordQualityIcon(passwordEntropy);
-            passwordLength = GetPasswordLength(password);
-            passwordMismatch = GetPasswordMismatch(password, passwordRepeat);
 
             databaseDirectory = registry.GetLastDatabaseDirectory();
             databaseName = "New Database";
 
+            Password = new PasswordViewModel();
+
             AddPage(new CreateDatabaseLocation(this));
             AddPage(new CreateDatabaseMasterPassword(this));
             AddPage(new CreateDatabaseConfirm(this));
-        }
-
-        public string Password
-        {
-            get => password;
-            set
-            {
-                if (SetProperty(ref password, value))
-                {
-                    PasswordEntropy = GetPasswordEntropy(password);
-                    PasswordLength = GetPasswordLength(password);
-                    PasswordMismatch = GetPasswordMismatch(password, passwordRepeat);
-                }
-            }
-        }
-
-        public string PasswordRepeat
-        {
-            get => passwordRepeat;
-            set
-            {
-                if (SetProperty(ref passwordRepeat, value))
-                {
-                    PasswordMismatch = GetPasswordMismatch(password, passwordRepeat);
-                }
-            }
-        }
-
-        public bool PasswordMismatch
-        {
-            get => passwordMismatch;
-            private set => SetProperty(ref passwordMismatch, value);
-        }
-
-        public double PasswordEntropy
-        {
-            get => passwordEntropy;
-            private set
-            {
-                if (SetProperty(ref passwordEntropy, value))
-                {
-                    PasswordQualityIcon = GetPasswordQualityIcon(value);
-                }
-            }
-        }
-
-        public int PasswordLength
-        {
-            get => passwordLength;
-            private set => SetProperty(ref passwordLength, value);
         }
 
         public string DatabasePath
@@ -140,44 +80,9 @@ namespace MKW.GUI
 
         public override bool Finish()
         {
-            Database = DatabaseModel.Create(DatabasePath, Password);
+            Database = DatabaseModel.Create(DatabasePath, Password.Password);
 
             return true;
-        }
-
-        private static int GetPasswordLength(string password)
-        {
-            return password.Length;
-        }
-
-        private static double GetPasswordEntropy(string password)
-        {
-            return PasswordUtils.MeasurePasswordEntropy(password);
-        }
-
-        private static bool GetPasswordMismatch(string password, string passwordRepeat)
-        {
-            return password != passwordRepeat;
-        }
-
-        private static ImageMoniker GetPasswordQualityIcon(double passwordEntropy)
-        {
-            if (passwordEntropy >= 75)
-            {
-                return ImageMoniker.StatusOK;
-            }
-            else
-            {
-                return ImageMoniker.StatusWarning;
-            }
-        }
-
-        private ImageMoniker passwordQualityIcon;
-
-        public ImageMoniker PasswordQualityIcon
-        { 
-            get => passwordQualityIcon;
-            private set => SetProperty(ref passwordQualityIcon, value);
         }
     }
 }

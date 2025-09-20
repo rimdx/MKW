@@ -19,7 +19,7 @@ namespace MKW.GUI
         {
             try
             {
-                if (viewModel.PasswordMismatch)
+                if (viewModel.Password.PasswordMismatch)
                 {
                     throw new Exception("Password and repeated password don't match.");
                 }
@@ -35,12 +35,12 @@ namespace MKW.GUI
 
         private void ctlPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            viewModel.Password = ctlPassword.Password;
+            viewModel.Password.Password = ctlPassword.Password;
         }
 
         private void ctlPasswordRepeat_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            viewModel.PasswordRepeat = ctlPasswordRepeat.Password;
+            viewModel.Password.PasswordRepeat = ctlPasswordRepeat.Password;
         }
     }
 }
