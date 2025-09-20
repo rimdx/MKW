@@ -8,6 +8,9 @@
 
         public required ReadOnlyMemory<byte> PrivateKey { get; init; }
 
+        public required ReadOnlyMemory<byte> Metadata { get; init; }
+        public required ReadOnlyMemory<byte> MetadataAdminSignature { get; init; }
+
         public required List<ReadOnlyMemory<byte>> Trust { get; init; }
     }
 }
