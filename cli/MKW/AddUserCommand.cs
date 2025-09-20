@@ -18,16 +18,15 @@ namespace MKW
 
             // TODO:
 
-            UserAccessRequest request = session.CreateUserAccessRequest(
-                GetPassword(argv),
+            UserAccessRequest request = session.CreateUserAccessRequest(GetPassword(argv));
+
+            UserInfo user = session.CreateUser(
+                request,
                 new UserMetadata
                 {
                     UserId = "",
                     DisplayName = "",
-                }
-            );
-
-            UserInfo user = session.CreateUser(request);
+                });
 
             Console.WriteLine($"User added with ID: {user.Id}");
         }

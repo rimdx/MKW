@@ -55,14 +55,7 @@ namespace MKW.GUI.RequestAccessWizard
         {
             EnsurePassword();
 
-            UserAccessRequest request = Database.Client.CreateUserAccessRequest(
-                Password.Password,
-                new UserMetadata
-                {
-                    UserId = userName,
-                    DisplayName = userDisplayName,
-                }
-            );
+            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password.Password);
 
             IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
             KeyFormatter keyFormatter = new KeyFormatter(52);
