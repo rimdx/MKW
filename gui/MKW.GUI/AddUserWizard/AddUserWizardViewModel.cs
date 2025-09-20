@@ -22,6 +22,7 @@ namespace MKW.GUI.AddUserWizard
             AddPage(new PageImportRequest(this));
             AddPage(new PageUserDetails(this));
             AddPage(new PageConfirmation(this));
+            AddPage(new PageCompleted(this));
         }
 
         private string requestString = "";
@@ -68,7 +69,7 @@ namespace MKW.GUI.AddUserWizard
             }
         }
 
-        public override bool Finish()
+        public void DoAddUser()
         {
             if (Request == null)
             {
@@ -76,8 +77,6 @@ namespace MKW.GUI.AddUserWizard
             }
 
             model.AddUser(Request);
-
-            return true;
         }
     }
 }
