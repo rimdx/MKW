@@ -3,7 +3,6 @@ using MKW.Core.Client.AccessRequest;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
-using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
 {
