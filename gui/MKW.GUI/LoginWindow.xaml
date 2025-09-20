@@ -57,7 +57,7 @@
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
 
-              <images:CrispImage Moniker="{Binding Icon}" />
+              <local:CrispImage Moniker="{Binding Icon}" />
               <TextBlock Grid.Column="2" Text="{Binding Name}" />
             </Grid>
           </DataTemplate>

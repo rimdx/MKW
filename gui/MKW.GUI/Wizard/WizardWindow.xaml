@@ -41,9 +41,9 @@
                FontWeight="SemiBold"
                VerticalAlignment="Center"/>
 
-        <images:CrispImage Grid.Column="2"
-                           Height="32"
-                           Moniker="{Binding Icon}" />
+        <local:CrispImage Grid.Column="2"
+                          Height="32"
+                          Moniker="{Binding Icon}" />
       </Grid>
     </Border>
 

@@ -1,7 +1,8 @@
-﻿using System.Windows;
+﻿using MKW.GUI.Images;
+using System.Windows;
 using System.Windows.Controls;
 
-namespace MKW.GUI.Images
+namespace MKW.GUI
 {
     public class CrispImage : Viewbox
     {
