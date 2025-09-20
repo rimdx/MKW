@@ -59,8 +59,8 @@
               <GridViewColumn.CellTemplate>
                 <DataTemplate DataType="local:DatabaseUserModel">
                   <StackPanel Orientation="Horizontal">
-                    <ContentControl Content="{Binding StatusIcon}"
-                                    Margin="0,0,6,0" />
+                    <local:CrispImage Moniker="{Binding StatusIcon}"
+                                      Margin="0,0,6,0" />
                     <TextBlock Text="{Binding StatusText}" />
                   </StackPanel>
                 </DataTemplate>

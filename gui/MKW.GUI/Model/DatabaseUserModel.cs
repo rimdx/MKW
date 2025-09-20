@@ -31,11 +31,11 @@ namespace MKW.GUI.Model
 
         public object StatusIcon => trust switch
         {
-            Trust.SelfTrust => new StatusOK(),
-            Trust.ExplicitTrust => new StatusOK(),
-            Trust.ImplicitTrust => new StatusOK(),
-            Trust.None => new StatusWarning(),
-            Trust.Unknown => new StatusWarning(),
+            Trust.SelfTrust => ImageMoniker.StatusOK,
+            Trust.ExplicitTrust => ImageMoniker.StatusOK,
+            Trust.ImplicitTrust => ImageMoniker.StatusOK,
+            Trust.None => ImageMoniker.StatusWarning,
+            Trust.Unknown => ImageMoniker.StatusWarning,
         };
 
         public bool IsVerifiable => trust switch
