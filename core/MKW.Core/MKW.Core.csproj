@@ -6,4 +6,8 @@
     <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Condition="'$(TargetFramework)' == 'net472'" Include="System.Text.Json" Version="9.0.8" />
+  </ItemGroup>
+
 </Project>
