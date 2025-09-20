@@ -37,7 +37,15 @@ namespace MKW.GUI.RequestAccessWizard
         {
             EnsurePassword();
 
-            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password.Password);
+            UserAccessRequest request = Database.Client.CreateUserAccessRequest(
+                Password.Password,
+                new UserMetadata
+                {
+                    // chemodax, do it!
+                    DisplayName = "",
+                    UserId = ""
+                }
+            );
 
             IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
             KeyFormatter keyFormatter = new KeyFormatter(52);

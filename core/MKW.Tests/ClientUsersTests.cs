@@ -81,7 +81,13 @@ namespace MKW.Tests
             }
 
             // create request
-            UserAccessRequest request = client.CreateUserAccessRequest("secret");
+            UserAccessRequest request = client.CreateUserAccessRequest(
+                "secret",
+                new UserMetadata
+                {
+                    DisplayName = "Mr. Bob",
+                    UserId = "notbob@contoso.com"
+                });
 
             // nothing changed yet
             CollectionAssert.AreEqual(
