@@ -2,11 +2,11 @@
 
 namespace MKW.GUI.RequestAccessWizard
 {
-    public partial class RequestAccessWizardWelcomePage : WizardPage
+    public partial class WelcomePage : WizardPage
     {
         private readonly RequestAccessWizardViewModel viewModel;
 
-        public RequestAccessWizardWelcomePage(RequestAccessWizardViewModel viewModel)
+        public WelcomePage(RequestAccessWizardViewModel viewModel)
             : base("Welcome")
         {
             this.viewModel = viewModel;

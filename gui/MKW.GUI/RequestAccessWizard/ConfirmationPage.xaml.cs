@@ -3,12 +3,12 @@ using System.Windows;
 
 namespace MKW.GUI.RequestAccessWizard
 {
-    public partial class RequestAccessWizardPasswordPage : WizardPage
+    public partial class ConfirmationPage : WizardPage
     {
         private readonly RequestAccessWizardViewModel viewModel;
 
-        public RequestAccessWizardPasswordPage(RequestAccessWizardViewModel viewModel)
-            : base("Create Password")
+        public ConfirmationPage(RequestAccessWizardViewModel viewModel)
+            : base("Confirm Access Request Creation")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;
@@ -19,7 +19,7 @@ namespace MKW.GUI.RequestAccessWizard
         {
             try
             {
-                viewModel.EnsurePassword();
+                viewModel.GenerateRequest();
                 return true;
             }
             catch (Exception ex)
@@ -27,16 +27,6 @@ namespace MKW.GUI.RequestAccessWizard
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
                 return false;
             }
-        }
-
-        private void ctlPassword_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            viewModel.Password.Password = ctlPassword.Password;
-        }
-
-        private void ctlPasswordRepeat_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            viewModel.Password.PasswordRepeat = ctlPasswordRepeat.Password;
         }
     }
 }

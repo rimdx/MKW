@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.RequestAccessWizard
 {
-    public partial class RequestAccessWizardResultsPage : WizardPage
+    public partial class ResultsPage : WizardPage
     {
         private readonly RequestAccessWizardViewModel viewModel;
 
-        public RequestAccessWizardResultsPage(RequestAccessWizardViewModel viewModel)
+        public ResultsPage(RequestAccessWizardViewModel viewModel)
             : base("Database Access Request is Ready!")
         {
             this.viewModel = viewModel;

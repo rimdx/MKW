@@ -17,10 +17,10 @@ namespace MKW.GUI.RequestAccessWizard
             Database = database;
             Password = new PasswordViewModel();
 
-            AddPage(new RequestAccessWizardWelcomePage(this));
-            AddPage(new RequestAccessWizardPasswordPage(this));
-            AddPage(new RequestAccessWizardConfirmationPage(this));
-            AddPage(new RequestAccessWizardResultsPage(this));
+            AddPage(new WelcomePage(this));
+            AddPage(new PasswordPage(this));
+            AddPage(new ConfirmationPage(this));
+            AddPage(new ResultsPage(this));
         }
 
         public DatabaseModel Database { get; private set; }
