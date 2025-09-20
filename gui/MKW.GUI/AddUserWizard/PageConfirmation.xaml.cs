@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Wizard;
+using System.Windows;
 
 namespace MKW.GUI.AddUserWizard
 {
@@ -12,6 +13,20 @@ namespace MKW.GUI.AddUserWizard
             this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        public override bool Next()
+        {
+            try
+            {
+                viewModel.DoAddUser();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                return false;
+            }
         }
     }
 }
