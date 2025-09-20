@@ -102,7 +102,7 @@ namespace MKW.GUI.Model
                 throw new Exception("Not an admin.");
             }
 
-            UserInfo user = Client.CreateUser(request);
+            UserInfo user = Client.CreateUser(request, null);
             // TODO: rollback if failed
             Admin.AddTrust(user.Id);
 

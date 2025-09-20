@@ -20,7 +20,7 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserAccessRequest CreateUserAccessRequest(string password, UserMetadata metadata)
+        public UserAccessRequest CreateUserAccessRequest(string password)
         {
             IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
 
@@ -28,8 +28,6 @@ namespace MKW.Core.Client
 
             IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
-
-            ReadOnlyMemory<byte> encodedMetadata = UserMetadataSerializer.Serialize(metadata);
 
             // TODO: prompt user?
             Memory<byte> signature = systemCreds.Transformer.Sign(admin.PublicKey.Span);
@@ -40,17 +38,17 @@ namespace MKW.Core.Client
                 PublicKey = systemCreds.PublicKey,
                 EncryptedPrivateKey = systemCreds.PrivateKey,
                 AdminSignature = signature,
-                Metadata = encodedMetadata,
             };
         }
 
-        public UserInfo CreateUser(UserAccessRequest request)
+        public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
         {
             IDatabaseUser user = database.CreateUser(UserId.Create());
 
             user.Salt = request.Salt;
             user.PublicKey = request.PublicKey;
             user.PrivateKey = request.EncryptedPrivateKey;
+            user.Metadata = UserMetadataSerializer.Serialize(metadata);
             user.AddTrust(request.AdminSignature);
 
             user.Save();

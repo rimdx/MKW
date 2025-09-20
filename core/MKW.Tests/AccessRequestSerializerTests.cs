@@ -22,13 +22,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            UserAccessRequest req1 = client.CreateUserAccessRequest(
-                "abc",
-                new UserMetadata
-                {
-                    DisplayName = "Mr. Bob",
-                    UserId = "notbob@contoso.com"
-                });
+            UserAccessRequest req1 = client.CreateUserAccessRequest("abc");
 
             ReadOnlyMemory<byte> data = serializer.Serialize(req1);
             UserAccessRequest req2 = serializer.Deserialize(data.Span);
