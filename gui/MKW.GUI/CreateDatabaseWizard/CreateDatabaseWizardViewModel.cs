@@ -1,4 +1,5 @@
-﻿using MKW.GUI.Model;
+﻿using MKW.Common;
+using MKW.GUI.Model;
 using MKW.GUI.Services;
 using MKW.GUI.Wizard;
 using System.IO;
@@ -10,11 +11,22 @@ namespace MKW.GUI
         public DatabaseModel? Database { get; private set; }
 
         private readonly RegistryService registry;
+        private string password;
+        private string passwordRepeat;
+        private double passwordEntropy;
+        private int passwordLength;
+        private bool passwordMismatch;
 
         public CreateDatabaseWizardViewModel(RegistryService registry)
             : base("Create New Database")
         {
             this.registry = registry;
+            this.password = "";
+            this.passwordRepeat = "";
+            
+            passwordEntropy = GetPasswordEntropy(password);
+            passwordLength = GetPasswordLength(password);
+            passwordMismatch = GetPasswordMismatch(password, passwordRepeat);
 
             databaseDirectory = registry.GetLastDatabaseDirectory();
             databaseName = "New Database.mkw";
@@ -24,7 +36,49 @@ namespace MKW.GUI
             AddPage(new CreateDatabaseConfirm(this));
         }
 
-        public string Password { get; set; } = "";
+        public string Password
+        {
+            get => password;
+            set
+            {
+                if (SetProperty(ref password, value))
+                {
+                    PasswordEntropy = GetPasswordEntropy(password);
+                    PasswordLength = GetPasswordLength(password);
+                    PasswordMismatch = GetPasswordMismatch(password, passwordRepeat);
+                }
+            }
+        }
+
+        public string PasswordRepeat
+        {
+            get => passwordRepeat;
+            set
+            {
+                if (SetProperty(ref passwordRepeat, value))
+                {
+                    PasswordMismatch = GetPasswordMismatch(password, passwordRepeat);
+                }
+            }
+        }
+
+        public bool PasswordMismatch
+        {
+            get => passwordMismatch;
+            private set => SetProperty(ref passwordMismatch, value);
+        }
+
+        public double PasswordEntropy
+        {
+            get => passwordEntropy;
+            private set => SetProperty(ref passwordEntropy, value);
+        }
+
+        public int PasswordLength
+        {
+            get => passwordLength;
+            private set => SetProperty(ref passwordLength, value);
+        }
 
         public string DatabasePath => Path.Combine(DatabaseDirectory, DatabaseName);
 
@@ -65,5 +119,21 @@ namespace MKW.GUI
 
             return true;
         }
+
+        private static int GetPasswordLength(string password)
+        {
+            return password.Length;
+        }
+
+        private static double GetPasswordEntropy(string password)
+        {
+            return PasswordUtils.MeasurePasswordEntropy(password);
+        }
+
+        private static bool GetPasswordMismatch(string password, string passwordRepeat)
+        {
+            return password != passwordRepeat;
+        }
+
     }
 }
