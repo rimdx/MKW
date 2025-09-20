@@ -5,11 +5,11 @@ using System.Windows.Input;
 
 namespace MKW.GUI.Database
 {
-    public partial class DatabaseUsersPage : UserControl
+    public partial class PageUsers : UserControl
     {
         private readonly DatabaseViewModel model;
 
-        public DatabaseUsersPage(DatabaseViewModel model)
+        public PageUsers(DatabaseViewModel model)
         {
             this.model = model;
             DataContext = model;
