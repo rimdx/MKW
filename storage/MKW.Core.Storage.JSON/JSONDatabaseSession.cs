@@ -27,15 +27,23 @@ namespace MKW.Core.Storage.JSON
         public static JSONDatabaseSession Create(string path)
         {
             JSONDatabase database = new JSONDatabase();
-            JSONDatabaseSession session = new JSONDatabaseSession(database, path);
 
-            using (File.Create(path))
+            using (FileStream file = File.Create(path))
             {
+                try
+                {
+                    JsonSerializer.Serialize(file, database);
+                    file.Flush(true);
+                }
+                catch
+                {
+                    file.Close();
+                    File.Delete(path);
+                    throw;
+                }
             }
 
-            session.Save();
-
-            return session;
+            return new JSONDatabaseSession(database, path);
         }
 
         public override void Save()
