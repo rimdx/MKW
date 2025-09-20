@@ -21,6 +21,11 @@ namespace MKW.Core.Editor
             trustEditor = new TrustEditor(proxy);
         }
 
+        public UserMetadata OpenMetadata()
+        {
+            return proxy.OpenMetadata();
+        }
+
         public void Commit()
         {
             trustEditor.Commit();

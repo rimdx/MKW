@@ -9,5 +9,7 @@ namespace MKW.Core
         , IDisposable
     {
         UserId Id { get; }
+
+        UserMetadata OpenMetadata();
     }
 }
