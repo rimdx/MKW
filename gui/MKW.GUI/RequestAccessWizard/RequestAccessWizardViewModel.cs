@@ -11,7 +11,7 @@ namespace MKW.GUI.RequestAccessWizard
     public class RequestAccessWizardViewModel : WizardViewModel
     {
         public RequestAccessWizardViewModel(DatabaseModel database)
-            : base(MakeTitle(database), ImageMoniker.NewUser)
+            : base(FormatTitle(database), ImageMoniker.NewUser)
         {
             Database = database;
 
@@ -47,7 +47,7 @@ namespace MKW.GUI.RequestAccessWizard
             RequestString = keyFormatter.GetBase64String(data.Span);
         }
 
-        private static string MakeTitle(DatabaseModel database)
+        private static string FormatTitle(DatabaseModel database)
         {
             return $"Request Access - { Path.GetFileName(database.Path) }";
         }
