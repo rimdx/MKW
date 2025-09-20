@@ -13,16 +13,7 @@ namespace MKW.Core.Notify
         {
         }
 
-        public static UserInfo FromDatabaseUser(IDatabaseUser user)
-        {
-            return new UserInfo
-            {
-                Id = user.Id,
-                PublicKey = user.PublicKey
-            };
-        }
-
-        public static UserInfo FromDatabaseUser(IDatabaseUser user, Trust trust)
+        public static UserInfo FromDatabaseUser(IDatabaseUser user, Trust trust = Trust.Unknown)
         {
             return new UserInfo
             {
