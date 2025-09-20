@@ -98,9 +98,9 @@ namespace MKW.CommandLine.Tests
                 admin.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
                 admin.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
 
-                UserInfo oldUser = client.CreateUser("iamanoldman");
+                using IUserSession oldUser = sbox.CreateUser(client, "iamanoldman", out _, false);
                 admin.AddTrust(oldUser.Id);
-                UserInfo newUser = client.CreateUser("ihatehimbutcantseehisstuff");
+                using IUserSession newUser = sbox.CreateUser(client, "ihatehimbutcantseehisstuff", out _, false);
                 admin.RemoveTrust(newUser.Id);
             }
 

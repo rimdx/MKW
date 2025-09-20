@@ -6,8 +6,6 @@ namespace MKW.Core
 {
     public interface IUserController : IDisposable
     {
-        UserInfo CreateUser(string password);
-
         IUserSession OpenUser(string password);
         IUserSession OpenUser(UserId id, string password);
         IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds);

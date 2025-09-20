@@ -20,27 +20,6 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserInfo CreateUser(string password)
-        {
-            // TODO: sign admin
-            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
-
-            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
-
-            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
-            using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
-
-            IDatabaseUser user = database.CreateUser(UserId.Create());
-
-            user.PublicKey = systemCreds.PublicKey;
-            user.PrivateKey = systemCreds.PrivateKey;
-            user.Salt = systemCreds.Salt;
-
-            user.Save();
-
-            return UserInfo.FromDatabaseUser(user);
-        }
-
         public UserAccessRequest CreateUserAccessRequest(string password)
         {
             IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);

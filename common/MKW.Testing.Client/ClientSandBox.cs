@@ -46,7 +46,8 @@ namespace MKW.Testing.Client
         {
             using IUserSession admin = OpenAdmin(client);
 
-            user = client.CreateUser(password);
+            UserAccessRequest request = client.CreateUserAccessRequest(password);
+            user = client.CreateUser(request);
 
             IUserSession userSession = client.OpenUser(user.Id, password);
 
@@ -54,6 +55,10 @@ namespace MKW.Testing.Client
             {
                 admin.AddTrust(user.Id);
                 userSession.AddTrust(admin.Id);
+            }
+            else
+            {
+                userSession.RemoveTrust(admin.Id);
             }
 
             return userSession;
