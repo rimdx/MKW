@@ -1,4 +1,5 @@
 ﻿using MKW.Common;
+using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Services;
 using MKW.GUI.Wizard;
@@ -18,7 +19,7 @@ namespace MKW.GUI
         private bool passwordMismatch;
 
         public CreateDatabaseWizardViewModel(RegistryService registry)
-            : base("Create New Database")
+            : base("Create New Database", Moniker.AddDatabase)
         {
             this.registry = registry;
             this.password = "";

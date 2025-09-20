@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Client.AccessRequest;
+using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Services;
 using MKW.GUI.Wizard;
@@ -10,7 +11,7 @@ namespace MKW.GUI.RequestAccessWizard
     public class RequestAccessWizardViewModel : WizardViewModel
     {
         public RequestAccessWizardViewModel(DatabaseModel database)
-            : base(MakeTitle(database))
+            : base(MakeTitle(database), Moniker.NewUser)
         {
             Database = database;
 

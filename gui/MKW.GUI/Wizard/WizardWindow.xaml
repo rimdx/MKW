@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MKW.GUI"
         xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+        xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type wizard:WizardViewModel}}"
         Title="{Binding Title}"
@@ -40,10 +41,9 @@
                FontWeight="SemiBold"
                VerticalAlignment="Center"/>
 
-        <Viewbox
-          Height="32"
-          x:Name="WizardIcon"
-          Grid.Column="2" />
+        <images:CrispImage Grid.Column="2"
+                           Height="32"
+                           Moniker="{Binding Icon}" />
       </Grid>
     </Border>
 
