@@ -69,7 +69,7 @@ namespace MKW.Tests
             using IUserSession admin = sbox.OpenAdmin(client);
 
             admin.AddTrust(trusted.Id);
-            EntryInfo entry = client.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
+            EntryInfo entry = admin.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
 
             {
                 using IUserSession user = client.OpenUser("trusted");
