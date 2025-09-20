@@ -26,6 +26,7 @@ namespace MKW.GUI.CreateDatabaseWizard
             AddPage(new PageLocation(this));
             AddPage(new PageMasterPassword(this));
             AddPage(new PageConfirmation(this));
+            AddPage(new PageCompleted(this));
         }
 
         public string DatabasePath
@@ -78,11 +79,9 @@ namespace MKW.GUI.CreateDatabaseWizard
             return File.Exists(DatabasePath);
         }
 
-        public override bool Finish()
+        public void DoCreate()
         {
             Database = DatabaseModel.Create(DatabasePath, Password.Password);
-
-            return true;
         }
     }
 }
