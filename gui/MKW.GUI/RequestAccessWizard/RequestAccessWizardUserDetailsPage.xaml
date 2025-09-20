@@ -18,7 +18,7 @@
                d:Text="sally@contoso.com"
                Padding="3" />
 
-      <Grid Margin="0,3,0,0" >
+      <Grid Margin="0,3,0,0">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="auto" />
           <ColumnDefinition Width="*" />
