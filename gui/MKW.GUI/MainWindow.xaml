@@ -114,7 +114,7 @@
                     BorderThickness="0"
                     Command="ApplicationCommands.Close"
                     CommandParameter="{Binding}">
-              <images:Close MaxWidth="12" MaxHeight="12" />
+              <images:CrispImage Moniker="Close" />
             </Button>
           </StackPanel>
         </DataTemplate>
