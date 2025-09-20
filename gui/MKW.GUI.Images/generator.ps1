@@ -1,13 +1,24 @@
-$ImageMonikerCS = "$PSScriptRoot/ImageMoniker.cs"
-$ImageFactoryCS = "$PSScriptRoot/ImageFactory.cs"
+$Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
+$ascii = [System.Text.Encoding]::ASCII
+$files = Get-ChildItem $PSScriptRoot *.xaml
 
-"namespace MKW.GUI.Images
+### ImageMoniker.cs
+$content = "namespace MKW.GUI.Images
 {
     public enum ImageMoniker
     {
-        None," | Out-File $ImageMonikerCS -Encoding utf8
+        None,
+"
+$files | ForEach-Object {
+    $name = $_.BaseName
+    $content += "        $name,`n"
+}
+$content += "    }
+}"
+[System.IO.File]::WriteAllLines("$PSScriptRoot/ImageMoniker.cs", $content, $Utf8NoBomEncoding)
 
-"using System.Windows.Controls;
+### ImageFactory.cs
+$content = "using System.Windows.Controls;
 
 namespace MKW.GUI.Images
 {
@@ -15,13 +26,25 @@ namespace MKW.GUI.Images
     {
         public static Viewbox? MakeImage(ImageMoniker moniker) => moniker switch
         {
-            ImageMoniker.None => null," | Out-File $ImageFactoryCS -Encoding utf8
+            ImageMoniker.None => null,
+"
+$files | ForEach-Object {
+    $name = $_.BaseName
+    $content += "            ImageMoniker.$name => new $name(),`n"
+}
+$content +=
+"        };
+    }
+}"
 
-Get-ChildItem $PSScriptRoot *.xaml | ForEach-Object {
+[System.IO.File]::WriteAllLines("$PSScriptRoot/ImageFactory.cs", $content, $Utf8NoBomEncoding)
+
+$files | ForEach-Object {
     $name = $_.BaseName
     $path = $_.FullName
 
-"using System.Windows.Controls;
+    ### [Name].xaml.cs
+    $content = "using System.Windows.Controls;
 
 namespace MKW.GUI.Images
 {
@@ -32,22 +55,16 @@ namespace MKW.GUI.Images
             InitializeComponent();
         }
     }
-}" | Out-File -FilePath "$path.cs" -Encoding utf8
+}"
+    [System.IO.File]::WriteAllLines("$path.cs", $content, $Utf8NoBomEncoding)
 
-    (Get-Content -Path $path).Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=") | Out-File -FilePath $path -Encoding ascii
-
-    "        $name," | Add-Content $ImageMonikerCS -Encoding utf8
-    "            ImageMoniker.$name => new $name()," | Add-Content $ImageFactoryCS -Encoding utf8
+    ### [Name].xaml
+    $content = Get-Content -Path $path
+    $content = $content.Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=")
+    [System.IO.File]::WriteAllLines("$path", $content, $ascii)
 
     svn add "$path.cs" --force
 }
-
-"    }
-}" | Add-Content $ImageMonikerCS -Encoding utf8
-
-"        };
-    }
-}" | Add-Content $ImageFactoryCS -Encoding utf8
 
 Write-Host "-----"
 
