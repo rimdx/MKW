@@ -6,6 +6,8 @@
                    xmlns:gui="clr-namespace:MKW.GUI"
                    xmlns:local="clr-namespace:MKW.GUI.AddUserWizard"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:system="clr-namespace:System;assembly=mscorlib"
+                   d:DataContext="{d:DesignInstance Type=local:AddUserWizardViewModel}"
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
@@ -18,11 +20,38 @@
         correct and you trust this user.
       </TextBlock>
 
-      <Label Margin="0,0,0,3" Padding="0" Content="User name:" />
-      <TextBox Margin="0,0,0,6" Padding="3" IsReadOnly="True">TODO</TextBox>
+      <TextBlock Margin="0,0,0,3" Text="User details" FontWeight="SemiBold" />
 
-      <Label Margin="0,0,0,3" Padding="0" Content="Public key fingerprint:" />
-      <TextBox Margin="0,0,0,6" Padding="3" IsReadOnly="True">TODO</TextBox>
+      <Border BorderThickness="1"
+              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+              Padding="3,6,3,3">
+        <StackPanel Orientation="Vertical">
+          <StackPanel.Resources>
+            <system:Double x:Key="TableWidth">135</system:Double>
+          </StackPanel.Resources>
+
+          <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+            <TextBlock Width="{StaticResource TableWidth}"
+                       Text="User ID:" />
+            <TextBlock Text="{Binding UserName}"
+                       d:Text="john.doe@contoso.com" />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+            <TextBlock Width="{StaticResource TableWidth}"
+                       Text="Display name:" />
+            <TextBlock Text="{Binding UserDisplayName}"
+                       d:Text="Mrs. John Doe" />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+            <TextBlock Width="{StaticResource TableWidth}"
+                       Text="Public key fingerprint:" />
+            <TextBlock Text="C3A6 5E46 7B54 77DF 3C4C 9790 4D22 B3CA 5B32 FF66" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
     </StackPanel>
   </Grid>
 </wizard:WizardPage>
