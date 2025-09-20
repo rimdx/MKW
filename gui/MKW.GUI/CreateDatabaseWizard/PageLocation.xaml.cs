@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.CreateDatabaseWizard
 {
-    public partial class CreateDatabaseLocation : WizardPage
+    public partial class PageLocation : WizardPage
     {
         private readonly CreateDatabaseWizardViewModel viewModel;
 
-        public CreateDatabaseLocation(CreateDatabaseWizardViewModel viewModel)
+        public PageLocation(CreateDatabaseWizardViewModel viewModel)
             : base("Choose Location")
         {
             this.viewModel = viewModel;

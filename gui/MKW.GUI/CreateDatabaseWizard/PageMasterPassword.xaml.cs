@@ -3,11 +3,11 @@ using System.Windows;
 
 namespace MKW.GUI.CreateDatabaseWizard
 {
-    public partial class CreateDatabaseMasterPassword : WizardPage
+    public partial class PageMasterPassword : WizardPage
     {
         private readonly CreateDatabaseWizardViewModel viewModel;
 
-        public CreateDatabaseMasterPassword(CreateDatabaseWizardViewModel viewModel)
+        public PageMasterPassword(CreateDatabaseWizardViewModel viewModel)
             : base("Create Master Password")
         {
             this.viewModel = viewModel;

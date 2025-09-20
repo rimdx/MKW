@@ -23,9 +23,9 @@ namespace MKW.GUI.CreateDatabaseWizard
 
             Password = new PasswordViewModel();
 
-            AddPage(new CreateDatabaseLocation(this));
-            AddPage(new CreateDatabaseMasterPassword(this));
-            AddPage(new CreateDatabaseConfirm(this));
+            AddPage(new PageLocation(this));
+            AddPage(new PageMasterPassword(this));
+            AddPage(new PageConfirmation(this));
         }
 
         public string DatabasePath

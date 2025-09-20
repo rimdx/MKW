@@ -2,11 +2,11 @@
 
 namespace MKW.GUI.CreateDatabaseWizard
 {
-    public partial class CreateDatabaseConfirm : WizardPage
+    public partial class PageConfirmation : WizardPage
     {
         private CreateDatabaseWizardViewModel viewModel;
 
-        public CreateDatabaseConfirm(CreateDatabaseWizardViewModel viewModel)
+        public PageConfirmation(CreateDatabaseWizardViewModel viewModel)
             : base("Confirm Database Creation")
         {
             this.viewModel = viewModel;
