@@ -7,7 +7,7 @@ namespace MKW.GUI.AddUserWizard
         private readonly AddUserWizardViewModel viewModel;
 
         public AddUserWizardConfirmationPage(AddUserWizardViewModel viewModel)
-            : base("Confirm User Creation")
+            : base("Confirmation")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;
