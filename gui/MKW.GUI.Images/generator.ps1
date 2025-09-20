@@ -19,6 +19,7 @@ namespace MKW.GUI.Images
 
 Get-ChildItem $PSScriptRoot *.xaml | ForEach-Object {
     $name = $_.BaseName
+    $path = $_.FullName
 
 "using System.Windows.Controls;
 
@@ -31,14 +32,14 @@ namespace MKW.GUI.Images
             InitializeComponent();
         }
     }
-}" | Out-File -FilePath "$_.cs" -Encoding utf8
+}" | Out-File -FilePath "$path.cs" -Encoding utf8
 
-    (Get-Content -Path $_).Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=") | Out-File -FilePath $_ -Encoding ascii
+    (Get-Content -Path $path).Replace("<Viewbox Width=", "<Viewbox x:Class=`"MKW.GUI.Images.$name`" Width=") | Out-File -FilePath $path -Encoding ascii
 
     "        $name," | Add-Content $ImageMonikerCS -Encoding utf8
     "            ImageMoniker.$name => new $name()," | Add-Content $ImageFactoryCS -Encoding utf8
 
-    svn add "$_.cs" --force
+    svn add "$path.cs" --force
 }
 
 "    }
