@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Client;
 using MKW.Core.Storage;
+using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Core.Editor.Tests
@@ -9,7 +10,7 @@ namespace MKW.Core.Editor.Tests
         [Test]
         public void SimpleTest()
         {
-            using SandBox sbox = new SandBox();
+            using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
             using IUserSession user = sbox.CreateUser(client, "123", out _);
