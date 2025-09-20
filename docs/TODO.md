@@ -116,3 +116,8 @@
 
 - [ ] Secret entry metadata
 - [ ] Public user metadata
+
+# User Metadata
+
+Display Name (Bob Smith)
+User ID (bob@contoso.com)
