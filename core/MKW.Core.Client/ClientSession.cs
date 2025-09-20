@@ -110,9 +110,9 @@ namespace MKW.Core.Client
             return userController.GetUserInfo(id);
         }
 
-        public UserAccessRequest CreateUserAccessRequest(string password)
+        public UserAccessRequest CreateUserAccessRequest(string password, UserMetadata metadata)
         {
-            return userController.CreateUserAccessRequest(password);
+            return userController.CreateUserAccessRequest(password, metadata);
         }
 
         public UserInfo CreateUser(UserAccessRequest request)

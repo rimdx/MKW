@@ -46,7 +46,15 @@ namespace MKW.Testing.Client
         {
             using IUserSession admin = OpenAdmin(client);
 
-            UserAccessRequest request = client.CreateUserAccessRequest(password);
+            UserAccessRequest request = client.CreateUserAccessRequest(
+                password,
+                new UserMetadata
+                {
+                    UserId = $"{password}@privatetestgang.com",
+                    DisplayName = password
+                }
+            );
+
             user = client.CreateUser(request);
 
             IUserSession userSession = client.OpenUser(user.Id, password);

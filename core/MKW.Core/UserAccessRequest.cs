@@ -10,5 +10,7 @@
         public ReadOnlyMemory<byte> EncryptedPrivateKey { get; init; }
 
         public ReadOnlyMemory<byte> AdminSignature { get; init; }
+
+        public ReadOnlyMemory<byte> Metadata { get; init; }
     }
 }
