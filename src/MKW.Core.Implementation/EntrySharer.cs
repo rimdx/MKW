@@ -4,11 +4,11 @@ namespace MKW.Core.Implementation
 {
     public class EntrySharer : IDisposable
     {
-        private readonly IEntryAccessController accessController;
+        private readonly AccessController accessController;
         private readonly EntryDecoder decoder;
         private readonly EntryEncoder encoder;
 
-        public EntrySharer(IEntryAccessController accessController,
+        public EntrySharer(AccessController accessController,
                            EntryDecoder decoder,
                            EntryEncoder encoder)
         {

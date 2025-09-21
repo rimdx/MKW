@@ -7,7 +7,6 @@ namespace MKW.Core.Client
     public class UserEntry
         : Entry
         , IEntrySession
-        , IEntryAccessController
         , IDisposable
     {
         protected readonly UserSession user;
@@ -18,7 +17,7 @@ namespace MKW.Core.Client
                             ICryptographyProvider crypto,
                             UserSession user,
                             IDatabaseEntry entry,
-                            IEntryAccessController accessController)
+                            AccessController accessController)
             : base(database, crypto, entry, accessController)
         {
             this.user = user;

@@ -7,10 +7,10 @@ namespace MKW.Core.Implementation
     public class EntryEncoder : IDisposable
     {
         private readonly ICryptographyProvider crypto;
-        private readonly IEntryAccessController accessController;
+        private readonly AccessController accessController;
 
         public EntryEncoder(ICryptographyProvider crypto,
-                            IEntryAccessController accessController)
+                            AccessController accessController)
         {
             this.crypto = crypto;
             this.accessController = accessController;

@@ -3,20 +3,13 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Implementation
 {
-    public class UserAccessController
-        : IEntryAccessController
-        , IDisposable
+    public class UserAccessController : IDisposable
     {
         private readonly IUserSession me;
 
         public UserAccessController(IUserSession me)
         {
             this.me = me;
-        }
-
-        public IEnumerable<UserInfo> EnumerateAccess()
-        {
-            throw new NotImplementedException();
         }
 
         public void AddAccess(UserId userId)
