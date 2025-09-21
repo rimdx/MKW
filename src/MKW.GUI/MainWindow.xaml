@@ -105,7 +105,7 @@
                 Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
       <TabControl.ItemTemplate>
         <DataTemplate>
-          <Grid MinWidth="80">
+          <Grid MinWidth="80" ToolTip="{Binding Tooltip}">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />

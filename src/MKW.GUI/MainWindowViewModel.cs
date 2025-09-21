@@ -13,6 +13,7 @@ namespace MKW.GUI
     {
         private readonly DatabaseViewModel databaseViewModel;
         public string Header { get; }
+        public string Tooltip { get; }
         public ContentControl Content { get; }
 
         public DatabaseTabItemViewModel(DatabaseViewModel databaseViewModel)
@@ -20,6 +21,7 @@ namespace MKW.GUI
             this.databaseViewModel = databaseViewModel;
 
             Header = Path.GetFileNameWithoutExtension(databaseViewModel.Database.Path);
+            Tooltip = databaseViewModel.Database.Path;
             Content = new DatabasePage(databaseViewModel);
         }
 
