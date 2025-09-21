@@ -42,95 +42,64 @@ namespace MKW.Tests
                                    admin.OpenEntry(entry.Id).OpenPayload());
         }
 
-        //[Test]
-        //[Ignore("im too stupid for this rn")]
-        //public void HiddenEntriesTests()
-        //{
-        //    using ClientSandBox sbox = new ClientSandBox();
-        //    using ClientSession session = sbox.OpenSession();
+        [Test]
+        public void HiddenEntriesTests()
+        {
+            using ClientSandBox sbox = new ClientSandBox();
+            using IDatabase db = sbox.OpenDatabase();
+            using ClientSession client = ClientSession.Open(db);
 
-        //    using IUserSession oldSession = sbox.CreateUser(session, "iamanoldman", out _, false);
+            using IAdminSession admin = sbox.OpenAdmin(client);
+            using IUserSession oldUser = sbox.CreateUser(client, "iamanoldman", out _);
+            using IUserSession newUser = sbox.CreateUser(client, "ihatehimbutcantseehisstuff", out _);
 
-        //    oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")), new EntryPayload("entry1"));
-        //    oldSession.UpdateEntry(EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")), new EntryPayload("entry2"));
+            EntryId id1 = EntryId.Create();
+            EntryId id2 = EntryId.Create();
 
-        //    CollectionAssert.AreEqual(
-        //        new[]
-        //        {
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")),
-        //                Payload = new EntryPayload("entry1")
-        //            },
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")),
-        //                Payload = new EntryPayload("entry2")
-        //            },
-        //        },
-        //        oldSession.EnumerateEntries().Select(entry => new
-        //        {
-        //            Id = entry.Id,
-        //            Payload = entry.OpenPayload()
-        //        })
-        //    );
+            oldUser.UpdateEntry(id1, new EntryPayload("entry1"));
+            oldUser.UpdateEntry(id2, new EntryPayload("entry2"));
 
-        //    using IUserSession newSession = sbox.CreateUser(session, "ihatehimbutcantseehisstuff", out _, false);
+            {
+                IDatabaseEntry entry = db.OpenEntry(id1, false);
+                entry.Keys.Remove(newUser.Id);
+            }
 
-        //    newSession.UpdateEntry(EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")), new EntryPayload("entry3"));
+            CollectionAssert.AreEqual(
+                new EntryPayload?[]
+                {
+                    new EntryPayload("entry1"),
+                    new EntryPayload("entry2"),
+                },
+                oldUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+            );
+            CollectionAssert.AreEqual(
+                new EntryPayload?[]
+                {
+                    null,
+                    new EntryPayload("entry2"),
+                },
+                newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+            );
 
-        //    CollectionAssert.AreEqual(
-        //        new[]
-        //        {
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")),
-        //                Payload = (EntryPayload?)new EntryPayload("entry1")
-        //            },
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")),
-        //                Payload = (EntryPayload?)new EntryPayload("entry2")
-        //            },
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")),
-        //                Payload = (EntryPayload?)null
-        //            },
-        //        },
-        //        oldSession.EnumerateEntries().Select(entry => new
-        //        {
-        //            Id = entry.Id,
-        //            Payload = entry.OpenPayload()
-        //        })
-        //    );
+            oldUser.UpdateEntry(id1, new EntryPayload("newcontent"));
 
-        //    CollectionAssert.AreEqual(
-        //        new[]
-        //        {
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{9A7B1777-A77F-4C87-AC51-B330698EF737}")),
-        //                Payload = (EntryPayload?)null
-        //            },
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{F36E862F-C445-4EDD-9D5D-7414414330D9}")),
-        //                Payload = (EntryPayload?)null
-        //            },
-        //            new
-        //            {
-        //                Id = EntryId.FromGuid(new Guid("{77498C4F-60CC-4D6B-BDC8-204EB187AE26}")),
-        //                Payload = (EntryPayload?)new EntryPayload("entry3")
-        //            },
-        //        },
-        //        newSession.EnumerateEntries().Select(entry => new
-        //        {
-        //            Id = entry.Id,
-        //            Payload = entry.OpenPayload()
-        //        })
-        //    );
-        //}
+            CollectionAssert.AreEqual(
+                new EntryPayload?[]
+                {
+                    new EntryPayload("newcontent"),
+                    new EntryPayload("entry2"),
+                },
+                oldUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+            );
+            CollectionAssert.AreEqual(
+                new EntryPayload?[]
+                {
+                    null,
+                    new EntryPayload("entry2"),
+                },
+                newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+            );
+        }
 
         [Test]
         [Ignore("todo")]
