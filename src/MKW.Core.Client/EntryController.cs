@@ -54,7 +54,6 @@ namespace MKW.Core.Client
             return new EntryInfo
             {
                 Id = id,
-                Action = ActionInfo.Deleted,
                 EncodedForUsers = []
             };
         }
@@ -89,7 +88,6 @@ namespace MKW.Core.Client
                 {
                     Id = notify.Id,
                     EncodedForUsers = notify.EncodedForUsers,
-                    Action = created ? ActionInfo.Added : ActionInfo.Updated,
                 };
             }
         }

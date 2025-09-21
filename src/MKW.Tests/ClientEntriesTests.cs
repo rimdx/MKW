@@ -31,7 +31,6 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
 
             ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
-            ClassicAssert.AreEqual(ActionInfo.Added, entry.Action);
 
             CollectionAssert.AreEqual(
                 new UserInfo[]
