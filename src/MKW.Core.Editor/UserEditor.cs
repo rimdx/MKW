@@ -1,5 +1,4 @@
-﻿using MKW.Core.Notify;
-using MKW.Core.Storage;
+﻿using MKW.Core.Storage;
 
 namespace MKW.Core.Editor
 {

@@ -1,4 +1,4 @@
-﻿using MKW.Core.Notify;
+﻿using MKW.Core;
 using MKW.Core.Storage;
 using MKW.GUI.Model;
 using System.Collections.ObjectModel;
