@@ -28,8 +28,7 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish gui/MKW.GUI    /p:RuntimeIdentifier=win-x64  --framework net8.0-windows  ${{ env.Parameters }}
-          dotnet publish gui/MKW.GUI    --no-build                    --framework net472          ${{ env.Parameters }}
+          dotnet publish gui/MKW.GUI --no-build --framework net472 ${{ env.Parameters }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
