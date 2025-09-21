@@ -1,25 +1,25 @@
 ﻿using MKW.Core;
-using MKW.Core.Client;
 using MKW.Core.Notify;
 using System.CommandLine;
 
 namespace MKW
 {
-    public class AddUserCommand : MKWCommand
+    public class AddUserCommand : AdminCommand
     {
-        public AddUserCommand() : base(/* user, */ "add", "adds a user to the database")
+        public AddUserCommand() : base("add", "adds a user to the database")
         {
-            Add(CommonOptions.Password);
+            Add(CommonOptions.UserPassword);
         }
 
-        protected override void Execute(ParseResult argv)
+        protected override void Execute(ParseResult argv, ExecutionContext ctx)
         {
-            using ClientSession session = OpenSession(argv);
-            using IAdminSession admin = session.OpenAdmin("todo");
+            base.Execute(argv, ctx);
 
-            UserAccessRequest request = session.CreateUserAccessRequest(GetPassword(argv));
+            string password = argv.GetRequiredValue(CommonOptions.UserPassword);
 
-            UserInfo user = admin.CreateUser(
+            UserAccessRequest request = ctx.Client.CreateUserAccessRequest(password);
+
+            UserInfo user = ctx.Admin.CreateUser(
                 request,
                 new UserMetadata
                 {

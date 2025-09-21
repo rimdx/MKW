@@ -4,19 +4,17 @@ using System.CommandLine;
 
 namespace MKW
 {
-    public class ListEntriesCommand : MKWCommand
+    public class ListEntriesCommand : UserCommand
     {
-        public ListEntriesCommand() : base(/* entry */ "list", "list all entries in the database")
+        public ListEntriesCommand() : base("list", "list all entries in the database")
         {
-            Add(CommonOptions.Password);
         }
 
-        protected override void Execute(ParseResult argv)
+        protected override void Execute(ParseResult argv, ExecutionContext ctx)
         {
-            using ClientSession session = OpenSession(argv);
-            using IUserSession userSession = session.OpenUser(GetPassword(argv));
+            base.Execute(argv, ctx);
 
-            foreach (IEntrySession entry in userSession.EnumerateEntries())
+            foreach (IEntrySession entry in ctx.User.EnumerateEntries())
             {
                 Console.WriteLine($"-- {entry.Id}:");
 

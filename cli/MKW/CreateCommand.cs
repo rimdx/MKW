@@ -9,20 +9,25 @@ namespace MKW
     {
         public CreateCommand() : base("create", "initializes empty database")
         {
+            Add(CommonOptions.File);
             Add(CommonOptions.Password);
         }
 
-        protected override void Execute(ParseResult argv)
+        protected override void Execute(ParseResult argv, ExecutionContext ctx)
         {
-            using JSONDatabaseSession db = JSONDatabaseSession.Create(GetFilePath(argv));
+            base.Execute(argv, ctx);
 
-            using ClientSession client = ClientSession.Create(db,
-                                                              GetPassword(argv),
-                                                              new UserMetadata
-                                                              {
-                                                                  DisplayName = "",
-                                                                  UserId = ""
-                                                              });
+            string path = argv.GetRequiredValue(CommonOptions.File);
+
+            UserMetadata metadata = new UserMetadata
+            {
+                DisplayName = "",
+                UserId = ""
+            };
+
+            string password = GetPassword(argv);
+
+            ctx.CreateDatabase(path, password, metadata);
         }
     }
 }
