@@ -4,14 +4,11 @@ namespace MKW.Core.Client
 {
     public class UserMetadataDecoder : IDisposable
     {
-        private readonly IDatabaseUser user;
-
-        public UserMetadataDecoder(IDatabaseUser user)
+        public UserMetadataDecoder()
         {
-            this.user = user;
         }
 
-        public UserMetadata OpenMetadata()
+        public UserMetadata OpenMetadata(IDatabaseUser user)
         {
             UserMetadata metadata = UserMetadataSerializer.Deserialize(user.Metadata.Span);
 
