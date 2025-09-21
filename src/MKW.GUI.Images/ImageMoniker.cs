@@ -30,6 +30,7 @@ namespace MKW.GUI.Images
         OpenFolder,
         PasswordBox,
         PasswordStrength,
+        ReadOnlyDatabase,
         Save,
         SaveAs,
         StatusHelp,
