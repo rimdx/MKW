@@ -40,7 +40,6 @@ namespace MKW.Core.Editor
             return new EntryInfo
             {
                 Id = proxy.Id,
-                Action = ActionInfo.Deleted, // todo:
                 EncodedForUsers = [] // todo:
             };
         }

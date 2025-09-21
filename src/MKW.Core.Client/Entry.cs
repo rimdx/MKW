@@ -68,7 +68,6 @@ namespace MKW.Core.Client
             return new EntryInfo
             {
                 Id = entry.Id,
-                Action = ActionInfo.Updated,
                 EncodedForUsers = users
             };
         }
