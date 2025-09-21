@@ -16,6 +16,7 @@
   </Window.Resources>
   <Window.InputBindings>
     <KeyBinding Command="ApplicationCommands.Close" Key="F4" Modifiers="Ctrl" />
+    <KeyBinding Command="{x:Static local:AppCommands.LockDatabase}" Key="L" Modifiers="Ctrl" />
   </Window.InputBindings>
   <Window.CommandBindings>
     <CommandBinding Command="{x:Static local:AppCommands.About}"
@@ -64,6 +65,8 @@
         <Separator />
         <MenuItem Header="_Close" Command="ApplicationCommands.Close" />
         <Separator />
+        <MenuItem Header="_Lock Database" 
+                  Command="{x:Static local:AppCommands.LockDatabase}" />
         <MenuItem Header="_Exit" Command="{x:Static local:AppCommands.Exit}" />
       </MenuItem>
 

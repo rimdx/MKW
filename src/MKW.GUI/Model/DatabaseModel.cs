@@ -74,6 +74,12 @@ namespace MKW.GUI.Model
             }
         }
 
+        public void Lock()
+        {
+            User = null;
+            Admin = null;
+        }
+
         public void CreateEntry(string payload)
         {
             using IEntrySession entry = User!.CreateEntry();

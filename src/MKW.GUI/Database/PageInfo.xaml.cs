@@ -4,9 +4,9 @@ namespace MKW.GUI.Database
 {
     public partial class PageInfo : UserControl
     {
-        private readonly DatabaseViewModel model;
+        private readonly DatabaseUnlockedViewModel model;
 
-        public PageInfo(DatabaseViewModel model)
+        public PageInfo(DatabaseUnlockedViewModel model)
         {
             this.model = model;
             DataContext = this;
