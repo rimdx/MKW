@@ -3,7 +3,7 @@ using MKW.Core.Storage;
 
 namespace MKW.Core.Implementation
 {
-    public class AccessController : IEntryAccessController, IDisposable
+    public class AccessController : IDisposable
     {
         private readonly IDatabase database;
         private readonly HashSet<UserId> access;

@@ -7,7 +7,6 @@ namespace MKW.Core.Client
 {
     public class Entry
         : IEntrySession
-        , IEntryAccessController
         , IDisposable
     {
         protected readonly IDatabase database;
@@ -15,7 +14,7 @@ namespace MKW.Core.Client
 
         // TODO: dispose
         protected readonly IDatabaseEntry entry;
-        protected readonly IEntryAccessController accessController;
+        protected readonly AccessController accessController;
         protected readonly EntryEncoder encoder;
 
         public EntryId Id => entry.Id;
@@ -23,7 +22,7 @@ namespace MKW.Core.Client
         protected Entry(IDatabase database,
                         ICryptographyProvider crypto,
                         IDatabaseEntry entry,
-                        IEntryAccessController accessController)
+                        AccessController accessController)
         {
             this.database = database;
             this.crypto = crypto;
