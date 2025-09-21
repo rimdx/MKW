@@ -100,8 +100,6 @@ namespace MKW.Tests
                     UserId = "notbob@contoso.com"
                 });
 
-            admin.AddTrust(addedUser.Id);
-
             // verify
             CollectionAssert.AreEqual(
                 new[]

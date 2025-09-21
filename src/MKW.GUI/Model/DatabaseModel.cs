@@ -128,8 +128,6 @@ namespace MKW.GUI.Model
             }
 
             UserInfo user = Admin.CreateUser(request, userMetadata);
-            // TODO: rollback if failed
-            Admin.AddTrust(user.Id);
 
             OnUsersChanged?.Invoke(this, new EventArgs());
         }
