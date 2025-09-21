@@ -43,7 +43,7 @@ namespace MKW.GUI
                 throw new Exception("Please select user.");
             }
 
-            Database.Authenticate(SelectedUser.Id, Password);
+            Database.Unlock(SelectedUser.Id, Password);
 
             return true;
         }

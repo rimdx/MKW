@@ -52,7 +52,7 @@ namespace MKW.GUI.Model
             return model;
         }
 
-        public void Authenticate(UserId id, string password)
+        public void Unlock(UserId id, string password)
         {
             User = Client.OpenUser(id, password);
 
