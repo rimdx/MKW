@@ -19,6 +19,11 @@ namespace MKW
             Description = "password to perform operation with",
         };
 
+        public static readonly Option<string> UserPassword = new("--userpassword")
+        {
+            Description = "password to perform operation with",
+        };
+
         public static readonly Option<Guid> UserId = new("--userid")
         {
             Description = "user id",

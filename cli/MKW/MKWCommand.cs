@@ -1,7 +1,4 @@
-﻿using MKW.Core.Client;
-using MKW.Core.Storage;
-using MKW.Core.Storage.JSON;
-using System.CommandLine;
+﻿using System.CommandLine;
 
 namespace MKW
 {
@@ -10,28 +7,28 @@ namespace MKW
         protected MKWCommand(string name, string? description = null)
             : base(name, description)
         {
-            Add(CommonOptions.File);
             Add(CommonOptions.NonInteractive);
             Add(CommonOptions.ForceInteractive);
 
-            SetAction(Execute);
+            SetAction(ExecuteInternal);
         }
 
-        protected abstract void Execute(ParseResult argv);
-
-        protected string GetFilePath(ParseResult argv)
+        private void ExecuteInternal(ParseResult argv)
         {
-            return argv.GetRequiredValue(CommonOptions.File);
+            try
+            {
+                using ExecutionContext ctx = new ExecutionContext();
+
+                Execute(argv, ctx);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
         }
 
-        protected IDatabase OpenDatabase(ParseResult argv)
+        protected virtual void Execute(ParseResult argv, ExecutionContext ctx)
         {
-            return JSONDatabaseSession.Open(GetFilePath(argv));
-        }
-
-        protected ClientSession OpenSession(ParseResult argv)
-        {
-            return ClientSession.Open(OpenDatabase(argv), true);
         }
 
         protected void EnsureInteractive(ParseResult argv, string errorMessage)
