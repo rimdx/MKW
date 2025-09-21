@@ -47,8 +47,7 @@ namespace MKW.Testing.Client
 
         public IUserSession CreateUser(ClientSession client,
                                        string password,
-                                       out UserInfo user,
-                                       bool trusted = true)
+                                       out UserInfo user)
         {
             using IAdminSession admin = OpenAdmin(client);
 
@@ -63,14 +62,6 @@ namespace MKW.Testing.Client
                 });
 
             IUserSession userSession = client.OpenUser(user.Id, password);
-
-            if (trusted)
-            {
-                admin.AddTrust(user.Id);
-            }
-            else
-            {
-            }
 
             return userSession;
         }

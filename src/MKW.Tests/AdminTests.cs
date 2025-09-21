@@ -28,34 +28,34 @@ namespace MKW.Tests
             using IAdminSession adminSession = client.OpenAdmin(sbox.AdminSecret);
         }
 
-        [Test]
-        public void EntriesHiddenForUntrustedUsersTest()
-        {
-            using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+        //[Test]
+        //public void EntriesHiddenForUntrustedUsersTest()
+        //{
+        //    using ClientSandBox sbox = new ClientSandBox();
+        //    using ClientSession client = sbox.OpenSession();
 
-            using IUserSession trusted = sbox.CreateUser(client, "trusted", out _, false);
-            using IUserSession untrusted = sbox.CreateUser(client, "untrusted", out _, false);
+        //    using IUserSession trusted = sbox.CreateUser(client, "trusted", out _, false);
+        //    using IUserSession untrusted = sbox.CreateUser(client, "untrusted", out _, false);
 
-            using IAdminSession admin = sbox.OpenAdmin(client);
+        //    using IAdminSession admin = sbox.OpenAdmin(client);
 
-            admin.AddTrust(trusted.Id);
-            EntryInfo entry = admin.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
+        //    admin.AddTrust(trusted.Id);
+        //    EntryInfo entry = admin.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
 
-            {
-                using IUserSession user = client.OpenUser("trusted");
-                using IEntrySession entrySession = user.OpenEntry(entry.Id);
+        //    {
+        //        using IUserSession user = client.OpenUser("trusted");
+        //        using IEntrySession entrySession = user.OpenEntry(entry.Id);
 
-                ClassicAssert.AreEqual(new EntryPayload("test data"), entrySession.OpenPayload());
-            }
+        //        ClassicAssert.AreEqual(new EntryPayload("test data"), entrySession.OpenPayload());
+        //    }
 
-            {
-                using IUserSession user = client.OpenUser("untrusted");
-                using IEntrySession entrySession = user.OpenEntry(entry.Id);
+        //    {
+        //        using IUserSession user = client.OpenUser("untrusted");
+        //        using IEntrySession entrySession = user.OpenEntry(entry.Id);
 
-                ClassicAssert.AreEqual(null, entrySession.OpenPayload());
-            }
-        }
+        //        ClassicAssert.AreEqual(null, entrySession.OpenPayload());
+        //    }
+        //}
 
         [Test]
         public void OpenAdminAsUser()
@@ -136,21 +136,7 @@ namespace MKW.Tests
                     entry.EnumerateAccess().Select(value => value.Id));
             }
 
-            using IUserSession user1 = sbox.CreateUser(client, "user1", out _, false);
-            using IUserSession user2 = sbox.CreateUser(client, "user2", out _, false);
-
-            // the users cannot see the entry
-            {
-                using IEntrySession entry = user1.OpenEntry(entryId);
-                ClassicAssert.AreEqual(null, entry.OpenPayload());
-
-                CollectionAssert.AreEqual(
-                    new UserId[]
-                    {
-                        UserId.Admin(),
-                    },
-                    entry.EnumerateAccess().Select(value => value.Id));
-            }
+            using IUserSession user1 = sbox.CreateUser(client, "user1", out _);
 
             // the admin shares the entry with user1
             {
@@ -180,6 +166,8 @@ namespace MKW.Tests
                     },
                     entry.EnumerateAccess().Select(value => value.Id));
             }
+
+            using IUserSession user2 = sbox.CreateUser(client, "user2", out _);
 
             // user1 shares the entry with user2
             {
@@ -229,13 +217,7 @@ namespace MKW.Tests
             using IEntrySession entry3 = admin.CreateEntry();
             entry3.UpdatePayload(new EntryPayload("data3"));
 
-            using IUserSession user = sbox.CreateUser(client, "user1", out _, false);
-
-            CollectionAssert.AreEquivalent(
-                new EntryPayload?[] { null, null, null },
-                user.EnumerateEntries().Select(value => value.OpenPayload()));
-
-            admin.AddTrust(user.Id);
+            using IUserSession user = sbox.CreateUser(client, "user1", out _);
 
             CollectionAssert.AreEquivalent(
                 new[]

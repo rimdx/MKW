@@ -32,26 +32,22 @@ namespace MKW.Core.Client
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
         {
-            IDatabaseUser user = database.CreateUser(UserId.Create());
+            UserId userId = UserId.Create();
+
+            IDatabaseUser user = database.CreateUser(userId);
 
             user.Salt = request.Salt;
             user.PublicKey = request.PublicKey;
             user.PrivateKey = request.EncryptedPrivateKey;
             metadataEncoder.UpdateMetadata(user, metadata);
-            user.AddTrust(request.AdminSignature);
 
+            user.AddTrust(request.AdminSignature);
             user.Save();
 
-            // TODO: sign user
-            // TODO: account admin signature
+            trustController.AddTrust(user);
+            accessController.AddAccess(userId);
 
             return UserInfo.FromDatabaseUser(user);
-        }
-
-        public void AddTrust(UserId userId)
-        {
-            trustController.AddTrust(userId);
-            accessController.AddAccess(userId);
         }
     }
 }

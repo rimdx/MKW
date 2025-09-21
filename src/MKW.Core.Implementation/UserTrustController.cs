@@ -19,9 +19,8 @@ namespace MKW.Core.Implementation
             this.privateKey = privateKey;
         }
 
-        public void AddTrust(UserId userId)
+        public void AddTrust(IDatabaseUser user)
         {
-            IDatabaseUser user = database.OpenUser(userId, false);
             user.AdminSignature = privateKey.Sign(user.PublicKey.Span);
             admin.Save();
         }
