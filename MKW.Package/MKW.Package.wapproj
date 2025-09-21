@@ -54,9 +54,10 @@
     <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <NoWarn>$(NoWarn);NU1702</NoWarn>
     <EntryPointProjectUniqueName>..\src\MKW.GUI\MKW.GUI.csproj</EntryPointProjectUniqueName>
+    <PackageCertificateThumbprint>F48E1016E227A0A73C5BF5E0A38B2FD2045159C7</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -69,5 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\MKW.GUI\MKW.GUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mkw-testing.pfx" />
   </ItemGroup>
 </Project>
