@@ -13,34 +13,33 @@ namespace MKW.Tests
         {
             using ClientSandBox sbox = new ClientSandBox();
             using IDatabase db = sbox.OpenDatabase();
-            using ClientSession session = ClientSession.Open(db);
+            using ClientSession client = ClientSession.Open(db);
 
-            UserInfo admin = session.GetAdminInfo();
+            using IUserSession user = sbox.CreateUser(client, "secretprotector", out _);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
-            sbox.CreateUser(session, "secretprotector", out UserInfo user).Dispose();
-            IDatabaseUser[] users = db.EnumerateUsers().ToArray();
-            using IUserSession userSession = session.OpenUser(users[1].Id, "secretprotector");
+            EntryId entryId = EntryId.Create();
 
-            EntryInfo entry = sbox.OpenAdmin(session).UpdateEntry(
-                EntryId.FromGuid(new Guid("{747CF732-93E4-4D9D-A929-15E05CFF0DE5}")),
-                new EntryPayload("secret"));
+            EntryInfo entry = admin.UpdateEntry(entryId, new EntryPayload("secret"));
 
             ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
             ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
             ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
 
-            ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
+            ClassicAssert.AreEqual(entryId, db.EnumerateEntries().First().Id);
 
             CollectionAssert.AreEqual(
                 new UserInfo[]
                 {
-                    admin,
-                    user
+                    client.GetAdminInfo(),
+                    client.GetUserInfo(user.Id),
                 },
                 entry.EncodedForUsers);
 
             ClassicAssert.AreEqual(new EntryPayload("secret"),
-                                   userSession.OpenEntry(entry.Id).OpenPayload());
+                                   user.OpenEntry(entry.Id).OpenPayload());
+            ClassicAssert.AreEqual(new EntryPayload("secret"),
+                                   admin.OpenEntry(entry.Id).OpenPayload());
         }
 
         //[Test]
