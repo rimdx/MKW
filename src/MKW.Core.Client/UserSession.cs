@@ -8,7 +8,6 @@ namespace MKW.Core.Client
         : IUserSession
         , IEntryController
         , ITrustProvider
-        , ITrustController
         , IDisposable
     {
         protected readonly ClientSession client;
@@ -17,14 +16,12 @@ namespace MKW.Core.Client
         protected readonly IEntryController entryController;
         protected readonly UserMetadataDecoder metadata;
         protected readonly IAsymmetricPublicTransformer adminPublicKey;
+        protected readonly UserTrustController trustController;
 
         internal IDatabaseUser DatabaseUser { get; }
 
         public UserId Id => DatabaseUser.Id;
         public IAsymmetricPrivateTransformer Transformer { get; }
-        public UserTrustController TrustController { get; }
-
-        private readonly UserAccessController accessController;
 
         public UserSession(ClientSession client /* reference */,
                            ICryptographyProvider crypto,
@@ -42,9 +39,8 @@ namespace MKW.Core.Client
 
             entryController = new UserEntryController(client, crypto, database, this);
             Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
-            TrustController = new UserTrustController(database, crypto, user, Transformer);
-            accessController = new UserAccessController(this);
             metadata = new UserMetadataDecoder(adminPublicKey);
+            trustController = new UserTrustController(database, crypto, admin, Transformer);
         }
 
         public UserMetadata OpenMetadata()
@@ -91,7 +87,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            foreach (UserInfo user in TrustController.EnumerateImplicitlyTrustedUsers())
+            foreach (UserInfo user in trustController.EnumerateImplicitlyTrustedUsers())
             {
                 yield return user;
             }
@@ -99,7 +95,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
         {
-            foreach (UserInfo user in TrustController.EnumerateExplicitlyTrustedUsers())
+            foreach (UserInfo user in trustController.EnumerateExplicitlyTrustedUsers())
             {
                 yield return user;
             }
@@ -107,32 +103,18 @@ namespace MKW.Core.Client
 
         public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
         {
-            return TrustController.GetExplicitTrust(publicKey);
+            return trustController.GetExplicitTrust(publicKey);
         }
 
         public Trust GetImplicitTrust(UserId userId)
         {
-            return TrustController.GetImplicitTrust(userId);
-        }
-
-        // ITrustController
-
-
-        public void AddTrust(UserId userId)
-        {
-            TrustController.AddTrust(userId);
-            accessController.AddAccess(userId);
-        }
-
-        public void RemoveTrust(UserId userId)
-        {
-            TrustController.RemoveTrust(userId);
+            return trustController.GetImplicitTrust(userId);
         }
 
         public void Dispose()
         {
             Transformer.Dispose();
-            TrustController.Dispose();
+            trustController.Dispose();
             entryController.Dispose();
             adminPublicKey.Dispose();
         }

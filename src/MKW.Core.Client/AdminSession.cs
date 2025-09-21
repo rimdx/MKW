@@ -11,10 +11,10 @@ namespace MKW.Core.Client
         , IUserHost
         , IEntryController
         , ITrustProvider
-        , ITrustController
         , IDisposable
     {
         private readonly UserMetadataEncoder metadataEncoder;
+        private readonly UserAccessController accessController;
 
         public AdminSession(ClientSession client /* reference */,
                             ICryptographyProvider crypto,
@@ -24,6 +24,7 @@ namespace MKW.Core.Client
             : base(client, crypto, database, admin, privateKey)
         {
             metadataEncoder = new UserMetadataEncoder(Transformer);
+            accessController = new UserAccessController(this);
         }
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
@@ -42,6 +43,19 @@ namespace MKW.Core.Client
             // TODO: account admin signature
 
             return UserInfo.FromDatabaseUser(user);
+        }
+
+        // ITrustController
+
+        public void AddTrust(UserId userId)
+        {
+            trustController.AddTrust(userId);
+            accessController.AddAccess(userId);
+        }
+
+        public void RemoveTrust(UserId userId)
+        {
+            trustController.RemoveTrust(userId);
         }
     }
 }

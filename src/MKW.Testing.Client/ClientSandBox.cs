@@ -67,11 +67,9 @@ namespace MKW.Testing.Client
             if (trusted)
             {
                 admin.AddTrust(user.Id);
-                userSession.AddTrust(admin.Id);
             }
             else
             {
-                userSession.RemoveTrust(admin.Id);
             }
 
             return userSession;

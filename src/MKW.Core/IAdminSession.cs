@@ -5,7 +5,6 @@
         , IUserHost
         , IEntryController
         , ITrustProvider
-        , ITrustController
         , IDisposable
     {
     }
