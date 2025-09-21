@@ -20,7 +20,7 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserInfo CreateAdmin(string password)
+        public UserInfo CreateAdmin(string password, UserMetadata metadata)
         {
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
@@ -32,6 +32,7 @@ namespace MKW.Core.Client
             admin.PublicKey = systemCreds.PublicKey;
             admin.PrivateKey = systemCreds.PrivateKey;
             admin.Salt = systemCreds.Salt;
+            admin.Metadata = UserMetadataSerializer.Serialize(metadata);
 
             admin.Save();
 

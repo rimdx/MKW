@@ -19,8 +19,14 @@ namespace MKW.Testing.Client
         {
             if (init)
             {
+                UserMetadata metadata = new UserMetadata
+                {
+                    DisplayName = "admin",
+                    UserId = "admin@contoso.com"
+                };
+
                 using JSONDatabaseSession db = JSONDatabaseSession.Create(DatabasePath);
-                using ClientSession client = ClientSession.Create(db, AdminSecret);
+                using ClientSession client = ClientSession.Create(db, AdminSecret, metadata);
             }
         }
 
