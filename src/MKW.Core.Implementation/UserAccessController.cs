@@ -1,7 +1,7 @@
 ﻿using MKW.Core.Notify;
 using MKW.Core.Storage;
 
-namespace MKW.Core.Client
+namespace MKW.Core.Implementation
 {
     public class UserAccessController
         : IEntryAccessController
