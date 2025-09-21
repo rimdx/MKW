@@ -22,7 +22,7 @@ namespace MKW.Core.Client
                             IDatabase database /* reference */,
                             IDatabaseUser admin /* reference */,
                             ReadOnlySpan<byte> privateKey)
-            : base(client, crypto, database, admin, privateKey)
+            : base(crypto, database, admin, privateKey)
         {
             metadataEncoder = new UserMetadataEncoder(Transformer);
             accessController = new UserAccessController(this);
