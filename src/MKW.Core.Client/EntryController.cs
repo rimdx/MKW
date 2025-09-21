@@ -11,9 +11,9 @@ namespace MKW.Core.Client
         private readonly UserSession user;
 
         public EntryController(ClientSession client /* reference */,
-                                   ICryptographyProvider crypto,
-                                   IDatabase database /* reference */,
-                                   UserSession user /* reference */)
+                               ICryptographyProvider crypto,
+                               IDatabase database /* reference */,
+                               UserSession user /* reference */)
         {
             this.client = client;
             this.crypto = crypto;
