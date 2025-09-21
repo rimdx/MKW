@@ -29,49 +29,6 @@ namespace MKW.Tests
         }
 
         [Test]
-        public void UpdateTrustTest()
-        {
-            using ClientSandBox sbox = new ClientSandBox(false);
-            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
-
-            UserMetadata metadata = new UserMetadata
-            {
-                DisplayName = "admin",
-                UserId = "admin@contoso.com"
-            };
-
-            using ClientSession client = ClientSession.Create(db,  sbox.AdminSecret, metadata);
-
-            UserInfo admin = client.GetAdminInfo();
-            IAdminSession adminSession = client.OpenAdmin(sbox.AdminSecret);
-
-            using IUserSession s1 = sbox.CreateUser(client, "user1", out UserInfo user1, false);
-            using IUserSession s2 = sbox.CreateUser(client, "user2", out UserInfo user2, false);
-
-            admin.Trust = Trust.SelfTrust;
-            user1.Trust = Trust.ExplicitTrust;
-            user2.Trust = Trust.ExplicitTrust;
-
-            CollectionAssert.AreEqual(
-                new UserInfo[] { admin },
-                client.EnumerateUsersTrust());
-
-            adminSession.AddTrust(user1.Id);
-            CollectionAssert.AreEqual(
-                new UserInfo[] { admin, user1 },
-                client.EnumerateUsersTrust());
-
-            adminSession.RemoveTrust(user1.Id);
-            adminSession.AddTrust(user2.Id);
-
-            user1.Trust = Trust.None;
-
-            CollectionAssert.AreEqual(
-                new UserInfo[] { admin, user2 },
-                client.EnumerateUsersTrust());
-        }
-
-        [Test]
         public void EntriesHiddenForUntrustedUsersTest()
         {
             using ClientSandBox sbox = new ClientSandBox();

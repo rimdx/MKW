@@ -26,13 +26,6 @@ namespace MKW.Core.Client
             admin.Save();
         }
 
-        public void RemoveTrust(UserId userId)
-        {
-            IDatabaseUser user = database.OpenUser(userId, false);
-            user.AdminSignature = null;
-            admin.Save();
-        }
-
         public override void Dispose()
         {
             // no-op
