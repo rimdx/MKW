@@ -6,7 +6,6 @@ namespace MKW.Core.Client
     public class UserTrustController
         : UserTrustProvider
         , ITrustProvider
-        , ITrustController
         , IDisposable
     {
         protected readonly IAsymmetricPrivateTransformer privateKey;

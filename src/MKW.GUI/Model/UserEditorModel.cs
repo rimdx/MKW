@@ -33,10 +33,6 @@ namespace MKW.GUI.Model
 
         public void OnApply()
         {
-            if (initialTrust != newTrust)
-            {
-                database.User!.AddTrust(user.Id);
-            }
         }
 
         public void Dispose()
