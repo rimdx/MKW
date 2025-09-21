@@ -35,8 +35,14 @@ namespace MKW.GUI.Model
 
         public static DatabaseModel Create(string path, string adminPassword)
         {
+            UserMetadata metadata = new UserMetadata // todo
+            {
+                DisplayName = "",
+                UserId = ""
+            };
+
             JSONDatabaseSession db = JSONDatabaseSession.Create(path);
-            ClientSession client = ClientSession.Create(db, adminPassword);
+            ClientSession client = ClientSession.Create(db, adminPassword, metadata);
 
             DatabaseModel model = new DatabaseModel(db, path, client);
 

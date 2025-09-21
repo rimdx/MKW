@@ -41,15 +41,22 @@ namespace MKW.Core.Client
             return client;
         }
 
-        public static ClientSession Create(IDatabase db /* reference */, string adminPassword)
+        public static ClientSession Create(IDatabase db /* reference */,
+                                           string adminPassword,
+                                           UserMetadata adminMetadata)
         {
-            return Create(db, false, adminPassword);
+            return Create(db, false, adminPassword, adminMetadata);
         }
 
-        public static ClientSession Create(IDatabase db, bool ownsDb, string adminPassword)
+        public static ClientSession Create(IDatabase db,
+                                           bool ownsDb,
+                                           string adminPassword,
+                                           UserMetadata adminMetadata)
         {
             ClientSession client = new ClientSession(db, ownsDb);
-            client.CreateAdmin(adminPassword);
+
+            client.CreateAdmin(adminPassword, adminMetadata);
+
             return client;
         }
 
@@ -122,9 +129,9 @@ namespace MKW.Core.Client
 
         // IAdminController
 
-        public UserInfo CreateAdmin(string password)
+        public UserInfo CreateAdmin(string password, UserMetadata metadata)
         {
-            return adminController.CreateAdmin(password);
+            return adminController.CreateAdmin(password, metadata);
         }
 
         public IUserSession OpenAdmin(string password)
