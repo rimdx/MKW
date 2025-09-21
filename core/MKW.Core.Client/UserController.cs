@@ -10,7 +10,6 @@ namespace MKW.Core.Client
         private readonly ClientSession client;
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
-        private readonly UserMetadataEncoder metadataEncoder;
 
         public UserController(ClientSession client,
                               ICryptographyProvider crypto,
@@ -19,8 +18,6 @@ namespace MKW.Core.Client
             this.client = client;
             this.crypto = crypto;
             this.database = database;
-
-            metadataEncoder = new UserMetadataEncoder();
         }
 
         public UserAccessRequest CreateUserAccessRequest(string password)
@@ -42,24 +39,6 @@ namespace MKW.Core.Client
                 EncryptedPrivateKey = systemCreds.PrivateKey,
                 AdminSignature = signature,
             };
-        }
-
-        public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
-        {
-            IDatabaseUser user = database.CreateUser(UserId.Create());
-
-            user.Salt = request.Salt;
-            user.PublicKey = request.PublicKey;
-            user.PrivateKey = request.EncryptedPrivateKey;
-            metadataEncoder.UpdateMetadata(user, metadata);
-            user.AddTrust(request.AdminSignature);
-
-            user.Save();
-
-            // TODO: sign user
-            // TODO: account admin signature
-
-            return UserInfo.FromDatabaseUser(user);
         }
 
         public IUserSession OpenUser(UserId id, string password)

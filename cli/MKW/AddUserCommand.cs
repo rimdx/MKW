@@ -15,12 +15,11 @@ namespace MKW
         protected override void Execute(ParseResult argv)
         {
             using ClientSession session = OpenSession(argv);
-
-            // TODO:
+            using IAdminSession admin = session.OpenAdmin("todo");
 
             UserAccessRequest request = session.CreateUserAccessRequest(GetPassword(argv));
 
-            UserInfo user = session.CreateUser(
+            UserInfo user = admin.CreateUser(
                 request,
                 new UserMetadata
                 {

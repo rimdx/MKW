@@ -11,7 +11,6 @@ namespace MKW.Core
         IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds);
 
         UserAccessRequest CreateUserAccessRequest(string password);
-        UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata);
 
         IEnumerable<UserInfo> EnumerateUsers();
         UserInfo GetUserInfo(UserId id);
