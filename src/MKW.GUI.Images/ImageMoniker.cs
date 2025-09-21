@@ -21,6 +21,7 @@ namespace MKW.GUI.Images
         FolderClosed,
         FolderOpened,
         Key,
+        Lock,
         LoginUser,
         NewDocument,
         NewFolder,
@@ -36,6 +37,7 @@ namespace MKW.GUI.Images
         StatusOK,
         StatusWarning,
         Team,
+        Unlock,
         User,
     }
 }
