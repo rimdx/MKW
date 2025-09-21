@@ -29,14 +29,13 @@ namespace MKW.GUI
 
         public bool OnVerify()
         {
-            user.OnVerify();
             OnPropertyChanged(nameof(IsUntrusted));
             return true;
         }
 
         public string PublicKey => keyFormatter.GetBase32String(user.PublicKey);
 
-        public bool IsUntrusted => user.Trust == Trust.None;
+        public bool IsUntrusted => !user.Trust;
 
         public bool IsUser => !database.User!.Id.IsAdmin;
         public bool IsAdmin => database.User!.Id.IsAdmin;
