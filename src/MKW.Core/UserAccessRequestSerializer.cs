@@ -1,16 +1,9 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MKW.Core
 {
     public partial class UserAccessRequestSerializer : IAccessRequestSerializer
     {
-        [JsonSourceGenerationOptions()]
-        [JsonSerializable(typeof(UserAccessRequestData))]
-        private partial class SerializerContext : JsonSerializerContext
-        {
-        }
-
         public UserAccessRequestSerializer()
         {
         }
@@ -25,12 +18,14 @@ namespace MKW.Core
                 AdminSignature = data.AdminSignature,
             };
 
-            return JsonSerializer.SerializeToUtf8Bytes(obj, SerializerContext.Default.UserAccessRequestData);
+            return JsonSerializer.SerializeToUtf8Bytes(
+                obj, UserAccessRequestJsonSerializerContext.Default.UserAccessRequestData);
         }
 
         public UserAccessRequest Deserialize(ReadOnlySpan<byte> data)
         {
-            UserAccessRequestData? parsed = JsonSerializer.Deserialize(data, SerializerContext.Default.UserAccessRequestData);
+            UserAccessRequestData? parsed = JsonSerializer.Deserialize(
+                data, UserAccessRequestJsonSerializerContext.Default.UserAccessRequestData);
 
             if (parsed == null)
             {
