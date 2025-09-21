@@ -2,13 +2,9 @@
 
 namespace MKW.Core
 {
-    public partial class UserAccessRequestSerializer : IAccessRequestSerializer
+    public static class UserAccessRequestSerializer
     {
-        public UserAccessRequestSerializer()
-        {
-        }
-
-        public ReadOnlyMemory<byte> Serialize(UserAccessRequest data)
+        public static ReadOnlyMemory<byte> Serialize(UserAccessRequest data)
         {
             UserAccessRequestData obj = new UserAccessRequestData
             {
@@ -22,7 +18,7 @@ namespace MKW.Core
                 obj, UserAccessRequestJsonSerializerContext.Default.UserAccessRequestData);
         }
 
-        public UserAccessRequest Deserialize(ReadOnlySpan<byte> data)
+        public static UserAccessRequest Deserialize(ReadOnlySpan<byte> data)
         {
             UserAccessRequestData? parsed = JsonSerializer.Deserialize(
                 data, UserAccessRequestJsonSerializerContext.Default.UserAccessRequestData);
