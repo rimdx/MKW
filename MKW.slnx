@@ -35,7 +35,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="src/MKW.src/MKW.Common.csproj">
+  <Project Path="src/MKW.Common/MKW.Common.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
@@ -45,7 +45,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="src/MKW.Testing.src/MKW.Testing.Common.csproj">
+  <Project Path="src/MKW.Testing.Common/MKW.Testing.Common.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
@@ -70,7 +70,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="src/MKW.src/MKW.Core.csproj">
+  <Project Path="src/MKW.Core/MKW.Core.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
@@ -116,7 +116,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="src/MKW.src/MKW.GUI.csproj">
+  <Project Path="src/MKW.GUI/MKW.GUI.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
@@ -126,7 +126,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="src/MKW.Core.src/MKW.Core.Storage.csproj">
+  <Project Path="src/MKW.Core.Storage/MKW.Core.Storage.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
