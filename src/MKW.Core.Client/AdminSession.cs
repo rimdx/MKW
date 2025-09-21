@@ -17,8 +17,7 @@ namespace MKW.Core.Client
         private readonly UserAccessController accessController;
         private readonly UserTrustController trustController;
 
-        public AdminSession(ClientSession client /* reference */,
-                            ICryptographyProvider crypto,
+        public AdminSession(ICryptographyProvider crypto,
                             IDatabase database /* reference */,
                             IDatabaseUser admin /* reference */,
                             ReadOnlySpan<byte> privateKey)

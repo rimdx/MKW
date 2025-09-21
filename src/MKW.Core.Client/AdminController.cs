@@ -54,7 +54,7 @@ namespace MKW.Core.Client
 
                 Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
 
-                return new AdminSession(client, crypto, database, admin, privateKeyBytes.Span);
+                return new AdminSession(crypto, database, admin, privateKeyBytes.Span);
             }
             catch (SymmetricOperationFailedException ex)
             {
