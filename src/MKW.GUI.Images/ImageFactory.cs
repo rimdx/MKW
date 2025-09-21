@@ -25,6 +25,7 @@ namespace MKW.GUI.Images
             ImageMoniker.FolderClosed => new FolderClosed(),
             ImageMoniker.FolderOpened => new FolderOpened(),
             ImageMoniker.Key => new Key(),
+            ImageMoniker.Lock => new Lock(),
             ImageMoniker.LoginUser => new LoginUser(),
             ImageMoniker.NewDocument => new NewDocument(),
             ImageMoniker.NewFolder => new NewFolder(),
@@ -40,6 +41,7 @@ namespace MKW.GUI.Images
             ImageMoniker.StatusOK => new StatusOK(),
             ImageMoniker.StatusWarning => new StatusWarning(),
             ImageMoniker.Team => new Team(),
+            ImageMoniker.Unlock => new Unlock(),
             ImageMoniker.User => new User(),
         };
     }
