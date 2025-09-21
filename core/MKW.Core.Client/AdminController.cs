@@ -39,7 +39,7 @@ namespace MKW.Core.Client
             return UserInfo.FromDatabaseUser(admin);
         }
 
-        public IUserSession OpenAdmin(string password)
+        public IAdminSession OpenAdmin(string password)
         {
             try
             {

@@ -134,7 +134,7 @@ namespace MKW.Core.Client
             return adminController.CreateAdmin(password, metadata);
         }
 
-        public IUserSession OpenAdmin(string password)
+        public IAdminSession OpenAdmin(string password)
         {
             return adminController.OpenAdmin(password);
         }
