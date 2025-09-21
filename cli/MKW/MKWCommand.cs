@@ -67,16 +67,25 @@ namespace MKW
 
             if (password == null)
             {
-                EnsureInteractive(argv, "Please provide password using --password option.");
+                return PromptPassword(argv, "Enter password:");
+            }
+            else
+            {
+                return password;
+            }
+        }
 
-                Console.Write("Enter password: ");
+        protected string PromptPassword(ParseResult argv, string message)
+        {
+            EnsureInteractive(argv, "Please provide password using --password option.");
 
-                password = Console.ReadLine();
+            Console.Write(message);
 
-                if (string.IsNullOrEmpty(password))
-                {
-                    throw new ArgumentException("Password cannot be empty.");
-                }
+            string? password = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new ArgumentException("Password cannot be empty.");
             }
 
             return password;
