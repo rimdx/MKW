@@ -122,11 +122,6 @@ namespace MKW.Core.Client
             return userController.CreateUserAccessRequest(password);
         }
 
-        public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
-        {
-            return userController.CreateUser(request, metadata);
-        }
-
         // IAdminController
 
         public UserInfo CreateAdmin(string password, UserMetadata metadata)

@@ -92,7 +92,7 @@ namespace MKW.Tests
                 client.EnumerateUsers());
 
             // approve request
-            UserInfo addedUser = client.CreateUser(
+            UserInfo addedUser = admin.CreateUser(
                 request,
                 new UserMetadata
                 {

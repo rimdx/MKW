@@ -2,6 +2,7 @@
 {
     public interface IAdminSession
         : IUserSession
+        , IUserHost
         , IEntryController
         , ITrustProvider
         , ITrustController

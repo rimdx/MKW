@@ -54,7 +54,7 @@ namespace MKW.Testing.Client
 
             UserAccessRequest request = client.CreateUserAccessRequest(password);
 
-            user = client.CreateUser(
+            user = admin.CreateUser(
                 request,
                 new UserMetadata
                 {
