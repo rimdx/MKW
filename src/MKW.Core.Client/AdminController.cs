@@ -29,10 +29,12 @@ namespace MKW.Core.Client
 
             IDatabaseUser admin = database.CreateUser(UserId.Admin());
 
+            UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(systemCreds.Transformer);
+
             admin.PublicKey = systemCreds.PublicKey;
             admin.PrivateKey = systemCreds.PrivateKey;
             admin.Salt = systemCreds.Salt;
-            admin.Metadata = UserMetadataSerializer.Serialize(metadata);
+            metadataEncoder.UpdateMetadata(admin, metadata);
 
             admin.Save();
 
