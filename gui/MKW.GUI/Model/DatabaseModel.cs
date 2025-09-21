@@ -14,7 +14,7 @@ namespace MKW.GUI.Model
         public ClientSession Client { get; }
 
         public IUserSession? User { get; private set; }
-        public IUserSession? Admin { get; private set; }
+        public IAdminSession? Admin { get; private set; }
 
         public event EventHandler? OnEntriesChanged;
         public event EventHandler? OnUsersChanged;
@@ -56,9 +56,9 @@ namespace MKW.GUI.Model
         {
             User = Client.OpenUser(id, password);
 
-            if (User.Id.IsAdmin)
+            if (User is IAdminSession admin)
             {
-                Admin = User;
+                Admin = admin;
             }
         }
 
