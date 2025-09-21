@@ -105,11 +105,17 @@
                 Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
       <TabControl.ItemTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Header}"
+          <Grid MinWidth="80">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Text="{Binding Header}"
                        Margin="0,0,3,0" />
 
-            <Button Padding="1"
+            <Button Grid.Column="1"
+                    Padding="1"
                     Margin="0,2,0,0"
                     Height="14"
                     Background="Transparent"
@@ -119,7 +125,7 @@
                     CommandParameter="{Binding}">
               <local:CrispImage Moniker="Close" />
             </Button>
-          </StackPanel>
+          </Grid>
         </DataTemplate>
       </TabControl.ItemTemplate>
       <TabControl.Resources>
