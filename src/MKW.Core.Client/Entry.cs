@@ -10,48 +10,57 @@ namespace MKW.Core.Client
     {
         protected readonly IDatabase database;
         protected readonly ICryptographyProvider crypto;
-
-        // TODO: dispose
         protected readonly IDatabaseEntry entry;
         protected readonly AccessController accessController;
+        protected readonly UserSession user;
+
         protected readonly EntryEncoder encoder;
+        protected readonly EntryDecoder decoder;
+        protected readonly EntrySharer sharer;
 
         public EntryId Id => entry.Id;
 
         protected Entry(IDatabase database,
                         ICryptographyProvider crypto,
+                        UserSession user,
                         IDatabaseEntry entry,
                         AccessController accessController)
         {
             this.database = database;
             this.crypto = crypto;
+            this.user = user;
             this.entry = entry;
             this.accessController = accessController;
 
             encoder = new EntryEncoder(crypto, accessController);
+            decoder = new EntryDecoder(crypto, user, user.Transformer);
+            sharer = new EntrySharer(accessController, decoder, encoder);
         }
 
         public static Entry Create(IDatabase database,
                                    ICryptographyProvider crypto,
-                                   ITrustProvider trustProvider,
+                                   UserSession user,
                                    IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Create(database, trustProvider, entry);
+            AccessController accessController = AccessController.Create(database, user, entry);
 
             return new Entry(database,
                              crypto,
+                             user,
                              entry,
                              accessController /* move */);
         }
 
         public static Entry Open(IDatabase database,
                                  ICryptographyProvider crypto,
+                                 UserSession user,
                                  IDatabaseEntry entry)
         {
             AccessController accessController = AccessController.Open(database, entry);
 
             return new Entry(database,
                              crypto,
+                             user,
                              entry,
                              accessController /* move */);
         }
@@ -71,9 +80,9 @@ namespace MKW.Core.Client
             };
         }
 
-        public virtual EntryPayload? OpenPayload()
+        public EntryPayload? OpenPayload()
         {
-            return null;
+            return decoder.DecodeEntry(entry);
         }
 
         public IEnumerable<UserInfo> EnumerateAccess()
@@ -84,9 +93,10 @@ namespace MKW.Core.Client
             }
         }
 
-        public virtual void AddAccess(UserId userId)
+        public void AddAccess(UserId userId)
         {
-            throw new NotSupportedException();
+            sharer.ShareEntry(entry, userId);
+            entry.Save();
         }
 
         public void Dispose()
