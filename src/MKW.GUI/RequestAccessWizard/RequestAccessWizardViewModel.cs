@@ -1,5 +1,4 @@
 ﻿using MKW.Core;
-using MKW.Core.Client.AccessRequest;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Services;
@@ -40,10 +39,9 @@ namespace MKW.GUI.RequestAccessWizard
 
             UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password.Password);
 
-            IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
             KeyFormatter keyFormatter = new KeyFormatter(52);
 
-            ReadOnlyMemory<byte> data = serializer.Serialize(request);
+            ReadOnlyMemory<byte> data = UserAccessRequestSerializer.Serialize(request);
 
             RequestString = keyFormatter.GetBase64String(data.Span);
         }
