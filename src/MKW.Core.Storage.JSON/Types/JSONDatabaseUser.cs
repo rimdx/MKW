@@ -11,6 +11,8 @@
         public required ReadOnlyMemory<byte> Metadata { get; init; }
         public required ReadOnlyMemory<byte> MetadataAdminSignature { get; init; }
 
+        public required ReadOnlyMemory<byte> AdminSignature { get; init; }
+
         public required List<ReadOnlyMemory<byte>> Trust { get; init; }
     }
 }
