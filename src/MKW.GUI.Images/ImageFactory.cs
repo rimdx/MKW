@@ -34,6 +34,7 @@ namespace MKW.GUI.Images
             ImageMoniker.OpenFolder => new OpenFolder(),
             ImageMoniker.PasswordBox => new PasswordBox(),
             ImageMoniker.PasswordStrength => new PasswordStrength(),
+            ImageMoniker.ReadOnlyDatabase => new ReadOnlyDatabase(),
             ImageMoniker.Save => new Save(),
             ImageMoniker.SaveAs => new SaveAs(),
             ImageMoniker.StatusHelp => new StatusHelp(),
