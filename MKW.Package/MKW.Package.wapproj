@@ -89,6 +89,8 @@
     <Content Include="Images\LargeTile.scale-200.png" />
     <Content Include="Images\MediumTile.scale-200.png" />
     <Content Include="Images\SmallTile.scale-200.png" />
+    <Content Include="Images\SplashScreen.scale-200.png" />
     <Content Include="Images\StoreLogo.scale-200.png" />
+    <Content Include="Images\WideTile.scale-200.png" />
   </ItemGroup>
 </Project>
