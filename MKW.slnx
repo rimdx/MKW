@@ -29,6 +29,12 @@
     <File Path="README.md" />
     <File Path="Version.props" />
   </Folder>
+  <Project Path="MKW.Package/MKW.Package.wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5" Id="4660a02d-84db-43e8-8085-8a3e28e395e2">
+    <Build Solution="*|Any CPU" Project="false" />
+    <Deploy Solution="*|ARM64" />
+    <Deploy Solution="*|x64" />
+    <Deploy Solution="*|x86" />
+  </Project>
   <Project Path="src/MKW.Common.NETFramework/MKW.Common.NETFramework.shproj" />
   <Project Path="src/MKW.Common.Tests/MKW.Common.Tests.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
