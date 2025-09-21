@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

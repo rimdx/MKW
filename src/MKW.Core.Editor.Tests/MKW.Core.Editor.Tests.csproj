@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\MKW.Testing.Client\MKW.Testing.Client.csproj" />
-    <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
-    <ProjectReference Include="..\..\core\MKW.Core.Editor\MKW.Core.Editor.csproj" />
+    <ProjectReference Include="..\MKW.Testing.Client\MKW.Testing.Client.csproj" />
+    <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
+    <ProjectReference Include="..\MKW.Core.Editor\MKW.Core.Editor.csproj" />
   </ItemGroup>
 
   <ItemGroup>
