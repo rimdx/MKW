@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\MKW.Common\MKW.Common.csproj" />
-    <ProjectReference Include="..\..\core\MKW.Core.Client\MKW.Core.Client.csproj" />
+    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
   </ItemGroup>
 
 </Project>

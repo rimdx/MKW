@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\MKW.Testing.Common\MKW.Testing.Common.csproj" />
-    <ProjectReference Include="..\..\gui\MKW.GUI\MKW.GUI.csproj" />
+    <ProjectReference Include="..\MKW.Testing.Common\MKW.Testing.Common.csproj" />
+    <ProjectReference Include="..\MKW.GUI\MKW.GUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
