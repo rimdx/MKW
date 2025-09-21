@@ -20,8 +20,6 @@ namespace MKW.Core.Implementation
                 using IEntrySession entry = me.OpenEntry(id);
                 entry.AddAccess(userId);
             }
-
-            // TODO: notify the which users are given access to which entries
         }
 
         private IEnumerable<EntryId> EnumerateEntriesToShare(UserId userId)
