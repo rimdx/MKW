@@ -1,5 +1,4 @@
 ﻿using MKW.Core;
-using MKW.Core.Client.AccessRequest;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
@@ -55,12 +54,10 @@ namespace MKW.GUI.AddUserWizard
 
         public void ParseAccessRequest()
         {
-            IAccessRequestSerializer serializer = new JSONAccessRequestSerializer();
-
             try
             {
                 byte[] bytes = Convert.FromBase64String(RequestString);
-                Request = serializer.Deserialize(bytes);
+                Request = UserAccessRequestSerializer.Deserialize(bytes);
             }
             catch (Exception)
             {
