@@ -23,7 +23,7 @@ namespace MKW.Core.Client
                             ReadOnlySpan<byte> privateKey)
             : base(client, crypto, database, admin, privateKey)
         {
-            metadataEncoder = new UserMetadataEncoder();
+            metadataEncoder = new UserMetadataEncoder(Transformer);
         }
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
