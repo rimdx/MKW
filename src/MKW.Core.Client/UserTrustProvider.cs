@@ -21,21 +21,18 @@ namespace MKW.Core.Client
             this.admin = admin;
         }
 
-        public Trust GetTrust(ReadOnlySpan<byte> otherPublicKey)
+        public Trust GetTrust(IDatabaseUser user)
         {
-            if (otherPublicKey.SequenceEqual(admin.PublicKey.Span))
+            if (user.PublicKey.Span.SequenceEqual(admin.PublicKey.Span))
             {
                 return Trust.SelfTrust;
             }
 
             using IAsymmetricPublicTransformer publicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Span);
 
-            foreach (ReadOnlyMemory<byte> trust in admin.EnumerateTrust())
+            if (publicKey.Verify(user.PublicKey.Span, user.AdminSignature.Span))
             {
-                if (publicKey.Verify(otherPublicKey, trust.Span))
-                {
-                    return Trust.ExplicitTrust;
-                }
+                return Trust.ExplicitTrust;
             }
 
             return Trust.None;
@@ -45,7 +42,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseUser user in database.EnumerateUsers())
             {
-                Trust trust = GetTrust(user.PublicKey.Span);
+                Trust trust = GetTrust(user);
 
                 if (trust == Trust.ExplicitTrust || trust == Trust.SelfTrust)
                 {
@@ -57,7 +54,7 @@ namespace MKW.Core.Client
         public Trust GetImplicitTrust(UserId userId)
         {
             IDatabaseUser user = database.OpenUser(userId, true);
-            return GetTrust(user.PublicKey.Span);
+            return GetTrust(user);
         }
 
         public virtual void Dispose()
