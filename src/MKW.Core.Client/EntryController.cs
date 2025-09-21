@@ -5,17 +5,14 @@ namespace MKW.Core.Client
 {
     public class EntryController : IEntryController, IDisposable
     {
-        private readonly ClientSession client;
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly UserSession user;
 
-        public EntryController(ClientSession client /* reference */,
-                               ICryptographyProvider crypto,
+        public EntryController(ICryptographyProvider crypto,
                                IDatabase database /* reference */,
                                UserSession user /* reference */)
         {
-            this.client = client;
             this.crypto = crypto;
             this.database = database;
             this.user = user;
