@@ -77,9 +77,9 @@ namespace MKW.Core.Editor
             }
         }
 
-        public Trust GetImplicitTrust(UserId userId)
+        public bool VerifyTrust(UserId userId)
         {
-            return proxy.GetImplicitTrust(userId);
+            return proxy.VerifyTrust(userId);
         }
     }
 }

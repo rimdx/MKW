@@ -21,40 +21,38 @@ namespace MKW.Core.Client
             this.admin = admin;
         }
 
-        public Trust GetTrust(IDatabaseUser user)
+        private bool VerifyTrust(IDatabaseUser user)
         {
             if (user.PublicKey.Span.SequenceEqual(admin.PublicKey.Span))
             {
-                return Trust.SelfTrust;
+                return true;
             }
 
             using IAsymmetricPublicTransformer publicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Span);
 
             if (publicKey.Verify(user.PublicKey.Span, user.AdminSignature.Span))
             {
-                return Trust.ExplicitTrust;
+                return true;
             }
 
-            return Trust.None;
+            return false;
+        }
+
+        public bool VerifyTrust(UserId userId)
+        {
+            IDatabaseUser user = database.OpenUser(userId, true);
+            return VerifyTrust(user);
         }
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
             foreach (IDatabaseUser user in database.EnumerateUsers())
             {
-                Trust trust = GetTrust(user);
-
-                if (trust == Trust.ExplicitTrust || trust == Trust.SelfTrust)
+                if (VerifyTrust(user))
                 {
-                    yield return UserInfo.FromDatabaseUser(user, trust);
+                    yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
                 }
             }
-        }
-
-        public Trust GetImplicitTrust(UserId userId)
-        {
-            IDatabaseUser user = database.OpenUser(userId, true);
-            return GetTrust(user);
         }
 
         public virtual void Dispose()

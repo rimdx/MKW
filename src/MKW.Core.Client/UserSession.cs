@@ -93,9 +93,9 @@ namespace MKW.Core.Client
             }
         }
 
-        public Trust GetImplicitTrust(UserId userId)
+        public bool VerifyTrust(UserId userId)
         {
-            return trustProvider.GetImplicitTrust(userId);
+            return trustProvider.VerifyTrust(userId);
         }
 
         public void Dispose()

@@ -7,6 +7,6 @@ namespace MKW.Core
     {
         IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers();
  
-        Trust GetImplicitTrust(UserId userId);
+        bool VerifyTrust(UserId userId);
     }
 }

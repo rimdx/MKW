@@ -101,7 +101,8 @@ namespace MKW.GUI.Model
             }
             else
             {
-                return User.GetImplicitTrust(user.Id);
+                // TODO:
+                return User.VerifyTrust(user.Id) ? Trust.ExplicitTrust : Trust.None;
             }
         }
 
