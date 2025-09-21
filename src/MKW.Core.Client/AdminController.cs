@@ -7,15 +7,12 @@ namespace MKW.Core.Client
 {
     public class AdminController : IAdminController, IDisposable
     {
-        private readonly ClientSession client;
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
 
-        public AdminController(ClientSession client,
-                               ICryptographyProvider crypto,
+        public AdminController(ICryptographyProvider crypto,
                                IDatabase database)
         {
-            this.client = client;
             this.crypto = crypto;
             this.database = database;
         }

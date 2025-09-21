@@ -22,7 +22,7 @@ namespace MKW.Core.Client
 
             crypto = CryptographyLoader.GetProvider();
             userController = new UserController(this, crypto, Database);
-            adminController = new AdminController(this, crypto, Database);
+            adminController = new AdminController(crypto, Database);
         }
 
         public static ClientSession Open(IDatabase db /* reference */)
