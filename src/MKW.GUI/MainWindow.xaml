@@ -107,14 +107,20 @@
         <DataTemplate>
           <Grid MinWidth="80" ToolTip="{Binding Tooltip}">
             <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"
+
+            <local:CrispImage Grid.Column="0"
+                              Moniker="{Binding Icon}"
+                              Margin="0,0,6,0" />
+
+            <TextBlock Grid.Column="1"
                        Text="{Binding Header}"
                        Margin="0,0,3,0" />
 
-            <Button Grid.Column="1"
+            <Button Grid.Column="2"
                     Padding="1"
                     Margin="0,2,0,0"
                     Height="14"
