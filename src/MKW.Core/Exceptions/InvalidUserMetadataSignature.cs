@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Client.Exceptions
+﻿namespace MKW.Core.Exceptions
 {
     [Serializable]
     public class InvalidUserMetadataSignature()

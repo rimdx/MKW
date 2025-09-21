@@ -1,6 +1,6 @@
 ﻿using MKW.Cryptography;
 
-namespace MKW.Core.Client
+namespace MKW.Core.Implementation
 {
     public record class SystemCredentials : IDisposable
     {

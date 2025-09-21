@@ -1,7 +1,8 @@
-﻿using MKW.Core.Storage;
+﻿using MKW.Core.Exceptions;
+using MKW.Core.Storage;
 using MKW.Cryptography;
 
-namespace MKW.Core.Client
+namespace MKW.Core.Implementation
 {
     public class UserMetadataDecoder : IDisposable
     {
@@ -20,7 +21,7 @@ namespace MKW.Core.Client
             }
             else
             {
-                throw new Exceptions.InvalidUserMetadataSignature();
+                throw new InvalidUserMetadataSignature();
             }
         }
 

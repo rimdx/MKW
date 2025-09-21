@@ -2,7 +2,7 @@
 using MKW.Core.Storage;
 using MKW.Cryptography;
 
-namespace MKW.Core.Client
+namespace MKW.Core.Implementation
 {
     public class UserTrustProvider : ITrustProvider, IDisposable
     {
