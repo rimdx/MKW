@@ -3,14 +3,14 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    public class UserEntryController : IEntryController, IDisposable
+    public class EntryController : IEntryController, IDisposable
     {
         private readonly ClientSession client;
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly UserSession user;
 
-        public UserEntryController(ClientSession client /* reference */,
+        public EntryController(ClientSession client /* reference */,
                                    ICryptographyProvider crypto,
                                    IDatabase database /* reference */,
                                    UserSession user /* reference */)
