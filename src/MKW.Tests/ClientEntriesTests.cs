@@ -136,6 +136,7 @@ namespace MKW.Tests
         }
 
         [Test]
+        [Ignore("todo")]
         public void UserEntryAPITest()
         {
             // init

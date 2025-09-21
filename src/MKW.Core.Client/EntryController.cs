@@ -21,7 +21,9 @@ namespace MKW.Core.Client
 
         private ITrustProvider OpenTrustProvider()
         {
-            return new UserTrustProvider(database, crypto, user);
+            // TODO: verify admin
+            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+            return new UserTrustProvider(database, crypto, admin);
         }
 
         public IEntrySession OpenEntry(EntryId id)
