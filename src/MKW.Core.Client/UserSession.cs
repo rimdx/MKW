@@ -16,6 +16,7 @@ namespace MKW.Core.Client
         protected readonly IDatabase database;
         protected readonly IEntryController entryController;
         protected readonly UserMetadataDecoder metadata;
+        protected readonly IAsymmetricPublicTransformer adminPublicKey;
 
         internal IDatabaseUser DatabaseUser { get; }
 
@@ -36,11 +37,14 @@ namespace MKW.Core.Client
             this.database = database;
             DatabaseUser = user;
 
+            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+            adminPublicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Span);
+
             entryController = new UserEntryController(client, crypto, database, this);
             Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
             TrustController = new UserTrustController(database, crypto, user, Transformer);
             accessController = new UserAccessController(this);
-            metadata = new UserMetadataDecoder();
+            metadata = new UserMetadataDecoder(adminPublicKey);
         }
 
         public UserMetadata OpenMetadata()
@@ -130,6 +134,7 @@ namespace MKW.Core.Client
             Transformer.Dispose();
             TrustController.Dispose();
             entryController.Dispose();
+            adminPublicKey.Dispose();
         }
     }
 }
