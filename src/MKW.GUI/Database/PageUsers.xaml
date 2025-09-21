@@ -36,12 +36,6 @@
           <MenuItem Header="_Delete..."
                     IsEnabled="{Binding IsUserSelected}"
                     Click="DeleteUser_Click" />
-
-          <Separator />
-
-          <MenuItem Header="_Verify User..."
-                    IsEnabled="{Binding IsVerifiable}"
-                    Click="VerifyUser_Click" />
           <Separator />
           <MenuItem Header="Select All" />
         </ContextMenu>

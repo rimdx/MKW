@@ -32,18 +32,5 @@ namespace MKW.GUI
         {
             Close();
         }
-
-        private void VerifyUser_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                UserPropertyVerifyUserDialog window = new UserPropertyVerifyUserDialog(model, this);
-                window.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
     }
 }
