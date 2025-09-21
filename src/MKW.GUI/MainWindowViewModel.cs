@@ -23,6 +23,8 @@ namespace MKW.GUI
             Content = new DatabasePage(databaseViewModel);
         }
 
+        public DatabaseViewModel DatabaseViewModel => databaseViewModel;
+
         public void OnClose()
         {
             databaseViewModel.Dispose();
@@ -45,6 +47,26 @@ namespace MKW.GUI
 
             ((INotifyPropertyChanged)TabItems).PropertyChanged += TabItems_PropertyChanged;
             TabItems_PropertyChanged(TabItems, new PropertyChangedEventArgs(null));
+
+            try
+            {
+                string[] openFiles = registryService.GetOpenFiles();
+
+                foreach (string file in openFiles)
+                {
+                    try
+                    {
+                        DatabaseModel databaseModel = DatabaseModel.Open(file);
+                        AddDatabaseTab(databaseModel);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
 
         private void TabItems_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -82,6 +104,14 @@ namespace MKW.GUI
             {
                 /* no-op */
             }
+
+            try
+            {
+                UpdateOpenFilesList();
+            }
+            catch
+            {
+            }
         }
 
         public void OpenDatabase(LoginWindowViewModel loginWindowViewModel)
@@ -98,12 +128,36 @@ namespace MKW.GUI
                 TabItems.Add(tabViewModel);
                 SelectedTab = tabViewModel;
             }
+
+            try
+            {
+                UpdateOpenFilesList();
+            }
+            catch
+            {
+            }
+        }
+
+        private DatabaseTabItemViewModel AddDatabaseTab(DatabaseModel database)
+        {
+            DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(database));
+            TabItems.Add(tabViewModel);
+
+            return tabViewModel;
         }
 
         public void OnCloseTab(DatabaseTabItemViewModel selectedTab)
         {
             selectedTab.OnClose();
             TabItems.Remove(selectedTab);
+
+            try
+            {
+                UpdateOpenFilesList();
+            }
+            catch
+            {
+            }
         }
 
         public void Dispose()
@@ -134,6 +188,17 @@ namespace MKW.GUI
         { 
             get => isTabControlVisible; 
             set => SetProperty(ref isTabControlVisible, value); 
+        }
+
+        private void UpdateOpenFilesList()
+        {
+            List<string> filesList = new List<string>();
+            foreach (DatabaseTabItemViewModel tabItem in TabItems)
+            {
+                filesList.Add(tabItem.DatabaseViewModel.Database.Path);
+            }
+
+            registryService.SetOpenFiles(filesList.ToArray());
         }
     }
 }

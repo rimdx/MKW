@@ -32,6 +32,16 @@ namespace MKW.GUI.Services
             SetValue(RegistryKeys.LastDatabaseDirectoryKeyName, path);
         }
 
+        public string[] GetOpenFiles()
+        {
+            return GetValue<string[]>(RegistryKeys.OpenFilesKeyName, []);
+        }
+
+        public void SetOpenFiles(string[] recentFiles)
+        {
+            SetValue(RegistryKeys.OpenFilesKeyName, recentFiles);
+        }
+
         private T GetValue<T>(string key, T defaultValue) where T : class
         {
             object? value = rootKey.GetValue(key);
