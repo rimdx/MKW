@@ -29,16 +29,6 @@
     <File Path="README.md" />
     <File Path="Version.props" />
   </Folder>
-  <Project Path="cli/MKW.CommandLine.Tests/MKW.CommandLine.Tests.csproj">
-    <Platform Solution="*|ARM64" Project="ARM64" />
-    <Platform Solution="*|x64" Project="x64" />
-    <Platform Solution="*|x86" Project="x86" />
-  </Project>
-  <Project Path="cli/MKW/MKW.csproj">
-    <Platform Solution="*|ARM64" Project="ARM64" />
-    <Platform Solution="*|x64" Project="x64" />
-    <Platform Solution="*|x86" Project="x86" />
-  </Project>
   <Project Path="common/MKW.Common.NETFramework/MKW.Common.NETFramework.shproj" />
   <Project Path="common/MKW.Common.Tests/MKW.Common.Tests.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />

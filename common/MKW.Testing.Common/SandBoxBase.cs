@@ -1,6 +1,4 @@
 ﻿using Microsoft.Win32;
-using System.Diagnostics;
-using System.Text;
 
 namespace MKW.Testing.Common
 {
@@ -20,55 +18,6 @@ namespace MKW.Testing.Common
 #if WINDOWS // silence warnings; mostly i'd say. also i'm being too stupid over here at like 3:30 AM. i know, maybe i gotta go have some sleep but i love this project so much so i don't even wanna be going to skeep even though i really want to. sp yeah, i'm being kinda stupid right now which is okay i guess... i mean i'm actually doing so much of cleaning up things so i hope it doesn't really metter on the project in. i mean i'm not gonna make some crazy descisions for sure, but this could be bad for me. i mean i know we have to sleep, but why would i? hold on guys, why am i even writing this nonsence comment in the code. i hope that since these are just the tests it should also be fine. who is the one stopping me at this point? btw who is the one going to be reading this? i don't think anyone will get here at any point for sure. like guys, what the heck am i doing so far? this project is something that i love doing, but i most probably is not gonna be needed by anyone in the entire world ever. but in case somebody finds this funny note, emmm hi! nice to see you bro. i guess this is sort of an achivement. maybe when this project gets like mainstream usages, this is gonna be found for sure, but sure, this is deffinetelly an achivement. i mean hiii, you got so far in the source code base, so end up finding this. idk, let me know hahaha. shall i stop here? no, why would i! emm my day has gone great i guess. except for the fact that my sleepschedule is kinda broken for me. like i seet the whole night behind my computer doing this project, and wake up around... mid-day i'd say. yeah. btw i'm bored. like even though i have so much work to do in relation to this amazing project, but, in my life. it's so stupid. i mean i have no people to be active socially with. i feel like i'm really waiting for college to start (which is gonna be very soonly, it's already september 2nd, i mean 3rd already). so, yeah, i hope i'll meet new people, maybe, i hope. would be really good if they are also in programming. cus it's cool. but, y'know, i'm scared of things. like i will have to study, which i don't like to i guess. i hope it won't be to complecated. but, going through the topics we are gonna have, it's just gets me sad. there are so much things, which are like not that hard, but just new topics, and so many of them. like we had really easy topics in the school, speeking of math as an example, while in college, we will learm so much during these two years. i hope i'll carry it out atleast. i'm sure it's not that hard as i might be thinking it could've been, but still. i'm actually good in learning new things, i'd say. this is also what i got to do in this project. like so much new topics, including the cryptography on its own. fine, it's also not the hardest thing ever, at least if you are not the one implementing these algorithms, or even harder, developing. i guess these people are just square-brain nerds. also so much project management stuff. the good thing is i've already done plenty of projects so it's not that hard to start a new one. like i do lots of things which i've already done. for example, the whole fact i'm choosing c# is cus it's my favourite language btw, the first one i actually learnt and got into programming with. i love c#! also, yeah, wpf, i did some of it already. i'm a bit familiar with storage and database, in it low-level concepts. maybe i am. i'm not sure about that. but due to my knowlege of internal subversion designs, i know much good practices about writing good code from sides of performance, structure, and etc.. for example my stream-disown thing. i definetelly did not just steal it from svn. i know it is being cool in its design so it's shame to think of own custom crazy solution, instead of just taking the practive i already know is working cool. that's baically it. i'll leave my thoughts as is wihtout changing anything tho, and commit it straight out. good luck guys finding this. i'd appreacuate anyone reading this random message from me. but i got to commit this, with a few other changes and go have some sleep. still, no one reads comments, so who cares. yep. but i trully love all of you. if anyone is reading this, remember, you are a cool guy. keep on what you are doing. i hope this could've made someone happy, which makes me happy as well. even though i don't know yet who you are, this's so cool. i spent like last half an hour just streamwriting my thoughts, which is cool i guess. i love writing as it is. life is life. it helps to structure things so much. or just leaves some sort of thingerprint of a particular moment. like right now, i'm translating the vibe going onto me into this stupidly large comment in the middle of my source code-base, hoping no-one will ever find it. or to let the guy finding this have some fun with me. it's so funny finding such notes from devs don't you find? the code is not about being boring, but involving such a cool things, cus we -- devs just can. i remember seeing a guy studing leaked windows source code. he found so much cool things in here, starting from casual "what the heck is going on over here" to magic files with nothing but the number '42' which can't be removed, cus it will break the whole thing. maybe i'm mistaking in the exact things he found out about that source archive, but you get the point. it's just cool. fine, it's 4:00 AM and i good to go to finally commit it. it's so repetitive so i just don't wanna stop at all. haah lol. wait, i'm not stopping on this point. well, i don't have anything else to say yet, but, have fun guys. good luck to you and me finishing this out.
             Registry.CurrentUser.DeleteSubKey(TestRootKey, false);
 #endif
-        }
-
-        public string Run(string cmd, string stdin = "")
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/c {cmd}",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            };
-
-            using Process process = Process.Start(startInfo)!;
-
-            process.StandardInput.Write(stdin);
-            process.StandardInput.Close();
-
-            process.WaitForExit();
-
-            StringBuilder result = new StringBuilder();
-
-            result.AppendLine($"  -- EXIT CODE: {process.ExitCode}");
-
-            string stderr = SandBoxBase.TrimString(process.StandardError.ReadToEnd());
-            string stdout = SandBoxBase.TrimString(process.StandardOutput.ReadToEnd());
-
-            if (stderr != "")
-            {
-                result.AppendLine("  -- STDERR:");
-                result.AppendLine(stderr);
-            }
-
-            if (stdout != "")
-            {
-                result.AppendLine("  -- STDOUT:");
-                result.AppendLine(stdout);
-            }
-
-            Console.WriteLine(result.ToString());
-
-            return result.ToString();
-        }
-
-        private static string TrimString(string str)
-        {
-            return str.Trim([' ', '\n', '\r', '\t']);
         }
     }
 }
