@@ -6,15 +6,27 @@ using MKW.Core.Storage.JSON;
 
 namespace MKW.GUI.Model
 {
-    public class DatabaseModel : IDisposable
+    public class DatabaseModel : ViewModelBase, IDisposable
     {
+        private IUserSession? user;
+        private IAdminSession? admin;
+
         public string Path { get; }
 
         public IDatabase Database { get; }
         public ClientSession Client { get; }
 
-        public IUserSession? User { get; private set; }
-        public IAdminSession? Admin { get; private set; }
+        public IUserSession? User 
+        {
+            get => user;
+            private set => SetProperty(ref user, value);
+        }
+
+        public IAdminSession? Admin
+        {
+            get => admin;
+            private set => SetProperty(ref admin, value);
+        }
 
         public event EventHandler? OnEntriesChanged;
         public event EventHandler? OnUsersChanged;
