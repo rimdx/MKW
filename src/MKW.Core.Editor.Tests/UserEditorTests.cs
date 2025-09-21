@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Client;
-using MKW.Core.Notify;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 

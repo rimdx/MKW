@@ -1,5 +1,4 @@
-﻿using MKW.Core.Notify;
-using MKW.GUI.Model;
+﻿using MKW.GUI.Model;
 using MKW.GUI.Services;
 
 namespace MKW.GUI

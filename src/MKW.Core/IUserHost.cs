@@ -1,6 +1,4 @@
-﻿using MKW.Core.Notify;
-
-namespace MKW.Core
+﻿namespace MKW.Core
 {
     public interface IUserHost : IDisposable
     {

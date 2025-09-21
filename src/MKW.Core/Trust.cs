@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Notify
+﻿namespace MKW.Core
 {
     public enum Trust
     {

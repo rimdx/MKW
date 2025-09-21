@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Storage;
 
-namespace MKW.Core.Notify
+namespace MKW.Core
 {
     public record class UserInfo
     {
