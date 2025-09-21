@@ -21,26 +21,6 @@
     </Grid.RowDefinitions>
 
     <StackPanel Orientation="Vertical">
-      <Border Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}"
-              Visibility="{Binding IsUntrusted, Converter={StaticResource BooleanToVisibilityConverter}}"
-              CornerRadius="6"
-              Padding="9"
-              Margin="0,0,0,6">
-        <StackPanel Orientation="Vertical">
-          <StackPanel Orientation="Horizontal"  Margin="0,0,0,6">
-            <images:StatusWarning HorizontalAlignment="Left" Width="22" />
-            <TextBlock Text="This user is not verified. " />
-          </StackPanel>
-
-          <TextBlock Text="Only the database owner can verify other users."
-                     Visibility="{Binding IsUser, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-          <TextBlock Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Hyperlink Click="VerifyUser_Click">Verfiy this user</Hyperlink>
-          </TextBlock>
-        </StackPanel>
-      </Border>
-
       <Label Padding="0" Margin="0,0,0,3"
              Content="User ID:" Target="UserIdTextBox" />
 

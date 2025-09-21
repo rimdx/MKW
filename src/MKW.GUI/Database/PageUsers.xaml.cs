@@ -76,20 +76,5 @@ namespace MKW.GUI.Database
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
-
-        private void VerifyUser_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                UserPropertyDialogViewModel properties = model.CreateUserPropertiesWindowViewModel();
-                UserPropertyVerifyUserDialog window = new UserPropertyVerifyUserDialog(properties, Window.GetWindow(this));
-                window.ShowDialog();
-                properties.OnOK();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
     }
 }
