@@ -24,8 +24,8 @@ namespace MKW.Core.Client
             IDatabaseUser user = database.OpenUser(userId, true);
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
-            me.AddTrust(signature);
-            me.Save();
+            admin.AddTrust(signature);
+            admin.Save();
         }
 
         public void RemoveTrust(UserId userId)
@@ -33,8 +33,8 @@ namespace MKW.Core.Client
             IDatabaseUser user = database.OpenUser(userId, true);
             ReadOnlyMemory<byte> signature = privateKey.Sign(user.PublicKey.Span);
 
-            me.DeleteTrust(signature);
-            me.Save();
+            admin.DeleteTrust(signature);
+            admin.Save();
         }
 
         public override void Dispose()

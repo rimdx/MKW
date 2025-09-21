@@ -93,19 +93,6 @@ namespace MKW.Core.Client
             }
         }
 
-        public IEnumerable<UserInfo> EnumerateExplicitlyTrustedUsers()
-        {
-            foreach (UserInfo user in trustController.EnumerateExplicitlyTrustedUsers())
-            {
-                yield return user;
-            }
-        }
-
-        public Trust GetExplicitTrust(ReadOnlySpan<byte> publicKey)
-        {
-            return trustController.GetExplicitTrust(publicKey);
-        }
-
         public Trust GetImplicitTrust(UserId userId)
         {
             return trustController.GetImplicitTrust(userId);

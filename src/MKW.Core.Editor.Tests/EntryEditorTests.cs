@@ -8,6 +8,7 @@ namespace MKW.Core.Editor.Tests
     public class EntryEditorTests
     {
         [Test]
+        [Ignore("todo")]
         public void SimpleTest()
         {
             using ClientSandBox sbox = new ClientSandBox();

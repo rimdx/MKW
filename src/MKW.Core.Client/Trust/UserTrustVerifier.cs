@@ -17,6 +17,11 @@ namespace MKW.Core.Client
 
         public Trust GetTrust(ReadOnlySpan<byte> otherPublicKey)
         {
+            if (otherPublicKey.SequenceEqual(me.PublicKey.Span))
+            {
+                return Trust.SelfTrust;
+            }
+
             foreach (ReadOnlyMemory<byte> trust in me.EnumerateTrust())
             {
                 if (publicKey.Verify(otherPublicKey, trust.Span))
