@@ -91,7 +91,7 @@ namespace MKW.Core.Client
                 // some validation may be required.
                 Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.Span);
 
-                return new UserSession(client, crypto, database, user, privateKeyBytes.Span);
+                return new UserSession(crypto, database, user, privateKeyBytes.Span);
             }
             catch (SymmetricOperationFailedException ex)
             {
