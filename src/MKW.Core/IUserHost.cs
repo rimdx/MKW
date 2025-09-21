@@ -8,6 +8,5 @@ namespace MKW.Core
         UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata);
 
         void AddTrust(UserId userId);
-        void RemoveTrust(UserId userId);
     }
 }

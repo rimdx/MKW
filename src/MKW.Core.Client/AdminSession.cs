@@ -52,10 +52,5 @@ namespace MKW.Core.Client
             trustController.AddTrust(userId);
             accessController.AddAccess(userId);
         }
-
-        public void RemoveTrust(UserId userId)
-        {
-            trustController.RemoveTrust(userId);
-        }
     }
 }
