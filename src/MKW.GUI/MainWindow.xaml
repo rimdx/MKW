@@ -122,7 +122,7 @@
 
             <Button Grid.Column="2"
                     Padding="1"
-                    Margin="0,2,0,0"
+                    Margin="0,6,0,0"
                     Height="14"
                     Background="Transparent"
                     Foreground="Transparent"
