@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\MKW.Testing.Client\MKW.Testing.Client.csproj" />
-    <ProjectReference Include="..\..\common\MKW.Testing.Common\MKW.Testing.Common.csproj" />
-    <ProjectReference Include="..\..\core\MKW.Core.Client\MKW.Core.Client.csproj" />
-    <ProjectReference Include="..\..\crypto\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
-    <ProjectReference Include="..\..\storage\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
+    <ProjectReference Include="..\..\src\MKW.Testing.Client\MKW.Testing.Client.csproj" />
+    <ProjectReference Include="..\..\src\MKW.Testing.Common\MKW.Testing.Common.csproj" />
+    <ProjectReference Include="..\..\src\MKW.Core.Client\MKW.Core.Client.csproj" />
+    <ProjectReference Include="..\..\src\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
+    <ProjectReference Include="..\..\src\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
   </ItemGroup>
 
   <ItemGroup>
