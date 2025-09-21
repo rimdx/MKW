@@ -16,7 +16,7 @@ namespace MKW.Core.Client
         protected readonly IEntryController entryController;
         protected readonly UserMetadataDecoder metadata;
         protected readonly IAsymmetricPublicTransformer adminPublicKey;
-        protected readonly UserTrustController trustController;
+        protected readonly UserTrustProvider trustProvider;
 
         internal IDatabaseUser DatabaseUser { get; }
 
@@ -40,7 +40,7 @@ namespace MKW.Core.Client
             entryController = new UserEntryController(client, crypto, database, this);
             Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Span, privateKey);
             metadata = new UserMetadataDecoder(adminPublicKey);
-            trustController = new UserTrustController(database, crypto, admin, Transformer);
+            trustProvider = new UserTrustProvider(database, crypto, admin);
         }
 
         public UserMetadata OpenMetadata()
@@ -87,7 +87,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
         {
-            foreach (UserInfo user in trustController.EnumerateImplicitlyTrustedUsers())
+            foreach (UserInfo user in trustProvider.EnumerateImplicitlyTrustedUsers())
             {
                 yield return user;
             }
@@ -95,13 +95,13 @@ namespace MKW.Core.Client
 
         public Trust GetImplicitTrust(UserId userId)
         {
-            return trustController.GetImplicitTrust(userId);
+            return trustProvider.GetImplicitTrust(userId);
         }
 
         public void Dispose()
         {
             Transformer.Dispose();
-            trustController.Dispose();
+            trustProvider.Dispose();
             entryController.Dispose();
             adminPublicKey.Dispose();
         }
