@@ -71,7 +71,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             EntryId entryId;
             using (IEntrySession entry = admin.CreateEntry())

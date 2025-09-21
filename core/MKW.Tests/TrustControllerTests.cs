@@ -25,7 +25,7 @@ namespace MKW.Tests
             using ClientSession client = sbox.OpenSession();
 
             using IUserSession user = sbox.CreateUser(client, "123", out UserInfo userInfo, false);
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController = OpenTrustController(sbox, client, user);
 
@@ -67,7 +67,7 @@ namespace MKW.Tests
             IUserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
             IUserSession user4 = sbox.CreateUser(client, "user4", out UserInfo user4Info, false);
             IUserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, false);
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController1 = OpenTrustController(sbox, client, user1);
             using UserTrustController trustController2 = OpenTrustController(sbox, client, user2);
@@ -129,7 +129,7 @@ namespace MKW.Tests
             IUserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
             IUserSession user4 = sbox.CreateUser(client, "user4", out UserInfo user4Info, false);
             IUserSession user5 = sbox.CreateUser(client, "user5", out UserInfo user5Info, false);
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController1 = OpenTrustController(sbox, client, user1);
             using UserTrustController trustController2 = OpenTrustController(sbox, client, user2);
@@ -173,7 +173,7 @@ namespace MKW.Tests
             IUserSession user1 = sbox.CreateUser(client, "user1", out UserInfo user1Info, false);
             IUserSession user2 = sbox.CreateUser(client, "user2", out UserInfo user2Info, false);
             IUserSession user3 = sbox.CreateUser(client, "user3", out UserInfo user3Info, false);
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             using UserTrustController trustController1 = OpenTrustController(sbox, client, user1);
             using UserTrustController trustController2 = OpenTrustController(sbox, client, user2);

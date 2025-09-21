@@ -40,7 +40,7 @@ namespace MKW.Testing.Client
             return ClientSession.Open(OpenDatabase(), true);
         }
 
-        public IUserSession OpenAdmin(ClientSession client)
+        public IAdminSession OpenAdmin(ClientSession client)
         {
             return client.OpenAdmin(AdminSecret);
         }
@@ -50,7 +50,7 @@ namespace MKW.Testing.Client
                                        out UserInfo user,
                                        bool trusted = true)
         {
-            using IUserSession admin = OpenAdmin(client);
+            using IAdminSession admin = OpenAdmin(client);
 
             UserAccessRequest request = client.CreateUserAccessRequest(password);
 

@@ -25,7 +25,7 @@ namespace MKW.Tests
 
             using ClientSession client = ClientSession.Create(db, sbox.AdminSecret, metadata);
 
-            using IUserSession adminSession = client.OpenAdmin(sbox.AdminSecret);
+            using IAdminSession adminSession = client.OpenAdmin(sbox.AdminSecret);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace MKW.Tests
             using ClientSession client = ClientSession.Create(db,  sbox.AdminSecret, metadata);
 
             UserInfo admin = client.GetAdminInfo();
-            IUserSession adminSession = client.OpenAdmin(sbox.AdminSecret);
+            IAdminSession adminSession = client.OpenAdmin(sbox.AdminSecret);
 
             using IUserSession s1 = sbox.CreateUser(client, "user1", out UserInfo user1, false);
             using IUserSession s2 = sbox.CreateUser(client, "user2", out UserInfo user2, false);
@@ -80,7 +80,7 @@ namespace MKW.Tests
             using IUserSession trusted = sbox.CreateUser(client, "trusted", out _, false);
             using IUserSession untrusted = sbox.CreateUser(client, "untrusted", out _, false);
 
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             admin.AddTrust(trusted.Id);
             EntryInfo entry = admin.UpdateEntry(EntryId.Create(), new EntryPayload("test data"));
@@ -131,7 +131,7 @@ namespace MKW.Tests
             }
 
             {
-                using IUserSession admin = sbox.OpenAdmin(client);
+                using IAdminSession admin = sbox.OpenAdmin(client);
                 using IEntrySession entry = admin.OpenEntry(entryId);
 
                 ClassicAssert.AreEqual(new EntryPayload("data"),
@@ -194,7 +194,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             EntryId entryId;
 
@@ -294,7 +294,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             using ClientSession client = sbox.OpenSession();
 
-            using IUserSession admin = sbox.OpenAdmin(client);
+            using IAdminSession admin = sbox.OpenAdmin(client);
 
             using IEntrySession entry1 = admin.CreateEntry();
             entry1.UpdatePayload(new EntryPayload("data1"));
