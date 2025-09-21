@@ -1,0 +1,173 @@
+﻿using MKW.Core;
+using MKW.Core.Storage;
+using MKW.GUI.AddUserWizard;
+using MKW.GUI.Model;
+using MKW.GUI.RequestAccessWizard;
+
+namespace MKW.GUI.Database
+{
+    public class DatabaseUnlockedViewModel : ViewModelBase
+    {
+        public DatabaseModel Database => databaseViewModel.Database;
+        private DatabaseViewModel databaseViewModel;
+
+        public DatabaseUnlockedViewModel(DatabaseViewModel databaseViewModel)
+        {
+            this.databaseViewModel = databaseViewModel;
+
+            Entries = new DatabaseEntryCollectionViewModel(Database);
+            Users = new DatabaseUserCollectionViewModel(Database);
+        }
+
+        private enum PageType
+        {
+            Database,
+            Entries,
+            Users,
+        }
+
+        private PageType selectedPage = PageType.Entries;
+        private void SetPage(bool value, PageType type)
+        {
+            if (value)
+            {
+                selectedPage = type;
+                OnPropertyChanged(nameof(IsPageDatabase));
+                OnPropertyChanged(nameof(IsPageEntries));
+                OnPropertyChanged(nameof(IsPageUsers));
+            }
+        }
+
+        public bool IsPageDatabase
+        {
+            get => selectedPage == PageType.Database;
+            set => SetPage(value, PageType.Database);
+        }
+
+        public bool IsPageEntries
+        {
+            get => selectedPage == PageType.Entries;
+            set => SetPage(value, PageType.Entries);
+        }
+
+        public bool IsPageUsers
+        {
+            get => selectedPage == PageType.Users;
+            set => SetPage(value, PageType.Users);
+        }
+
+        public DatabaseEntryCollectionViewModel Entries { get; }
+
+        private DatabaseEntryModel? _selectedEntry;
+        public DatabaseEntryModel? SelectedEntry
+        {
+            get => _selectedEntry;
+            set
+            {
+                SetProperty(ref _selectedEntry, value);
+                OnPropertyChanged(nameof(IsEntrySelected));
+            }
+        }
+
+        public bool IsEntrySelected => _selectedEntry != null;
+
+        public DatabaseUserCollectionViewModel Users { get; }
+
+        private DatabaseUserModel? _selectedUser;
+        public DatabaseUserModel? SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                SetProperty(ref _selectedUser, value);
+                OnPropertyChanged(nameof(IsUserSelected));
+                OnPropertyChanged(nameof(IsVerifiable));
+            }
+        }
+
+        public bool IsUserSelected => _selectedUser != null;
+
+        public bool IsVerifiable
+        {
+            get
+            {
+                if (Database.User != null && Database.User.Id.IsAdmin)
+                {
+                    if (SelectedUser != null)
+                    {
+                        return SelectedUser.IsVerifiable;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        // Entry
+
+        public NewEntryWindowViewModel CreateNewEntryWindowViewModel()
+        {
+            return new NewEntryWindowViewModel(Database);
+        }
+
+        public EditEntryWindowViewModel CreateEditEntryWindowViewModel(EntryId id)
+        {
+            IEntrySession entry = Database.User!.OpenEntry(id);
+
+            return new EditEntryWindowViewModel(Database, entry /* move */);
+        }
+
+        public bool DeleteEntry()
+        {
+            if (SelectedEntry == null)
+            {
+                throw new Exception("No entry was selected.");
+            }
+
+            Database.DeleteEntry(SelectedEntry.Id);
+
+            return true;
+        }
+
+        // User
+
+        public AddUserWizardViewModel CreateNewUserWindowViewModel()
+        {
+            return new AddUserWizardViewModel(Database);
+        }
+
+        public RequestAccessWizardViewModel CreateRequestAccessViewModel()
+        {
+            return new RequestAccessWizardViewModel(Database);
+        }
+
+        public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()
+        {
+            if (SelectedUser == null)
+            {
+                throw new Exception("No user was selected.");
+            }
+
+            UserEditorModel userEditor = Database.CreateUserEditor(SelectedUser.Id);
+
+            return new UserPropertyDialogViewModel(Database, userEditor);
+        }
+
+        public void DeleteUser()
+        {
+            if (SelectedUser == null)
+            {
+                throw new Exception("No user was selected.");
+            }
+
+            Database.DeleteUser(SelectedUser.Id);
+        }
+
+        public void Dispose()
+        {
+            Entries.Dispose();
+            Users.Dispose();
+        }
+    }
+}

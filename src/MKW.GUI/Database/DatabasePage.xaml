@@ -9,85 +9,17 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
-             d:Background="White">
+             d:Background="White"
+             KeyboardNavigation.TabNavigation="Cycle">
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </UserControl.Resources>
+  <UserControl.CommandBindings>
+    <CommandBinding Command="{x:Static gui:AppCommands.LockDatabase}"
+                    Executed="LockDatabaseCommand_Executed" />
+    <CommandBinding Command="{x:Static gui:AppCommands.UnlockDatabase}"
+                    Executed="UnlockDatabaseCommand_Executed" />
+  </UserControl.CommandBindings>
 
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="200" MinWidth="100"  MaxWidth="300"/>
-      <ColumnDefinition Width="auto" />
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
-
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-
-    <TreeView Grid.Row="1">
-      <TreeViewItem IsExpanded="True" IsSelected="{Binding IsPageDatabase, Mode=TwoWay}">
-        <TreeViewItem.Header>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="24" />
-              <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <images:Database />
-            <TextBlock Grid.Column="1">Database</TextBlock>
-          </Grid>
-        </TreeViewItem.Header>
-
-        <TreeViewItem IsSelected="{Binding IsPageEntries, Mode=TwoWay}">
-          <TreeViewItem.Header>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="24" />
-                <ColumnDefinition Width="auto" />
-              </Grid.ColumnDefinitions>
-              <images:AsymmetricKey />
-              <TextBlock Grid.Column="1">Entries</TextBlock>
-            </Grid>
-          </TreeViewItem.Header>
-        </TreeViewItem>
-
-        <TreeViewItem IsSelected="{Binding IsPageUsers, Mode=TwoWay}">
-          <TreeViewItem.Header>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="24" />
-                <ColumnDefinition Width="auto" />
-              </Grid.ColumnDefinitions>
-              <images:Team />
-              <TextBlock Grid.Column="1">Users</TextBlock>
-            </Grid>
-          </TreeViewItem.Header>
-        </TreeViewItem>
-      </TreeViewItem>
-    </TreeView>
-
-    <GridSplitter Grid.Row="1"
-                  Grid.Column="1"
-                  Width="6"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  IsTabStop="False" />
-
-    <Border Grid.Row="1"
-            Grid.Column="2"
-            BorderThickness="1"
-            BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
-      <Grid>
-        <ContentPresenter x:Name="InfoPage"
-                          Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-        <ContentPresenter x:Name="EntriesPage"
-                          Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-        <ContentPresenter x:Name="UsersPage"
-                          Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
-      </Grid>
-    </Border>
-  </Grid>
+  <ContentPresenter Content="{Binding ContentView}" />
 </UserControl>

@@ -1,8 +1,5 @@
-﻿using MKW.Core;
-using MKW.Core.Storage;
-using MKW.GUI.AddUserWizard;
-using MKW.GUI.Model;
-using MKW.GUI.RequestAccessWizard;
+﻿using MKW.GUI.Model;
+using System.ComponentModel;
 
 namespace MKW.GUI.Database
 {
@@ -13,161 +10,53 @@ namespace MKW.GUI.Database
         public DatabaseViewModel(DatabaseModel database)
         {
             Database = database;
-
-            Entries = new DatabaseEntryCollectionViewModel(database);
-            Users = new DatabaseUserCollectionViewModel(database);
+            database.PropertyChanged += Database_PropertyChanged;
+            contentView = UpdateContentView();
         }
 
-        private enum PageType
+        private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Database,
-            Entries,
-            Users,
-        }
-
-        private PageType selectedPage = PageType.Entries;
-        private void SetPage(bool value, PageType type)
-        {
-            if (value)
+            if (e.MatchProperty(nameof(Database.User)))
             {
-                selectedPage = type;
-                OnPropertyChanged(nameof(IsPageDatabase));
-                OnPropertyChanged(nameof(IsPageEntries));
-                OnPropertyChanged(nameof(IsPageUsers));
+                UpdateContentView();
             }
         }
 
-        public bool IsPageDatabase
+        private object UpdateContentView()
         {
-            get => selectedPage == PageType.Database;
-            set => SetPage(value, PageType.Database);
-        }
-
-        public bool IsPageEntries
-        {
-            get => selectedPage == PageType.Entries;
-            set => SetPage(value, PageType.Entries);
-        }
-
-        public bool IsPageUsers
-        {
-            get => selectedPage == PageType.Users;
-            set => SetPage(value, PageType.Users);
-        }
-
-        public DatabaseEntryCollectionViewModel Entries { get; }
-
-        private DatabaseEntryModel? _selectedEntry;
-        public DatabaseEntryModel? SelectedEntry
-        {
-            get => _selectedEntry;
-            set
+            if (Database.User != null && contentView is not DatabaseUnlockedView)
             {
-                SetProperty(ref _selectedEntry, value);
-                OnPropertyChanged(nameof(IsEntrySelected));
+                ContentView = new DatabaseUnlockedView(new DatabaseUnlockedViewModel(this));
             }
-        }
-
-        public bool IsEntrySelected => _selectedEntry != null;
-
-        public DatabaseUserCollectionViewModel Users { get; }
-
-        private DatabaseUserModel? _selectedUser;
-        public DatabaseUserModel? SelectedUser
-        {
-            get => _selectedUser;
-            set
+            else if (Database.User == null && contentView is not DatabaseLockedView)
             {
-                _selectedUser = value;
-                SetProperty(ref _selectedUser, value);
-                OnPropertyChanged(nameof(IsUserSelected));
-                OnPropertyChanged(nameof(IsVerifiable));
-            }
-        }
-
-        public bool IsUserSelected => _selectedUser != null;
-
-        public bool IsVerifiable
-        {
-            get
-            {
-                if (Database.User != null && Database.User.Id.IsAdmin)
-                {
-                    if (SelectedUser != null)
-                    {
-                        return SelectedUser.IsVerifiable;
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        // Entry
-
-        public NewEntryWindowViewModel CreateNewEntryWindowViewModel()
-        {
-            return new NewEntryWindowViewModel(Database);
-        }
-
-        public EditEntryWindowViewModel CreateEditEntryWindowViewModel(EntryId id)
-        {
-            IEntrySession entry = Database.User!.OpenEntry(id);
-
-            return new EditEntryWindowViewModel(Database, entry /* move */);
-        }
-
-        public bool DeleteEntry()
-        {
-            if (SelectedEntry == null)
-            {
-                throw new Exception("No entry was selected.");
+                ContentView = new DatabaseLockedView(new DatabaseLockedViewModel(this));
             }
 
-            Database.DeleteEntry(SelectedEntry.Id);
-
-            return true;
-        }
-
-        // User
-
-        public AddUserWizardViewModel CreateNewUserWindowViewModel()
-        {
-            return new AddUserWizardViewModel(Database);
-        }
-
-        public RequestAccessWizardViewModel CreateRequestAccessViewModel()
-        {
-            return new RequestAccessWizardViewModel(Database);
-        }
-
-        public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()
-        {
-            if (SelectedUser == null)
-            {
-                throw new Exception("No user was selected.");
-            }
-
-            UserEditorModel userEditor = Database.CreateUserEditor(SelectedUser.Id);
-
-            return new UserPropertyDialogViewModel(Database, userEditor);
-        }
-
-        public void DeleteUser()
-        {
-            if (SelectedUser == null)
-            {
-                throw new Exception("No user was selected.");
-            }
-
-            Database.DeleteUser(SelectedUser.Id);
+            return contentView;
         }
 
         public void Dispose()
         {
-            Entries.Dispose();
-            Users.Dispose();
             Database.Dispose();
+        }
+
+        private object contentView;
+
+        public object ContentView
+        { 
+            get => contentView; 
+            set => SetProperty(ref contentView, value); 
+        }
+
+        public void LockDatabase()
+        {
+            Database.Lock();
+        }
+
+        public LoginWindowViewModel CreateLoginViewModel()
+        {
+            return new LoginWindowViewModel(Database);
         }
     }
 }

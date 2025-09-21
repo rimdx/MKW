@@ -8,9 +8,9 @@ namespace MKW.GUI.Database
 {
     public partial class PageUsers : UserControl
     {
-        private readonly DatabaseViewModel model;
+        private readonly DatabaseUnlockedViewModel model;
 
-        public PageUsers(DatabaseViewModel model)
+        public PageUsers(DatabaseUnlockedViewModel model)
         {
             this.model = model;
             DataContext = model;

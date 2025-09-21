@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MKW.GUI.Database
 {
@@ -13,19 +14,13 @@ namespace MKW.GUI.Database
             DataContext = model;
 
             InitializeComponent();
-
-            InfoPage.Content = new PageInfo(model);
-            EntriesPage.Content = new PageEntries(model);
-            UsersPage.Content = new PageUsers(model);
         }
 
-        private void AddEntry_Click(object sender, RoutedEventArgs e)
+        private void LockDatabaseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
-                NewEntryWindowViewModel viewModel = model.CreateNewEntryWindowViewModel();
-                NewEntryWindow window = new NewEntryWindow(viewModel, Window.GetWindow(this));
-                window.ShowDialog();
+                model.LockDatabase();
             }
             catch (Exception ex)
             {
@@ -33,16 +28,15 @@ namespace MKW.GUI.Database
             }
         }
 
-        private void EditEntry_Click(object sender, RoutedEventArgs e)
+        private void UnlockDatabaseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
-                if (model.SelectedEntry != null)
-                {
-                    using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
-                    EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
-                    window.ShowDialog();
-                }
+                LoginWindowViewModel loginViewModel = model.CreateLoginViewModel();
+
+                LoginWindow loginWindow = new LoginWindow(loginViewModel, Window.GetWindow(this));
+
+                loginWindow.ShowDialog();
             }
             catch (Exception ex)
             {
