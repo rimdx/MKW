@@ -7,12 +7,12 @@ namespace MKW.GUI.Model
 {
     public class DatabaseModel : ViewModelBase, IDisposable
     {
+        private IDatabase database;
         private IUserSession? user;
         private IAdminSession? admin;
 
         public string Path { get; }
 
-        public IDatabase Database { get; }
         public ClientSession Client { get; }
 
         public IUserSession? User 
@@ -32,8 +32,8 @@ namespace MKW.GUI.Model
 
         private DatabaseModel(IDatabase database, string path, ClientSession client)
         {
+            this.database = database;
             Path = path;
-            Database = database;
             Client = client;
         }
 
@@ -94,7 +94,7 @@ namespace MKW.GUI.Model
 
         public void DeleteEntry(EntryId id)
         {
-            Database.DeleteEntry(id);
+            database.DeleteEntry(id);
             OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
@@ -139,13 +139,13 @@ namespace MKW.GUI.Model
 
         public void DeleteUser(UserId id)
         {
-            Database.DeleteUser(id);
+            database.DeleteUser(id);
             OnUsersChanged?.Invoke(this, new EventArgs());
         }
 
         public void Dispose()
         {
-            Database?.Dispose();
+            database?.Dispose();
             Client?.Dispose();
             User?.Dispose();
         }
