@@ -8,12 +8,12 @@ namespace MKW.GUI
 {
     public partial class MainWindow : Window
     {
-        private readonly MainWindowViewModel model;
+        private readonly MainWindowViewModel viewModel;
 
         public MainWindow(AppModel appModel)
         {
-            model = new MainWindowViewModel(appModel);
-            DataContext = model;
+            viewModel = new MainWindowViewModel(appModel);
+            DataContext = viewModel;
 
             InitializeComponent();
         }
@@ -24,12 +24,12 @@ namespace MKW.GUI
         {
             try
             {
-                CreateDatabaseWizardViewModel createDatabaseViewModel = model.CreateCreateDatabaseViewModel();
+                CreateDatabaseWizardViewModel createDatabaseViewModel = viewModel.CreateCreateDatabaseViewModel();
                 CreateDatabaseWizard.CreateDatabaseWizard createDatabaseWindow = new CreateDatabaseWizard.CreateDatabaseWizard(createDatabaseViewModel, this);
 
                 createDatabaseWindow.ShowDialog();
 
-                model.OpenDatabase(createDatabaseViewModel);
+                viewModel.OpenDatabase(createDatabaseViewModel);
             }
             catch (Exception ex)
             {
@@ -76,12 +76,12 @@ namespace MKW.GUI
             try
             {
                 LoginWindowViewModel loginWindowViewModel =
-                    model.CreateLoginViewModel(file.FullPath);
+                    viewModel.CreateLoginViewModel(file.FullPath);
                 LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
 
                 window.ShowDialog();
 
-                model.OpenDatabase(loginWindowViewModel);
+                viewModel.OpenDatabase(loginWindowViewModel);
             }
             catch (Exception ex)
             {
@@ -97,7 +97,7 @@ namespace MKW.GUI
             {
                 canExecute = true;
             }
-            else if (model.SelectedTab != null)
+            else if (viewModel.SelectedTab != null)
             {
                 canExecute = true;
             }
@@ -120,12 +120,12 @@ namespace MKW.GUI
                 }
                 else
                 {
-                    tab = model.SelectedTab;
+                    tab = viewModel.SelectedTab;
                 }
 
                 if (tab != null)
                 {
-                    model.OnCloseTab(tab);
+                    viewModel.OnCloseTab(tab);
                 }
             }
             catch (Exception ex)
@@ -143,23 +143,23 @@ namespace MKW.GUI
 
         private void HelpAbout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            AboutDialog window = new AboutDialog(model, GetWindow(this));
+            AboutDialog window = new AboutDialog(viewModel, GetWindow(this));
             window.ShowDialog();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            model.Dispose();
+            viewModel.Dispose();
         }
 
         private void DoOpenDatabase(string fullPath)
         {
-            LoginWindowViewModel loginWindowViewModel = model.CreateLoginViewModel(fullPath);
+            LoginWindowViewModel loginWindowViewModel = viewModel.CreateLoginViewModel(fullPath);
             LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
 
             window.ShowDialog();
 
-            model.OpenDatabase(loginWindowViewModel);
+            viewModel.OpenDatabase(loginWindowViewModel);
         }
     }
 }
