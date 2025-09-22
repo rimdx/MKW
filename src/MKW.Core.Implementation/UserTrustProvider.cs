@@ -37,7 +37,7 @@ namespace MKW.Core.Implementation
             }
 
             // otherwise verify admin trust to this user
-            if (adminKey.Verify(user.PublicKey.Span, user.AdminSignature.Span))
+            if (adminKey.Verify(user.PublicKey.Span, user.AdminTrustSignature.Span))
             {
                 return true;
             }

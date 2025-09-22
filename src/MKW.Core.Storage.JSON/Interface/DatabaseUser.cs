@@ -26,7 +26,7 @@ namespace MKW.Core.Storage.JSON.Interface
         public ReadOnlyMemory<byte> Metadata { get; set; }
         public ReadOnlyMemory<byte> MetadataAdminSignature { get; set; }
 
-        public ReadOnlyMemory<byte> AdminSignature { get; set; }
+        public ReadOnlyMemory<byte> AdminTrustSignature { get; set; }
 
         public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
         {
@@ -61,7 +61,7 @@ namespace MKW.Core.Storage.JSON.Interface
             Salt = obj.Salt;
             Metadata = obj.Metadata;
             MetadataAdminSignature = obj.MetadataAdminSignature;
-            AdminSignature = obj.AdminSignature;
+            AdminTrustSignature = obj.AdminSignature;
             trust = [.. obj.Trust];
         }
 
@@ -74,7 +74,7 @@ namespace MKW.Core.Storage.JSON.Interface
                 Salt = Salt,
                 Metadata = Metadata,
                 MetadataAdminSignature = MetadataAdminSignature,
-                AdminSignature = AdminSignature,
+                AdminSignature = AdminTrustSignature,
                 Trust = [.. trust]
             };
         }
