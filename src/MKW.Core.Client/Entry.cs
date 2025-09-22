@@ -42,7 +42,7 @@ namespace MKW.Core.Client
         {
             AccessController accessController = AccessController.Create(user);
 
-            IDatabaseEntry entry = new IDatabaseEntry
+            DatabaseEntry entry = new DatabaseEntry
             {
                 Id = entryId,
                 Data = ReadOnlyMemory<byte>.Empty,
@@ -66,7 +66,7 @@ namespace MKW.Core.Client
                                  IAsymmetricPrivateTransformer privateKey,
                                  EntryId entryId)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId);
+            DatabaseEntry entry = database.OpenEntry(entryId);
 
             AccessController accessController = AccessController.Open(entry);
 
@@ -80,9 +80,9 @@ namespace MKW.Core.Client
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId);
+            DatabaseEntry entry = database.OpenEntry(entryId);
 
-            IDatabaseEntry newEntry = encoder.EncodeEntry(entry, payload);
+            DatabaseEntry newEntry = encoder.EncodeEntry(entry, payload);
 
             database.UpdateEntry(Id, newEntry);
 
@@ -95,7 +95,7 @@ namespace MKW.Core.Client
 
         public EntryPayload? OpenPayload()
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId);
+            DatabaseEntry entry = database.OpenEntry(entryId);
             return decoder.DecodeEntry(entry);
         }
 
@@ -109,9 +109,9 @@ namespace MKW.Core.Client
 
         public void AddAccess(UserId userId)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId);
+            DatabaseEntry entry = database.OpenEntry(entryId);
 
-            IDatabaseEntry newEntry = sharer.ShareEntry(entry, userId);
+            DatabaseEntry newEntry = sharer.ShareEntry(entry, userId);
 
             database.UpdateEntry(entryId, newEntry);
         }

@@ -17,7 +17,7 @@ namespace MKW.Core.Implementation
             this.encoder = encoder;
         }
 
-        public IDatabaseEntry ShareEntry(IDatabaseEntry entry, UserId userId)
+        public DatabaseEntry ShareEntry(DatabaseEntry entry, UserId userId)
         {
             EntryPayload? payload = decoder.DecodeEntry(entry);
 

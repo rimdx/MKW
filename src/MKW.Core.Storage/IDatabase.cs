@@ -13,13 +13,13 @@
         IEnumerable<IDatabaseUser> EnumerateUsers();
 
         // Entry Management
-        IDatabaseEntry OpenEntry(EntryId id);
+        DatabaseEntry OpenEntry(EntryId id);
 
-        void CreateEntry(EntryId id, IDatabaseEntry entry);
-        void UpdateEntry(EntryId id, IDatabaseEntry entry);
+        void CreateEntry(EntryId id, DatabaseEntry entry);
+        void UpdateEntry(EntryId id, DatabaseEntry entry);
         bool DeleteEntry(EntryId id);
 
         bool HasEntry(EntryId id);
-        IEnumerable<IDatabaseEntry> EnumerateEntries();
+        IEnumerable<DatabaseEntry> EnumerateEntries();
     }
 }

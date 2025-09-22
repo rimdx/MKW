@@ -123,7 +123,7 @@ namespace MKW.Core.Storage.JSON
 
         // Entry
 
-        public void CreateEntry(EntryId id, IDatabaseEntry entry)
+        public void CreateEntry(EntryId id, DatabaseEntry entry)
         {
             if (Database.Entries.ContainsKey(id.GetGuid()))
             {
@@ -137,7 +137,7 @@ namespace MKW.Core.Storage.JSON
             Save();
         }
 
-        public void UpdateEntry(EntryId id, IDatabaseEntry entry)
+        public void UpdateEntry(EntryId id, DatabaseEntry entry)
         {
             if (Database.Entries.ContainsKey(id.GetGuid()))
             {
@@ -151,7 +151,7 @@ namespace MKW.Core.Storage.JSON
             Save();
         }
 
-        public IDatabaseEntry OpenEntry(EntryId id)
+        public DatabaseEntry OpenEntry(EntryId id)
         {
             if (Database.Entries.ContainsKey(id.GetGuid()))
             {
@@ -175,7 +175,7 @@ namespace MKW.Core.Storage.JSON
             return Database.Entries.ContainsKey(id.GetGuid());
         }
 
-        public IEnumerable<IDatabaseEntry> EnumerateEntries()
+        public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
             foreach (KeyValuePair<Guid, JSONDatabaseSecretEntry> item in Database.Entries)
             {

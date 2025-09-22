@@ -18,7 +18,7 @@ namespace MKW.Core.Implementation
             this.transformer = transformer;
         }
 
-        public EntryPayload? DecodeEntry(IDatabaseEntry entry)
+        public EntryPayload? DecodeEntry(DatabaseEntry entry)
         {
             if (entry.Keys.TryGetValue(user.Id, out ReadOnlyMemory<byte> encodedKey) == false)
             {
