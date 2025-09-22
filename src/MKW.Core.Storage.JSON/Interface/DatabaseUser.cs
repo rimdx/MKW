@@ -21,7 +21,7 @@ namespace MKW.Core.Storage.JSON.Interface
         public UserId Id { get; }
         public ReadOnlyMemory<byte> Salt { get; set; }
         public ReadOnlyMemory<byte> PublicKey { get; set; }
-        public ReadOnlyMemory<byte> PrivateKey { get; set; }
+        public SecretPayload PrivateKey { get; set; }
 
         public SignedPayload Metadata { get; set; }
 
@@ -57,7 +57,7 @@ namespace MKW.Core.Storage.JSON.Interface
         public void CopyFrom(JSONDatabaseUser obj)
         {
             PublicKey = obj.PublicKey;
-            PrivateKey = obj.PrivateKey;
+            PrivateKey = new SecretPayload(obj.PrivateKey);
             Salt = obj.Salt;
 
             Metadata = new SignedPayload
@@ -76,7 +76,7 @@ namespace MKW.Core.Storage.JSON.Interface
             return new JSONDatabaseUser
             {
                 PublicKey = PublicKey,
-                PrivateKey = PrivateKey,
+                PrivateKey = PrivateKey.EncryptedPayload,
                 Salt = Salt,
                 Metadata = Metadata.Payload,
                 MetadataAdminSignature = Metadata.Signature,

@@ -89,7 +89,7 @@ namespace MKW.Core.Client
 
                 // Let's try'N decode the private key. We could potentially fail here. So
                 // some validation may be required.
-                Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.Span);
+                Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.EncryptedPayload.Span);
 
                 return new UserSession(crypto, database, user, privateKeyBytes.Span);
             }

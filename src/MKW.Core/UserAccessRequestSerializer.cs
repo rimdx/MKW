@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using MKW.Core.Storage;
+using System.Text.Json;
 
 namespace MKW.Core
 {
@@ -10,7 +11,7 @@ namespace MKW.Core
             {
                 Salt = data.Salt,
                 PublicKey = data.PublicKey,
-                PrivateKey = data.EncryptedPrivateKey,
+                PrivateKey = data.EncryptedPrivateKey.EncryptedPayload,
                 AdminSignature = data.AdminSignature,
             };
 
@@ -32,7 +33,7 @@ namespace MKW.Core
             {
                 Salt = parsed.Salt,
                 PublicKey = parsed.PublicKey,
-                EncryptedPrivateKey = parsed.PrivateKey,
+                EncryptedPrivateKey = new SecretPayload(parsed.PrivateKey),
                 AdminSignature = parsed.AdminSignature,
             };
         }
