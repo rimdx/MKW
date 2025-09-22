@@ -22,7 +22,6 @@ namespace MKW.Core.Client
 
         public UserId Id => user.Id;
 
-
         public UserSession(ICryptographyProvider crypto,
                            IDatabase database /* reference */,
                            IDatabaseUser user /* reference */,
