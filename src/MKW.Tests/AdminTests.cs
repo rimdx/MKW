@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Client;
+using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
@@ -59,7 +60,8 @@ namespace MKW.Tests
         public void OpenAdminAsUser()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase(); 
+            using ClientSession client = sbox.OpenSession(db);
 
             using (IUserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
             {
@@ -74,7 +76,8 @@ namespace MKW.Tests
         public void NewEntriesAreSharedWithAdminTest()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase(); 
+            using ClientSession client = sbox.OpenSession(db);
 
             EntryId entryId;
 
@@ -114,7 +117,8 @@ namespace MKW.Tests
         public void ShareEntriesWithNewUsersTest()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase(); 
+            using ClientSession client = sbox.OpenSession(db);
 
             using IAdminSession admin = sbox.OpenAdmin(client);
 
@@ -202,7 +206,8 @@ namespace MKW.Tests
         public void ShareAllEntriesWithNewUsers()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase(); 
+            using ClientSession client = sbox.OpenSession(db);
 
             using IAdminSession admin = sbox.OpenAdmin(client);
 

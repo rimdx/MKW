@@ -109,7 +109,8 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             EntryId entryId;
 
-            using (ClientSession client = sbox.OpenSession())
+            using (IDatabase db = sbox.OpenDatabase())
+            using (ClientSession client = sbox.OpenSession(db))
             {
                 using IUserSession user = sbox.CreateUser(client, "usersecret", out _);
 
@@ -138,7 +139,8 @@ namespace MKW.Tests
             }
 
             // blank session
-            using (ClientSession client = sbox.OpenSession())
+            using (IDatabase db = sbox.OpenDatabase())
+            using (ClientSession client = sbox.OpenSession(db))
             {
                 using IUserSession user = client.OpenUser("usersecret");
                 using IEntrySession entry = user.OpenEntry(entryId);

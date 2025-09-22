@@ -34,9 +34,9 @@ namespace MKW.Testing.Client
             return JSONDatabaseSession.Open(DatabasePath);
         }
 
-        public ClientSession OpenSession()
+        public ClientSession OpenSession(IDatabase db)
         {
-            return ClientSession.Open(OpenDatabase(), true);
+            return ClientSession.Open(db);
         }
 
         public IAdminSession OpenAdmin(ClientSession client)

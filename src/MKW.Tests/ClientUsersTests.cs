@@ -29,7 +29,8 @@ namespace MKW.Tests
         public void OpenUserTest()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase();
+            using ClientSession client = sbox.OpenSession(db);
 
             using IUserSession user = sbox.CreateUser(client, "awesomesecretno1willeverguess", out _);
 
@@ -49,7 +50,8 @@ namespace MKW.Tests
         public void OpenUserTestNoId()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase();
+            using ClientSession client = sbox.OpenSession(db);
 
             using IUserSession user1 = sbox.CreateUser(client, "cred1", out _);
             using IUserSession user2 = sbox.CreateUser(client, "cred2", out _);
@@ -68,7 +70,8 @@ namespace MKW.Tests
         public void AccessRequestTests()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase();
+            using ClientSession client = sbox.OpenSession(db);
 
             using IAdminSession admin = sbox.OpenAdmin(client);
 
