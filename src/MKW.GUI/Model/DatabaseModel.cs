@@ -145,9 +145,9 @@ namespace MKW.GUI.Model
 
         public void Dispose()
         {
-            database?.Dispose();
-            Client?.Dispose();
             User?.Dispose();
+            Client?.Dispose();
+            database?.Dispose();
         }
     }
 }
