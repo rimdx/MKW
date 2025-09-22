@@ -9,30 +9,22 @@ namespace MKW.Core.Client
     {
         public IDatabase Database { get; }
 
-        private readonly bool ownsDb;
-
         private readonly ICryptographyProvider crypto;
         private readonly UserController userController;
         private readonly AdminController adminController;
 
-        protected ClientSession(IDatabase db, bool ownsDb)
+        protected ClientSession(IDatabase db)
         {
             Database = db;
-            this.ownsDb = ownsDb;
 
             crypto = CryptographyLoader.GetProvider();
             userController = new UserController(this, crypto, Database);
             adminController = new AdminController(crypto, Database);
         }
 
-        public static ClientSession Open(IDatabase db /* reference */)
+        public static ClientSession Open(IDatabase db)
         {
-            return Open(db, false);
-        }
-
-        public static ClientSession Open(IDatabase db, bool ownsDb)
-        {
-            ClientSession client = new ClientSession(db, ownsDb);
+            ClientSession client = new ClientSession(db);
 
             // ensure the admin actually exists
             // a database without admin is invalid
@@ -41,19 +33,11 @@ namespace MKW.Core.Client
             return client;
         }
 
-        public static ClientSession Create(IDatabase db /* reference */,
-                                           string adminPassword,
-                                           UserMetadata adminMetadata)
-        {
-            return Create(db, false, adminPassword, adminMetadata);
-        }
-
         public static ClientSession Create(IDatabase db,
-                                           bool ownsDb,
                                            string adminPassword,
                                            UserMetadata adminMetadata)
         {
-            ClientSession client = new ClientSession(db, ownsDb);
+            ClientSession client = new ClientSession(db);
 
             client.CreateAdmin(adminPassword, adminMetadata);
 
@@ -148,11 +132,6 @@ namespace MKW.Core.Client
         public void Dispose()
         {
             userController.Dispose();
-
-            if (ownsDb)
-            {
-                Database.Dispose();
-            }
         }
     }
 }

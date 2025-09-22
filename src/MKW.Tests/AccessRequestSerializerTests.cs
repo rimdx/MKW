@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Client;
+using MKW.Core.Storage;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
@@ -11,7 +12,8 @@ namespace MKW.Tests
         public void SimpleTest()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using ClientSession client = sbox.OpenSession();
+            using IDatabase db = sbox.OpenDatabase(); 
+            using ClientSession client = sbox.OpenSession(db);
 
             UserAccessRequest req1 = client.CreateUserAccessRequest("abc");
 
