@@ -1,6 +1,4 @@
-﻿using MKW.Core.Storage;
-
-namespace MKW.Core
+﻿namespace MKW.Core
 {
     public interface IUserSession
         : IEntryController

@@ -1,6 +1,4 @@
-﻿using MKW.Core.Storage;
-
-namespace MKW.Core.Implementation
+﻿namespace MKW.Core.Implementation
 {
     public class UserAccessController : IDisposable
     {

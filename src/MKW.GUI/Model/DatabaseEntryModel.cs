@@ -1,4 +1,4 @@
-﻿using MKW.Core.Storage;
+﻿using MKW.Core;
 
 namespace MKW.GUI.Model
 {
