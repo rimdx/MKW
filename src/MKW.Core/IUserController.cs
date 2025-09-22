@@ -1,5 +1,4 @@
 ﻿using MKW.Core.Storage;
-using MKW.Cryptography;
 
 namespace MKW.Core
 {
@@ -7,7 +6,6 @@ namespace MKW.Core
     {
         IUserSession OpenUser(string password);
         IUserSession OpenUser(UserId id, string password);
-        IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds);
 
         UserAccessRequest CreateUserAccessRequest(string password);
 
