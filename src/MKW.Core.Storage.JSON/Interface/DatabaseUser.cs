@@ -61,7 +61,7 @@ namespace MKW.Core.Storage.JSON.Interface
             Salt = obj.Salt;
             Metadata = obj.Metadata;
             MetadataAdminSignature = obj.MetadataAdminSignature;
-            AdminTrustSignature = obj.AdminSignature;
+            AdminTrustSignature = obj.AdminTrustSignature;
             trust = [.. obj.Trust];
         }
 
@@ -74,7 +74,7 @@ namespace MKW.Core.Storage.JSON.Interface
                 Salt = Salt,
                 Metadata = Metadata,
                 MetadataAdminSignature = MetadataAdminSignature,
-                AdminSignature = AdminTrustSignature,
+                AdminTrustSignature = AdminTrustSignature,
                 Trust = [.. trust]
             };
         }
