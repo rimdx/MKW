@@ -16,5 +16,6 @@
         IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust();
 
         ReadOnlyMemory<byte> AdminTrustSignature { get; set; }
+        ReadOnlyMemory<byte> AdminSignature { get; set; }
     }
 }
