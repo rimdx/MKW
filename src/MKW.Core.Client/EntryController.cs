@@ -20,7 +20,8 @@ namespace MKW.Core.Client
 
         public IEntrySession OpenEntry(EntryId id)
         {
-            return Entry.Open(database, crypto, user, database.OpenEntry(id));
+            IDatabaseEntry dbEntry = database.OpenEntry(id, false);
+            return Entry.Open(database, crypto, user, dbEntry);
         }
 
         public IEntrySession CreateEntry(EntryId id)
