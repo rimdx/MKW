@@ -7,19 +7,24 @@ namespace MKW.Core
         public required UserId Id { get; init; }
         public required ReadOnlyMemory<byte> PublicKey { get; init; }
 
+        public required UserMetadata Metadata { get; init; }
+
         public Trust Trust { get; set; } = Trust.Unknown;
 
         public UserInfo()
         {
         }
 
-        public static UserInfo FromDatabaseUser(IDatabaseUser user, Trust trust = Trust.Unknown)
+        public static UserInfo FromDatabaseUser(IDatabaseUser user,
+                                                UserMetadata metadata,
+                                                Trust trust = Trust.Unknown)
         {
             return new UserInfo
             {
                 Id = user.Id,
                 PublicKey = user.PublicKey.Payload,
-                Trust = trust
+                Trust = trust,
+                Metadata = metadata,
             };
         }
     }

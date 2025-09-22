@@ -36,7 +36,7 @@ namespace MKW.Core.Client
 
             admin.Save();
 
-            return UserInfo.FromDatabaseUser(admin);
+            return UserInfo.FromDatabaseUser(admin, metadata);
         }
 
         public IAdminSession OpenAdmin(string password)
@@ -68,7 +68,13 @@ namespace MKW.Core.Client
         public UserInfo GetAdminInfo()
         {
             IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
-            return UserInfo.FromDatabaseUser(admin);
+
+            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
+                admin.PublicKey.Payload.Span);
+
+            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
+
+            return UserInfo.FromDatabaseUser(admin, metadataDecoder.OpenMetadata(admin));
         }
 
         public void Dispose()
