@@ -18,7 +18,7 @@ namespace MKW.Core
             return new UserInfo
             {
                 Id = user.Id,
-                PublicKey = user.PublicKey,
+                PublicKey = user.PublicKey.Payload,
                 Trust = trust
             };
         }
