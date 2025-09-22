@@ -1,16 +1,17 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface IDatabaseUser : ISavable
+    public record class IDatabaseUser
     {
-        UserId Id { get; }
+        public required UserId Id { get; init; }
 
-        ReadOnlyMemory<byte> Salt { get; set; }
+        public required ReadOnlyMemory<byte> Salt { get; init; }
 
-        SignedPayload PublicKey { get; set; }
-        SecretPayload PrivateKey { get; set; }
+        public required SignedPayload PublicKey { get; init; }
+        public required SecretPayload PrivateKey { get; init; }
 
-        SignedPayload Metadata { get; set; }
+        public required SignedPayload Metadata { get; init; }
 
-        ReadOnlyMemory<byte> AdminSignature { get; set; }
+        public required ReadOnlyMemory<byte> AdminSignature { get; init; }
     }
+
 }

@@ -22,7 +22,7 @@ namespace MKW.Core.Client
 
         public UserAccessRequest CreateUserAccessRequest(string password)
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin());
 
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
@@ -50,7 +50,7 @@ namespace MKW.Core.Client
             }
             else
             {
-                IDatabaseUser user = database.OpenUser(id, false);
+                IDatabaseUser user = database.OpenUser(id);
 
                 // Credentials can be opened within the entered password and the public salt
                 IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
@@ -67,7 +67,7 @@ namespace MKW.Core.Client
                 {
                     IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
-                    return OpenUserInternal(database.OpenUser(user.Id, false), creds);
+                    return OpenUserInternal(database.OpenUser(user.Id), creds);
                 }
                 catch (Exceptions.InvalidPasswordException)
                 {
@@ -106,7 +106,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);
@@ -121,8 +121,8 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
-            IDatabaseUser user = database.OpenUser(id, true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin());
+            IDatabaseUser user = database.OpenUser(id);
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);

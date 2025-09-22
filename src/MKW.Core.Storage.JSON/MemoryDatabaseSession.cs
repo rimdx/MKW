@@ -1,5 +1,4 @@
-﻿using MKW.Core.Storage.JSON.Interface;
-using MKW.Core.Storage.JSON.Types;
+﻿using MKW.Core.Storage.JSON.Types;
 
 namespace MKW.Core.Storage.JSON
 {
@@ -17,13 +16,39 @@ namespace MKW.Core.Storage.JSON
             Database = database;
         }
 
-        public IDatabaseUser CreateUser(UserId id)
+        public IDatabaseUser OpenUser(UserId id)
+        {
+            if (id.IsAdmin)
+            {
+                if (Database.Admin != null)
+                {
+                    return JSONDatabaseUser.Deserialize(id, Database.Admin);
+                }
+                else
+                {
+                    throw new Exception("Admin user does not exist.");
+                }
+            }
+            else
+            {
+                if (Database.Users.TryGetValue(id.GetGuid(), out JSONDatabaseUser? user))
+                {
+                    return JSONDatabaseUser.Deserialize(id, user);
+                }
+                else
+                {
+                    throw new Exception("User doesn't exist.");
+                }
+            }
+        }
+
+        public void CreateUser(UserId id, IDatabaseUser user)
         {
             if (id.IsAdmin)
             {
                 if (Database.Admin == null)
                 {
-                    return new DatabaseAdminUser(this);
+                    Database.Admin = JSONDatabaseUser.Serialize(user);
                 }
                 else
                 {
@@ -34,24 +59,24 @@ namespace MKW.Core.Storage.JSON
             {
                 if (!Database.Users.ContainsKey(id.GetGuid()))
                 {
-                    return new DatabaseUser(id, this);
+                    Database.Users.Add(id.GetGuid(), JSONDatabaseUser.Serialize(user));
                 }
                 else
                 {
                     throw new Exception("User already exists.");
                 }
             }
+
+            Save();
         }
 
-        public IDatabaseUser OpenUser(UserId id, bool readOnly)
+        public void UpdateUser(UserId id, IDatabaseUser user)
         {
             if (id.IsAdmin)
             {
                 if (Database.Admin != null)
                 {
-                    DatabaseUser result = new DatabaseAdminUser(this);
-                    result.CopyFrom(Database.Admin);
-                    return result;
+                    Database.Admin = JSONDatabaseUser.Serialize(user);
                 }
                 else
                 {
@@ -60,19 +85,17 @@ namespace MKW.Core.Storage.JSON
             }
             else
             {
-                DatabaseUser result = readOnly ? new DatabaseUser(id)
-                                               : new DatabaseUser(id, this);
-
-                if (Database.Users.TryGetValue(id.GetGuid(), out JSONDatabaseUser? user))
+                if (Database.Users.ContainsKey(id.GetGuid()))
                 {
-                    result.CopyFrom(user);
-                    return result;
+                    Database.Users[id.GetGuid()] = JSONDatabaseUser.Serialize(user);
                 }
                 else
                 {
-                    throw new Exception("User doesn't exist.");
+                    throw new Exception("User does not exist.");
                 }
             }
+
+            Save();
         }
 
         public bool DeleteUser(UserId id)
@@ -89,41 +112,54 @@ namespace MKW.Core.Storage.JSON
 
         public IEnumerable<IDatabaseUser> EnumerateUsers()
         {
-            yield return OpenUser(UserId.Admin(), true);
+            yield return OpenUser(UserId.Admin());
 
             foreach (KeyValuePair<Guid, JSONDatabaseUser> item in Database.Users)
             {
-                DatabaseUser result = new DatabaseUser(UserId.FromGuid(item.Key));
-                result.CopyFrom(item.Value);
-                yield return result;
+                yield return JSONDatabaseUser.Deserialize(UserId.FromGuid(item.Key),
+                                                          item.Value);
             }
         }
 
         // Entry
 
-        public IDatabaseEntry CreateEntry(EntryId id)
+        public void CreateEntry(EntryId id, IDatabaseEntry entry)
         {
             if (Database.Entries.ContainsKey(id.GetGuid()))
             {
                 throw new Exception("Entry already exists.");
             }
+            else
+            {
+                Database.Entries[id.GetGuid()] = JSONDatabaseSecretEntry.Serialize(entry);
+            }
 
-            return new DatabaseSecretEntry(id, this);
+            Save();
         }
 
-        public IDatabaseEntry OpenEntry(EntryId id, bool readOnly)
+        public void UpdateEntry(EntryId id, IDatabaseEntry entry)
         {
-            DatabaseSecretEntry result = readOnly ? new DatabaseSecretEntry(id)
-                                                  : new DatabaseSecretEntry(id, this);
-
-            if (Database.Entries.TryGetValue(id.GetGuid(), out JSONDatabaseSecretEntry? entry))
+            if (Database.Entries.ContainsKey(id.GetGuid()))
             {
-                result.CopyFrom(entry);
-                return result;
+                Database.Entries[id.GetGuid()] = JSONDatabaseSecretEntry.Serialize(entry);
             }
             else
             {
-                throw new Exception("Entry doesn't exist.");
+                throw new Exception("Entry does not exist.");
+            }
+
+            Save();
+        }
+
+        public IDatabaseEntry OpenEntry(EntryId id)
+        {
+            if (Database.Entries.ContainsKey(id.GetGuid()))
+            {
+                 return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetGuid()]);
+            }
+            else
+            {
+                throw new Exception("Entry does not exist.");
             }
         }
 
@@ -143,9 +179,7 @@ namespace MKW.Core.Storage.JSON
         {
             foreach (KeyValuePair<Guid, JSONDatabaseSecretEntry> item in Database.Entries)
             {
-                DatabaseSecretEntry result = new DatabaseSecretEntry(EntryId.FromGuid(item.Key));
-                result.CopyFrom(item.Value);
-                yield return result;
+                yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromGuid(item.Key), item.Value);
             }
         }
 

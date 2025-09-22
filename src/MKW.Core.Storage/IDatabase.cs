@@ -3,20 +3,22 @@
     public interface IDatabase : ISavable, IDisposable
     {
         // User Management
-        IDatabaseUser CreateUser(UserId id);
-        IDatabaseUser OpenUser(UserId id, bool readOnly);
+        IDatabaseUser OpenUser(UserId id);
+
+        void CreateUser(UserId id, IDatabaseUser user);
+        void UpdateUser(UserId id, IDatabaseUser user);
         bool DeleteUser(UserId id);
 
-        // ReadOnly
         bool HasUser(UserId id);
         IEnumerable<IDatabaseUser> EnumerateUsers();
 
         // Entry Management
-        IDatabaseEntry CreateEntry(EntryId id);
-        IDatabaseEntry OpenEntry(EntryId id, bool readOnly);
+        IDatabaseEntry OpenEntry(EntryId id);
+
+        void CreateEntry(EntryId id, IDatabaseEntry entry);
+        void UpdateEntry(EntryId id, IDatabaseEntry entry);
         bool DeleteEntry(EntryId id);
 
-        // ReadOnly
         bool HasEntry(EntryId id);
         IEnumerable<IDatabaseEntry> EnumerateEntries();
     }

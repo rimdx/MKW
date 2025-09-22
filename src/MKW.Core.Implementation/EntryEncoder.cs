@@ -18,7 +18,7 @@ namespace MKW.Core.Implementation
             this.accessController = accessController;
         }
 
-        public void EncodeEntry(IDatabaseEntry entry, EntryPayload payload)
+        public IDatabaseEntry EncodeEntry(IDatabaseEntry entry, EntryPayload payload)
         {
             using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
 
@@ -28,7 +28,7 @@ namespace MKW.Core.Implementation
 
             foreach (UserId userId in accessController.EnumerateAccess())
             {
-                IDatabaseUser user = database.OpenUser(userId, true);
+                IDatabaseUser user = database.OpenUser(userId);
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
                     user.PublicKey.Payload.Span);
@@ -38,9 +38,12 @@ namespace MKW.Core.Implementation
                 keys.Add(user.Id, encyptedKey);
             }
 
-            entry.Keys = keys;
-            entry.Data = data;
-            entry.Salt = payloadEncoder.ExportIV();
+            return entry with
+            {
+                Keys = keys,
+                Data = data,
+                Salt = payloadEncoder.ExportIV(),
+            };
         }
 
         public void Dispose()

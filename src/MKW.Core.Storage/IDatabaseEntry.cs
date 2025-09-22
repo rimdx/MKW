@@ -1,18 +1,18 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface IDatabaseEntry : ISavable
+    public record class IDatabaseEntry
     {
-        EntryId Id { get; }
+        public required EntryId Id { get; init; }
 
         // User -> Payload
-        IDictionary<UserId, ReadOnlyMemory<byte>> Keys { get; set; }
+        public required IDictionary<UserId, ReadOnlyMemory<byte>> Keys { get; init; }
 
         // Salt used within [decoded]key to encode Data
-        ReadOnlyMemory<byte> Salt { get; set; }
+        public required ReadOnlyMemory<byte> Salt { get; init; }
 
         // The payload, symmetrically encoded using a key, available by encoding
         // one of Keys using user's private key. The Salt is required to operate
         // (internally states as IV).
-        ReadOnlyMemory<byte> Data { get; set; }
+        public required ReadOnlyMemory<byte> Data { get; init; }
     }
 }

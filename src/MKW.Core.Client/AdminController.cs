@@ -24,17 +24,19 @@ namespace MKW.Core.Client
             IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            IDatabaseUser admin = database.CreateUser(UserId.Admin());
-
             UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(systemCreds.Transformer);
 
-            admin.PublicKey = new SignedPayload(systemCreds.PublicKey, null);
+            IDatabaseUser admin = new IDatabaseUser
+            {
+                Id = UserId.Admin(),
+                PublicKey = new SignedPayload(systemCreds.PublicKey, null),
+                PrivateKey = systemCreds.PrivateKey,
+                Salt = systemCreds.Salt,
+                Metadata = metadataEncoder.EncodeMetadata(metadata),
+                AdminSignature = null, // TODO
+            };
 
-            admin.PrivateKey = systemCreds.PrivateKey;
-            admin.Salt = systemCreds.Salt;
-            admin.Metadata = metadataEncoder.EncodeMetadata(metadata);
-
-            admin.Save();
+            database.CreateUser(UserId.Admin(), admin);
 
             return CreateUserInfo(admin, metadata);
         }
@@ -43,7 +45,7 @@ namespace MKW.Core.Client
         {
             try
             {
-                IDatabaseUser admin = database.OpenUser(UserId.Admin(), false);
+                IDatabaseUser admin = database.OpenUser(UserId.Admin());
 
                 IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
 
@@ -67,7 +69,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetAdminInfo()
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);

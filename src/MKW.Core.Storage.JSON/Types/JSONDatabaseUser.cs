@@ -13,5 +13,35 @@
 
         public required ReadOnlyMemory<byte> AdminTrustSignature { get; init; }
         public required ReadOnlyMemory<byte> AdminSignature { get; init; }
+
+        public static JSONDatabaseUser Serialize(IDatabaseUser user)
+        {
+            return new JSONDatabaseUser
+            {
+                Salt = user.Salt,
+                PrivateKey = user.PrivateKey.EncryptedPayload,
+
+                PublicKey = user.PublicKey.Payload,
+                AdminTrustSignature = user.PublicKey.Signature,
+
+                Metadata = user.Metadata.Payload,
+                MetadataAdminSignature = user.Metadata.Signature,
+
+                AdminSignature = user.AdminSignature,
+            };
+        }
+
+        public static IDatabaseUser Deserialize(UserId id, JSONDatabaseUser user)
+        {
+            return new IDatabaseUser
+            {
+                Id = id,
+                Salt = user.Salt,
+                PublicKey = new SignedPayload(user.PublicKey, user.AdminTrustSignature),
+                PrivateKey = new SecretPayload(user.PrivateKey),
+                Metadata = new SignedPayload(user.Metadata, user.MetadataAdminSignature),
+                AdminSignature = user.AdminSignature,
+            };
+        }
     }
 }
