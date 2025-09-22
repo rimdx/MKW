@@ -10,7 +10,7 @@ namespace MKW.Core.Client
     {
         protected readonly IDatabase database;
         protected readonly ICryptographyProvider crypto;
-        protected readonly IDatabaseEntry entry;
+        protected readonly EntryId entryId;
         protected readonly AccessController accessController;
         protected readonly UserSession user;
 
@@ -18,18 +18,18 @@ namespace MKW.Core.Client
         protected readonly EntryDecoder decoder;
         protected readonly EntrySharer sharer;
 
-        public EntryId Id => entry.Id;
+        public EntryId Id => entryId;
 
         protected Entry(IDatabase database,
                         ICryptographyProvider crypto,
                         UserSession user,
-                        IDatabaseEntry entry,
+                        EntryId entryId,
                         AccessController accessController)
         {
             this.database = database;
             this.crypto = crypto;
             this.user = user;
-            this.entry = entry;
+            this.entryId = entryId;
             this.accessController = accessController;
 
             encoder = new EntryEncoder(crypto, database, accessController);
@@ -40,33 +40,37 @@ namespace MKW.Core.Client
         public static Entry Create(IDatabase database,
                                    ICryptographyProvider crypto,
                                    UserSession user,
-                                   IDatabaseEntry entry)
+                                   EntryId entryId)
         {
             AccessController accessController = AccessController.Create(user);
 
             return new Entry(database,
                              crypto,
                              user,
-                             entry,
+                             entryId,
                              accessController /* move */);
         }
 
         public static Entry Open(IDatabase database,
                                  ICryptographyProvider crypto,
                                  UserSession user,
-                                 IDatabaseEntry entry)
+                                 EntryId entryId)
         {
+            IDatabaseEntry entry = database.OpenEntry(entryId, true);
+
             AccessController accessController = AccessController.Open(entry);
 
             return new Entry(database,
                              crypto,
                              user,
-                             entry,
+                             entryId,
                              accessController /* move */);
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
+            IDatabaseEntry entry = database.OpenEntry(entryId, false);
+
             encoder.EncodeEntry(entry, payload);
 
             entry.Save();
@@ -80,6 +84,7 @@ namespace MKW.Core.Client
 
         public EntryPayload? OpenPayload()
         {
+            IDatabaseEntry entry = database.OpenEntry(entryId, true);
             return decoder.DecodeEntry(entry);
         }
 
@@ -93,7 +98,10 @@ namespace MKW.Core.Client
 
         public void AddAccess(UserId userId)
         {
+            IDatabaseEntry entry = database.OpenEntry(entryId, false);
+
             sharer.ShareEntry(entry, userId);
+
             entry.Save();
         }
 
