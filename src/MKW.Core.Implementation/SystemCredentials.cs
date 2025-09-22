@@ -1,4 +1,5 @@
-﻿using MKW.Cryptography;
+﻿using MKW.Core.Storage;
+using MKW.Cryptography;
 
 namespace MKW.Core.Implementation
 {
@@ -9,7 +10,7 @@ namespace MKW.Core.Implementation
         public required ReadOnlyMemory<byte> PublicKey { get; set; }
 
         // Encrypted using user's password
-        public required ReadOnlyMemory<byte> PrivateKey { get; set; }
+        public required SecretPayload PrivateKey { get; set; }
 
         public required IAsymmetricPrivateTransformer Transformer { get; set; }
 

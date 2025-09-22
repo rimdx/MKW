@@ -1,4 +1,5 @@
-﻿using MKW.Cryptography;
+﻿using MKW.Core.Storage;
+using MKW.Cryptography;
 
 namespace MKW.Core.Implementation
 {
@@ -28,7 +29,7 @@ namespace MKW.Core.Implementation
             return new SystemCredentials
             {
                 PublicKey = publicKeyBytes,
-                PrivateKey = privateKeyEncrypted,
+                PrivateKey = new SecretPayload(privateKeyEncrypted),
                 Salt = userCredentials.ExportSalt().ToArray(),
                 Transformer = userKey /* move */,
             };

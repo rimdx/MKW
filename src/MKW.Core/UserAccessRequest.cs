@@ -1,4 +1,6 @@
-﻿namespace MKW.Core
+﻿using MKW.Core.Storage;
+
+namespace MKW.Core
 {
     public record class UserAccessRequest
     {
@@ -7,7 +9,7 @@
         public required ReadOnlyMemory<byte> PublicKey { get; init; }
 
         /* encrypted */
-        public required ReadOnlyMemory<byte> EncryptedPrivateKey { get; init; }
+        public required SecretPayload EncryptedPrivateKey { get; init; }
 
         public required ReadOnlyMemory<byte> AdminSignature { get; init; }
     }

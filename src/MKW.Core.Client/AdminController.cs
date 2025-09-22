@@ -49,7 +49,7 @@ namespace MKW.Core.Client
                 using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
                     creds.GetSecretKey().Span, creds.ExportSalt().Span);
 
-                Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.Span);
+                Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.EncryptedPayload.Span);
 
                 return new AdminSession(crypto, database, admin, privateKeyBytes.Span);
             }
