@@ -39,7 +39,8 @@ namespace MKW.Core.Client
             user.PrivateKey = request.EncryptedPrivateKey;
             metadataEncoder.UpdateMetadata(user, metadata);
 
-            user.AddTrust(request.AdminSignature);
+            user.AdminSignature = request.AdminSignature;
+
             user.Save();
 
             trustController.AddTrust(user);
