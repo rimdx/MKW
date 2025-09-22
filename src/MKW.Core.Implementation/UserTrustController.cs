@@ -14,7 +14,7 @@ namespace MKW.Core.Implementation
                                    ICryptographyProvider crypto,
                                    IDatabaseUser me,
                                    IAsymmetricPrivateTransformer privateKey)
-            : base(database, crypto, me)
+            : base(database, crypto, privateKey, me)
         {
             this.privateKey = privateKey;
         }
