@@ -1,4 +1,19 @@
-﻿namespace MKW.Core.Storage.JSON.Types
+﻿
+<<<<<<< TODO: Unmerged change from project 'MKW.Core.Storage.JSON (net472)', Before:
+namespace MKW.Core.Storage.JSON.Types
+{
+=======
+using MKW;
+using MKW.Core;
+using MKW.Core.Storage;
+using MKW.Core.Storage.JSON;
+using MKW.Core.Storage.JSON;
+using MKW.Core.Storage.JSON.Types;
+
+namespace MKW.Core.Storage.JSON
+{
+>>>>>>> After
+    namespace MKW.Core.Storage.JSON
 {
     internal record class JSONDatabaseSecretEntry
     {
