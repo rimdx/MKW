@@ -30,7 +30,10 @@ namespace MKW.Core.Client
             return Entry.Create(database, crypto, user, id);
         }
 
-        public IEntrySession CreateEntry() => CreateEntry(EntryId.Create());
+        public IEntrySession CreateEntry()
+        {
+            return CreateEntry(EntryId.Create());
+        }
 
         public EntryInfo DeleteEntry(EntryId id)
         {
