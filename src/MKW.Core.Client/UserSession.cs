@@ -10,7 +10,6 @@ namespace MKW.Core.Client
         , ITrustProvider
         , IDisposable
     {
-        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly IEntryController entryController;
         private readonly UserMetadataDecoder metadata;
@@ -27,7 +26,6 @@ namespace MKW.Core.Client
                            IDatabaseUser user /* reference */,
                            ReadOnlySpan<byte> privateKey)
         {
-            this.crypto = crypto;
             this.database = database;
             databaseUser = user;
 
