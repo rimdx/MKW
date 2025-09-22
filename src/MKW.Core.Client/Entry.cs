@@ -9,7 +9,6 @@ namespace MKW.Core.Client
         , IDisposable
     {
         private readonly IDatabase database;
-        private readonly ICryptographyProvider crypto;
         private readonly EntryId entryId;
         private readonly AccessController accessController;
 
@@ -27,7 +26,6 @@ namespace MKW.Core.Client
                         AccessController accessController)
         {
             this.database = database;
-            this.crypto = crypto;
             this.entryId = entryId;
             this.accessController = accessController;
 
