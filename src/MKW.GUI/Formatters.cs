@@ -8,9 +8,13 @@
             {
                 return $"{displayName} <{userId}>";
             }
-            else
+            else if (userId.Length > 0)
             {
                 return userId;
+            }
+            else
+            {
+                return "<empty>";
             }
         }
     }
