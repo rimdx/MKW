@@ -51,7 +51,7 @@ namespace MKW.Core.Implementation
             return VerifyTrust(user);
         }
 
-        public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
+        public IEnumerable<UserInfo> EnumerateTrustedUsers()
         {
             foreach (IDatabaseUser user in database.EnumerateUsers())
             {
