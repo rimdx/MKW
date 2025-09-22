@@ -5,23 +5,42 @@ using MKW.Cryptography;
 namespace MKW.Core.Client
 {
     internal class AdminSession
-        : UserSession
-        , IAdminSession
+        : IAdminSession
         , IUserSession
         , IUserHost
         , IEntryController
         , ITrustProvider
         , IDisposable
     {
+        protected readonly ICryptographyProvider crypto;
+        protected readonly IDatabase database;
+        protected readonly IDatabaseUser admin;
+        public IAsymmetricPrivateTransformer Transformer { get; }
+
+        protected readonly IEntryController entryController;
+        protected readonly UserMetadataDecoder metadata;
+        protected readonly UserTrustProvider trustProvider;
+
         private readonly UserMetadataEncoder metadataEncoder;
         private readonly UserAccessController accessController;
 
+        public UserId Id => admin.Id;
+
         public AdminSession(ICryptographyProvider crypto,
-                            IDatabase database /* reference */,
-                            IDatabaseUser admin /* reference */,
+                            IDatabase database,
+                            IDatabaseUser admin,
                             ReadOnlySpan<byte> privateKey)
-            : base(crypto, database, admin, privateKey)
         {
+            this.crypto = crypto;
+            this.database = database;
+            this.admin = admin;
+
+            Transformer = crypto.OpenAsymmetricTransformer(admin.PublicKey.Payload.Span, privateKey);
+
+            entryController = new EntryController(crypto, database, this, Transformer);
+            metadata = new UserMetadataDecoder(Transformer);
+            trustProvider = new UserTrustProvider(database, crypto, Transformer, Transformer);
+
             metadataEncoder = new UserMetadataEncoder(Transformer);
             accessController = new UserAccessController(this);
         }
@@ -50,6 +69,68 @@ namespace MKW.Core.Client
                 Trust = Trust.Unknown,
                 Metadata = metadata
             };
+        }
+
+        public UserMetadata OpenMetadata()
+        {
+            return metadata.OpenMetadata(admin);
+        }
+
+        // IEntryController
+
+        public IEntrySession OpenEntry(EntryId id)
+        {
+            return entryController.OpenEntry(id);
+        }
+
+        public IEntrySession CreateEntry(EntryId id)
+        {
+            return entryController.CreateEntry(id);
+        }
+
+        public IEntrySession CreateEntry()
+        {
+            return entryController.CreateEntry();
+        }
+
+        public EntryInfo DeleteEntry(EntryId id)
+        {
+            return entryController.DeleteEntry(id);
+        }
+
+        public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
+        {
+            return entryController.UpdateEntry(id, payload);
+        }
+
+        public IEnumerable<IEntrySession> EnumerateEntries()
+        {
+            foreach (IEntrySession entry in entryController.EnumerateEntries())
+            {
+                yield return entry;
+            }
+        }
+
+        // ITrustProvider
+
+        public IEnumerable<UserInfo> EnumerateTrustedUsers()
+        {
+            foreach (UserInfo user in trustProvider.EnumerateTrustedUsers())
+            {
+                yield return user;
+            }
+        }
+
+        public bool VerifyTrust(UserId userId)
+        {
+            return trustProvider.VerifyTrust(userId);
+        }
+
+        public void Dispose()
+        {
+            Transformer.Dispose();
+            trustProvider.Dispose();
+            entryController.Dispose();
         }
     }
 }
