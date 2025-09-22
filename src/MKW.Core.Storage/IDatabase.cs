@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage
 {
-    public interface IDatabase : ISavable, IDisposable
+    public interface IDatabase : IDisposable
     {
         // User Management
         DatabaseUser OpenUser(UserId id);
