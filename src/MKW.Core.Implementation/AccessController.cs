@@ -15,7 +15,8 @@ namespace MKW.Core.Implementation
         }
 
         public static AccessController Create(IDatabase database,
-                                              ITrustProvider trustProvider)
+                                              ITrustProvider trustProvider,
+                                              IDatabaseEntry entry)
         {
             HashSet<UserId> access = [];
             foreach (UserInfo user in trustProvider.EnumerateTrustedUsers())
