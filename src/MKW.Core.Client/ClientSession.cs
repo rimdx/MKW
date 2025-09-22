@@ -118,11 +118,6 @@ namespace MKW.Core.Client
             return userController.OpenUser(password);
         }
 
-        public IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
-        {
-            return userController.OpenUser(user, creds);
-        }
-
         public UserInfo GetUserInfo(UserId id)
         {
             return userController.GetUserInfo(id);

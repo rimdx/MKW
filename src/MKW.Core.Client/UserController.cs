@@ -55,7 +55,7 @@ namespace MKW.Core.Client
                 // Credentials can be opened within the entered password and the public salt
                 IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
-                return OpenUser(user, creds);
+                return OpenUserInternal(user, creds);
             }
         }
 
@@ -67,7 +67,7 @@ namespace MKW.Core.Client
                 {
                     IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
-                    return OpenUser(database.OpenUser(user.Id, false), creds);
+                    return OpenUserInternal(database.OpenUser(user.Id, false), creds);
                 }
                 catch (Exceptions.InvalidPasswordException)
                 {
@@ -78,7 +78,7 @@ namespace MKW.Core.Client
             throw new Exception("No valid user found with the provided password.");
         }
 
-        public IUserSession OpenUser(IDatabaseUser user, IUserCredentials creds)
+        private IUserSession OpenUserInternal(IDatabaseUser user, IUserCredentials creds)
         {
             try
             {
