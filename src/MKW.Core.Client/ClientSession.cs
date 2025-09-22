@@ -68,7 +68,6 @@ namespace MKW.Core.Client
             IDatabaseUser user = Database.OpenUser(userId, true);
             IDatabaseUser admin = Database.OpenUser(UserId.Admin(), true);
 
-
             using IAsymmetricPublicTransformer userKey = crypto.OpenAsymmetricTransformer(
                 user.PublicKey.Payload.Span);
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
