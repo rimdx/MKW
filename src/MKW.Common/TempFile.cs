@@ -1,18 +1,54 @@
-﻿using Microsoft.Win32.SafeHandles;
-
-namespace MKW.Common
+﻿namespace MKW.Common
 {
-    public class TempFile : FileStream
+    public class TempFile : Stream
     {
         private bool owns = true;
         private readonly string tempPath;
         private readonly string newPath;
 
-        private TempFile(SafeFileHandle handle, string tempPath, string newPath)
-            : base(handle, FileAccess.Write)
+        private readonly FileStream proxy;
+
+        private TempFile(FileStream proxy, string tempPath, string newPath)
         {
+            this.proxy = proxy;
             this.tempPath = tempPath;
             this.newPath = newPath;
+        }
+
+        public override bool CanRead => proxy.CanRead;
+        public override bool CanSeek => proxy.CanSeek;
+        public override bool CanWrite => proxy.CanWrite;
+        public override long Length => proxy.Length;
+
+        public override long Position
+        {
+            get => proxy.Position;
+            set => proxy.Position = value;
+        }
+
+        public override void Flush()
+        {
+            proxy.Flush();
+        }
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            return proxy.Read(buffer, offset, count);
+        }
+
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            proxy.Write(buffer, offset, count);
+        }
+
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            return proxy.Seek(offset, origin);
+        }
+
+        public override void SetLength(long value)
+        {
+            proxy.SetLength(value);
         }
 
         private static string GenerateTempFileName(string path)
@@ -38,7 +74,7 @@ namespace MKW.Common
 
             try
             {
-                return new TempFile(file.SafeFileHandle, tempPath, path);
+                return new TempFile(file, tempPath, path);
             }
             catch (Exception)
             {
@@ -51,8 +87,8 @@ namespace MKW.Common
         {
             if (owns)
             {
-                Flush(true);
-                base.Dispose(true);
+                proxy.Flush(true);
+                proxy.Close();
 
                 if (tempPath != newPath)
                 {
@@ -67,7 +103,7 @@ namespace MKW.Common
         {
             if (owns)
             {
-                base.Dispose(true);
+                proxy.Close();
                 File.Delete(tempPath);
                 owns = false;
             }
