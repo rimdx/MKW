@@ -88,7 +88,7 @@
             if (owns)
             {
                 proxy.Flush(true);
-                proxy.Close();
+                proxy.Dispose();
 
                 if (tempPath != newPath)
                 {
@@ -103,8 +103,10 @@
         {
             if (owns)
             {
-                proxy.Close();
+                proxy.Dispose();
+
                 File.Delete(tempPath);
+
                 owns = false;
             }
         }
