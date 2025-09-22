@@ -25,7 +25,7 @@ namespace MKW.Core.Client
         {
             metadataEncoder = new UserMetadataEncoder(Transformer);
             accessController = new UserAccessController(this);
-            trustController = new UserTrustController(database, crypto, admin, Transformer);
+            trustController = new UserTrustController(database, crypto, Transformer);
         }
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)

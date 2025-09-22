@@ -5,22 +5,20 @@ namespace MKW.Core.Implementation
 {
     public class UserTrustProvider : ITrustProvider, IDisposable
     {
-        public UserId UserId => admin.Id;
-
         protected readonly IDatabase database;
         protected readonly ICryptographyProvider crypto;
         private readonly IAsymmetricPublicTransformer meKey;
-        protected readonly IDatabaseUser admin;
+        private readonly IAsymmetricPublicTransformer adminKey;
 
         public UserTrustProvider(IDatabase database,
                                  ICryptographyProvider crypto,
                                  IAsymmetricPublicTransformer meKey,
-                                 IDatabaseUser admin)
+                                 IAsymmetricPublicTransformer adminKey)
         {
             this.database = database;
             this.crypto = crypto;
             this.meKey = meKey;
-            this.admin = admin;
+            this.adminKey = adminKey;
         }
 
         private bool VerifyTrust(IDatabaseUser user)
@@ -33,15 +31,13 @@ namespace MKW.Core.Implementation
 
             // trust admin
             // TODO: verify admin
-            if (user.PublicKey.Span.SequenceEqual(admin.PublicKey.Span))
+            if (user.PublicKey.Span.SequenceEqual(adminKey.ExportPublicKey().Span))
             {
                 return true;
             }
 
-            using IAsymmetricPublicTransformer publicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Span);
-
             // otherwise verify admin trust to this user
-            if (publicKey.Verify(user.PublicKey.Span, user.AdminSignature.Span))
+            if (adminKey.Verify(user.PublicKey.Span, user.AdminSignature.Span))
             {
                 return true;
             }
