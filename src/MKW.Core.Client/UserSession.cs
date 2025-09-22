@@ -11,6 +11,8 @@ namespace MKW.Core.Client
         , IDisposable
     {
         private readonly IDatabase database;
+        private readonly IAsymmetricPrivateTransformer transformer;
+
         private readonly IEntryController entryController;
         private readonly UserMetadataDecoder metadata;
         private readonly IAsymmetricPublicTransformer adminPublicKey;
@@ -19,7 +21,7 @@ namespace MKW.Core.Client
         private readonly IDatabaseUser databaseUser;
 
         public UserId Id => databaseUser.Id;
-        public IAsymmetricPrivateTransformer Transformer { get; }
+
 
         public UserSession(ICryptographyProvider crypto,
                            IDatabase database /* reference */,
@@ -28,15 +30,14 @@ namespace MKW.Core.Client
         {
             this.database = database;
             databaseUser = user;
+            transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Payload.Span, privateKey);
 
             IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
             adminPublicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Payload.Span);
 
-            Transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Payload.Span, privateKey);
-
-            entryController = new EntryController(crypto, database, this, Transformer);
+            entryController = new EntryController(crypto, database, this, transformer);
             metadata = new UserMetadataDecoder(adminPublicKey);
-            trustProvider = new UserTrustProvider(database, crypto, Transformer, adminPublicKey);
+            trustProvider = new UserTrustProvider(database, crypto, transformer, adminPublicKey);
         }
 
         public UserMetadata OpenMetadata()
@@ -96,7 +97,7 @@ namespace MKW.Core.Client
 
         public void Dispose()
         {
-            Transformer.Dispose();
+            transformer.Dispose();
             trustProvider.Dispose();
             entryController.Dispose();
             adminPublicKey.Dispose();
