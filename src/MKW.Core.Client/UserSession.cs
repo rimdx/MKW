@@ -82,9 +82,9 @@ namespace MKW.Core.Client
 
         // ITrustProvider
 
-        public IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers()
+        public IEnumerable<UserInfo> EnumerateTrustedUsers()
         {
-            foreach (UserInfo user in trustProvider.EnumerateImplicitlyTrustedUsers())
+            foreach (UserInfo user in trustProvider.EnumerateTrustedUsers())
             {
                 yield return user;
             }

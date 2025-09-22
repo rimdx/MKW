@@ -4,7 +4,7 @@ namespace MKW.Core
 {
     public interface ITrustProvider : IDisposable
     {
-        IEnumerable<UserInfo> EnumerateImplicitlyTrustedUsers();
+        IEnumerable<UserInfo> EnumerateTrustedUsers();
 
         bool VerifyTrust(UserId userId);
     }

@@ -19,7 +19,7 @@ namespace MKW.Core.Implementation
                                               IDatabaseEntry entry)
         {
             HashSet<UserId> access = [];
-            foreach (UserInfo user in trustProvider.EnumerateImplicitlyTrustedUsers())
+            foreach (UserInfo user in trustProvider.EnumerateTrustedUsers())
             {
                 access.Add(user.Id);
             }

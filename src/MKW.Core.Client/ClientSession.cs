@@ -70,7 +70,7 @@ namespace MKW.Core.Client
 
             using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, key, key);
 
-            IEnumerable<UserInfo> trust = trustProvider.EnumerateImplicitlyTrustedUsers();
+            IEnumerable<UserInfo> trust = trustProvider.EnumerateTrustedUsers();
 
             // Convert IEnumerable to an array, before returning from function,
             // because outside the trustProvider will be disposed.
@@ -92,7 +92,7 @@ namespace MKW.Core.Client
 
             using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, userKey, adminKey);
 
-            foreach (UserInfo trust in trustProvider.EnumerateImplicitlyTrustedUsers())
+            foreach (UserInfo trust in trustProvider.EnumerateTrustedUsers())
             {
                 yield return trust;
             }
