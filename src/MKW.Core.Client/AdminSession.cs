@@ -15,7 +15,7 @@ namespace MKW.Core.Client
         protected readonly ICryptographyProvider crypto;
         protected readonly IDatabase database;
         protected readonly IDatabaseUser admin;
-        public IAsymmetricPrivateTransformer Transformer { get; }
+        protected readonly IAsymmetricPrivateTransformer transformer;
 
         protected readonly IEntryController entryController;
         protected readonly UserMetadataDecoder metadata;
@@ -35,13 +35,13 @@ namespace MKW.Core.Client
             this.database = database;
             this.admin = admin;
 
-            Transformer = crypto.OpenAsymmetricTransformer(admin.PublicKey.Payload.Span, privateKey);
+            transformer = crypto.OpenAsymmetricTransformer(admin.PublicKey.Payload.Span, privateKey);
 
-            entryController = new EntryController(crypto, database, this, Transformer);
-            metadata = new UserMetadataDecoder(Transformer);
-            trustProvider = new UserTrustProvider(database, crypto, Transformer, Transformer);
+            entryController = new EntryController(crypto, database, this, transformer);
+            metadata = new UserMetadataDecoder(transformer);
+            trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
 
-            metadataEncoder = new UserMetadataEncoder(Transformer);
+            metadataEncoder = new UserMetadataEncoder(transformer);
             accessController = new UserAccessController(this);
         }
 
@@ -52,7 +52,7 @@ namespace MKW.Core.Client
             IDatabaseUser user = database.CreateUser(userId);
 
             user.Salt = request.Salt;
-            user.PublicKey = new SignedPayload(request.PublicKey, Transformer.Sign(request.PublicKey.Span));
+            user.PublicKey = new SignedPayload(request.PublicKey, transformer.Sign(request.PublicKey.Span));
             user.PrivateKey = request.EncryptedPrivateKey;
             user.Metadata = metadataEncoder.EncodeMetadata(metadata);
 
@@ -128,7 +128,7 @@ namespace MKW.Core.Client
 
         public void Dispose()
         {
-            Transformer.Dispose();
+            transformer.Dispose();
             trustProvider.Dispose();
             entryController.Dispose();
         }
