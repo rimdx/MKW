@@ -26,6 +26,7 @@ namespace MKW.GUI.Images
         LoginUser,
         NewDocument,
         NewFolder,
+        NewKey,
         NewUser,
         OpenFile,
         OpenFolder,

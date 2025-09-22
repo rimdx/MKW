@@ -30,6 +30,7 @@ namespace MKW.GUI.Images
             ImageMoniker.LoginUser => new LoginUser(),
             ImageMoniker.NewDocument => new NewDocument(),
             ImageMoniker.NewFolder => new NewFolder(),
+            ImageMoniker.NewKey => new NewKey(),
             ImageMoniker.NewUser => new NewUser(),
             ImageMoniker.OpenFile => new OpenFile(),
             ImageMoniker.OpenFolder => new OpenFolder(),
