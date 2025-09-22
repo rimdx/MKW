@@ -20,12 +20,11 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public UserId Id { get; }
         public ReadOnlyMemory<byte> Salt { get; set; }
-        public ReadOnlyMemory<byte> PublicKey { get; set; }
+        public SignedPayload PublicKey { get; set; }
         public SecretPayload PrivateKey { get; set; }
 
         public SignedPayload Metadata { get; set; }
 
-        public ReadOnlyMemory<byte> AdminTrustSignature { get; set; }
         public ReadOnlyMemory<byte> AdminSignature { get; set; }
 
         public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
@@ -56,7 +55,12 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public void CopyFrom(JSONDatabaseUser obj)
         {
-            PublicKey = obj.PublicKey;
+            PublicKey = new SignedPayload
+            {
+                Payload = obj.PublicKey,
+                Signature = obj.AdminTrustSignature,
+            };
+
             PrivateKey = new SecretPayload(obj.PrivateKey);
             Salt = obj.Salt;
 
@@ -66,7 +70,6 @@ namespace MKW.Core.Storage.JSON.Interface
                 Signature = obj.MetadataAdminSignature,
             };
 
-            AdminTrustSignature = obj.AdminTrustSignature;
             AdminSignature = obj.AdminSignature;
             trust = [.. obj.Trust];
         }
@@ -75,12 +78,13 @@ namespace MKW.Core.Storage.JSON.Interface
         {
             return new JSONDatabaseUser
             {
-                PublicKey = PublicKey,
+                PublicKey = PublicKey.Payload,
+                AdminTrustSignature = PublicKey.Signature,
+
                 PrivateKey = PrivateKey.EncryptedPayload,
                 Salt = Salt,
                 Metadata = Metadata.Payload,
                 MetadataAdminSignature = Metadata.Signature,
-                AdminTrustSignature = AdminTrustSignature,
                 AdminSignature = AdminSignature,
                 Trust = [.. trust]
             };

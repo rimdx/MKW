@@ -28,7 +28,12 @@ namespace MKW.Core.Client
 
             UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(systemCreds.Transformer);
 
-            admin.PublicKey = systemCreds.PublicKey;
+            admin.PublicKey = new SignedPayload
+            {
+                Payload = systemCreds.PublicKey,
+                Signature = null // TODO:
+            };
+
             admin.PrivateKey = systemCreds.PrivateKey;
             admin.Salt = systemCreds.Salt;
             admin.Metadata = metadataEncoder.EncodeMetadata(metadata);

@@ -30,7 +30,7 @@ namespace MKW.Core.Client
             using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             // TODO: prompt user?
-            Memory<byte> signature = systemCreds.Transformer.Sign(admin.PublicKey.Span);
+            Memory<byte> signature = systemCreds.Transformer.Sign(admin.PublicKey.Payload.Span);
 
             return new UserAccessRequest
             {

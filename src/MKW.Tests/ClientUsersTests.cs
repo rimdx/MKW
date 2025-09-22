@@ -22,7 +22,7 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(2, users.Length);
 
             ClassicAssert.AreEqual(user.Id, users[1].Id);
-            ClassicAssert.AreEqual(user.PublicKey, users[1].PublicKey);
+            ClassicAssert.AreEqual(user.PublicKey, users[1].PublicKey.Payload);
         }
 
         [Test]

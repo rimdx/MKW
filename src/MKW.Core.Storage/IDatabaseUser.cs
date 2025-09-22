@@ -5,7 +5,8 @@
         UserId Id { get; }
 
         ReadOnlyMemory<byte> Salt { get; set; }
-        ReadOnlyMemory<byte> PublicKey { get; set; }
+
+        SignedPayload PublicKey { get; set; }
         SecretPayload PrivateKey { get; set; }
 
         SignedPayload Metadata { get; set; }
@@ -14,7 +15,6 @@
         void DeleteTrust(ReadOnlyMemory<byte> data);
         IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust();
 
-        ReadOnlyMemory<byte> AdminTrustSignature { get; set; }
         ReadOnlyMemory<byte> AdminSignature { get; set; }
     }
 }

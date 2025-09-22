@@ -66,7 +66,7 @@ namespace MKW.Core.Client
         {
             IDatabaseUser admin = Database.OpenUser(UserId.Admin(), true);
             using IAsymmetricPublicTransformer key = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Span);
+                admin.PublicKey.Payload.Span);
 
             using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, key, key);
 
@@ -86,9 +86,9 @@ namespace MKW.Core.Client
 
 
             using IAsymmetricPublicTransformer userKey = crypto.OpenAsymmetricTransformer(
-                user.PublicKey.Span);
+                user.PublicKey.Payload.Span);
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Span);
+                admin.PublicKey.Payload.Span);
 
             using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, userKey, adminKey);
 
