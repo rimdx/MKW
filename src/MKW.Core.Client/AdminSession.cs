@@ -12,7 +12,6 @@ namespace MKW.Core.Client
         , ITrustProvider
         , IDisposable
     {
-        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly IDatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
@@ -31,7 +30,6 @@ namespace MKW.Core.Client
                             IDatabaseUser admin,
                             ReadOnlySpan<byte> privateKey)
         {
-            this.crypto = crypto;
             this.database = database;
             this.admin = admin;
 
