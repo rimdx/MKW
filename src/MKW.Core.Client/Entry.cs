@@ -67,8 +67,6 @@ namespace MKW.Core.Client
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
-            UserId[] users = accessController.EnumerateAccess().ToArray();
-
             encoder.EncodeEntry(entry, payload);
 
             entry.Save();
@@ -76,7 +74,7 @@ namespace MKW.Core.Client
             return new EntryInfo
             {
                 Id = entry.Id,
-                EncodedForUsers = users
+                EncodedForUsers = [.. accessController.EnumerateAccess()]
             };
         }
 
