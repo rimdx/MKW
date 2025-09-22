@@ -127,7 +127,9 @@ namespace MKW.Core.Storage.JSON
 
         public bool DeleteEntry(EntryId id)
         {
-            return Database.Entries.Remove(id.GetGuid());
+            bool result = Database.Entries.Remove(id.GetGuid());
+            Save();
+            return result;
         }
 
         public bool HasEntry(EntryId id)
