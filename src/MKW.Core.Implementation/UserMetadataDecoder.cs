@@ -15,9 +15,9 @@ namespace MKW.Core.Implementation
 
         public UserMetadata OpenMetadata(IDatabaseUser user)
         {
-            if (adminKey.Verify(user.Metadata.Span, user.MetadataAdminSignature.Span))
+            if (adminKey.Verify(user.Metadata.Payload.Span, user.Metadata.Signature.Span))
             {
-                return UserMetadataSerializer.Deserialize(user.Metadata.Span);
+                return UserMetadataSerializer.Deserialize(user.Metadata.Payload.Span);
             }
             else
             {

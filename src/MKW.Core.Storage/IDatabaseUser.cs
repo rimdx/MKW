@@ -8,8 +8,7 @@
         ReadOnlyMemory<byte> PublicKey { get; set; }
         ReadOnlyMemory<byte> PrivateKey { get; set; }
 
-        ReadOnlyMemory<byte> Metadata { get; set; }
-        ReadOnlyMemory<byte> MetadataAdminSignature { get; set; }
+        SignedPayload Metadata { get; set; }
 
         void AddTrust(ReadOnlyMemory<byte> data);
         void DeleteTrust(ReadOnlyMemory<byte> data);

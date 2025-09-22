@@ -23,8 +23,7 @@ namespace MKW.Core.Storage.JSON.Interface
         public ReadOnlyMemory<byte> PublicKey { get; set; }
         public ReadOnlyMemory<byte> PrivateKey { get; set; }
 
-        public ReadOnlyMemory<byte> Metadata { get; set; }
-        public ReadOnlyMemory<byte> MetadataAdminSignature { get; set; }
+        public SignedPayload Metadata { get; set; }
 
         public ReadOnlyMemory<byte> AdminTrustSignature { get; set; }
         public ReadOnlyMemory<byte> AdminSignature { get; set; }
@@ -60,8 +59,13 @@ namespace MKW.Core.Storage.JSON.Interface
             PublicKey = obj.PublicKey;
             PrivateKey = obj.PrivateKey;
             Salt = obj.Salt;
-            Metadata = obj.Metadata;
-            MetadataAdminSignature = obj.MetadataAdminSignature;
+
+            Metadata = new SignedPayload
+            {
+                Payload = obj.Metadata,
+                Signature = obj.MetadataAdminSignature,
+            };
+
             AdminTrustSignature = obj.AdminTrustSignature;
             AdminSignature = obj.AdminSignature;
             trust = [.. obj.Trust];
@@ -74,8 +78,8 @@ namespace MKW.Core.Storage.JSON.Interface
                 PublicKey = PublicKey,
                 PrivateKey = PrivateKey,
                 Salt = Salt,
-                Metadata = Metadata,
-                MetadataAdminSignature = MetadataAdminSignature,
+                Metadata = Metadata.Payload,
+                MetadataAdminSignature = Metadata.Signature,
                 AdminTrustSignature = AdminTrustSignature,
                 AdminSignature = AdminSignature,
                 Trust = [.. trust]
