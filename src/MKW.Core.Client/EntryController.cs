@@ -7,27 +7,30 @@ namespace MKW.Core.Client
     {
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
-        private readonly UserSession user;
+        private readonly IUserSession user;
+        private readonly IAsymmetricPrivateTransformer privateKey;
 
         public EntryController(ICryptographyProvider crypto,
-                               IDatabase database /* reference */,
-                               UserSession user /* reference */)
+                               IDatabase database,
+                               IUserSession user,
+                               IAsymmetricPrivateTransformer privateKey)
         {
             this.crypto = crypto;
             this.database = database;
             this.user = user;
+            this.privateKey = privateKey;
         }
 
         public IEntrySession OpenEntry(EntryId id)
         {
-            return Entry.Open(database, crypto, user, user.Transformer, id);
+            return Entry.Open(database, crypto, user, privateKey, id);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = database.CreateEntry(id);
             dbEntry.Save();
-            return Entry.Create(database, crypto, user, user.Transformer, id);
+            return Entry.Create(database, crypto, user, privateKey, id);
         }
 
         public IEntrySession CreateEntry()
@@ -84,7 +87,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return Entry.Open(database, crypto, user, user.Transformer, entry.Id);
+                yield return Entry.Open(database, crypto, user, privateKey, entry.Id);
             }
         }
 
