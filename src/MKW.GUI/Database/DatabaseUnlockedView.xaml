@@ -26,7 +26,7 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <TreeView Grid.Row="1">
+    <TreeView Grid.Row="1" BorderThickness="0">
       <TreeViewItem IsExpanded="True" IsSelected="{Binding IsPageDatabase, Mode=TwoWay}">
         <TreeViewItem.Header>
           <Grid>
@@ -72,22 +72,20 @@
                   Width="6"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  IsTabStop="False" />
+                  IsTabStop="False" 
+                  BorderThickness="1,0,1,0"
+                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
 
-    <Border Grid.Row="1"
-            Grid.Column="2"
-            BorderThickness="1"
-            BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
-      <Grid>
-        <ContentPresenter x:Name="InfoPage"
-                          Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    <Grid Grid.Row="1"
+          Grid.Column="2">
+      <ContentPresenter x:Name="InfoPage"
+                        Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <ContentPresenter x:Name="EntriesPage"
-                          Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
+      <ContentPresenter x:Name="EntriesPage"
+                        Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <ContentPresenter x:Name="UsersPage"
-                          Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
-      </Grid>
-    </Border>
+      <ContentPresenter x:Name="UsersPage"
+                        Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    </Grid>
   </Grid>
 </UserControl>
