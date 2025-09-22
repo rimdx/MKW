@@ -7,6 +7,7 @@ namespace MKW.GUI.Images
         public static Viewbox? MakeImage(ImageMoniker moniker) => moniker switch
         {
             ImageMoniker.None => null,
+            ImageMoniker.Add => new Add(),
             ImageMoniker.AddDatabase => new AddDatabase(),
             ImageMoniker.AddUser => new AddUser(),
             ImageMoniker.Admin => new Admin(),

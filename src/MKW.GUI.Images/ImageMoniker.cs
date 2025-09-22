@@ -3,6 +3,7 @@ namespace MKW.GUI.Images
     public enum ImageMoniker
     {
         None,
+        Add,
         AddDatabase,
         AddUser,
         Admin,
