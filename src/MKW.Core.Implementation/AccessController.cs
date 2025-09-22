@@ -38,12 +38,11 @@ namespace MKW.Core.Implementation
             access.Add(userId);
         }
 
-        public IEnumerable<UserInfo> EnumerateAccess()
+        public IEnumerable<UserId> EnumerateAccess()
         {
-            foreach (UserId user in access)
+            foreach (UserId id in access)
             {
-                IDatabaseUser databaseUser = database.OpenUser(user, true);
-                yield return UserInfo.FromDatabaseUser(databaseUser, null);
+                yield return id;
             }
         }
 

@@ -10,6 +10,6 @@ namespace MKW.Core
         EntryPayload? OpenPayload();
 
         void AddAccess(UserId userId);
-        IEnumerable<UserInfo> EnumerateAccess();
+        IEnumerable<UserId> EnumerateAccess();
     }
 }

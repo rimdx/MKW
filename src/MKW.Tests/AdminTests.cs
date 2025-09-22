@@ -132,7 +132,7 @@ namespace MKW.Tests
                     {
                         UserId.Admin(),
                     },
-                    entry.EnumerateAccess().Select(value => value.Id));
+                    entry.EnumerateAccess());
             }
 
             using IUserSession user1 = sbox.CreateUser(client, "user1", out _);
@@ -148,7 +148,7 @@ namespace MKW.Tests
                         UserId.Admin(),
                         user1.Id,
                     },
-                    entry.EnumerateAccess().Select(value => value.Id));
+                    entry.EnumerateAccess());
             }
 
             // user1 can see the entry now
@@ -163,7 +163,7 @@ namespace MKW.Tests
                         UserId.Admin(),
                         user1.Id,
                     },
-                    entry.EnumerateAccess().Select(value => value.Id));
+                    entry.EnumerateAccess());
             }
 
             using IUserSession user2 = sbox.CreateUser(client, "user2", out _);
@@ -180,7 +180,7 @@ namespace MKW.Tests
                         user1.Id,
                         user2.Id,
                     },
-                    entry.EnumerateAccess().Select(value => value.Id));
+                    entry.EnumerateAccess());
             }
 
             // share the entry with user2 again (should be a no-op)
@@ -195,7 +195,7 @@ namespace MKW.Tests
                         user1.Id,
                         user2.Id,
                     },
-                    entry.EnumerateAccess().Select(value => value.Id));
+                    entry.EnumerateAccess());
             }
         }
 
