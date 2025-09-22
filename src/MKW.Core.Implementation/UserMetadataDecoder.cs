@@ -4,7 +4,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Implementation
 {
-    public class UserMetadataDecoder : IDisposable
+    public class UserMetadataDecoder
     {
         private readonly IAsymmetricPublicTransformer adminKey;
 
