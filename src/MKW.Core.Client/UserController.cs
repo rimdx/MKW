@@ -106,16 +106,30 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
+            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+
+            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
+                admin.PublicKey.Payload.Span);
+
+            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
+
             foreach (IDatabaseUser user in database.EnumerateUsers())
             {
-                yield return UserInfo.FromDatabaseUser(user);
+                yield return UserInfo.FromDatabaseUser(user, metadataDecoder.OpenMetadata(user));
             }
         }
 
         public UserInfo GetUserInfo(UserId id)
         {
+            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
             IDatabaseUser user = database.OpenUser(id, true);
-            return UserInfo.FromDatabaseUser(user);
+
+            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
+                admin.PublicKey.Payload.Span);
+
+            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
+
+            return UserInfo.FromDatabaseUser(user, metadataDecoder.OpenMetadata(user));
         }
 
         public void Dispose()

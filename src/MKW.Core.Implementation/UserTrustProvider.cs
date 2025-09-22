@@ -53,11 +53,15 @@ namespace MKW.Core.Implementation
 
         public IEnumerable<UserInfo> EnumerateTrustedUsers()
         {
+            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
+
             foreach (IDatabaseUser user in database.EnumerateUsers())
             {
                 if (VerifyTrust(user))
                 {
-                    yield return UserInfo.FromDatabaseUser(user, Trust.ExplicitTrust);
+                    yield return UserInfo.FromDatabaseUser(user,
+                                                           metadataDecoder.OpenMetadata(user),
+                                                           Trust.ExplicitTrust);
                 }
             }
         }

@@ -29,12 +29,12 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(entryId, db.EnumerateEntries().First().Id);
 
             CollectionAssert.AreEqual(
-                new UserInfo[]
+                new[]
                 {
-                    client.GetAdminInfo(),
-                    client.GetUserInfo(user.Id),
+                    UserId.Admin(),
+                    user.Id,
                 },
-                entry.EncodedForUsers);
+                entry.EncodedForUsers.Select(user => user.Id));
 
             ClassicAssert.AreEqual(new EntryPayload("secret"),
                                    user.OpenEntry(entry.Id).OpenPayload());
