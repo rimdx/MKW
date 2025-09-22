@@ -17,8 +17,11 @@ namespace MKW.Core.Implementation
             ReadOnlyMemory<byte> encoded = UserMetadataSerializer.Serialize(metadata);
             ReadOnlyMemory<byte> signature = adminKey.Sign(encoded.Span);
 
-            user.Metadata = encoded;
-            user.MetadataAdminSignature = signature;
+            user.Metadata = new SignedPayload
+            {
+                Payload = encoded,
+                Signature = signature,
+            };
         }
     }
 }
