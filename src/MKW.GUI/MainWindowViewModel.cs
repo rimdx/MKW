@@ -68,11 +68,13 @@ namespace MKW.GUI
     {
         private readonly RegistryService registryService;
         private readonly RecentFilesService recentFilesService;
+        private readonly AppModel appModel;
 
         public ObservableCollection<DatabaseTabItemViewModel> TabItems { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(AppModel appModel)
         {
+            this.appModel = appModel;
             registryService = new RegistryService(RegistryKeys.RootKeyPath);
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
@@ -89,7 +91,7 @@ namespace MKW.GUI
                 {
                     try
                     {
-                        DatabaseModel databaseModel = DatabaseModel.Open(file);
+                        DatabaseModel databaseModel = appModel.OpenDatabase(file);
                         AddDatabaseTab(databaseModel);
                     }
                     catch
@@ -115,12 +117,12 @@ namespace MKW.GUI
 
         public CreateDatabaseWizardViewModel CreateCreateDatabaseViewModel()
         {
-            return new CreateDatabaseWizardViewModel(registryService);
+            return new CreateDatabaseWizardViewModel(appModel, registryService);
         }
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)
         {
-            DatabaseModel database = DatabaseModel.Open(filename);
+            DatabaseModel database = appModel.OpenDatabase(filename);
             return new LoginWindowViewModel(database /* move */);
         }
 

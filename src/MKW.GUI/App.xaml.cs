@@ -7,9 +7,13 @@ namespace MKW.GUI
     /// </summary>
     public partial class App : Application
     {
+        private readonly AppModel model;
+
         public App()
         {
-            MainWindow = new MainWindow();
+            model = new AppModel();
+
+            MainWindow = new MainWindow(model);
             MainWindow.Visibility = Visibility.Visible;
 
             InitializeComponent();
