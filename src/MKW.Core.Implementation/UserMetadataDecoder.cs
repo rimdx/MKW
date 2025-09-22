@@ -13,9 +13,14 @@ namespace MKW.Core.Implementation
             this.adminKey = adminKey;
         }
 
+        public bool VerifyMetadata(SignedPayload metadata)
+        {
+            return adminKey.Verify(metadata.Payload.Span, metadata.Signature.Span);
+        }
+
         public UserMetadata OpenMetadata(IDatabaseUser user)
         {
-            if (adminKey.Verify(user.Metadata.Payload.Span, user.Metadata.Signature.Span))
+            if (VerifyMetadata(user.Metadata))
             {
                 return UserMetadataSerializer.Deserialize(user.Metadata.Payload.Span);
             }
