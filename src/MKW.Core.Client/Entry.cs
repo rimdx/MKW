@@ -56,7 +56,7 @@ namespace MKW.Core.Client
                                  UserSession user,
                                  IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Open(database, entry);
+            AccessController accessController = AccessController.Open(database, entry.Id);
 
             return new Entry(database,
                              crypto,
