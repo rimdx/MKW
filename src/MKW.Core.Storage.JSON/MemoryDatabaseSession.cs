@@ -77,7 +77,9 @@ namespace MKW.Core.Storage.JSON
 
         public bool DeleteUser(UserId id)
         {
-            return Database.Users.Remove(id.GetGuid());
+            bool result = Database.Users.Remove(id.GetGuid());
+            Save();
+            return result;
         }
 
         public bool HasUser(UserId id)
