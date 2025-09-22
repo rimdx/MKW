@@ -14,7 +14,7 @@ namespace MKW.Core.Implementation
 
         public void AddTrust(IDatabaseUser user)
         {
-            user.AdminSignature = adminKey.Sign(user.PublicKey.Span);
+            user.AdminTrustSignature = adminKey.Sign(user.PublicKey.Span);
             user.Save();
         }
 
