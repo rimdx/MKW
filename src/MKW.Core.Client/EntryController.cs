@@ -3,7 +3,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    public class EntryController : IEntryController, IDisposable
+    internal class EntryController : IEntryController, IDisposable
     {
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
