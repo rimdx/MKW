@@ -36,7 +36,7 @@ namespace MKW.Core.Client
 
             admin.Save();
 
-            return UserInfo.FromDatabaseUser(admin, metadata);
+            return CreateUserInfo(admin, metadata);
         }
 
         public IAdminSession OpenAdmin(string password)
@@ -74,11 +74,22 @@ namespace MKW.Core.Client
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
-            return UserInfo.FromDatabaseUser(admin, metadataDecoder.OpenMetadata(admin));
+            return CreateUserInfo(admin, metadataDecoder.OpenMetadata(admin));
         }
 
         public void Dispose()
         {
+        }
+
+        private static UserInfo CreateUserInfo(IDatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
+        {
+            return new UserInfo
+            {
+                Id = user.Id,
+                PublicKey = user.PublicKey.Payload,
+                Trust = trust,
+                Metadata = metadata
+            };
         }
     }
 }

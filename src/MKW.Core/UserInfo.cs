@@ -14,18 +14,5 @@ namespace MKW.Core
         public UserInfo()
         {
         }
-
-        public static UserInfo FromDatabaseUser(IDatabaseUser user,
-                                                UserMetadata metadata,
-                                                Trust trust = Trust.Unknown)
-        {
-            return new UserInfo
-            {
-                Id = user.Id,
-                PublicKey = user.PublicKey.Payload,
-                Trust = trust,
-                Metadata = metadata,
-            };
-        }
     }
 }

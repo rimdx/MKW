@@ -115,7 +115,7 @@ namespace MKW.Core.Client
 
             foreach (IDatabaseUser user in database.EnumerateUsers())
             {
-                yield return UserInfo.FromDatabaseUser(user, metadataDecoder.OpenMetadata(user));
+                yield return CreateUserInfo(user, metadataDecoder.OpenMetadata(user));
             }
         }
 
@@ -129,12 +129,23 @@ namespace MKW.Core.Client
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
-            return UserInfo.FromDatabaseUser(user, metadataDecoder.OpenMetadata(user));
+            return CreateUserInfo(user, metadataDecoder.OpenMetadata(user));
         }
 
         public void Dispose()
         {
             /* no-op */
+        }
+
+        private static UserInfo CreateUserInfo(IDatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
+        {
+            return new UserInfo
+            {
+                Id = user.Id,
+                PublicKey = user.PublicKey.Payload,
+                Trust = trust,
+                Metadata = metadata
+            };
         }
     }
 }
