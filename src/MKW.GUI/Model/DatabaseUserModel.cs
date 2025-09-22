@@ -16,7 +16,21 @@ namespace MKW.GUI.Model
 
         public UserId Id => user.Id;
         public bool IsAdmin => Id.IsAdmin;
-        public string Name => IsAdmin ? "Admin" : "User";
+        public string Name
+        {
+            get
+            {
+                if (Id.IsAdmin)
+                {
+                    return "Admin";
+                }
+                else
+                {
+                    return user.Metadata.UserId;
+                }
+            }
+        }
+
         public ImageMoniker Icon => IsAdmin ? ImageMoniker.Admin : ImageMoniker.User;
 
         public string StatusText => trust switch
