@@ -42,7 +42,6 @@ namespace MKW.Core.Client
 
             user.Save();
 
-            trustController.AddTrust(user);
             accessController.AddAccess(userId);
 
             return UserInfo.FromDatabaseUser(user);
