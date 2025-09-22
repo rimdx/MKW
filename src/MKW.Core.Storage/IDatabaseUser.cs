@@ -11,10 +11,6 @@
 
         SignedPayload Metadata { get; set; }
 
-        void AddTrust(ReadOnlyMemory<byte> data);
-        void DeleteTrust(ReadOnlyMemory<byte> data);
-        IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust();
-
         ReadOnlyMemory<byte> AdminSignature { get; set; }
     }
 }

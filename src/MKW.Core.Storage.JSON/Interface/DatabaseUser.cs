@@ -5,7 +5,6 @@ namespace MKW.Core.Storage.JSON.Interface
     internal record class DatabaseUser : IDatabaseUser, ISavable
     {
         protected readonly MemoryDatabaseSession? host;
-        protected List<ReadOnlyMemory<byte>> trust = new List<ReadOnlyMemory<byte>>();
 
         internal DatabaseUser(UserId id, MemoryDatabaseSession host)
             : this(id)
@@ -26,21 +25,6 @@ namespace MKW.Core.Storage.JSON.Interface
         public SignedPayload Metadata { get; set; }
 
         public ReadOnlyMemory<byte> AdminSignature { get; set; }
-
-        public IEnumerable<ReadOnlyMemory<byte>> EnumerateTrust()
-        {
-            return trust.AsReadOnly();
-        }
-
-        public void AddTrust(ReadOnlyMemory<byte> data)
-        {
-            trust.Add(data);
-        }
-
-        public void DeleteTrust(ReadOnlyMemory<byte> data)
-        {
-            trust.RemoveAll(t => t.Span.SequenceEqual(data.Span));
-        }
 
         public virtual void Save()
         {
@@ -63,7 +47,6 @@ namespace MKW.Core.Storage.JSON.Interface
             Metadata = new SignedPayload(obj.Metadata, obj.MetadataAdminSignature);
 
             AdminSignature = obj.AdminSignature;
-            trust = [.. obj.Trust];
         }
 
         public JSONDatabaseUser AsJSONObject()
@@ -78,7 +61,6 @@ namespace MKW.Core.Storage.JSON.Interface
                 Metadata = Metadata.Payload,
                 MetadataAdminSignature = Metadata.Signature,
                 AdminSignature = AdminSignature,
-                Trust = [.. trust]
             };
         }
     }
