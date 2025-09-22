@@ -12,12 +12,12 @@ namespace MKW.Core.Implementation
             this.adminKey = adminKey;
         }
 
-        public void UpdateMetadata(IDatabaseUser user, UserMetadata metadata)
+        public SignedPayload EncodeMetadata(UserMetadata metadata)
         {
             ReadOnlyMemory<byte> encoded = UserMetadataSerializer.Serialize(metadata);
             ReadOnlyMemory<byte> signature = adminKey.Sign(encoded.Span);
 
-            user.Metadata = new SignedPayload
+            return new SignedPayload
             {
                 Payload = encoded,
                 Signature = signature,

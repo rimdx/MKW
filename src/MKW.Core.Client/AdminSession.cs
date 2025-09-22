@@ -37,7 +37,7 @@ namespace MKW.Core.Client
             user.Salt = request.Salt;
             user.PublicKey = request.PublicKey;
             user.PrivateKey = request.EncryptedPrivateKey;
-            metadataEncoder.UpdateMetadata(user, metadata);
+            user.Metadata = metadataEncoder.EncodeMetadata(metadata);
 
             user.AdminSignature = request.AdminSignature;
 
