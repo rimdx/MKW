@@ -65,7 +65,10 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
             IDatabaseUser admin = Database.OpenUser(UserId.Admin(), true);
-            using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, admin);
+            using IAsymmetricPublicTransformer key = crypto.OpenAsymmetricTransformer(
+                admin.PublicKey.Span);
+
+            using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, key, admin);
 
             IEnumerable<UserInfo> trust = trustProvider.EnumerateImplicitlyTrustedUsers();
 
@@ -79,7 +82,10 @@ namespace MKW.Core.Client
         public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
         {
             IDatabaseUser user = Database.OpenUser(userId, true);
-            using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, user);
+            using IAsymmetricPublicTransformer key = crypto.OpenAsymmetricTransformer(
+                user.PublicKey.Span);
+
+            using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, key, user);
 
             foreach (UserInfo trust in trustProvider.EnumerateImplicitlyTrustedUsers())
             {
