@@ -18,9 +18,9 @@ namespace MKW.Core.Client
         private readonly IAsymmetricPublicTransformer adminPublicKey;
         private readonly UserTrustProvider trustProvider;
 
-        private readonly IDatabaseUser databaseUser;
+        private readonly IDatabaseUser user;
 
-        public UserId Id => databaseUser.Id;
+        public UserId Id => user.Id;
 
 
         public UserSession(ICryptographyProvider crypto,
@@ -29,7 +29,7 @@ namespace MKW.Core.Client
                            ReadOnlySpan<byte> privateKey)
         {
             this.database = database;
-            databaseUser = user;
+            this.user = user;
             transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Payload.Span, privateKey);
 
             IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
@@ -42,7 +42,7 @@ namespace MKW.Core.Client
 
         public UserMetadata OpenMetadata()
         {
-            return metadata.OpenMetadata(databaseUser);
+            return metadata.OpenMetadata(user);
         }
 
         // IEntryController
