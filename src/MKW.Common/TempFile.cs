@@ -5,8 +5,8 @@ namespace MKW.Common
     public class TempFile : FileStream
     {
         private bool owns = true;
-        private string tempPath;
-        private string newPath;
+        private readonly string tempPath;
+        private readonly string newPath;
 
         private TempFile(SafeFileHandle handle, string tempPath, string newPath)
             : base(handle, FileAccess.Write)
