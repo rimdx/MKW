@@ -28,7 +28,7 @@ namespace MKW.Core.Client
 
             // ensure the admin actually exists
             // a database without admin is invalid
-            client.Database.OpenUser(UserId.Admin(), true);
+            client.Database.OpenUser(UserId.Admin());
 
             return client;
         }
@@ -48,7 +48,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsersTrust()
         {
-            IDatabaseUser admin = Database.OpenUser(UserId.Admin(), true);
+            IDatabaseUser admin = Database.OpenUser(UserId.Admin());
             using IAsymmetricPublicTransformer key = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);
 
@@ -65,8 +65,8 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
         {
-            IDatabaseUser user = Database.OpenUser(userId, true);
-            IDatabaseUser admin = Database.OpenUser(UserId.Admin(), true);
+            IDatabaseUser user = Database.OpenUser(userId);
+            IDatabaseUser admin = Database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer userKey = crypto.OpenAsymmetricTransformer(
                 user.PublicKey.Payload.Span);

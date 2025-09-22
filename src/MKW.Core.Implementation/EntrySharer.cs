@@ -17,7 +17,7 @@ namespace MKW.Core.Implementation
             this.encoder = encoder;
         }
 
-        public void ShareEntry(IDatabaseEntry entry, UserId userId)
+        public IDatabaseEntry ShareEntry(IDatabaseEntry entry, UserId userId)
         {
             EntryPayload? payload = decoder.DecodeEntry(entry);
 
@@ -27,7 +27,7 @@ namespace MKW.Core.Implementation
             }
 
             accessController.AddAccess(userId);
-            encoder.EncodeEntry(entry, payload);
+            return encoder.EncodeEntry(entry, payload);
         }
 
         public void Dispose()

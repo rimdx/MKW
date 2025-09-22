@@ -31,7 +31,7 @@ namespace MKW.Core.Client
             this.user = user;
             transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Payload.Span, privateKey);
 
-            IDatabaseUser admin = database.OpenUser(UserId.Admin(), true);
+            IDatabaseUser admin = database.OpenUser(UserId.Admin());
             adminPublicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Payload.Span);
 
             entryController = new EntryController(crypto, database, this, transformer);

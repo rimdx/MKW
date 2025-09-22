@@ -47,16 +47,17 @@ namespace MKW.Core.Client
         {
             UserId userId = UserId.Create();
 
-            IDatabaseUser user = database.CreateUser(userId);
+            IDatabaseUser user = new IDatabaseUser
+            {
+                Id = userId,
+                Salt = request.Salt,
+                PublicKey = new SignedPayload(request.PublicKey, transformer.Sign(request.PublicKey.Span)),
+                PrivateKey = request.EncryptedPrivateKey,
+                Metadata = metadataEncoder.EncodeMetadata(metadata),
+                AdminSignature = request.AdminSignature,
+            };
 
-            user.Salt = request.Salt;
-            user.PublicKey = new SignedPayload(request.PublicKey, transformer.Sign(request.PublicKey.Span));
-            user.PrivateKey = request.EncryptedPrivateKey;
-            user.Metadata = metadataEncoder.EncodeMetadata(metadata);
-
-            user.AdminSignature = request.AdminSignature;
-
-            user.Save();
+            database.CreateUser(userId, user);
 
             accessController.AddAccess(userId);
 

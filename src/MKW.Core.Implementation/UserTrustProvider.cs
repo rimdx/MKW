@@ -47,8 +47,7 @@ namespace MKW.Core.Implementation
 
         public bool VerifyTrust(UserId userId)
         {
-            IDatabaseUser user = database.OpenUser(userId, true);
-            return VerifyTrust(user);
+            return VerifyTrust(database.OpenUser(userId));
         }
 
         public IEnumerable<UserInfo> EnumerateTrustedUsers()

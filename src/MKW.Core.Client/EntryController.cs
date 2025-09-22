@@ -28,8 +28,6 @@ namespace MKW.Core.Client
 
         public IEntrySession CreateEntry(EntryId id)
         {
-            IDatabaseEntry dbEntry = database.CreateEntry(id);
-            dbEntry.Save();
             return Entry.Create(database, crypto, user, privateKey, id);
         }
 

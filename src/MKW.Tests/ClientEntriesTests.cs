@@ -60,9 +60,9 @@ namespace MKW.Tests
             oldUser.UpdateEntry(id2, new EntryPayload("entry2"));
 
             {
-                IDatabaseEntry entry = db.OpenEntry(id1, false);
+                IDatabaseEntry entry = db.OpenEntry(id1);
                 entry.Keys.Remove(newUser.Id);
-                entry.Save();
+                db.UpdateEntry(id1, entry);
             }
 
             CollectionAssert.AreEqual(

@@ -42,6 +42,16 @@ namespace MKW.Core.Client
         {
             AccessController accessController = AccessController.Create(user);
 
+            IDatabaseEntry entry = new IDatabaseEntry
+            {
+                Id = entryId,
+                Data = ReadOnlyMemory<byte>.Empty,
+                Salt = ReadOnlyMemory<byte>.Empty,
+                Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+            };
+
+            database.CreateEntry(entryId, entry);
+
             return new Entry(database,
                              crypto,
                              user,
@@ -56,7 +66,7 @@ namespace MKW.Core.Client
                                  IAsymmetricPrivateTransformer privateKey,
                                  EntryId entryId)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId, true);
+            IDatabaseEntry entry = database.OpenEntry(entryId);
 
             AccessController accessController = AccessController.Open(entry);
 
@@ -70,22 +80,22 @@ namespace MKW.Core.Client
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId, false);
+            IDatabaseEntry entry = database.OpenEntry(entryId);
 
-            encoder.EncodeEntry(entry, payload);
+            IDatabaseEntry newEntry = encoder.EncodeEntry(entry, payload);
 
-            entry.Save();
+            database.UpdateEntry(Id, newEntry);
 
             return new EntryInfo
             {
-                Id = entry.Id,
+                Id = newEntry.Id,
                 EncodedForUsers = [.. accessController.EnumerateAccess()]
             };
         }
 
         public EntryPayload? OpenPayload()
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId, true);
+            IDatabaseEntry entry = database.OpenEntry(entryId);
             return decoder.DecodeEntry(entry);
         }
 
@@ -99,11 +109,11 @@ namespace MKW.Core.Client
 
         public void AddAccess(UserId userId)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId, false);
+            IDatabaseEntry entry = database.OpenEntry(entryId);
 
-            sharer.ShareEntry(entry, userId);
+            IDatabaseEntry newEntry = sharer.ShareEntry(entry, userId);
 
-            entry.Save();
+            database.UpdateEntry(entryId, newEntry);
         }
 
         public void Dispose()
