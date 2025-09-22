@@ -42,7 +42,7 @@ namespace MKW.Core.Client
                                    UserSession user,
                                    IDatabaseEntry entry)
         {
-            AccessController accessController = AccessController.Create(database, user);
+            AccessController accessController = AccessController.Create(user);
 
             return new Entry(database,
                              crypto,
