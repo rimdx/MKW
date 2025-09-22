@@ -34,7 +34,7 @@ namespace MKW.Tests
                     UserId.Admin(),
                     user.Id,
                 },
-                entry.EncodedForUsers.Select(user => user.Id));
+                entry.EncodedForUsers);
 
             ClassicAssert.AreEqual(new EntryPayload("secret"),
                                    user.OpenEntry(entry.Id).OpenPayload());

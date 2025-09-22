@@ -6,12 +6,15 @@ namespace MKW.Core.Implementation
     public class EntryEncoder : IDisposable
     {
         private readonly ICryptographyProvider crypto;
+        private readonly IDatabase database;
         private readonly AccessController accessController;
 
         public EntryEncoder(ICryptographyProvider crypto,
+                            IDatabase database,
                             AccessController accessController)
         {
             this.crypto = crypto;
+            this.database = database;
             this.accessController = accessController;
         }
 
@@ -23,9 +26,12 @@ namespace MKW.Core.Implementation
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
-            foreach (UserInfo user in accessController.EnumerateAccess())
+            foreach (UserId userId in accessController.EnumerateAccess())
             {
-                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(user.PublicKey.Span);
+                IDatabaseUser user = database.OpenUser(userId, true);
+
+                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
+                    user.PublicKey.Payload.Span);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 

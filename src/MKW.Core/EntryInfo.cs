@@ -6,6 +6,6 @@ namespace MKW.Core
     {
         public required EntryId Id { get; init; }
 
-        public required IReadOnlyList<UserInfo> EncodedForUsers { get; init; }
+        public required IReadOnlyList<UserId> EncodedForUsers { get; init; }
     }
 }

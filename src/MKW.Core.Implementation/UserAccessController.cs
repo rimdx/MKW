@@ -44,9 +44,9 @@ namespace MKW.Core.Implementation
 
         private static bool HasAccess(IEntrySession entry, UserId userId)
         {
-            foreach (UserInfo access in entry.EnumerateAccess())
+            foreach (UserId access in entry.EnumerateAccess())
             {
-                if (access.Id == userId)
+                if (access == userId)
                 {
                     return true;
                 }

@@ -32,7 +32,7 @@ namespace MKW.Core.Client
             this.entry = entry;
             this.accessController = accessController;
 
-            encoder = new EntryEncoder(crypto, accessController);
+            encoder = new EntryEncoder(crypto, database, accessController);
             decoder = new EntryDecoder(crypto, user, user.Transformer);
             sharer = new EntrySharer(accessController, decoder, encoder);
         }
@@ -67,7 +67,7 @@ namespace MKW.Core.Client
 
         public EntryInfo UpdatePayload(EntryPayload payload)
         {
-            UserInfo[] users = accessController.EnumerateAccess().ToArray();
+            UserId[] users = accessController.EnumerateAccess().ToArray();
 
             encoder.EncodeEntry(entry, payload);
 
@@ -85,9 +85,9 @@ namespace MKW.Core.Client
             return decoder.DecodeEntry(entry);
         }
 
-        public IEnumerable<UserInfo> EnumerateAccess()
+        public IEnumerable<UserId> EnumerateAccess()
         {
-            foreach (UserInfo user in accessController.EnumerateAccess())
+            foreach (UserId user in accessController.EnumerateAccess())
             {
                 yield return user;
             }
