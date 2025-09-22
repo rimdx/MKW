@@ -1,4 +1,5 @@
-﻿using MKW.Core.Storage.JSON.Types;
+﻿using MKW.Common;
+using MKW.Core.Storage.JSON.Types;
 using System.Text.Json;
 
 namespace MKW.Core.Storage.JSON
@@ -28,19 +29,11 @@ namespace MKW.Core.Storage.JSON
         {
             JSONDatabase database = new JSONDatabase();
 
-            using (FileStream file = File.Create(path))
+            using (TempFile file = TempFile.Create(path))
             {
-                try
-                {
-                    JsonSerializer.Serialize(file, database);
-                    file.Flush(true);
-                }
-                catch
-                {
-                    file.Close();
-                    File.Delete(path);
-                    throw;
-                }
+                JsonSerializer.Serialize(file, database);
+
+                file.Accept();
             }
 
             return new JSONDatabaseSession(database, path);
@@ -48,27 +41,11 @@ namespace MKW.Core.Storage.JSON
 
         public override void Save()
         {
-            // TODO: properly generate file name
-            string tmpPath = path + ".tmp";
+            using TempFile file = TempFile.Create(path);
 
-            try
-            {
-                using (FileStream file = new FileStream(tmpPath,
-                                                        FileMode.CreateNew,
-                                                        FileAccess.Write))
-                {
-                    JsonSerializer.Serialize(file, Database);
-                    file.Flush(true);
-                }
+            JsonSerializer.Serialize(file, Database);
 
-                File.Replace(tmpPath, path, null);
-            }
-            catch
-            {
-                // cleanup
-                File.Delete(tmpPath);
-                throw;
-            }
+            file.Accept();
         }
 
         public override void Dispose()
