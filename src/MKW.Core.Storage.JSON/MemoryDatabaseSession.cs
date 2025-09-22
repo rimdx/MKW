@@ -16,7 +16,7 @@ namespace MKW.Core.Storage.JSON
             Database = database;
         }
 
-        public IDatabaseUser OpenUser(UserId id)
+        public DatabaseUser OpenUser(UserId id)
         {
             if (id.IsAdmin)
             {
@@ -42,7 +42,7 @@ namespace MKW.Core.Storage.JSON
             }
         }
 
-        public void CreateUser(UserId id, IDatabaseUser user)
+        public void CreateUser(UserId id, DatabaseUser user)
         {
             if (id.IsAdmin)
             {
@@ -70,7 +70,7 @@ namespace MKW.Core.Storage.JSON
             Save();
         }
 
-        public void UpdateUser(UserId id, IDatabaseUser user)
+        public void UpdateUser(UserId id, DatabaseUser user)
         {
             if (id.IsAdmin)
             {
@@ -110,7 +110,7 @@ namespace MKW.Core.Storage.JSON
             return Database.Users.ContainsKey(id.GetGuid());
         }
 
-        public IEnumerable<IDatabaseUser> EnumerateUsers()
+        public IEnumerable<DatabaseUser> EnumerateUsers()
         {
             yield return OpenUser(UserId.Admin());
 

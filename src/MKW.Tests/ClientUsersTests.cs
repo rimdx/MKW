@@ -18,7 +18,7 @@ namespace MKW.Tests
 
             using IUserSession s1 = sbox.CreateUser(session, "whattheheckamidoing", out UserInfo user);
 
-            IDatabaseUser[] users = db.EnumerateUsers().ToArray();
+            DatabaseUser[] users = db.EnumerateUsers().ToArray();
             ClassicAssert.AreEqual(2, users.Length);
 
             ClassicAssert.AreEqual(user.Id, users[1].Id);

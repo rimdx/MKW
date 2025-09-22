@@ -26,7 +26,7 @@ namespace MKW.Core.Client
 
             UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(systemCreds.Transformer);
 
-            IDatabaseUser admin = new IDatabaseUser
+            DatabaseUser admin = new DatabaseUser
             {
                 Id = UserId.Admin(),
                 PublicKey = new SignedPayload(systemCreds.PublicKey, null),
@@ -45,7 +45,7 @@ namespace MKW.Core.Client
         {
             try
             {
-                IDatabaseUser admin = database.OpenUser(UserId.Admin());
+                DatabaseUser admin = database.OpenUser(UserId.Admin());
 
                 IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
 
@@ -69,7 +69,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetAdminInfo()
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin());
+            DatabaseUser admin = database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);
@@ -83,7 +83,7 @@ namespace MKW.Core.Client
         {
         }
 
-        private static UserInfo CreateUserInfo(IDatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
+        private static UserInfo CreateUserInfo(DatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
         {
             return new UserInfo
             {

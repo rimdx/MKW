@@ -14,7 +14,7 @@
         public required ReadOnlyMemory<byte> AdminTrustSignature { get; init; }
         public required ReadOnlyMemory<byte> AdminSignature { get; init; }
 
-        public static JSONDatabaseUser Serialize(IDatabaseUser user)
+        public static JSONDatabaseUser Serialize(DatabaseUser user)
         {
             return new JSONDatabaseUser
             {
@@ -31,9 +31,9 @@
             };
         }
 
-        public static IDatabaseUser Deserialize(UserId id, JSONDatabaseUser user)
+        public static DatabaseUser Deserialize(UserId id, JSONDatabaseUser user)
         {
-            return new IDatabaseUser
+            return new DatabaseUser
             {
                 Id = id,
                 Salt = user.Salt,

@@ -22,7 +22,7 @@ namespace MKW.Core.Client
 
         public UserAccessRequest CreateUserAccessRequest(string password)
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin());
+            DatabaseUser admin = database.OpenUser(UserId.Admin());
 
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
@@ -50,7 +50,7 @@ namespace MKW.Core.Client
             }
             else
             {
-                IDatabaseUser user = database.OpenUser(id);
+                DatabaseUser user = database.OpenUser(id);
 
                 // Credentials can be opened within the entered password and the public salt
                 IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
@@ -61,7 +61,7 @@ namespace MKW.Core.Client
 
         public IUserSession OpenUser(string password)
         {
-            foreach (IDatabaseUser user in database.EnumerateUsers())
+            foreach (DatabaseUser user in database.EnumerateUsers())
             {
                 try
                 {
@@ -78,7 +78,7 @@ namespace MKW.Core.Client
             throw new Exception("No valid user found with the provided password.");
         }
 
-        private IUserSession OpenUserInternal(IDatabaseUser user, IUserCredentials creds)
+        private IUserSession OpenUserInternal(DatabaseUser user, IUserCredentials creds)
         {
             try
             {
@@ -106,14 +106,14 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin());
+            DatabaseUser admin = database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
-            foreach (IDatabaseUser user in database.EnumerateUsers())
+            foreach (DatabaseUser user in database.EnumerateUsers())
             {
                 yield return CreateUserInfo(user, metadataDecoder.OpenMetadata(user));
             }
@@ -121,8 +121,8 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            IDatabaseUser admin = database.OpenUser(UserId.Admin());
-            IDatabaseUser user = database.OpenUser(id);
+            DatabaseUser admin = database.OpenUser(UserId.Admin());
+            DatabaseUser user = database.OpenUser(id);
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
                 admin.PublicKey.Payload.Span);
@@ -137,7 +137,7 @@ namespace MKW.Core.Client
             /* no-op */
         }
 
-        private static UserInfo CreateUserInfo(IDatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
+        private static UserInfo CreateUserInfo(DatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
         {
             return new UserInfo
             {

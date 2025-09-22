@@ -18,7 +18,7 @@ namespace MKW.Core.Implementation
             return adminKey.Verify(metadata.Payload.Span, metadata.Signature.Span);
         }
 
-        public UserMetadata OpenMetadata(IDatabaseUser user)
+        public UserMetadata OpenMetadata(DatabaseUser user)
         {
             if (VerifyMetadata(user.Metadata))
             {

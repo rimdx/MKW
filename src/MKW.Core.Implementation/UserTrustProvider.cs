@@ -21,7 +21,7 @@ namespace MKW.Core.Implementation
             this.adminKey = adminKey;
         }
 
-        private bool VerifyTrust(IDatabaseUser user)
+        private bool VerifyTrust(DatabaseUser user)
         {
             // trust ourselves
             if (user.PublicKey.Payload.Span.SequenceEqual(meKey.ExportPublicKey().Span))
@@ -54,7 +54,7 @@ namespace MKW.Core.Implementation
         {
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
-            foreach (IDatabaseUser user in database.EnumerateUsers())
+            foreach (DatabaseUser user in database.EnumerateUsers())
             {
                 if (VerifyTrust(user))
                 {
