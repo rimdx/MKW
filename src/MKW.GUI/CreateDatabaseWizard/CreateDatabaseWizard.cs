@@ -3,9 +3,9 @@ using System.Windows;
 
 namespace MKW.GUI.CreateDatabaseWizard
 {
-    public class CreateDatabaseWindow : WizardWindow
+    public class CreateDatabaseWizard : WizardWindow
     {
-        public CreateDatabaseWindow(CreateDatabaseWizardViewModel viewModel, Window owner)
+        public CreateDatabaseWizard(CreateDatabaseWizardViewModel viewModel, Window owner)
             : base(viewModel, owner)
         {
         }
