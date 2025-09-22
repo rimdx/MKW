@@ -12,9 +12,8 @@ namespace MKW.Core.Implementation
 
         public UserTrustController(IDatabase database,
                                    ICryptographyProvider crypto,
-                                   IDatabaseUser me,
                                    IAsymmetricPrivateTransformer privateKey)
-            : base(database, crypto, privateKey, me)
+            : base(database, crypto, privateKey, privateKey)
         {
             this.privateKey = privateKey;
         }
