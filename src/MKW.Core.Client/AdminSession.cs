@@ -33,11 +33,7 @@ namespace MKW.Core.Client
             IDatabaseUser user = database.CreateUser(userId);
 
             user.Salt = request.Salt;
-            user.PublicKey = new SignedPayload
-            {
-                Payload = request.PublicKey,
-                Signature = Transformer.Sign(request.PublicKey.Span)
-            };
+            user.PublicKey = new SignedPayload(request.PublicKey, Transformer.Sign(request.PublicKey.Span));
             user.PrivateKey = request.EncryptedPrivateKey;
             user.Metadata = metadataEncoder.EncodeMetadata(metadata);
 

@@ -55,20 +55,12 @@ namespace MKW.Core.Storage.JSON.Interface
 
         public void CopyFrom(JSONDatabaseUser obj)
         {
-            PublicKey = new SignedPayload
-            {
-                Payload = obj.PublicKey,
-                Signature = obj.AdminTrustSignature,
-            };
+            PublicKey = new SignedPayload(obj.PublicKey, obj.AdminTrustSignature);
 
             PrivateKey = new SecretPayload(obj.PrivateKey);
             Salt = obj.Salt;
 
-            Metadata = new SignedPayload
-            {
-                Payload = obj.Metadata,
-                Signature = obj.MetadataAdminSignature,
-            };
+            Metadata = new SignedPayload(obj.Metadata, obj.MetadataAdminSignature);
 
             AdminSignature = obj.AdminSignature;
             trust = [.. obj.Trust];
