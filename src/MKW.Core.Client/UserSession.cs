@@ -10,14 +10,14 @@ namespace MKW.Core.Client
         , ITrustProvider
         , IDisposable
     {
-        protected readonly ICryptographyProvider crypto;
-        protected readonly IDatabase database;
-        protected readonly IEntryController entryController;
-        protected readonly UserMetadataDecoder metadata;
-        protected readonly IAsymmetricPublicTransformer adminPublicKey;
-        protected readonly UserTrustProvider trustProvider;
+        private readonly ICryptographyProvider crypto;
+        private readonly IDatabase database;
+        private readonly IEntryController entryController;
+        private readonly UserMetadataDecoder metadata;
+        private readonly IAsymmetricPublicTransformer adminPublicKey;
+        private readonly UserTrustProvider trustProvider;
 
-        protected readonly IDatabaseUser databaseUser;
+        private readonly IDatabaseUser databaseUser;
 
         public UserId Id => databaseUser.Id;
         public IAsymmetricPrivateTransformer Transformer { get; }
