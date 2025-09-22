@@ -13,7 +13,5 @@
 
         public required ReadOnlyMemory<byte> AdminTrustSignature { get; init; }
         public required ReadOnlyMemory<byte> AdminSignature { get; init; }
-
-        public required List<ReadOnlyMemory<byte>> Trust { get; init; }
     }
 }
