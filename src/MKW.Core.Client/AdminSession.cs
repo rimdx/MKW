@@ -13,7 +13,7 @@ namespace MKW.Core.Client
         , IDisposable
     {
         private readonly IDatabase database;
-        private readonly IDatabaseUser admin;
+        private readonly DatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
 
         private readonly IEntryController entryController;
@@ -27,7 +27,7 @@ namespace MKW.Core.Client
 
         public AdminSession(ICryptographyProvider crypto,
                             IDatabase database,
-                            IDatabaseUser admin,
+                            DatabaseUser admin,
                             ReadOnlySpan<byte> privateKey)
         {
             this.database = database;
@@ -47,7 +47,7 @@ namespace MKW.Core.Client
         {
             UserId userId = UserId.Create();
 
-            IDatabaseUser user = new IDatabaseUser
+            DatabaseUser user = new DatabaseUser
             {
                 Id = userId,
                 Salt = request.Salt,

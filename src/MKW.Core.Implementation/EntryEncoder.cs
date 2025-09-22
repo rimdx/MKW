@@ -28,7 +28,7 @@ namespace MKW.Core.Implementation
 
             foreach (UserId userId in accessController.EnumerateAccess())
             {
-                IDatabaseUser user = database.OpenUser(userId);
+                DatabaseUser user = database.OpenUser(userId);
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
                     user.PublicKey.Payload.Span);
