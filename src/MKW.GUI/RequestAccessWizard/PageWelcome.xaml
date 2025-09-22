@@ -6,6 +6,7 @@
                    xmlns:local="clr-namespace:MKW.GUI.RequestAccessWizard"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
                    mc:Ignorable="d"
+                   d:DataContext="{d:DesignInstance Type=local:RequestAccessWizardViewModel}"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
   <Grid Margin="12">
