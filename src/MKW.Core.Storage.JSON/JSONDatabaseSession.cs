@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace MKW.Core.Storage.JSON
 {
-    public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase, ISavable
+    public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase
     {
         private readonly string path;
 
