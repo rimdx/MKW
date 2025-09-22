@@ -62,6 +62,7 @@ namespace MKW.Tests
             {
                 IDatabaseEntry entry = db.OpenEntry(id1, false);
                 entry.Keys.Remove(newUser.Id);
+                entry.Save();
             }
 
             CollectionAssert.AreEqual(
