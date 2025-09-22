@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MKW.Core\MKW.Core.csproj" />
+    <ProjectReference Include="..\MKW.Core.Storage\MKW.Core.Storage.csproj" />
   </ItemGroup>
 
 </Project>

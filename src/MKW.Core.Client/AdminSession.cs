@@ -43,7 +43,13 @@ namespace MKW.Core.Client
 
             accessController.AddAccess(userId);
 
-            return UserInfo.FromDatabaseUser(user, metadata);
+            return new UserInfo
+            {
+                Id = user.Id,
+                PublicKey = user.PublicKey.Payload,
+                Trust = Trust.Unknown,
+                Metadata = metadata
+            };
         }
     }
 }

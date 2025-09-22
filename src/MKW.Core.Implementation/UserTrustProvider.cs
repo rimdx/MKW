@@ -59,9 +59,13 @@ namespace MKW.Core.Implementation
             {
                 if (VerifyTrust(user))
                 {
-                    yield return UserInfo.FromDatabaseUser(user,
-                                                           metadataDecoder.OpenMetadata(user),
-                                                           Trust.ExplicitTrust);
+                    yield return new UserInfo
+                    {
+                        Id = user.Id,
+                        PublicKey = user.PublicKey.Payload,
+                        Trust = Trust.ExplicitTrust,
+                        Metadata = metadataDecoder.OpenMetadata(user)
+                    };
                 }
             }
         }
