@@ -31,7 +31,7 @@ namespace MKW.Core.Client
             admin.PublicKey = systemCreds.PublicKey;
             admin.PrivateKey = systemCreds.PrivateKey;
             admin.Salt = systemCreds.Salt;
-            metadataEncoder.UpdateMetadata(admin, metadata);
+            admin.Metadata = metadataEncoder.EncodeMetadata(metadata);
 
             admin.Save();
 
