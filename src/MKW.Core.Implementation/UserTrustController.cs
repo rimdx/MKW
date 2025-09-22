@@ -22,7 +22,7 @@ namespace MKW.Core.Implementation
         public void AddTrust(IDatabaseUser user)
         {
             user.AdminSignature = privateKey.Sign(user.PublicKey.Span);
-            admin.Save();
+            user.Save();
         }
 
         public override void Dispose()
