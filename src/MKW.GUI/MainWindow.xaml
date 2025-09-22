@@ -139,7 +139,9 @@
       </TabControl.ItemTemplate>
       <TabControl.Resources>
         <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
-          <ContentPresenter Content="{Binding Content}" />
+          <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <ContentPresenter Content="{Binding Content}" />
+          </Border>
         </DataTemplate>
       </TabControl.Resources>
     </TabControl>
