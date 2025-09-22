@@ -12,7 +12,6 @@ namespace MKW.Core.Client
         protected readonly ICryptographyProvider crypto;
         protected readonly EntryId entryId;
         protected readonly AccessController accessController;
-        protected readonly UserSession user;
 
         protected readonly EntryEncoder encoder;
         protected readonly EntryDecoder decoder;
@@ -22,24 +21,25 @@ namespace MKW.Core.Client
 
         protected Entry(IDatabase database,
                         ICryptographyProvider crypto,
-                        UserSession user,
+                        IUserSession user,
+                        IAsymmetricPrivateTransformer privateKey,
                         EntryId entryId,
                         AccessController accessController)
         {
             this.database = database;
             this.crypto = crypto;
-            this.user = user;
             this.entryId = entryId;
             this.accessController = accessController;
 
             encoder = new EntryEncoder(crypto, database, accessController);
-            decoder = new EntryDecoder(crypto, user, user.Transformer);
+            decoder = new EntryDecoder(crypto, user, privateKey);
             sharer = new EntrySharer(accessController, decoder, encoder);
         }
 
         public static Entry Create(IDatabase database,
                                    ICryptographyProvider crypto,
-                                   UserSession user,
+                                   IUserSession user,
+                                   IAsymmetricPrivateTransformer privateKey,
                                    EntryId entryId)
         {
             AccessController accessController = AccessController.Create(user);
@@ -47,13 +47,15 @@ namespace MKW.Core.Client
             return new Entry(database,
                              crypto,
                              user,
+                             privateKey,
                              entryId,
                              accessController /* move */);
         }
 
         public static Entry Open(IDatabase database,
                                  ICryptographyProvider crypto,
-                                 UserSession user,
+                                 IUserSession user,
+                                 IAsymmetricPrivateTransformer privateKey,
                                  EntryId entryId)
         {
             IDatabaseEntry entry = database.OpenEntry(entryId, true);
@@ -63,6 +65,7 @@ namespace MKW.Core.Client
             return new Entry(database,
                              crypto,
                              user,
+                             privateKey,
                              entryId,
                              accessController /* move */);
         }
