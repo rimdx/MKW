@@ -25,7 +25,7 @@ namespace MKW.GUI
             try
             {
                 CreateDatabaseWizardViewModel createDatabaseViewModel = model.CreateCreateDatabaseViewModel();
-                CreateDatabaseWindow createDatabaseWindow = new CreateDatabaseWindow(createDatabaseViewModel, this);
+                CreateDatabaseWizard.CreateDatabaseWizard createDatabaseWindow = new CreateDatabaseWizard.CreateDatabaseWizard(createDatabaseViewModel, this);
 
                 createDatabaseWindow.ShowDialog();
 
