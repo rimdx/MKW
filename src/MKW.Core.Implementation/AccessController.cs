@@ -22,10 +22,8 @@ namespace MKW.Core.Implementation
             return new AccessController(access);
         }
 
-        public static AccessController Open(IDatabase database,
-                                            EntryId entryId)
+        public static AccessController Open(IDatabaseEntry entry)
         {
-            IDatabaseEntry entry = database.OpenEntry(entryId, true);
             return new AccessController(entry.Keys.Keys);
         }
 
