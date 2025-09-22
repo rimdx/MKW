@@ -8,14 +8,14 @@ namespace MKW.Core.Client
         : IEntrySession
         , IDisposable
     {
-        protected readonly IDatabase database;
-        protected readonly ICryptographyProvider crypto;
-        protected readonly EntryId entryId;
-        protected readonly AccessController accessController;
+        private readonly IDatabase database;
+        private readonly ICryptographyProvider crypto;
+        private readonly EntryId entryId;
+        private readonly AccessController accessController;
 
-        protected readonly EntryEncoder encoder;
-        protected readonly EntryDecoder decoder;
-        protected readonly EntrySharer sharer;
+        private readonly EntryEncoder encoder;
+        private readonly EntryDecoder decoder;
+        private readonly EntrySharer sharer;
 
         public EntryId Id => entryId;
 
