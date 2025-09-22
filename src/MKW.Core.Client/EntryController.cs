@@ -20,14 +20,14 @@ namespace MKW.Core.Client
 
         public IEntrySession OpenEntry(EntryId id)
         {
-            return Entry.Open(database, crypto, user, id);
+            return Entry.Open(database, crypto, user, user.Transformer, id);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
             IDatabaseEntry dbEntry = database.CreateEntry(id);
             dbEntry.Save();
-            return Entry.Create(database, crypto, user, id);
+            return Entry.Create(database, crypto, user, user.Transformer, id);
         }
 
         public IEntrySession CreateEntry()
@@ -84,7 +84,7 @@ namespace MKW.Core.Client
         {
             foreach (IDatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return Entry.Open(database, crypto, user, entry.Id);
+                yield return Entry.Open(database, crypto, user, user.Transformer, entry.Id);
             }
         }
 
