@@ -32,7 +32,7 @@ namespace MKW.Core.Implementation
             }
 
             // trust admin
-            // TODO: verify signature
+            // TODO: verify admin
             if (user.PublicKey.Span.SequenceEqual(admin.PublicKey.Span))
             {
                 return true;
