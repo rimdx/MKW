@@ -15,7 +15,7 @@ namespace MKW.Core.Client
     {
         private readonly UserMetadataEncoder metadataEncoder;
         private readonly UserAccessController accessController;
-        private readonly UserTrustController trustController;
+        private readonly AdminTrustController trustController;
 
         public AdminSession(ICryptographyProvider crypto,
                             IDatabase database /* reference */,
@@ -25,7 +25,7 @@ namespace MKW.Core.Client
         {
             metadataEncoder = new UserMetadataEncoder(Transformer);
             accessController = new UserAccessController(this);
-            trustController = new UserTrustController(database, crypto, Transformer);
+            trustController = new AdminTrustController(Transformer);
         }
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
