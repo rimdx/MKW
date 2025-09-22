@@ -4,7 +4,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    public class Entry
+    internal class Entry
         : IEntrySession
         , IDisposable
     {

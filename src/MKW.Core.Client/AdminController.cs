@@ -5,7 +5,7 @@ using MKW.Cryptography.Exceptions;
 
 namespace MKW.Core.Client
 {
-    public class AdminController : IAdminController, IDisposable
+    internal class AdminController : IAdminController, IDisposable
     {
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
