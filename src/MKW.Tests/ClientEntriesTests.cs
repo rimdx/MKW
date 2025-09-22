@@ -60,7 +60,7 @@ namespace MKW.Tests
             oldUser.UpdateEntry(id2, new EntryPayload("entry2"));
 
             {
-                IDatabaseEntry entry = db.OpenEntry(id1);
+                DatabaseEntry entry = db.OpenEntry(id1);
                 entry.Keys.Remove(newUser.Id);
                 db.UpdateEntry(id1, entry);
             }

@@ -22,7 +22,7 @@ namespace MKW.Core.Implementation
             return new AccessController(access);
         }
 
-        public static AccessController Open(IDatabaseEntry entry)
+        public static AccessController Open(DatabaseEntry entry)
         {
             return new AccessController(entry.Keys.Keys);
         }

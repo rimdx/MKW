@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage
 {
-    public record class IDatabaseEntry
+    public record class DatabaseEntry
     {
         public required EntryId Id { get; init; }
 

@@ -83,7 +83,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
-            foreach (IDatabaseEntry entry in database.EnumerateEntries())
+            foreach (DatabaseEntry entry in database.EnumerateEntries())
             {
                 yield return Entry.Open(database, crypto, user, privateKey, entry.Id);
             }

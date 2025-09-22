@@ -8,7 +8,7 @@
 
         public required ReadOnlyMemory<byte> Data { get; init; }
 
-        public static JSONDatabaseSecretEntry Serialize(IDatabaseEntry entry)
+        public static JSONDatabaseSecretEntry Serialize(DatabaseEntry entry)
         {
             Dictionary<Guid, ReadOnlyMemory<byte>> keys = [];
             foreach (KeyValuePair<UserId, ReadOnlyMemory<byte>> pair in entry.Keys)
@@ -24,7 +24,7 @@
             };
         }
 
-        public static IDatabaseEntry Deserialize(EntryId id, JSONDatabaseSecretEntry entry)
+        public static DatabaseEntry Deserialize(EntryId id, JSONDatabaseSecretEntry entry)
         {
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
             foreach (KeyValuePair<Guid, ReadOnlyMemory<byte>> pair in entry.Keys)
@@ -32,7 +32,7 @@
                 keys.Add(UserId.FromGuid(pair.Key), pair.Value);
             }
 
-            return new IDatabaseEntry
+            return new DatabaseEntry
             {
                 Id = id,
                 Keys = keys,

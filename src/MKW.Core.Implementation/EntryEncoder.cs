@@ -18,7 +18,7 @@ namespace MKW.Core.Implementation
             this.accessController = accessController;
         }
 
-        public IDatabaseEntry EncodeEntry(IDatabaseEntry entry, EntryPayload payload)
+        public DatabaseEntry EncodeEntry(DatabaseEntry entry, EntryPayload payload)
         {
             using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
 
