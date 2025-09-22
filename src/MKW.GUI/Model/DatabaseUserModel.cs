@@ -26,7 +26,7 @@ namespace MKW.GUI.Model
                 }
                 else
                 {
-                    return user.Metadata.UserId;
+                    return Formatters.FormatUserName(user.Metadata.UserId, user.Metadata.DisplayName);
                 }
             }
         }
