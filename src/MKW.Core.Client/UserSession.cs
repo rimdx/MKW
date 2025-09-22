@@ -13,7 +13,7 @@ namespace MKW.Core.Client
         private readonly IDatabase database;
         private readonly IAsymmetricPrivateTransformer transformer;
 
-        private readonly IEntryController entryController;
+        private readonly EntryController entryController;
         private readonly UserMetadataDecoder metadata;
         private readonly IAsymmetricPublicTransformer adminPublicKey;
         private readonly UserTrustProvider trustProvider;
