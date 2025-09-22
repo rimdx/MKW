@@ -4,13 +4,10 @@ namespace MKW.Core.Implementation
 {
     public class AccessController : IDisposable
     {
-        private readonly IDatabase database;
         private readonly HashSet<UserId> access;
 
-        public AccessController(IDatabase database,
-                                IEnumerable<UserId> access)
+        public AccessController(IEnumerable<UserId> access)
         {
-            this.database = database;
             this.access = [.. access];
         }
 
@@ -23,14 +20,14 @@ namespace MKW.Core.Implementation
                 access.Add(user.Id);
             }
 
-            return new AccessController(database, access);
+            return new AccessController(access);
         }
 
         public static AccessController Open(IDatabase database,
                                             EntryId entryId)
         {
             IDatabaseEntry entry = database.OpenEntry(entryId, true);
-            return new AccessController(database, entry.Keys.Keys);
+            return new AccessController(entry.Keys.Keys);
         }
 
         public void AddAccess(UserId userId)
