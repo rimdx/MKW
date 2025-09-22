@@ -10,9 +10,9 @@ namespace MKW.GUI
     {
         private readonly MainWindowViewModel model;
 
-        public MainWindow()
+        public MainWindow(AppModel appModel)
         {
-            model = new MainWindowViewModel();
+            model = new MainWindowViewModel(appModel);
             DataContext = model;
 
             InitializeComponent();
