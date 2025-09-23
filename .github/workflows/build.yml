@@ -31,7 +31,7 @@ jobs:
           msbuild /p:Platform=ARM64 /p:Configuration=Release
 
       - name: Test
-        run: dotnet test --no-build ${{ env.Parameters }}
+        run: dotnet test --no-build /p:Platform=x64 /p:Configuration=Release
 
       - name: Publish
         run: |
