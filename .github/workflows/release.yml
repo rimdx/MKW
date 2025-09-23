@@ -50,7 +50,7 @@ jobs:
         run: msbuild /target:Restore,Build /p:Platform=${{ matrix.Platform }} /p:Configuration=Release
 
       - name: Test
-        run: dotnet test --no-build /p:Platform=${{ matrix.Platform }} /p:Configuration=Release
+        run: dotnet test
 
       - id: dirs
         run: |
