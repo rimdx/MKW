@@ -55,7 +55,7 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <NoWarn>$(NoWarn);NU1702</NoWarn>
-    <EntryPointProjectUniqueName>..\src\MKW.GUI\MKW.GUI.csproj</EntryPointProjectUniqueName>
+    <EntryPointProjectUniqueName>..\MKW.GUI\MKW.GUI.csproj</EntryPointProjectUniqueName>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Auto</AppxBundle>
@@ -73,7 +73,7 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\MKW.GUI\MKW.GUI.csproj" />
+    <ProjectReference Include="..\MKW.GUI\MKW.GUI.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="mkw-testing.pfx" />
