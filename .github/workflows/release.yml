@@ -56,9 +56,9 @@ jobs:
 
       - id: dirs
         run: |
-          "PackageDir=$((ls out\publish\MKW.Package_*).FullName)" >> $env:GITHUB_OUTPUT
-          "PackageFile=$((ls out\publish\MKW.Package_*\*.msix).FullName)" >> $env:GITHUB_OUTPUT
-          "PackageName=$((ls out\publish\MKW.Package_*\*.msix).Name)" >> $env:GITHUB_OUTPUT
+          "PackageDir=$((ls out/publish/MKW.Package_*).FullName)" >> $env:GITHUB_OUTPUT
+          "PackageFile=$((ls out/publish/MKW.Package_*/*.msix).FullName)" >> $env:GITHUB_OUTPUT
+          "PackageName=$((ls out/publish/MKW.Package_*/*.msix).Name)" >> $env:GITHUB_OUTPUT
 
       - name: Azure login
         uses: azure/login@v2
