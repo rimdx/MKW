@@ -36,6 +36,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
@@ -91,14 +92,36 @@
       </MenuItem>
     </Menu>
 
-    <local:StartPage Grid.Row="1"
+    <ToolBarTray Grid.Row="1"
+                 Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                 IsLocked="true">
+      <ToolBar Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+               OverflowMode="Never">
+        <Button Command="ApplicationCommands.New">
+          <local:CrispImage Moniker="NewDocument" />
+        </Button>
+        <Button Command="ApplicationCommands.Open">
+          <local:CrispImage Moniker="OpenFile" />
+        </Button>
+        <Separator />
+        <Button>
+          <local:CrispImage Moniker="NewKey" />
+        </Button>
+        <Separator />
+        <Button Command="{x:Static local:AppCommands.LockDatabase}">
+          <local:CrispImage Moniker="Lock" />
+        </Button>
+      </ToolBar>
+    </ToolBarTray>
+
+    <local:StartPage Grid.Row="2"
                      Visibility="{Binding IsStartPageVisible,
                                           Converter={StaticResource BooleanToVisibilityConverter}}"
                      Background="White"
                      KeyboardNavigation.DirectionalNavigation="Contained"
                      KeyboardNavigation.TabNavigation="Contained"/>
 
-    <TabControl Grid.Row="1"
+    <TabControl Grid.Row="2"
                 Margin="6"
                 ItemsSource="{Binding TabItems}"
                 SelectedItem="{Binding SelectedTab}"
