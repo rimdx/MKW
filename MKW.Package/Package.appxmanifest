@@ -9,7 +9,7 @@
   <Identity
     Name="0f52c405-3f4e-49a8-a883-725faefc44dc"
     Publisher="CN=mkw-testing"
-    Version="1.0.0.0" />
+    Version="0.2.0.0" />
 
   <Properties>
     <DisplayName>Multi-Key Wallet</DisplayName>
