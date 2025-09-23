@@ -47,7 +47,9 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build
-        run: msbuild /target:Restore,Build /p:Platform=${{ matrix.Platform }} /p:Configuration=Release
+        run: |
+          msbuild /t:Restore
+          msbuild /p:Platform=${{ matrix.Platform }} /p:Configuration=Release
 
       - name: Test
         run: dotnet test
