@@ -36,5 +36,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Release-${{ matrix.runtime }}
+          name: publish
           path: .\out\publish
