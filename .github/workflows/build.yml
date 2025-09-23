@@ -19,9 +19,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+  
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build
-        run: dotnet build ${{ env.Parameters }}
+        run: msbuild /target:Restore,Build ${{ env.Parameters }}
 
       - name: Test
         run: dotnet test --no-build ${{ env.Parameters }}
