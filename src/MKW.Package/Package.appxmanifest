@@ -8,7 +8,7 @@
 
   <Identity
     Name="rimdx.mkw"
-    Publisher="CN=Timofei Zhakov"
+    Publisher="CN=Timofei Zhakov, O=Timofei Zhakov, L=SAN GILJAN, C=MT"
     Version="0.2.0.0" />
 
   <Properties>
