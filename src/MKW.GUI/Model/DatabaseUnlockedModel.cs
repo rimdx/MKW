@@ -41,9 +41,6 @@ namespace MKW.GUI.Model
             private set => SetProperty(ref admin, value);
         }
 
-        public event EventHandler? OnEntriesChanged;
-        public event EventHandler? OnUsersChanged;
-
         private DatabaseUnlockedModel(IDatabase database, string path, ClientSession client)
         {
             this.database = database;
@@ -122,7 +119,6 @@ namespace MKW.GUI.Model
         public void RefreshEntries()
         {
             Entries = [..EnumerateEntries()];
-            OnEntriesChanged?.Invoke(this, new EventArgs());
         }
 
         public void CreateEntry(string payload)
@@ -192,7 +188,6 @@ namespace MKW.GUI.Model
         private void RefreshUsers()
         {
             Users = [.. EnumerateUsers()];
-            OnUsersChanged?.Invoke(this, new EventArgs());
         }
 
         public void Dispose()
