@@ -46,7 +46,7 @@ namespace MKW.GUI.Database
         public object ContentView
         { 
             get => contentView;
-            set => SetProperty(ref contentView, value); 
+            set => SetProperty(ref contentView, value);
         }
 
         public void LockDatabase()
