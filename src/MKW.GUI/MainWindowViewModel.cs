@@ -34,7 +34,7 @@ namespace MKW.GUI
                 {
                     try
                     {
-                        DatabaseUnlockedModel databaseModel = appModel.OpenDatabase(file);
+                        DatabaseModel databaseModel = appModel.OpenDatabase(file);
                         AddDatabaseTab(databaseModel);
                     }
                     catch
@@ -65,7 +65,7 @@ namespace MKW.GUI
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)
         {
-            DatabaseUnlockedModel database = appModel.OpenDatabase(filename);
+            DatabaseModel database = appModel.OpenDatabase(filename);
             return new LoginWindowViewModel(database /* move */);
         }
 
@@ -116,7 +116,7 @@ namespace MKW.GUI
             }
         }
 
-        private DatabaseTabItemViewModel AddDatabaseTab(DatabaseUnlockedModel database)
+        private DatabaseTabItemViewModel AddDatabaseTab(DatabaseModel database)
         {
             DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(database));
             TabItems.Add(tabViewModel);

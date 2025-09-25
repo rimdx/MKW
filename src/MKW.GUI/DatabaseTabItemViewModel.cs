@@ -35,13 +35,13 @@ namespace MKW.GUI
 
         private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.MatchProperty(nameof(DatabaseUnlockedModel.User)))
+            if (e.MatchProperty(nameof(DatabaseModel.User)))
             {
                 Icon = GetIcon(databaseViewModel.Database);
             }
         }
 
-        private static ImageMoniker GetIcon(DatabaseUnlockedModel database)
+        private static ImageMoniker GetIcon(DatabaseModel database)
         {
             if (database.User == null)
             {

@@ -4,9 +4,9 @@ namespace MKW.GUI
 {
     public class NewEntryWindowViewModel : ViewModelBase
     {
-        private readonly DatabaseUnlockedModel database;
+        private readonly DatabaseModel database;
 
-        public NewEntryWindowViewModel(DatabaseUnlockedModel database)
+        public NewEntryWindowViewModel(DatabaseModel database)
         {
             this.database = database;
         }

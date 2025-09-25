@@ -7,7 +7,7 @@ namespace MKW.GUI.Database
 {
     public class DatabaseUnlockedViewModel : ViewModelBase
     {
-        public DatabaseUnlockedModel Database => databaseViewModel.Database;
+        public DatabaseModel Database => databaseViewModel.Database;
         private DatabaseViewModel databaseViewModel;
 
         public DatabaseUnlockedViewModel(DatabaseViewModel databaseViewModel)

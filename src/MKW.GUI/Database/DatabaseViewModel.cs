@@ -5,9 +5,9 @@ namespace MKW.GUI.Database
 {
     public class DatabaseViewModel : ViewModelBase, IDisposable
     {
-        public DatabaseUnlockedModel Database { get; }
+        public DatabaseModel Database { get; }
 
-        public DatabaseViewModel(DatabaseUnlockedModel database)
+        public DatabaseViewModel(DatabaseModel database)
         {
             Database = database;
             database.PropertyChanged += Database_PropertyChanged;

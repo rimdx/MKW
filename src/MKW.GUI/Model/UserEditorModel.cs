@@ -4,7 +4,7 @@ namespace MKW.GUI.Model
 {
     public class UserEditorModel : IDisposable
     {
-        private readonly DatabaseUnlockedModel database;
+        private readonly DatabaseModel database;
         private readonly UserInfo user;
 
         private readonly bool initialTrust;
@@ -16,7 +16,7 @@ namespace MKW.GUI.Model
 
         public bool Trust => newTrust;
 
-        public UserEditorModel(DatabaseUnlockedModel database, UserInfo user)
+        public UserEditorModel(DatabaseModel database, UserInfo user)
         {
             this.database = database;
             this.user = user;
