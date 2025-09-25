@@ -5,9 +5,9 @@ namespace MKW.GUI.Database
 {
     public class DatabaseUserCollectionViewModel : ObservableCollection<DatabaseUserModel>, IDisposable
     {
-        private readonly DatabaseModel database;
+        private readonly DatabaseUnlockedModel database;
 
-        public DatabaseUserCollectionViewModel(DatabaseModel database)
+        public DatabaseUserCollectionViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
             database.OnUsersChanged += Database_OnUsersChanged;

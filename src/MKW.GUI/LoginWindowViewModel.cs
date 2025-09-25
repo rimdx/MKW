@@ -6,9 +6,9 @@ namespace MKW.GUI
 {
     public class LoginWindowViewModel : ViewModelBase
     {
-        public DatabaseModel Database { get; private set; }
+        public DatabaseUnlockedModel Database { get; private set; }
 
-        public LoginWindowViewModel(DatabaseModel database)
+        public LoginWindowViewModel(DatabaseUnlockedModel database)
         {
             Database = database;
 
