@@ -50,14 +50,5 @@ namespace MKW.GUI.Model
             Trust.None => ImageMoniker.StatusWarning,
             Trust.Unknown => ImageMoniker.StatusWarning,
         };
-
-        public bool IsVerifiable => trust switch
-        {
-            Trust.SelfTrust => false,
-            Trust.ExplicitTrust => false,
-            Trust.ImplicitTrust => false,
-            Trust.None => true,
-            Trust.Unknown => false,
-        };
     }
 }
