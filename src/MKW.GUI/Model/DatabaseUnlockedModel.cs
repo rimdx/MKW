@@ -15,6 +15,20 @@ namespace MKW.GUI.Model
 
         public ClientSession Client { get; }
 
+        private IReadOnlyCollection<DatabaseEntryModel> entries;
+        public IReadOnlyCollection<DatabaseEntryModel> Entries
+        {
+            get => entries;
+            private set => SetProperty(ref entries, value);
+        }
+
+        private IReadOnlyCollection<DatabaseUserModel> users;
+        public IReadOnlyCollection<DatabaseUserModel> Users
+        {
+            get => users;
+            private set => SetProperty(ref users, value);
+        }
+
         public IUserSession? User 
         {
             get => user;
@@ -35,6 +49,9 @@ namespace MKW.GUI.Model
             this.database = database;
             Path = path;
             Client = client;
+
+            entries = [.. EnumerateEntries()];
+            users = [.. EnumerateUsers()];
         }
 
         public static DatabaseUnlockedModel Open(string path)
@@ -71,6 +88,8 @@ namespace MKW.GUI.Model
             {
                 Admin = admin;
             }
+
+            RefreshEntries();
         }
 
         public void Lock()
@@ -79,23 +98,50 @@ namespace MKW.GUI.Model
             Admin = null;
         }
 
+        private IEnumerable<DatabaseEntryModel> EnumerateEntries()
+        {
+            if (User != null)
+            {
+                foreach (IEntrySession entry in User.EnumerateEntries())
+                {
+                    EntryPayload? payload = entry.OpenPayload();
+
+                    yield return new DatabaseEntryModel
+                    {
+                        Id = entry.Id,
+                        Payload = payload?.ToString()
+                    };
+                }
+            }
+            else
+            {
+                // empty list
+            }
+        }
+
+        public void RefreshEntries()
+        {
+            Entries = [..EnumerateEntries()];
+            OnEntriesChanged?.Invoke(this, new EventArgs());
+        }
+
         public void CreateEntry(string payload)
         {
             using IEntrySession entry = User!.CreateEntry();
             entry.UpdatePayload(new EntryPayload(payload));
-            OnEntriesChanged?.Invoke(this, new EventArgs());
+            RefreshEntries();
         }
 
         public void UpdateEntry(IEntrySession entry, string text)
         {
             entry.UpdatePayload(new EntryPayload(text));
-            OnEntriesChanged?.Invoke(this, new EventArgs());
+            RefreshEntries();
         }
 
         public void DeleteEntry(EntryId id)
         {
             database.DeleteEntry(id);
-            OnEntriesChanged?.Invoke(this, new EventArgs());
+            RefreshEntries();
         }
 
         private Trust GetTrust(UserInfo user)
@@ -111,14 +157,6 @@ namespace MKW.GUI.Model
             }
         }
 
-        public IEnumerable<DatabaseUserModel> EnumerateUsers()
-        {
-            foreach (UserInfo user in Client.EnumerateUsers())
-            {
-                yield return new DatabaseUserModel(user, GetTrust(user));
-            }
-        }
-
         public void AddUser(UserAccessRequest request, UserMetadata userMetadata)
         {
             if (Admin == null)
@@ -128,7 +166,7 @@ namespace MKW.GUI.Model
 
             UserInfo user = Admin.CreateUser(request, userMetadata);
 
-            OnUsersChanged?.Invoke(this, new EventArgs());
+            RefreshUsers();
         }
 
         public UserEditorModel CreateUserEditor(UserId userId)
@@ -140,6 +178,20 @@ namespace MKW.GUI.Model
         public void DeleteUser(UserId id)
         {
             database.DeleteUser(id);
+            RefreshUsers();
+        }
+
+        private IEnumerable<DatabaseUserModel> EnumerateUsers()
+        {
+            foreach (UserInfo user in Client.EnumerateUsers())
+            {
+                yield return new DatabaseUserModel(user, GetTrust(user));
+            }
+        }
+
+        private void RefreshUsers()
+        {
+            Users = [.. EnumerateUsers()];
             OnUsersChanged?.Invoke(this, new EventArgs());
         }
 
