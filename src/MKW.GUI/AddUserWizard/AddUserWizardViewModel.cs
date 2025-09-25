@@ -7,9 +7,9 @@ namespace MKW.GUI.AddUserWizard
 {
     public class AddUserWizardViewModel : WizardViewModel
     {
-        private readonly DatabaseModel model;
+        private readonly DatabaseUnlockedModel model;
 
-        public AddUserWizardViewModel(DatabaseModel model)
+        public AddUserWizardViewModel(DatabaseUnlockedModel model)
             : base("Add User", ImageMoniker.AddUser)
         {
             userName = "";
