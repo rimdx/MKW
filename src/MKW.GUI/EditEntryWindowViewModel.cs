@@ -5,10 +5,10 @@ namespace MKW.GUI
 {
     public class EditEntryWindowViewModel : ViewModelBase, IDisposable
     {
-        private readonly DatabaseModel database;
+        private readonly DatabaseUnlockedModel database;
         private readonly IEntrySession entry;
 
-        public EditEntryWindowViewModel(DatabaseModel database, IEntrySession entry)
+        public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
         {
             this.database = database;
             this.entry = entry;

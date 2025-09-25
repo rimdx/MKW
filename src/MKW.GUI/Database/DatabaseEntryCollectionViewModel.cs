@@ -5,9 +5,9 @@ namespace MKW.GUI.Database
 {
     public class DatabaseEntryCollectionViewModel : ObservableCollection<DatabaseEntryModel>, IDisposable
     {
-        private readonly DatabaseModel database;
+        private readonly DatabaseUnlockedModel database;
 
-        public DatabaseEntryCollectionViewModel(DatabaseModel database)
+        public DatabaseEntryCollectionViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
 
