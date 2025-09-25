@@ -8,7 +8,7 @@ namespace MKW.GUI.CreateDatabaseWizard
 {
     public class CreateDatabaseWizardViewModel : WizardViewModel
     {
-        public DatabaseModel? Database { get; private set; }
+        public DatabaseUnlockedModel? Database { get; private set; }
         public PasswordViewModel Password { get; }
 
         private readonly AppModel appModel;

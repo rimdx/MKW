@@ -10,7 +10,7 @@ namespace MKW.GUI.RequestAccessWizard
     public class RequestAccessWizardViewModel : WizardViewModel
     {
 
-        public RequestAccessWizardViewModel(DatabaseModel database)
+        public RequestAccessWizardViewModel(DatabaseUnlockedModel database)
             : base(FormatTitle(database), ImageMoniker.NewUser)
         {
             Database = database;
@@ -22,7 +22,7 @@ namespace MKW.GUI.RequestAccessWizard
             AddPage(new PageResults(this));
         }
 
-        public DatabaseModel Database { get; private set; }
+        public DatabaseUnlockedModel Database { get; private set; }
 
         private string requestString = "";
         public string RequestString
@@ -46,7 +46,7 @@ namespace MKW.GUI.RequestAccessWizard
             RequestString = keyFormatter.GetBase64String(data.Span);
         }
 
-        private static string FormatTitle(DatabaseModel database)
+        private static string FormatTitle(DatabaseUnlockedModel database)
         {
             return $"Request Access - { Path.GetFileName(database.Path) }";
         }
