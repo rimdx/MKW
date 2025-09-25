@@ -21,7 +21,7 @@ namespace MKW.GUI
         {
             Users.Clear();
 
-            foreach (DatabaseUserModel user in Database.EnumerateUsers())
+            foreach (DatabaseUserModel user in Database.Users)
             {
                 Users.Add(user);
             }

@@ -1,5 +1,4 @@
-﻿using MKW.Core;
-using MKW.GUI.Model;
+﻿using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 
 namespace MKW.GUI.Database
@@ -25,13 +24,9 @@ namespace MKW.GUI.Database
         {
             Clear();
 
-            foreach (IEntrySession entry in database.User!.EnumerateEntries())
+            foreach (DatabaseEntryModel entry in database.Entries)
             {
-                Add(new DatabaseEntryModel
-                {
-                    Id = entry.Id,
-                    Payload = entry.OpenPayload()?.ToString()
-                });
+                Add(entry);
             }
         }
 
