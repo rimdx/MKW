@@ -79,6 +79,7 @@
     <None Include="mkw-testing.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\assets\icon.png" />
     <Content Include="Images\AppIcon.altform-lightunplated_targetsize-48.png" />
     <Content Include="Images\AppIcon.altform-unplated_targetsize-48.png" />
     <Content Include="Images\AppIcon.scale-200.png" />
