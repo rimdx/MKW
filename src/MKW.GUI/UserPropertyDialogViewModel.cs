@@ -18,26 +18,13 @@ namespace MKW.GUI
 
         public string UserId => user.Id.ToString();
 
-        public bool IsMe => user.Id == database.User?.Id;
+        public string PublicKey => keyFormatter.GetBase32String(user.PublicKey);
 
         public bool OnOK()
         {
             user.OnApply();
             return true;
         }
-
-        public bool OnVerify()
-        {
-            OnPropertyChanged(nameof(IsUntrusted));
-            return true;
-        }
-
-        public string PublicKey => keyFormatter.GetBase32String(user.PublicKey);
-
-        public bool IsUntrusted => !user.Trust;
-
-        public bool IsUser => !database.User!.Id.IsAdmin;
-        public bool IsAdmin => database.User!.Id.IsAdmin;
 
         public void Dispose()
         {
