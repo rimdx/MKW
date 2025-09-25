@@ -1,5 +1,6 @@
 ﻿using MKW.GUI.Model;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace MKW.GUI.Database
 {
@@ -10,13 +11,16 @@ namespace MKW.GUI.Database
         public DatabaseUserCollectionViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
-            database.OnUsersChanged += Database_OnUsersChanged;
+            database.PropertyChanged += Database_PropertyChanged;
             RefreshUsers();
         }
 
-        private void Database_OnUsersChanged(object? sender, EventArgs e)
+        private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            RefreshUsers();
+            if (e.MatchProperty(nameof(database.Users)))
+            {
+                RefreshUsers();
+            }
         }
 
         private void RefreshUsers()
@@ -31,7 +35,7 @@ namespace MKW.GUI.Database
 
         public void Dispose()
         {
-            database.OnUsersChanged -= Database_OnUsersChanged;
+            database.PropertyChanged -= Database_PropertyChanged;
         }
     }
 }
