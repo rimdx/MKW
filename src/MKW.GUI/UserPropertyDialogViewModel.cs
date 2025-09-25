@@ -5,11 +5,11 @@ namespace MKW.GUI
 {
     public class UserPropertyDialogViewModel : ViewModelBase, IDisposable
     {
-        private readonly DatabaseUnlockedModel database;
+        private readonly DatabaseModel database;
         private readonly UserEditorModel user;
         private readonly KeyFormatter keyFormatter;
 
-        public UserPropertyDialogViewModel(DatabaseUnlockedModel database, UserEditorModel user /* move */)
+        public UserPropertyDialogViewModel(DatabaseModel database, UserEditorModel user /* move */)
         {
             this.database = database;
             this.user = user;

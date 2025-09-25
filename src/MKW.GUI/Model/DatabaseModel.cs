@@ -5,7 +5,7 @@ using MKW.Core.Storage.JSON;
 
 namespace MKW.GUI.Model
 {
-    public class DatabaseUnlockedModel : ViewModelBase, IDisposable
+    public class DatabaseModel : ViewModelBase, IDisposable
     {
         private IDatabase database;
         private IUserSession? user;
@@ -44,7 +44,7 @@ namespace MKW.GUI.Model
         public event EventHandler? OnEntriesChanged;
         public event EventHandler? OnUsersChanged;
 
-        private DatabaseUnlockedModel(IDatabase database, string path, ClientSession client)
+        private DatabaseModel(IDatabase database, string path, ClientSession client)
         {
             this.database = database;
             Path = path;
@@ -54,14 +54,14 @@ namespace MKW.GUI.Model
             users = [.. EnumerateUsers()];
         }
 
-        public static DatabaseUnlockedModel Open(string path)
+        public static DatabaseModel Open(string path)
         {
             JSONDatabaseSession db = JSONDatabaseSession.Open(path);
             ClientSession client = ClientSession.Open(db);
-            return new DatabaseUnlockedModel(db, path, client);
+            return new DatabaseModel(db, path, client);
         }
 
-        public static DatabaseUnlockedModel Create(string path, string adminPassword)
+        public static DatabaseModel Create(string path, string adminPassword)
         {
             UserMetadata metadata = new UserMetadata // todo
             {
@@ -72,7 +72,7 @@ namespace MKW.GUI.Model
             JSONDatabaseSession db = JSONDatabaseSession.Create(path);
             ClientSession client = ClientSession.Create(db, adminPassword, metadata);
 
-            DatabaseUnlockedModel model = new DatabaseUnlockedModel(db, path, client);
+            DatabaseModel model = new DatabaseModel(db, path, client);
 
             model.Admin = model.Client.OpenAdmin(adminPassword);
             model.User = model.Admin;
