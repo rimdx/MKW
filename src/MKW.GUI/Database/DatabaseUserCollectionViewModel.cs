@@ -11,13 +11,13 @@ namespace MKW.GUI.Database
         public DatabaseUserCollectionViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
-            database.Database.PropertyChanged += Database_PropertyChanged;
+            database.PropertyChanged += Database_PropertyChanged;
             RefreshUsers();
         }
 
         private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.MatchProperty(nameof(database.Database.Users)))
+            if (e.MatchProperty(nameof(database.Users)))
             {
                 RefreshUsers();
             }
@@ -27,7 +27,7 @@ namespace MKW.GUI.Database
         {
             Clear();
 
-            foreach (DatabaseUserModel user in database.Database.Users)
+            foreach (DatabaseUserModel user in database.Users)
             {
                 Add(user);
             }
