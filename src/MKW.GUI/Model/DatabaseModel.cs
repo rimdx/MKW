@@ -103,7 +103,11 @@ namespace MKW.GUI.Model
         public void ReloadDatabaseFile()
         {
             Database.ReloadDatabaseFile();
+
             WantRefresh = false;
+
+            RefreshUsers();
+            UnlockedDatabase?.RefreshEntries();
         }
 
         public DatabaseUnlockedModel Unlock(UserId id, string password)
