@@ -48,9 +48,8 @@ namespace MKW.Tests
                     });
                 }
 
-                // wha?
-                // File.Replace(db2path, db1path, null);
-                File.WriteAllBytes(db1path, File.ReadAllBytes(db2path));
+                File.Replace(db2path, db1path, null);
+                //File.WriteAllBytes(db1path, File.ReadAllBytes(db2path));
             });
 
             Stopwatch timer = new Stopwatch();

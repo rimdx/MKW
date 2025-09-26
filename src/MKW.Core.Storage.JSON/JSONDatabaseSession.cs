@@ -18,6 +18,14 @@ namespace MKW.Core.Storage.JSON
                 IncludeSubdirectories = false,
                 EnableRaisingEvents = true,
                 Filter = Path.GetFileName(this.path),
+                NotifyFilter = NotifyFilters.Attributes |
+                               NotifyFilters.CreationTime |
+                               NotifyFilters.DirectoryName |
+                               NotifyFilters.FileName |
+                               NotifyFilters.LastAccess |
+                               NotifyFilters.LastWrite |
+                               NotifyFilters.Security |
+                               NotifyFilters.Size,
             };
 
             watcher.Changed += Watcher_Changed;
