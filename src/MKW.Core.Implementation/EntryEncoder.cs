@@ -26,9 +26,9 @@ namespace MKW.Core.Implementation
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
-            foreach (UserInfo trust in trustProvider.EnumerateTrustedUsers())
+            foreach (UserId userId in trustProvider.EnumerateTrustedUsers())
             {
-                DatabaseUser user = database.OpenUser(trust.Id);
+                DatabaseUser user = database.OpenUser(userId);
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
                     user.PublicKey.Payload.Span);

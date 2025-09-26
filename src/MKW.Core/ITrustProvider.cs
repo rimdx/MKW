@@ -2,7 +2,7 @@
 {
     public interface ITrustProvider : IDisposable
     {
-        IEnumerable<UserInfo> EnumerateTrustedUsers();
+        IEnumerable<UserId> EnumerateTrustedUsers();
 
         bool VerifyTrust(UserId userId);
     }
