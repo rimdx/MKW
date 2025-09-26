@@ -59,7 +59,7 @@ namespace MKW.Core.Client
 
             database.CreateUser(userId, user);
 
-            accessController.AddAccess(userId);
+            accessController.UpdateKeys();
 
             return new UserInfo
             {

@@ -7,15 +7,15 @@ namespace MKW.Core.Implementation
     {
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
-        private readonly AccessController accessController;
+        private readonly ITrustProvider trustProvider;
 
         public EntryEncoder(ICryptographyProvider crypto,
                             IDatabase database,
-                            AccessController accessController)
+                            ITrustProvider trustProvider)
         {
             this.crypto = crypto;
             this.database = database;
-            this.accessController = accessController;
+            this.trustProvider = trustProvider;
         }
 
         public DatabaseEntry EncodeEntry(DatabaseEntry entry, EntryPayload payload)
@@ -26,9 +26,9 @@ namespace MKW.Core.Implementation
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
-            foreach (UserId userId in accessController.EnumerateAccess())
+            foreach (UserInfo trust in trustProvider.EnumerateTrustedUsers())
             {
-                DatabaseUser user = database.OpenUser(userId);
+                DatabaseUser user = database.OpenUser(trust.Id);
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
                     user.PublicKey.Payload.Span);
