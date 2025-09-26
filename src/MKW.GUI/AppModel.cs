@@ -4,14 +4,14 @@ namespace MKW.GUI
 {
     public class AppModel
     {
-        internal DatabaseUnlockedModel? CreateDatabase(string databasePath, string password)
+        internal DatabaseModel? CreateDatabase(string databasePath, string password)
         {
-            return DatabaseUnlockedModel.Create(databasePath, password);
+            return DatabaseModel.Create(databasePath, password);
         }
 
-        internal DatabaseUnlockedModel OpenDatabase(string filename)
+        internal DatabaseModel OpenDatabase(string filename)
         {
-            return DatabaseUnlockedModel.Open(filename);
+            return DatabaseModel.Open(filename);
         }
     }
 }

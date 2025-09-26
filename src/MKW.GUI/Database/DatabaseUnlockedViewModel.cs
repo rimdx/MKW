@@ -7,15 +7,14 @@ namespace MKW.GUI.Database
 {
     public class DatabaseUnlockedViewModel : ViewModelBase
     {
-        public DatabaseUnlockedModel Database => databaseViewModel.Database;
-        private DatabaseViewModel databaseViewModel;
+        private readonly DatabaseUnlockedModel database;
 
-        public DatabaseUnlockedViewModel(DatabaseViewModel databaseViewModel)
+        public DatabaseUnlockedViewModel(DatabaseUnlockedModel database)
         {
-            this.databaseViewModel = databaseViewModel;
+            this.database = database;
 
-            Entries = new DatabaseEntryCollectionViewModel(Database);
-            Users = new DatabaseUserCollectionViewModel(Database);
+            Entries = new DatabaseEntryCollectionViewModel(database);
+            Users = new DatabaseUserCollectionViewModel(database);
         }
 
         private enum PageType
@@ -90,12 +89,12 @@ namespace MKW.GUI.Database
 
         public NewEntryWindowViewModel CreateNewEntryWindowViewModel()
         {
-            return new NewEntryWindowViewModel(Database);
+            return new NewEntryWindowViewModel(database);
         }
 
         public EditEntryWindowViewModel CreateEditEntryWindowViewModel(EntryId id)
         {
-            return new EditEntryWindowViewModel(Database, Database.OpenEntry(id));
+            return new EditEntryWindowViewModel(database, database.OpenEntry(id));
         }
 
         public bool DeleteEntry()
@@ -105,7 +104,7 @@ namespace MKW.GUI.Database
                 throw new Exception("No entry was selected.");
             }
 
-            Database.DeleteEntry(SelectedEntry.Id);
+            database.DeleteEntry(SelectedEntry.Id);
 
             return true;
         }
@@ -114,12 +113,12 @@ namespace MKW.GUI.Database
 
         public AddUserWizardViewModel CreateNewUserWindowViewModel()
         {
-            return new AddUserWizardViewModel(Database);
+            return new AddUserWizardViewModel(database);
         }
 
         public RequestAccessWizardViewModel CreateRequestAccessViewModel()
         {
-            return new RequestAccessWizardViewModel(Database);
+            return new RequestAccessWizardViewModel(database.Database);
         }
 
         public UserPropertyDialogViewModel CreateUserPropertiesWindowViewModel()
@@ -129,9 +128,9 @@ namespace MKW.GUI.Database
                 throw new Exception("No user was selected.");
             }
 
-            UserEditorModel userEditor = Database.CreateUserEditor(SelectedUser.Id);
+            UserEditorModel userEditor = database.CreateUserEditor(SelectedUser.Id);
 
-            return new UserPropertyDialogViewModel(Database, userEditor);
+            return new UserPropertyDialogViewModel(database, userEditor);
         }
 
         public void DeleteUser()
@@ -141,7 +140,7 @@ namespace MKW.GUI.Database
                 throw new Exception("No user was selected.");
             }
 
-            Database.DeleteUser(SelectedUser.Id);
+            database.DeleteUser(SelectedUser.Id);
         }
 
         public void Dispose()

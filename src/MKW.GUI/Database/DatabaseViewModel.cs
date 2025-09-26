@@ -5,9 +5,9 @@ namespace MKW.GUI.Database
 {
     public class DatabaseViewModel : ViewModelBase, IDisposable
     {
-        public DatabaseUnlockedModel Database { get; }
+        public DatabaseModel Database { get; }
 
-        public DatabaseViewModel(DatabaseUnlockedModel database)
+        public DatabaseViewModel(DatabaseModel database)
         {
             Database = database;
             database.PropertyChanged += Database_PropertyChanged;
@@ -16,7 +16,7 @@ namespace MKW.GUI.Database
 
         private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.MatchProperty(nameof(Database.User)))
+            if (e.MatchProperty(nameof(Database.UnlockedDatabase)))
             {
                 UpdateContentView();
             }
@@ -24,11 +24,11 @@ namespace MKW.GUI.Database
 
         private object UpdateContentView()
         {
-            if (Database.User != null && contentView is not DatabaseUnlockedView)
+            if (Database.UnlockedDatabase != null && contentView is not DatabaseUnlockedView)
             {
-                ContentView = new DatabaseUnlockedView(new DatabaseUnlockedViewModel(this));
+                ContentView = new DatabaseUnlockedView(new DatabaseUnlockedViewModel(Database.UnlockedDatabase));
             }
-            else if (Database.User == null && contentView is not DatabaseLockedView)
+            else if (Database.UnlockedDatabase == null && contentView is not DatabaseLockedView)
             {
                 ContentView = new DatabaseLockedView(new DatabaseLockedViewModel(this));
             }
