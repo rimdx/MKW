@@ -9,8 +9,8 @@ namespace MKW.Core.Client
         , IDisposable
     {
         private readonly IDatabase database;
+        private readonly IUserSession user;
         private readonly EntryId entryId;
-        private readonly AccessController accessController;
 
         private readonly EntryEncoder encoder;
         private readonly EntryDecoder decoder;
@@ -22,16 +22,15 @@ namespace MKW.Core.Client
                         ICryptographyProvider crypto,
                         IUserSession user,
                         IAsymmetricPrivateTransformer privateKey,
-                        EntryId entryId,
-                        AccessController accessController)
+                        EntryId entryId)
         {
             this.database = database;
+            this.user = user;
             this.entryId = entryId;
-            this.accessController = accessController;
 
-            encoder = new EntryEncoder(crypto, database, accessController);
+            encoder = new EntryEncoder(crypto, database, user);
             decoder = new EntryDecoder(crypto, user, privateKey);
-            sharer = new EntrySharer(accessController, decoder, encoder);
+            sharer = new EntrySharer(user, decoder, encoder);
         }
 
         public static Entry Create(IDatabase database,
@@ -40,8 +39,6 @@ namespace MKW.Core.Client
                                    IAsymmetricPrivateTransformer privateKey,
                                    EntryId entryId)
         {
-            AccessController accessController = AccessController.Create(user);
-
             DatabaseEntry entry = new DatabaseEntry
             {
                 Id = entryId,
@@ -56,8 +53,7 @@ namespace MKW.Core.Client
                              crypto,
                              user,
                              privateKey,
-                             entryId,
-                             accessController /* move */);
+                             entryId);
         }
 
         public static Entry Open(IDatabase database,
@@ -68,14 +64,11 @@ namespace MKW.Core.Client
         {
             DatabaseEntry entry = database.OpenEntry(entryId);
 
-            AccessController accessController = AccessController.Open(entry);
-
             return new Entry(database,
                              crypto,
                              user,
                              privateKey,
-                             entryId,
-                             accessController /* move */);
+                             entryId);
         }
 
         public EntryInfo UpdatePayload(EntryPayload payload)
@@ -89,7 +82,7 @@ namespace MKW.Core.Client
             return new EntryInfo
             {
                 Id = newEntry.Id,
-                EncodedForUsers = [.. accessController.EnumerateAccess()]
+                EncodedForUsers = [.. user.EnumerateTrustedUsers().Select(item => item.Id)]
             };
         }
 
@@ -101,24 +94,23 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserId> EnumerateAccess()
         {
-            foreach (UserId user in accessController.EnumerateAccess())
+            foreach (UserInfo user in user.EnumerateTrustedUsers())
             {
-                yield return user;
+                yield return user.Id;
             }
         }
 
-        public void AddAccess(UserId userId)
+        public void UpdateKey()
         {
             DatabaseEntry entry = database.OpenEntry(entryId);
 
-            DatabaseEntry newEntry = sharer.ShareEntry(entry, userId);
+            DatabaseEntry newEntry = sharer.ShareEntry(entry);
 
             database.UpdateEntry(entryId, newEntry);
         }
 
         public void Dispose()
         {
-            accessController.Dispose();
         }
     }
 }

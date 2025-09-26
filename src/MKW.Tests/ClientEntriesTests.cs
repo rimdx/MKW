@@ -95,7 +95,7 @@ namespace MKW.Tests
             CollectionAssert.AreEqual(
                 new EntryPayload?[]
                 {
-                    null,
+                    new EntryPayload("newcontent"),
                     new EntryPayload("entry2"),
                 },
                 newUser.EnumerateEntries().Select(entry => entry.OpenPayload())

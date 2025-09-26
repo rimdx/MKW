@@ -7,7 +7,7 @@
         EntryInfo UpdatePayload(EntryPayload payload);
         EntryPayload? OpenPayload();
 
-        void AddAccess(UserId userId);
+        void UpdateKey();
         IEnumerable<UserId> EnumerateAccess();
     }
 }
