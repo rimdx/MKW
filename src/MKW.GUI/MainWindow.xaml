@@ -97,18 +97,18 @@
                  IsLocked="true">
       <ToolBar Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
                OverflowMode="Never">
-        <Button Command="ApplicationCommands.New">
+        <Button Command="ApplicationCommands.New" ToolTip="New Database">
           <local:CrispImage Moniker="NewDocument" />
         </Button>
-        <Button Command="ApplicationCommands.Open">
+        <Button Command="ApplicationCommands.Open" ToolTip="Open Database">
           <local:CrispImage Moniker="OpenFile" />
         </Button>
         <Separator />
-        <Button>
+        <Button ToolTip="New Entry">
           <local:CrispImage Moniker="NewKey" />
         </Button>
         <Separator />
-        <Button Command="{x:Static local:AppCommands.LockDatabase}">
+        <Button Command="{x:Static local:AppCommands.LockDatabase}" ToolTip="Lock Database">
           <local:CrispImage Moniker="Lock" />
         </Button>
       </ToolBar>
