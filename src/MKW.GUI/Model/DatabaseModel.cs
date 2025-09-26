@@ -62,8 +62,11 @@ namespace MKW.GUI.Model
 
             JSONDatabaseSession database = JSONDatabaseSession.Create(path);
             ClientSession client = ClientSession.Create(database, adminPassword, metadata);
+            DatabaseModel model = new DatabaseModel(database, path, client);
 
-            return new DatabaseModel(database, path, client);
+            model.Unlock(UserId.Admin(), adminPassword);
+
+            return model;
         }
 
         public DatabaseUnlockedModel Unlock(UserId id, string password)
