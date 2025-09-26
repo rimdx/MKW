@@ -21,5 +21,8 @@
 
         bool HasEntry(EntryId id);
         IEnumerable<DatabaseEntry> EnumerateEntries();
+
+        event EventHandler<EventArgs> DatabaseFileUpdated;
+        void ReloadDatabaseFile();
     }
 }

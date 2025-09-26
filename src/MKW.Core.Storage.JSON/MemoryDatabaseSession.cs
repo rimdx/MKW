@@ -2,7 +2,9 @@
 {
     public class MemoryDatabaseSession : IDatabase, IDisposable
     {
-        internal readonly JSONDatabase Database;
+        internal JSONDatabase Database;
+
+        public event EventHandler<EventArgs>? DatabaseFileUpdated;
 
         public MemoryDatabaseSession()
         {
@@ -179,6 +181,15 @@
             {
                 yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromGuid(item.Key), item.Value);
             }
+        }
+
+        protected void OnDatabaseFileUpdated()
+        {
+            DatabaseFileUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        public virtual void ReloadDatabaseFile()
+        {
         }
 
         public virtual void Save()

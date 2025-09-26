@@ -6,11 +6,27 @@ namespace MKW.Core.Storage.JSON
     public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase
     {
         private readonly string path;
+        private readonly FileSystemWatcher watcher;
 
         internal JSONDatabaseSession(JSONDatabase db, string path)
             : base(db)
         {
-            this.path = path;
+            this.path = Path.GetFullPath(path); /* ? */
+
+            watcher = new FileSystemWatcher(Path.GetDirectoryName(this.path)!)
+            {
+                IncludeSubdirectories = false,
+                EnableRaisingEvents = true,
+                Filter = Path.GetFileName(this.path),
+            };
+
+            watcher.Changed += Watcher_Changed;
+        }
+
+        // watcher thread
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            OnDatabaseFileUpdated();
         }
 
         public static JSONDatabaseSession Open(string path)
@@ -47,9 +63,19 @@ namespace MKW.Core.Storage.JSON
             file.Accept();
         }
 
+        public override void ReloadDatabaseFile()
+        {
+            using FileStream file = File.Open(path,
+                                              FileMode.Open,
+                                              FileAccess.Read);
+
+            Database = JsonSerializer.Deserialize<JSONDatabase>(file)!;
+        }
+
         public override void Dispose()
         {
             base.Dispose();
+            watcher.Dispose();
         }
     }
 }
