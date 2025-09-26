@@ -21,5 +21,33 @@
                     Executed="UnlockDatabaseCommand_Executed" />
   </UserControl.CommandBindings>
 
-  <ContentPresenter Content="{Binding ContentView}" />
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Border Grid.Row="0"
+            Background="{DynamicResource ResourceKey={x:Static SystemColors.InfoBrushKey}}"
+            Padding="3">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <gui:CrispImage Moniker="StatusWarning"
+                        Margin="0,0,6,0"/>
+
+        <TextBlock Grid.Column="1">
+          <Run>Database has been updated externaly.</Run>
+          <Hyperlink>Refersh</Hyperlink>
+        </TextBlock>
+      </Grid>
+    </Border>
+
+    <ContentPresenter Grid.Row="1"
+                      Content="{Binding ContentView}" />
+  </Grid>
 </UserControl>
