@@ -45,7 +45,7 @@
 
         <TextBlock Grid.Column="1">
           <Run>Database has been updated externaly.</Run>
-          <Hyperlink>Refersh</Hyperlink>
+          <Hyperlink Click="RefreshDatabase_Click">Refersh</Hyperlink>
         </TextBlock>
       </Grid>
     </Border>
