@@ -63,5 +63,29 @@ namespace MKW.Tests
 
             ClassicAssert.AreEqual(1, db1.EnumerateEntries().Count());
         }
+
+        [Test]
+        [Timeout(500)]
+        public async Task WatcherIgnoreOwnChangesTest()
+        {
+            using ClientSandBox sbox = new ClientSandBox(false);
+            JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
+
+            db.DatabaseFileUpdated += (sender, e) =>
+            {
+                Assert.Fail("DatabaseFileUpdated should not be called.");
+            };
+
+            EntryId entryId = EntryId.Create();
+            db.CreateEntry(entryId, new DatabaseEntry
+            {
+                Id = entryId,
+                Data = ReadOnlyMemory<byte>.Empty,
+                Salt = ReadOnlyMemory<byte>.Empty,
+                Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+            });
+
+            await Task.Delay(100);
+        }
     }
 }
