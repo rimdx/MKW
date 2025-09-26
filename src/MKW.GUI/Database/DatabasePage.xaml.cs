@@ -43,5 +43,17 @@ namespace MKW.GUI.Database
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
+
+        private void RefreshDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                model.ReloadDatabaseFile();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
     }
 }

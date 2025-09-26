@@ -58,5 +58,10 @@ namespace MKW.GUI.Database
         {
             return new LoginWindowViewModel(Database);
         }
+
+        public void ReloadDatabaseFile()
+        {
+            Database.ReloadDatabaseFile();
+        }
     }
 }
