@@ -15,12 +15,21 @@ namespace MKW.GUI.Model
             Path = path;
             Client = client;
 
+            Database.DatabaseFileUpdated += DatabaseFileUpdatedAsync;
+
             users = [.. EnumerateUsers()];
         }
 
         public IDatabase Database { get; }
         public string Path { get; }
         public ClientSession Client { get; }
+
+        private bool wantRefresh = false;
+        public bool WantRefresh
+        {
+            get => wantRefresh;
+            private set => SetProperty(ref wantRefresh, value);
+        }
 
         private DatabaseUnlockedModel? unlockedModel;
         public DatabaseUnlockedModel? UnlockedDatabase
@@ -66,6 +75,19 @@ namespace MKW.GUI.Model
             model.Unlock(UserId.Admin(), adminPassword);
 
             return model;
+        }
+
+        // watcher thread
+        private void DatabaseFileUpdatedAsync(object sender, EventArgs e)
+        {
+            WantRefresh = true;
+        }
+
+        // main thread
+        public void ReloadDatabaseFile()
+        {
+            Database.ReloadDatabaseFile();
+            WantRefresh = false;
         }
 
         public DatabaseUnlockedModel Unlock(UserId id, string password)
