@@ -100,7 +100,6 @@ namespace MKW.GUI.Model
             }
         }
 
-        // main thread
         public void ReloadDatabaseFile()
         {
             Database.ReloadDatabaseFile();
