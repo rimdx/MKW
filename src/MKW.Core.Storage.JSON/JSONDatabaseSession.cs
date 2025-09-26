@@ -8,10 +8,16 @@ namespace MKW.Core.Storage.JSON
         private readonly string path;
         private readonly FileSystemWatcher watcher;
 
+        private readonly object saveLock;
+        private int pendingSaves;
+
         internal JSONDatabaseSession(JSONDatabase db, string path)
             : base(db)
         {
             this.path = Path.GetFullPath(path); /* ? */
+
+            saveLock = new object();
+            pendingSaves = 0;
 
             watcher = new FileSystemWatcher(Path.GetDirectoryName(this.path)!)
             {
@@ -34,7 +40,18 @@ namespace MKW.Core.Storage.JSON
         // watcher thread
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            OnDatabaseFileUpdated();
+            lock (saveLock)
+            {
+                if (pendingSaves > 0)
+                {
+                    pendingSaves--;
+                    // don't trigger update
+                }
+                else
+                {
+                    OnDatabaseFileUpdated();
+                }
+            }
         }
 
         public static JSONDatabaseSession Open(string path)
@@ -64,11 +81,16 @@ namespace MKW.Core.Storage.JSON
 
         public override void Save()
         {
-            using TempFile file = TempFile.Create(path);
+            lock (saveLock)
+            {
+                using TempFile file = TempFile.Create(path);
 
-            JsonSerializer.Serialize(file, Database);
+                JsonSerializer.Serialize(file, Database);
 
-            file.Accept();
+                file.Accept();
+
+                pendingSaves++;
+            }
         }
 
         public override void ReloadDatabaseFile()
