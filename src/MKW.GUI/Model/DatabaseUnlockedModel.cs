@@ -29,7 +29,7 @@ namespace MKW.GUI.Model
             private set => SetProperty(ref users, value);
         }
 
-        public IUserSession? User 
+        public IUserSession? User
         {
             get => user;
             private set => SetProperty(ref user, value);
@@ -118,7 +118,7 @@ namespace MKW.GUI.Model
 
         public void RefreshEntries()
         {
-            Entries = [..EnumerateEntries()];
+            Entries = [.. EnumerateEntries()];
         }
 
         public void CreateEntry(string payload)
