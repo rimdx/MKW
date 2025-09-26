@@ -12,7 +12,7 @@ namespace MKW.Tests
     {
         [Test]
         [Timeout(500)]
-        public void WatcherTests()
+        public async Task WatcherTests()
         {
             using ClientSandBox sbox = new ClientSandBox(false);
 
@@ -23,17 +23,9 @@ namespace MKW.Tests
 
             using JSONDatabaseSession db1 = JSONDatabaseSession.Create(db1path);
 
-            // synchroniser
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-
-            db1.DatabaseFileUpdated += (sender, e) =>
-            {
-                autoResetEvent.Set();
-            };
-
             EntryId entryId = EntryId.Create();
 
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 await Task.Delay(250);
 
@@ -54,7 +46,8 @@ namespace MKW.Tests
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            autoResetEvent.WaitOne();
+
+            await db1.WaitForDatabaseChangesAsync(default);
 
             ClassicAssert.AreEqual(250, timer.ElapsedMilliseconds, 50);
             ClassicAssert.AreEqual(0, db1.EnumerateEntries().Count());
@@ -69,12 +62,17 @@ namespace MKW.Tests
         public async Task WatcherIgnoreOwnChangesTest()
         {
             using ClientSandBox sbox = new ClientSandBox(false);
-            JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
 
-            db.DatabaseFileUpdated += (sender, e) =>
+            CancellationTokenSource source = new CancellationTokenSource();
+
+            Task assertTask = Task.Run(() =>
             {
-                Assert.Fail("DatabaseFileUpdated should not be called.");
-            };
+                Assert.ThrowsAsync<TaskCanceledException>(async () =>
+                {
+                    await db.WaitForDatabaseChangesAsync(source.Token);
+                });
+            });
 
             EntryId entryId = EntryId.Create();
             db.CreateEntry(entryId, new DatabaseEntry
@@ -86,6 +84,10 @@ namespace MKW.Tests
             });
 
             await Task.Delay(100);
+
+            source.Cancel();
+
+            await assertTask;
         }
     }
 }

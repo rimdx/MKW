@@ -4,8 +4,6 @@
     {
         internal JSONDatabase Database;
 
-        public event EventHandler<EventArgs>? DatabaseFileUpdated;
-
         public MemoryDatabaseSession()
         {
             Database = new JSONDatabase();
@@ -183,13 +181,14 @@
             }
         }
 
-        protected void OnDatabaseFileUpdated()
-        {
-            DatabaseFileUpdated?.Invoke(this, EventArgs.Empty);
-        }
-
         public virtual void ReloadDatabaseFile()
         {
+        }
+
+        public virtual async Task<bool> WaitForDatabaseChangesAsync(CancellationToken cancellationToken)
+        {
+            await Task.Delay(-1, cancellationToken);
+            return false;
         }
 
         public virtual void Save()
