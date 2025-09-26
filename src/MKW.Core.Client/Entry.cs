@@ -14,7 +14,6 @@ namespace MKW.Core.Client
 
         private readonly EntryEncoder encoder;
         private readonly EntryDecoder decoder;
-        private readonly EntrySharer sharer;
 
         public EntryId Id => entryId;
 
@@ -30,7 +29,6 @@ namespace MKW.Core.Client
 
             encoder = new EntryEncoder(crypto, database, user);
             decoder = new EntryDecoder(crypto, user, privateKey);
-            sharer = new EntrySharer(user, decoder, encoder);
         }
 
         public static Entry Create(IDatabase database,
@@ -98,15 +96,6 @@ namespace MKW.Core.Client
             {
                 yield return user.Id;
             }
-        }
-
-        public void UpdateKey()
-        {
-            DatabaseEntry entry = database.OpenEntry(entryId);
-
-            DatabaseEntry newEntry = sharer.ShareEntry(entry);
-
-            database.UpdateEntry(entryId, newEntry);
         }
 
         public void Dispose()

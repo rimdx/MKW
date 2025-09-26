@@ -12,6 +12,7 @@ namespace MKW.Core.Client
         , ITrustProvider
         , IDisposable
     {
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly DatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
@@ -21,7 +22,6 @@ namespace MKW.Core.Client
         private readonly UserTrustProvider trustProvider;
 
         private readonly UserMetadataEncoder metadataEncoder;
-        private readonly UserAccessController accessController;
 
         public UserId Id => admin.Id;
 
@@ -30,6 +30,7 @@ namespace MKW.Core.Client
                             DatabaseUser admin,
                             ReadOnlySpan<byte> privateKey)
         {
+            this.crypto = crypto;
             this.database = database;
             this.admin = admin;
 
@@ -40,7 +41,6 @@ namespace MKW.Core.Client
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
 
             metadataEncoder = new UserMetadataEncoder(transformer);
-            accessController = new UserAccessController(this);
         }
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
@@ -59,7 +59,23 @@ namespace MKW.Core.Client
 
             database.CreateUser(userId, user);
 
-            accessController.UpdateKeys();
+            EntryDecoder decoder = new EntryDecoder(crypto, this, transformer);
+            EntryEncoder encoder = new EntryEncoder(crypto, database, trustProvider);
+            DatabaseEntry[] entries = [.. database.EnumerateEntries()];
+
+            foreach (DatabaseEntry entry in entries)
+            {
+                EntryPayload? payload = decoder.DecodeEntry(entry);
+
+                if (payload != null)
+                {
+                    database.UpdateEntry(entry.Id, encoder.EncodeEntry(entry, payload));
+                }
+                else
+                {
+                    // TODO: fail? warn?
+                }
+            }
 
             return new UserInfo
             {
