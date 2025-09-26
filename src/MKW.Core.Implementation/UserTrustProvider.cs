@@ -50,21 +50,13 @@ namespace MKW.Core.Implementation
             return VerifyTrust(database.OpenUser(userId));
         }
 
-        public IEnumerable<UserInfo> EnumerateTrustedUsers()
+        public IEnumerable<UserId> EnumerateTrustedUsers()
         {
-            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
-
             foreach (DatabaseUser user in database.EnumerateUsers())
             {
                 if (VerifyTrust(user))
                 {
-                    yield return new UserInfo
-                    {
-                        Id = user.Id,
-                        PublicKey = user.PublicKey.Payload,
-                        Trust = Trust.ExplicitTrust,
-                        Metadata = metadataDecoder.OpenMetadata(user)
-                    };
+                    yield return user.Id;
                 }
             }
         }

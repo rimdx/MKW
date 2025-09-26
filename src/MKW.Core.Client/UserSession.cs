@@ -81,11 +81,11 @@ namespace MKW.Core.Client
 
         // ITrustProvider
 
-        public IEnumerable<UserInfo> EnumerateTrustedUsers()
+        public IEnumerable<UserId> EnumerateTrustedUsers()
         {
-            foreach (UserInfo user in trustProvider.EnumerateTrustedUsers())
+            foreach (UserId userId in trustProvider.EnumerateTrustedUsers())
             {
-                yield return user;
+                yield return userId;
             }
         }
 

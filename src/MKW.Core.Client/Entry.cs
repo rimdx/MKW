@@ -80,7 +80,7 @@ namespace MKW.Core.Client
             return new EntryInfo
             {
                 Id = newEntry.Id,
-                EncodedForUsers = [.. user.EnumerateTrustedUsers().Select(item => item.Id)]
+                EncodedForUsers = [.. user.EnumerateTrustedUsers()]
             };
         }
 
@@ -92,9 +92,9 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserId> EnumerateAccess()
         {
-            foreach (UserInfo user in user.EnumerateTrustedUsers())
+            foreach (UserId userId in user.EnumerateTrustedUsers())
             {
-                yield return user.Id;
+                yield return userId;
             }
         }
 

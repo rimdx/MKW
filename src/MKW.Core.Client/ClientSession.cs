@@ -46,7 +46,7 @@ namespace MKW.Core.Client
 
         // todo: ITrustProvider
 
-        public IEnumerable<UserInfo> EnumerateUsersTrust()
+        public IEnumerable<UserId> EnumerateUsersTrust()
         {
             DatabaseUser admin = Database.OpenUser(UserId.Admin());
             using IAsymmetricPublicTransformer key = crypto.OpenAsymmetricTransformer(
@@ -54,7 +54,7 @@ namespace MKW.Core.Client
 
             using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, key, key);
 
-            IEnumerable<UserInfo> trust = trustProvider.EnumerateTrustedUsers();
+            IEnumerable<UserId> trust = trustProvider.EnumerateTrustedUsers();
 
             // Convert IEnumerable to an array, before returning from function,
             // because outside the trustProvider will be disposed.
@@ -63,7 +63,7 @@ namespace MKW.Core.Client
             return trust.ToArray();
         }
 
-        public IEnumerable<UserInfo> EnumerateUsersTrust(UserId userId)
+        public IEnumerable<UserId> EnumerateUsersTrust(UserId userId)
         {
             DatabaseUser user = Database.OpenUser(userId);
             DatabaseUser admin = Database.OpenUser(UserId.Admin());
@@ -75,7 +75,7 @@ namespace MKW.Core.Client
 
             using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, userKey, adminKey);
 
-            foreach (UserInfo trust in trustProvider.EnumerateTrustedUsers())
+            foreach (UserId trust in trustProvider.EnumerateTrustedUsers())
             {
                 yield return trust;
             }
