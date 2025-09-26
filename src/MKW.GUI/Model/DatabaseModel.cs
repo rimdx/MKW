@@ -87,8 +87,11 @@ namespace MKW.GUI.Model
                 while (true)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    await Database.WaitForDatabaseChangesAsync(cancellationToken);
-                    WantRefresh = true;
+
+                    if (await Database.WaitForDatabaseChangesAsync(cancellationToken))
+                    {
+                        WantRefresh = true;
+                    }
                 }
             }
             catch (TaskCanceledException)
