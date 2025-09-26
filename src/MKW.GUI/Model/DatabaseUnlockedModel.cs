@@ -195,6 +195,11 @@ namespace MKW.GUI.Model
             return Client.CreateUserAccessRequest(password);
         }
 
+        public IEntrySession OpenEntry(EntryId entryId)
+        {
+            return User.OpenEntry(entryId);
+        }
+
         public void Dispose()
         {
             User?.Dispose();
