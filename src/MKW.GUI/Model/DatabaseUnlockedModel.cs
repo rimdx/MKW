@@ -76,11 +76,6 @@ namespace MKW.GUI.Model
             RefreshEntries();
         }
 
-        internal Trust GetTrust(UserInfo user)
-        {
-            return this.user.VerifyTrust(user.Id) ? Trust.ExplicitTrust : Trust.None;
-        }
-
         public void AddUser(UserAccessRequest request, UserMetadata userMetadata)
         {
             if (admin == null)

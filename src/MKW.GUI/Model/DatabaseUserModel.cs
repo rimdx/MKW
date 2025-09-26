@@ -6,12 +6,10 @@ namespace MKW.GUI.Model
     public class DatabaseUserModel
     {
         private readonly UserInfo user;
-        private readonly Trust trust;
 
-        public DatabaseUserModel(UserInfo user, Trust trust)
+        public DatabaseUserModel(UserInfo user)
         {
             this.user = user;
-            this.trust = trust;
         }
 
         public UserId Id => user.Id;
@@ -32,23 +30,5 @@ namespace MKW.GUI.Model
         }
 
         public ImageMoniker Icon => IsAdmin ? ImageMoniker.Admin : ImageMoniker.User;
-
-        public string StatusText => trust switch
-        {
-            Trust.SelfTrust => "Verified",
-            Trust.ExplicitTrust => "Verified",
-            Trust.ImplicitTrust => "Verified",
-            Trust.None => "Unverified",
-            Trust.Unknown => "Unknown",
-        };
-
-        public object StatusIcon => trust switch
-        {
-            Trust.SelfTrust => ImageMoniker.StatusOK,
-            Trust.ExplicitTrust => ImageMoniker.StatusOK,
-            Trust.ImplicitTrust => ImageMoniker.StatusOK,
-            Trust.None => ImageMoniker.StatusWarning,
-            Trust.Unknown => ImageMoniker.StatusWarning,
-        };
     }
 }

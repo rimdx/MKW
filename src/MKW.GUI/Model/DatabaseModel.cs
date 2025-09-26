@@ -81,23 +81,11 @@ namespace MKW.GUI.Model
             UnlockedDatabase = null;
         }
 
-        private Trust GetTrust(UserInfo user)
-        {
-            if (UnlockedDatabase == null)
-            {
-                return Trust.Unknown;
-            }
-            else
-            {
-                return UnlockedDatabase.GetTrust(user);
-            }
-        }
-
         private IEnumerable<DatabaseUserModel> EnumerateUsers()
         {
             foreach (UserInfo user in Client.EnumerateUsers())
             {
-                yield return new DatabaseUserModel(user, GetTrust(user));
+                yield return new DatabaseUserModel(user);
             }
         }
 

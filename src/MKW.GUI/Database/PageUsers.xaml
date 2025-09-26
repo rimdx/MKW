@@ -55,18 +55,6 @@
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
 
-            <GridViewColumn Header="Status" Width="120">
-              <GridViewColumn.CellTemplate>
-                <DataTemplate DataType="local:DatabaseUserModel">
-                  <StackPanel Orientation="Horizontal">
-                    <gui:CrispImage Moniker="{Binding StatusIcon}"
-                                    Margin="0,0,6,0" />
-                    <TextBlock Text="{Binding StatusText}" />
-                  </StackPanel>
-                </DataTemplate>
-              </GridViewColumn.CellTemplate>
-            </GridViewColumn>
-
             <GridViewColumn Header="User ID"
                             Width="250"
                             DisplayMemberBinding="{Binding Id}" />
