@@ -22,7 +22,7 @@
         bool HasEntry(EntryId id);
         IEnumerable<DatabaseEntry> EnumerateEntries();
 
-        event EventHandler<EventArgs> DatabaseFileUpdated;
+        Task<bool> WaitForDatabaseChangesAsync(CancellationToken cancellationToken);
         void ReloadDatabaseFile();
     }
 }

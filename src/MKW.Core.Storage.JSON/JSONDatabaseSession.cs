@@ -33,24 +33,37 @@ namespace MKW.Core.Storage.JSON
                                NotifyFilters.Security |
                                NotifyFilters.Size,
             };
-
-            watcher.Changed += Watcher_Changed;
         }
 
-        // watcher thread
-        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        public override async Task<bool> WaitForDatabaseChangesAsync(CancellationToken cancellationToken)
         {
-            lock (saveLock)
+            TaskCompletionSource<bool> task = new TaskCompletionSource<bool>();
+
+            FileSystemEventHandler changedEvent = (s, e) =>
             {
-                if (pendingSaves > 0)
+                lock (saveLock)
                 {
-                    pendingSaves--;
-                    // don't trigger update
+                    if (pendingSaves > 0)
+                    {
+                        pendingSaves--;
+                        // don't trigger update
+                    }
+                    else
+                    {
+                        task.TrySetResult(true);
+                    }
                 }
-                else
-                {
-                    OnDatabaseFileUpdated();
-                }
+            };
+
+            try
+            {
+                watcher.Changed += changedEvent;
+
+                return await task.Task.WaitAsync(cancellationToken);
+            }
+            finally
+            {
+                watcher.Changed -= changedEvent;
             }
         }
 

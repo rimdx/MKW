@@ -15,10 +15,13 @@ namespace MKW.GUI.Model
             Path = path;
             Client = client;
 
-            Database.DatabaseFileUpdated += DatabaseFileUpdatedAsync;
-
             users = [.. EnumerateUsers()];
+
+            pullDatabaseUpdatesCancellationSource = new CancellationTokenSource();
+            _ = PullDatabaseUpdates(pullDatabaseUpdatesCancellationSource.Token);
         }
+
+        private readonly CancellationTokenSource pullDatabaseUpdatesCancellationSource;
 
         public IDatabase Database { get; }
         public string Path { get; }
@@ -77,10 +80,21 @@ namespace MKW.GUI.Model
             return model;
         }
 
-        // watcher thread
-        private void DatabaseFileUpdatedAsync(object sender, EventArgs e)
+        private async Task PullDatabaseUpdates(CancellationToken cancellationToken)
         {
-            WantRefresh = true;
+            try
+            {
+                while (true)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    await Database.WaitForDatabaseChangesAsync(cancellationToken);
+                    WantRefresh = true;
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // no-op
+            }
         }
 
         // main thread
@@ -122,6 +136,7 @@ namespace MKW.GUI.Model
 
         public void Dispose()
         {
+            pullDatabaseUpdatesCancellationSource.Cancel();
         }
     }
 }
