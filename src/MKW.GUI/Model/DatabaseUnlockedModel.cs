@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using System.ComponentModel;
 
 namespace MKW.GUI.Model
 {
@@ -18,6 +19,13 @@ namespace MKW.GUI.Model
             private set => SetProperty(ref entries, value);
         }
 
+        private IReadOnlyCollection<DatabaseUserModel> users;
+        public IReadOnlyCollection<DatabaseUserModel> Users
+        {
+            get => users;
+            private set => SetProperty(ref users, value);
+        }
+
         public DatabaseUnlockedModel(DatabaseModel database, IUserSession user)
         {
             Database = database;
@@ -29,6 +37,17 @@ namespace MKW.GUI.Model
             }
 
             entries = [.. EnumerateEntries()];
+            users = database.Users;
+
+            database.PropertyChanged += Database_PropertyChanged;
+        }
+
+        private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.MatchProperty(nameof(Database.Users)))
+            {
+                Users = Database.Users;
+            }
         }
 
         private IEnumerable<DatabaseEntryModel> EnumerateEntries()
