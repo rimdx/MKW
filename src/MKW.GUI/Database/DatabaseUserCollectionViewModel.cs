@@ -11,7 +11,7 @@ namespace MKW.GUI.Database
         public DatabaseUserCollectionViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
-            database.PropertyChanged += Database_PropertyChanged;
+            database.Database.PropertyChanged += Database_PropertyChanged;
             RefreshUsers();
         }
 
