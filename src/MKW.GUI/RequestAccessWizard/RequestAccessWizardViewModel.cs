@@ -37,7 +37,7 @@ namespace MKW.GUI.RequestAccessWizard
         {
             EnsurePassword();
 
-            UserAccessRequest request = Database.Client.CreateUserAccessRequest(Password.Password);
+            UserAccessRequest request = Database.CreateUserAccessRequest(Password.Password);
 
             KeyFormatter keyFormatter = new KeyFormatter(52);
 

@@ -190,6 +190,11 @@ namespace MKW.GUI.Model
             Users = [.. EnumerateUsers()];
         }
 
+        public UserAccessRequest CreateUserAccessRequest(string password)
+        {
+            return Client.CreateUserAccessRequest(password);
+        }
+
         public void Dispose()
         {
             User?.Dispose();
