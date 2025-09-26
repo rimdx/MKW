@@ -2,7 +2,6 @@
 using MKW.Core.Client;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
-using MKW.GUI.Images;
 
 namespace MKW.GUI.Model
 {
