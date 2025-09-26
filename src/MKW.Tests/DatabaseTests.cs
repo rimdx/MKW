@@ -89,5 +89,47 @@ namespace MKW.Tests
 
             await assertTask;
         }
+
+        [Test]
+        [Timeout(500)]
+        public async Task WatcherIgnoreOwnChangesSingleThreadTest()
+        {
+            using ClientSandBox sbox = new ClientSandBox(false);
+            using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
+
+            CancellationTokenSource source = new CancellationTokenSource();
+
+            async Task WaitForChanges()
+            {
+                try
+                {
+                    await db.WaitForDatabaseChangesAsync(source.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    // expected
+                    return;
+                }
+
+                Assert.Fail("WaitForDatabaseChangesAsync must fail");
+            };
+
+            Task task = WaitForChanges();
+
+            EntryId entryId = EntryId.Create();
+            db.CreateEntry(entryId, new DatabaseEntry
+            {
+                Id = entryId,
+                Data = ReadOnlyMemory<byte>.Empty,
+                Salt = ReadOnlyMemory<byte>.Empty,
+                Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+            });
+
+            await Task.Delay(100);
+
+            source.Cancel();
+
+            await task;
+        }
     }
 }
