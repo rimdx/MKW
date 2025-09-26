@@ -13,7 +13,7 @@ namespace MKW.GUI.Model
 
         public string Path { get; }
 
-        public ClientSession Client { get; }
+        private readonly ClientSession client;
 
         private IReadOnlyCollection<DatabaseEntryModel> entries;
         public IReadOnlyCollection<DatabaseEntryModel> Entries
@@ -45,7 +45,7 @@ namespace MKW.GUI.Model
         {
             this.database = database;
             Path = path;
-            Client = client;
+            this.client = client;
 
             entries = [.. EnumerateEntries()];
             users = [.. EnumerateUsers()];
@@ -71,7 +71,7 @@ namespace MKW.GUI.Model
 
             DatabaseUnlockedModel model = new DatabaseUnlockedModel(db, path, client);
 
-            model.Admin = model.Client.OpenAdmin(adminPassword);
+            model.Admin = model.client.OpenAdmin(adminPassword);
             model.User = model.Admin;
 
             return model;
@@ -79,7 +79,7 @@ namespace MKW.GUI.Model
 
         public void Unlock(UserId id, string password)
         {
-            User = Client.OpenUser(id, password);
+            User = client.OpenUser(id, password);
 
             if (User is IAdminSession admin)
             {
@@ -167,7 +167,7 @@ namespace MKW.GUI.Model
 
         public UserEditorModel CreateUserEditor(UserId userId)
         {
-            UserInfo user = Client.GetUserInfo(userId);
+            UserInfo user = client.GetUserInfo(userId);
             return new UserEditorModel(this, user);
         }
 
@@ -179,7 +179,7 @@ namespace MKW.GUI.Model
 
         private IEnumerable<DatabaseUserModel> EnumerateUsers()
         {
-            foreach (UserInfo user in Client.EnumerateUsers())
+            foreach (UserInfo user in client.EnumerateUsers())
             {
                 yield return new DatabaseUserModel(user, GetTrust(user));
             }
@@ -192,7 +192,7 @@ namespace MKW.GUI.Model
 
         public UserAccessRequest CreateUserAccessRequest(string password)
         {
-            return Client.CreateUserAccessRequest(password);
+            return client.CreateUserAccessRequest(password);
         }
 
         public IEntrySession OpenEntry(EntryId entryId)
@@ -203,7 +203,7 @@ namespace MKW.GUI.Model
         public void Dispose()
         {
             User?.Dispose();
-            Client?.Dispose();
+            client?.Dispose();
             database?.Dispose();
         }
     }
