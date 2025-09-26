@@ -17,7 +17,7 @@ namespace MKW.GUI.Database
 
         private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.MatchProperty(nameof(database.Users)))
+            if (e.MatchProperty(nameof(database.Database.Users)))
             {
                 RefreshUsers();
             }
@@ -27,7 +27,7 @@ namespace MKW.GUI.Database
         {
             Clear();
 
-            foreach (DatabaseUserModel user in database.Users)
+            foreach (DatabaseUserModel user in database.Database.Users)
             {
                 Add(user);
             }
