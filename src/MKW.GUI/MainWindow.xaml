@@ -40,7 +40,7 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <Menu Grid.Column="0" Grid.Row="0" 
+    <Menu Grid.Column="0" Grid.Row="0"
           KeyboardNavigation.TabNavigation="None">
       <MenuItem Header="_File" >
         <MenuItem Header="_New" Command="ApplicationCommands.New" />
