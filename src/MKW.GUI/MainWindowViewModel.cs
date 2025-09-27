@@ -4,6 +4,7 @@ using MKW.GUI.Model;
 using MKW.GUI.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 
 namespace MKW.GUI
 {
@@ -114,6 +115,37 @@ namespace MKW.GUI
             catch
             {
             }
+        }
+
+        public void OpenDatabase(DatabaseModel database)
+        {
+            recentFilesService.OnFileOpened(database.Path);
+
+            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(database);
+            SelectedTab = tabViewModel;
+
+            try
+            {
+                UpdateOpenFilesList();
+            }
+            catch
+            {
+            }
+        }
+
+        public DatabaseTabItemViewModel? GetDatabaseByPath(string path)
+        {
+            string fullPath = Path.GetFullPath(path);
+
+            foreach (DatabaseTabItemViewModel tabItem in TabItems)
+            {
+                if (string.Compare(Path.GetFullPath(tabItem.DatabaseViewModel.Database.Path), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    return tabItem;
+                }
+            }
+
+            return null;
         }
 
         private DatabaseTabItemViewModel AddDatabaseTab(DatabaseModel database)
