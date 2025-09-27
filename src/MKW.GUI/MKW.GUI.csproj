@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ApplicationDefinition Remove="App.xaml" />
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
     <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
     <ProjectReference Include="..\MKW.GUI.Images\MKW.GUI.Images.csproj" />
