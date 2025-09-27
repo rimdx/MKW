@@ -18,21 +18,18 @@ namespace MKW.GUI.SingleInstance
 
         public bool Run(RunRequest request)
         {
-            using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceConstants.SingleInstanceMutexName))
+            byte[] encoded = RunRequestSerializer.Serialize(request);
+
+            IReadOnlyCollection<IOtherAppWindow> windows = messageService.GetOtherAppWindows();
+            foreach (IOtherAppWindow window in windows)
             {
-                byte[] encoded = RunRequestSerializer.Serialize(request);
+                window.SendDataMessage(SingleInstanceConstants.DataMessageId.RunRequest, encoded);
 
-                IReadOnlyCollection<IOtherAppWindow> windows = messageService.GetOtherAppWindows();
-                foreach (IOtherAppWindow window in windows)
-                {
-                    window.SendDataMessage(SingleInstanceConstants.DataMessageId.RunRequest, encoded);
-
-                    // messages broadcasted successfully -> no new host required
-                    return false;
-                }
-
-                return true;
+                // messages broadcasted successfully -> no new host required
+                return false;
             }
+
+            return true;
         }
 
         public void AddMessageSource(HwndSource source)
