@@ -65,26 +65,15 @@ namespace MKW.GUI
             return new CreateDatabaseWizardViewModel(this, registryService);
         }
 
-        public LoginWindowViewModel CreateLoginViewModel(string filename)
+        public DatabaseTabItemViewModel OpenDatabase(string databasePath)
         {
-            DatabaseModel database = appModel.OpenDatabase(filename);
-            return new LoginWindowViewModel(database /* move */);
-        }
+            recentFilesService.OnFileOpened(databasePath);
 
-        public void OpenDatabase(LoginWindowViewModel loginWindowViewModel)
-        {
-            recentFilesService.OnFileOpened(loginWindowViewModel.Database.Path);
+            DatabaseModel database = appModel.OpenDatabase(databasePath);
 
-            if (loginWindowViewModel.Database.UnlockedDatabase == null)
-            {
-                loginWindowViewModel.Database.Dispose();
-            }
-            else
-            {
-                DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(loginWindowViewModel.Database /* move */));
-                TabItems.Add(tabViewModel);
-                SelectedTab = tabViewModel;
-            }
+            DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(database));
+            TabItems.Add(tabViewModel);
+            SelectedTab = tabViewModel;
 
             try
             {
@@ -93,6 +82,8 @@ namespace MKW.GUI
             catch
             {
             }
+
+            return tabViewModel;
         }
 
         public void CreateDatabase(string databasePath, string password)
