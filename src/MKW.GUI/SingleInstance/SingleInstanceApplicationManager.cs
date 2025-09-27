@@ -28,7 +28,6 @@ namespace MKW.GUI.SingleInstance
                     application.InvokeMainInstance(args);
 
                     source.Cancel();
-                    serverTask.Wait();
                 }
                 else
                 {

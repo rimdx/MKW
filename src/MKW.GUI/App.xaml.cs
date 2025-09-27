@@ -7,12 +7,19 @@ namespace MKW.GUI
     public partial class App : Application, ISingleInstanceApplication
     {
         private readonly AppModel model;
+        private readonly SingleInstanceApplicationManager manager;
 
         public App()
         {
             model = new AppModel();
+            manager = new SingleInstanceApplicationManager(this);
 
             InitializeComponent();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            manager.Run(e.Args);
         }
 
         public void InvokeMainInstance(string[] args)
@@ -49,8 +56,6 @@ namespace MKW.GUI
                 {
                     Visibility = Visibility.Visible
                 };
-
-                Run();
             }
         }
 
