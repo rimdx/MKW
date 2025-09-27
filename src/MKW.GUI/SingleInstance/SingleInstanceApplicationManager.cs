@@ -44,10 +44,16 @@ namespace MKW.GUI.SingleInstance
         {
             try
             {
-                // TOOD: Check e.MessageId == SingleInstanceConstants.DataMessageId.RunRequest
-                RunRequest request = RunRequestSerializer.Deserialize(e.Data);
+                if (e.MessageId == SingleInstanceConstants.DataMessageId.RunRequest)
+                {
+                    RunRequest request = RunRequestSerializer.Deserialize(e.Data);
 
-                application.InvokeExternalInstance(request);
+                    application.InvokeExternalInstance(request);
+                }
+                else
+                {
+                    Debug.WriteLine($"Unknown Data Message ({e.MessageId}).");
+                }
             }
             catch (Exception ex)
             {
