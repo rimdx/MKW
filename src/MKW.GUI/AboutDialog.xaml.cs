@@ -5,9 +5,9 @@ namespace MKW.GUI
 {
     public partial class AboutDialog : DialogWindow
     {
-        private readonly MainWindowViewModel model;
+        private readonly AboutDialogViewModel model;
 
-        public AboutDialog(MainWindowViewModel model, Window owner) : base(owner)
+        public AboutDialog(AboutDialogViewModel model, Window owner) : base(owner)
         {
             this.model = model;
             DataContext = model;
