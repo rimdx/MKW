@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
-namespace MKW.GUI.SingleInstance
+namespace MKW.GUI.Services
 {
     internal class MessageService
     {

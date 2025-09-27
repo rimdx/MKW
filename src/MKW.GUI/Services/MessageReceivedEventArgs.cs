@@ -1,4 +1,4 @@
-﻿namespace MKW.GUI.SingleInstance
+﻿namespace MKW.GUI.Services
 {
     internal class MessageReceivedEventArgs(IntPtr messageId, byte[] data) : EventArgs
     {
