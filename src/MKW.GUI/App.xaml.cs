@@ -61,7 +61,6 @@ namespace MKW.GUI
 
         public void InvokeExternalInstance(string[] args)
         {
-            throw new NotImplementedException();
         }
     }
 }
