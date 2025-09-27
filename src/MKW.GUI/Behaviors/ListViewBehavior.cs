@@ -47,7 +47,6 @@ namespace MKW.GUI.Behaviors
             if (listView.SelectedItem != null)
             {
                 listView.SelectedItem = null;
-                Keyboard.ClearFocus();
             }
         }
 
