@@ -71,8 +71,7 @@ namespace MKW.GUI
 
             DatabaseModel database = appModel.OpenDatabase(databasePath);
 
-            DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(database));
-            TabItems.Add(tabViewModel);
+            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(database);
             SelectedTab = tabViewModel;
 
             try
