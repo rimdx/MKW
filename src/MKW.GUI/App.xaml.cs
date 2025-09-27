@@ -56,6 +56,10 @@ namespace MKW.GUI
                     };
                 }
             }
+            else
+            {
+                Shutdown();
+            }
         }
 
         public void InvokeExternalInstance(string[] args)
