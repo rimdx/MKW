@@ -92,13 +92,6 @@
         <MenuItem Header="Delete Entry" />
       </MenuItem>
 
-      <MenuItem Header="_User">
-        <MenuItem Header="_Add User..." />
-
-        <MenuItem Header="_Properties..." />
-
-        <MenuItem Header="_Delete..." />
-      </MenuItem>
       <MenuItem Header="_Help">
         <MenuItem Header="_About Multi-Key Wallet"
                   Command="{x:Static local:AppCommands.About}" />
