@@ -142,7 +142,7 @@ namespace MKW.GUI
             return tabViewModel;
         }
 
-        public void OnCloseTab(DatabaseTabItemViewModel selectedTab)
+        public void CloseTab(DatabaseTabItemViewModel selectedTab)
         {
             selectedTab.OnClose();
             TabItems.Remove(selectedTab);

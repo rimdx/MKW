@@ -117,7 +117,7 @@ namespace MKW.GUI
 
                 if (tab != null)
                 {
-                    viewModel.OnCloseTab(tab);
+                    viewModel.CloseTab(tab);
                 }
             }
             catch (Exception ex)
