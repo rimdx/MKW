@@ -52,7 +52,7 @@ namespace MKW.GUI.SingleInstance
 
                     Marshal.StructureToPtr(copyData, copyDataMem, false);
 
-                    SendMessage(process.MainWindowHandle, (uint)WM.WM_COPYDATA, copyDataMem);
+                    SendMessage(process.MainWindowHandle, WM.WM_COPYDATA, copyDataMem);
 
                     Marshal.FreeHGlobal(copyDataMem);
 
@@ -79,7 +79,7 @@ namespace MKW.GUI.SingleInstance
                 handled = true;
                 return new IntPtr(SingleInstanceConstants.OpenFileMessageId);
             }
-            else if (msg == (uint)WM.WM_COPYDATA)
+            else if (msg == WM.WM_COPYDATA)
             {
                 COPYDATASTRUCT copyData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
 
