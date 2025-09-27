@@ -15,7 +15,7 @@
             await proxy.ReadAsync(lengthBuffer, cancellationToken);
 
             int length = BitConverter.ToInt32(lengthBuffer.ToArray(), 0);
-            Memory<byte> dataBuffer = new byte[lengthBuffer.Length];
+            Memory<byte> dataBuffer = new byte[length];
 
             await proxy.ReadAsync(dataBuffer, cancellationToken);
 
