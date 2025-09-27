@@ -25,7 +25,7 @@ namespace MKW.GUI
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
             TabItems = new ObservableCollection<DatabaseTabItemViewModel>();
-            title = FormatTitle();
+            title = FormatTitle(selectedTab);
 
             ((INotifyPropertyChanged)TabItems).PropertyChanged += TabItems_PropertyChanged;
             TabItems_PropertyChanged(TabItems, new PropertyChangedEventArgs(null));
@@ -179,7 +179,13 @@ namespace MKW.GUI
         public DatabaseTabItemViewModel? SelectedTab
         { 
             get => selectedTab; 
-            set => SetProperty(ref selectedTab, value); 
+            set
+            {
+                if (SetProperty(ref selectedTab, value))
+                {
+                    Title = FormatTitle(selectedTab);
+                }
+            }
         }
 
         private bool isStartPageVisible;
@@ -231,9 +237,16 @@ namespace MKW.GUI
             }
         }
 
-        private static string FormatTitle()
+        private static string FormatTitle(DatabaseTabItemViewModel? selectedTab)
         {
-            return "Multi-Key Wallet";
+            if (selectedTab == null)
+            {
+                return "Multi-Key Wallet";
+            }
+            else
+            {
+                return $"{Path.GetFileName(selectedTab.DatabaseViewModel.Database.Path)} - Multi-Key Wallet";
+            }
         }
     }
 }
