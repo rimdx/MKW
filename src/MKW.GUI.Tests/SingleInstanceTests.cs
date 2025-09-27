@@ -54,7 +54,7 @@ namespace MKW.GUI.Tests
                 new[]
                 {
                     "InvokeMainInstance(123)",
-                    "InvokeExternalInstance()",
+                    "InvokeExternalInstance(456)",
                 },
                 appMain.Actions);
 

@@ -18,7 +18,8 @@ namespace MKW.GUI.SingleInstance
         {
             await pipe.ConnectAsync(cancellationToken);
 
-            ReadOnlyMemory<byte> buffer = new byte[] { 1, 2, 3 };
+            RunRequest request = new RunRequest(args);
+            ReadOnlyMemory<byte> buffer = RunRequestSerializer.Serialize(request);
 
             await rpc.WritePacketAsync(buffer, cancellationToken);
         }
