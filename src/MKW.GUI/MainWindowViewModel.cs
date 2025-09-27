@@ -67,20 +67,27 @@ namespace MKW.GUI
 
         public DatabaseTabItemViewModel OpenDatabase(string databasePath)
         {
-            recentFilesService.OnFileOpened(databasePath);
+            DatabaseTabItemViewModel? tabViewModel;
 
-            DatabaseModel database = appModel.OpenDatabase(databasePath);
+            tabViewModel = GetDatabaseByPath(databasePath);
+            if (tabViewModel == null)
+            {
+                DatabaseModel database = appModel.OpenDatabase(databasePath);
 
-            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(database);
+                tabViewModel = AddDatabaseTab(database);
+
+                try
+                {
+                    UpdateOpenFilesList();
+                }
+                catch
+                {
+                }
+            }
+
             SelectedTab = tabViewModel;
 
-            try
-            {
-                UpdateOpenFilesList();
-            }
-            catch
-            {
-            }
+            recentFilesService.OnFileOpened(databasePath);
 
             return tabViewModel;
         }
