@@ -22,15 +22,16 @@ namespace MKW.GUI.SingleInstance
             {
                 string encoded = RunRequestSerializer.Serialize(request);
 
-                if (messageService.BroadcastMessage(SingleInstanceConstants.IdentifyMessageId, encoded))
+                IReadOnlyCollection<IOtherAppWindow> windows = messageService.GetOtherAppWindows();
+                foreach (IOtherAppWindow window in windows)
                 {
+                    window.SendDataMessage(SingleInstanceConstants.IdentifyMessageId, encoded);
+
                     // messages broadcasted successfully -> no new host required
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
+
+                return true;
             }
         }
 
