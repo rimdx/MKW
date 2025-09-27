@@ -43,32 +43,31 @@ namespace MKW.GUI
 
             if (manager.Run(request))
             {
-                using (MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model))
+                MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model);
+
+                foreach (string path in request.PathsToOpen)
                 {
-                    foreach (string path in request.PathsToOpen)
+                    try
                     {
-                        try
+                        DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(path);
+                        if (tabItem != null)
                         {
-                            DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(path);
-                            if (tabItem != null)
-                            {
-                                mainWindowViewModel.SelectedTab = tabItem;
-                            }
-                            else
-                            {
-                                mainWindowViewModel.OpenDatabase(DatabaseModel.Open(path));
-                            }
+                            mainWindowViewModel.SelectedTab = tabItem;
                         }
-                        catch
+                        else
                         {
+                            mainWindowViewModel.OpenDatabase(DatabaseModel.Open(path));
                         }
                     }
-
-                    MainWindow = new MainWindow(mainWindowViewModel, manager)
+                    catch
                     {
-                        Visibility = Visibility.Visible
-                    };
+                    }
                 }
+
+                MainWindow = new MainWindow(mainWindowViewModel, manager)
+                {
+                    Visibility = Visibility.Visible
+                };
             }
             else
             {
