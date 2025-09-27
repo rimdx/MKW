@@ -27,8 +27,9 @@ namespace MKW.GUI.SingleInstance
                     cancellationToken.ThrowIfCancellationRequested();
 
                     ReadOnlyMemory<byte> data = await rpc.ReadPacket(cancellationToken);
+                    RunRequest request = RunRequestSerializer.Deserialize(data.Span);
 
-                    application.InvokeExternalInstance([]);
+                    application.InvokeExternalInstance(request.Args);
                 }
             }
             catch (OperationCanceledException)
