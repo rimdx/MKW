@@ -13,7 +13,7 @@ namespace MKW.GUI
             cryptographyProvider = CryptographyLoader.GetProvider();
         }
 
-        public DatabaseModel? CreateDatabase(string databasePath, string password)
+        public DatabaseModel CreateDatabase(string databasePath, string password)
         {
             return DatabaseModel.Create(cryptographyProvider, databasePath, password);
         }
