@@ -141,12 +141,15 @@ namespace MKW.GUI
 
         private void DoOpenDatabase(string fullPath)
         {
-            LoginWindowViewModel loginWindowViewModel = viewModel.CreateLoginViewModel(fullPath);
-            LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
+            DatabaseTabItemViewModel tabItem = viewModel.OpenDatabase(fullPath);
 
-            window.ShowDialog();
+            if (tabItem.DatabaseViewModel.Database.UnlockedDatabase == null)
+            {
+                LoginWindowViewModel loginWindowViewModel = tabItem.DatabaseViewModel.CreateLoginViewModel();
+                LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
 
-            viewModel.OpenDatabase(loginWindowViewModel);
+                window.ShowDialog();
+            }
         }
     }
 }
