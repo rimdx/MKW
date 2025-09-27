@@ -10,9 +10,9 @@ namespace MKW.GUI
     {
         private readonly MainWindowViewModel viewModel;
 
-        public MainWindow(AppModel appModel)
+        public MainWindow(MainWindowViewModel viewModel)
         {
-            viewModel = new MainWindowViewModel(appModel);
+            this.viewModel = viewModel;
             DataContext = viewModel;
 
             InitializeComponent();
@@ -145,11 +145,6 @@ namespace MKW.GUI
         {
             AboutDialog window = new AboutDialog(viewModel, GetWindow(this));
             window.ShowDialog();
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            viewModel.Dispose();
         }
 
         private void DoOpenDatabase(string fullPath)
