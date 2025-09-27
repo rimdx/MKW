@@ -1,5 +1,4 @@
-﻿using MKW.GUI.Model;
-using MKW.GUI.SingleInstance;
+﻿using MKW.GUI.SingleInstance;
 using System.IO;
 using System.Windows;
 
@@ -9,11 +8,13 @@ namespace MKW.GUI
     {
         private readonly AppModel model;
         private readonly SingleInstanceApplicationManager manager;
+        private readonly MainWindowViewModel mainWindowViewModel;
 
         public App()
         {
             model = new AppModel();
             manager = new SingleInstanceApplicationManager(this);
+            mainWindowViewModel = new MainWindowViewModel(model);
 
             InitializeComponent();
         }
@@ -43,8 +44,6 @@ namespace MKW.GUI
 
             if (manager.Run(request))
             {
-                MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model);
-
                 mainWindowViewModel.HandleRunRequest(request);
 
                 MainWindow = new MainWindow(mainWindowViewModel, manager)
