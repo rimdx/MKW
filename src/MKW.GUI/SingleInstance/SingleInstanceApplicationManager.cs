@@ -12,7 +12,9 @@ namespace MKW.GUI.SingleInstance
         public SingleInstanceApplicationManager(ISingleInstanceApplication application)
         {
             this.application = application;
+
             messageService = new MessageService();
+            messageService.MessageReceived += MessageReceived;
         }
 
         public bool Run(string[] args)
@@ -31,35 +33,14 @@ namespace MKW.GUI.SingleInstance
             }
         }
 
-        public void RunServer(HwndSource source)
+        public void AddMessageSource(HwndSource source)
         {
-            source.AddHook(WndProc);
+            messageService.AddMessageSource(source);
         }
 
-        private IntPtr WndProc(IntPtr hwnd,
-                               int msg,
-                               IntPtr wParam,
-                               IntPtr lParam,
-                               ref bool handled)
+        private void MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            if (msg == SingleInstanceConstants.OpenFileMessageId)
-            {
-                handled = true;
-                return new IntPtr(SingleInstanceConstants.OpenFileMessageId);
-            }
-            else if (msg == (uint)WM.WM_COPYDATA)
-            {
-                COPYDATASTRUCT copyData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
-
-                application.InvokeExternalInstance([]);
-
-                handled = true;
-                return IntPtr.Zero;
-            }
-            else
-            {
-                return IntPtr.Zero;
-            }
+            application.InvokeExternalInstance([]);
         }
     }
 }
