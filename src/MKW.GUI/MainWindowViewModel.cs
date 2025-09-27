@@ -131,7 +131,7 @@ namespace MKW.GUI
             }
         }
 
-        public DatabaseTabItemViewModel? GetDatabaseByPath(string path)
+        private DatabaseTabItemViewModel? GetDatabaseByPath(string path)
         {
             string fullPath = Path.GetFullPath(path);
 
