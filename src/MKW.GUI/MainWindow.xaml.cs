@@ -81,21 +81,6 @@ namespace MKW.GUI
             }
         }
 
-        private void RecentFileItem_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem menuItem = (MenuItem)sender;
-            RecentFileItemViewModel file = (RecentFileItemViewModel)menuItem.DataContext;
-
-            try
-            {
-                DoOpenDatabase(file.FullPath);
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(GetWindow(this), ex);
-            }
-        }
-
         private void FileClose_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             bool canExecute;
