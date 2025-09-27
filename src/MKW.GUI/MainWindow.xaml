@@ -71,7 +71,8 @@
         <MenuItem Header="_Close" Command="ApplicationCommands.Close" />
         <Separator />
         <MenuItem Header="_Lock Database"
-                  Command="{x:Static local:AppCommands.LockDatabase}" />
+                  Command="{x:Static local:AppCommands.LockDatabase}"
+                  CommandTarget="{Binding Path=SelectedTab.Content}" />
         <MenuItem Header="_Exit" Command="{x:Static local:AppCommands.Exit}" />
       </MenuItem>
 
@@ -112,7 +113,9 @@
           <local:CrispImage Moniker="NewKey" />
         </Button>
         <Separator />
-        <Button Command="{x:Static local:AppCommands.LockDatabase}" ToolTip="Lock Database">
+        <Button Command="{x:Static local:AppCommands.LockDatabase}" 
+                CommandTarget="{Binding Path=SelectedTab.Content}"
+                ToolTip="Lock Database">
           <local:CrispImage Moniker="Lock" />
         </Button>
       </ToolBar>
@@ -127,9 +130,16 @@
 
     <TabControl Grid.Row="2"
                 Margin="6"
+                x:Name="ctlTabControl"
                 ItemsSource="{Binding TabItems}"
                 SelectedItem="{Binding SelectedTab}"
+                FocusManager.IsFocusScope="True"
                 Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TabControl.CommandBindings>
+        <!--<CommandBinding Command="{x:Static local:AppCommands.LockDatabase}" 
+                        CanExecute="CommandBinding_CanExecute"
+                        Executed="CommandBinding_Executed"/>-->
+      </TabControl.CommandBindings>
       <TabControl.ItemTemplate>
         <DataTemplate>
           <Grid MinWidth="80" ToolTip="{Binding Tooltip}">
@@ -164,14 +174,14 @@
           </Grid>
         </DataTemplate>
       </TabControl.ItemTemplate>
-      <TabControl.Resources>
+      <TabControl.ContentTemplate>
         <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
           <Border BorderThickness="1"
                   BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
             <ContentPresenter Content="{Binding Content}" />
           </Border>
         </DataTemplate>
-      </TabControl.Resources>
-    </TabControl>
+      </TabControl.ContentTemplate>
+      </TabControl>
   </Grid>
 </Window>
