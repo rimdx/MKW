@@ -8,7 +8,7 @@
 
         public static class DataMessageId
         {
-            public const uint RunRequest = 1;
+            public const nint RunRequest = 1;
         }
     }
 }

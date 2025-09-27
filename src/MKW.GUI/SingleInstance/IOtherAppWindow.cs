@@ -2,6 +2,6 @@
 {
     internal interface IOtherAppWindow
     {
-        bool SendDataMessage(uint messageId, byte[] data);
+        bool SendDataMessage(IntPtr messageId, byte[] data);
     }
 }

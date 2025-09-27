@@ -16,14 +16,14 @@ namespace MKW.GUI.SingleInstance
                 this.hwnd = hwnd;
             }
 
-            public bool SendDataMessage(uint messageId, byte[] data)
+            public bool SendDataMessage(IntPtr messageId, byte[] data)
             {
                 IntPtr dataMem = Marshal.AllocHGlobal(data.Length);
                 Marshal.Copy(data, 0, dataMem, data.Length);
 
                 COPYDATASTRUCT copyData = new COPYDATASTRUCT
                 {
-                    dwData = new IntPtr(messageId),
+                    dwData = messageId,
                     cbData = data.Length,
                     lpData = dataMem,
                 };
@@ -119,8 +119,7 @@ namespace MKW.GUI.SingleInstance
                 if (MessageReceived != null)
                 {
                     MessageReceivedEventArgs args =
-                        new MessageReceivedEventArgs((uint)copyData.dwData.ToInt32(),
-                                                     data);
+                        new MessageReceivedEventArgs(copyData.dwData, data);
 
                     MessageReceived.Invoke(this, args);
                 }
