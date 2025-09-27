@@ -26,7 +26,7 @@
 
               <ScrollViewer Grid.Row="1"
                             Focusable="False">
-                <ItemsPresenter />
+                <ItemsPresenter /> 
               </ScrollViewer>
             </Grid>
           </Border>
@@ -159,8 +159,8 @@
         <ControlTemplate TargetType="ListViewItem">
           <Border x:Name="ItemBorder"
                   Background="{TemplateBinding Background}"
-                  Padding="4,2"
-                  Margin="0">
+                  BorderThickness="1"
+                  Padding="4,2">
             <GridViewRowPresenter Margin="0" />
           </Border>
 
@@ -175,6 +175,23 @@
                       Property="Background"
                       Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
             </Trigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsFocused" Value="True" />
+                <Condition Property="IsSelected" Value="True" />
+              </MultiTrigger.Conditions>
+
+              <MultiTrigger.Setters>
+                <Setter TargetName="ItemBorder"
+                        Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+
+                <Setter TargetName="ItemBorder"
+                        Property="BorderBrush"
+                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+              </MultiTrigger.Setters>
+            </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
@@ -203,6 +220,23 @@
                       Property="Background"
                       Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
             </Trigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsFocused" Value="True" />
+                <Condition Property="IsSelected" Value="True" />
+              </MultiTrigger.Conditions>
+
+              <MultiTrigger.Setters>
+                <Setter TargetName="ItemBorder"
+                        Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+
+                <Setter TargetName="ItemBorder"
+                        Property="BorderBrush"
+                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+              </MultiTrigger.Setters>
+            </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
