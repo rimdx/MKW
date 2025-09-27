@@ -104,7 +104,7 @@ namespace MKW.GUI
             }
         }
 
-        public void OpenDatabase(DatabaseModel database)
+        private void OpenDatabaseInternal(DatabaseModel database)
         {
             recentFilesService.OnFileOpened(database.Path);
 
@@ -211,7 +211,7 @@ namespace MKW.GUI
                     }
                     else
                     {
-                        OpenDatabase(appModel.OpenDatabase(path));
+                        OpenDatabaseInternal(appModel.OpenDatabase(path));
                     }
                 }
                 catch
