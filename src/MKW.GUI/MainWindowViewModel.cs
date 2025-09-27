@@ -2,6 +2,7 @@
 using MKW.GUI.Database;
 using MKW.GUI.Model;
 using MKW.GUI.Services;
+using MKW.GUI.SingleInstance;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -209,6 +210,28 @@ namespace MKW.GUI
             }
 
             registryService.SetOpenFiles(filesList.ToArray());
+        }
+
+        public void HandleRunRequest(RunRequest request)
+        {
+            foreach (string path in request.PathsToOpen)
+            {
+                try
+                {
+                    DatabaseTabItemViewModel? tabItem = GetDatabaseByPath(path);
+                    if (tabItem != null)
+                    {
+                        SelectedTab = tabItem;
+                    }
+                    else
+                    {
+                        OpenDatabase(DatabaseModel.Open(path));
+                    }
+                }
+                catch
+                {
+                }
+            }
         }
     }
 }
