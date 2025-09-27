@@ -2,9 +2,6 @@
 
 namespace MKW.GUI
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private readonly AppModel model;
@@ -19,5 +16,4 @@ namespace MKW.GUI
             InitializeComponent();
         }
     }
-
 }
