@@ -16,11 +16,11 @@ namespace MKW.GUI.SingleInstance
             messageService.MessageReceived += MessageReceived;
         }
 
-        public bool Run(string[] args)
+        public bool Run(RunRequest request)
         {
             using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceConstants.SingleInstanceMutexName))
             {
-                string encoded = RunRequestSerializer.Serialize(new RunRequest(args));
+                string encoded = RunRequestSerializer.Serialize(request);
 
                 if (messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, encoded))
                 {
@@ -43,9 +43,9 @@ namespace MKW.GUI.SingleInstance
         {
             try
             {
-                RunRequest decoded = RunRequestSerializer.Deserialize(e.Data);
+                RunRequest request = RunRequestSerializer.Deserialize(e.Data);
 
-                application.InvokeExternalInstance(decoded.Args);
+                application.InvokeExternalInstance(request);
             }
             catch (Exception ex)
             {

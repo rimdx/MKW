@@ -1,7 +1,7 @@
 ﻿using MKW.GUI.Model;
 using MKW.GUI.SingleInstance;
+using System.IO;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace MKW.GUI
 {
@@ -18,35 +18,49 @@ namespace MKW.GUI
             InitializeComponent();
         }
 
+        private RunRequest ParseCommandLine(string[] args)
+        {
+            List<string> paths = [];
+
+            foreach (string arg in args)
+            {
+                if (arg.StartsWith("/") || arg.StartsWith("-"))
+                {
+                    // option, skip for now.
+                }
+                else
+                {
+                    paths.Add(Path.GetFullPath(arg));
+                }
+            }
+
+            return new RunRequest([.. paths]);
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (manager.Run(e.Args))
+            RunRequest request = ParseCommandLine(e.Args);
+
+            if (manager.Run(request))
             {
                 using (MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model))
                 {
-                    foreach (string arg in e.Args)
+                    foreach (string path in request.PathsToOpen)
                     {
-                        if (arg.StartsWith("/") || arg.StartsWith("-"))
+                        try
                         {
-                            // option, skip for now.
+                            DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(path);
+                            if (tabItem != null)
+                            {
+                                mainWindowViewModel.SelectedTab = tabItem;
+                            }
+                            else
+                            {
+                                mainWindowViewModel.OpenDatabase(DatabaseModel.Open(path));
+                            }
                         }
-                        else
+                        catch
                         {
-                            try
-                            {
-                                DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(arg);
-                                if (tabItem != null)
-                                {
-                                    mainWindowViewModel.SelectedTab = tabItem;
-                                }
-                                else
-                                {
-                                    mainWindowViewModel.OpenDatabase(DatabaseModel.Open(arg));
-                                }
-                            }
-                            catch
-                            {
-                            }
                         }
                     }
 
@@ -62,7 +76,7 @@ namespace MKW.GUI
             }
         }
 
-        public void InvokeExternalInstance(string[] args)
+        public void InvokeExternalInstance(RunRequest request)
         {
         }
     }
