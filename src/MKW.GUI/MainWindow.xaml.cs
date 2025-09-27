@@ -43,8 +43,6 @@ namespace MKW.GUI
                 CreateDatabaseWizard.CreateDatabaseWizard createDatabaseWindow = new CreateDatabaseWizard.CreateDatabaseWizard(createDatabaseViewModel, this);
 
                 createDatabaseWindow.ShowDialog();
-
-                viewModel.OpenDatabase(createDatabaseViewModel);
             }
             catch (Exception ex)
             {
