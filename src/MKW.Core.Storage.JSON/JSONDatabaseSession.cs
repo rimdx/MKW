@@ -39,7 +39,7 @@ namespace MKW.Core.Storage.JSON
         {
             TaskCompletionSource<bool> task = new TaskCompletionSource<bool>();
 
-            FileSystemEventHandler changedEvent = (s, e) =>
+            void OnFileSystemChanged(object sender, FileSystemEventArgs e)
             {
                 lock (saveLock)
                 {
@@ -57,13 +57,13 @@ namespace MKW.Core.Storage.JSON
 
             try
             {
-                watcher.Changed += changedEvent;
+                watcher.Changed += OnFileSystemChanged;
 
                 return await task.Task.WaitAsync(cancellationToken);
             }
             finally
             {
-                watcher.Changed -= changedEvent;
+                watcher.Changed -= OnFileSystemChanged;
             }
         }
 
