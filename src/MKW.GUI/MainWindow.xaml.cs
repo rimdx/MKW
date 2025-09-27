@@ -135,7 +135,8 @@ namespace MKW.GUI
 
         private void HelpAbout_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            AboutDialog window = new AboutDialog(viewModel, GetWindow(this));
+            AboutDialogViewModel aboutDialogViewModel = new AboutDialogViewModel();
+            AboutDialog window = new AboutDialog(aboutDialogViewModel, GetWindow(this));
             window.ShowDialog();
         }
 
