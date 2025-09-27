@@ -4,13 +4,13 @@ namespace MKW.GUI.SingleInstance
 {
     internal static class RunRequestSerializer
     {
-        public static string Serialize(RunRequest data)
+        public static byte[] Serialize(RunRequest data)
         {
-            return JsonSerializer.Serialize(
+            return JsonSerializer.SerializeToUtf8Bytes(
                 data, RunRequestSerializerContext.Default.RunRequest);
         }
 
-        public static RunRequest Deserialize(string data)
+        public static RunRequest Deserialize(byte[] data)
         {
             RunRequest? parsed = JsonSerializer.Deserialize(
                 data, RunRequestSerializerContext.Default.RunRequest);

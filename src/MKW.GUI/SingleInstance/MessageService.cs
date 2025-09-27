@@ -16,13 +16,16 @@ namespace MKW.GUI.SingleInstance
                 this.hwnd = hwnd;
             }
 
-            public bool SendDataMessage(uint messageId, string data)
+            public bool SendDataMessage(uint messageId, byte[] data)
             {
+                IntPtr dataMem = Marshal.AllocHGlobal(data.Length);
+                Marshal.Copy(data, 0, dataMem, data.Length);
+
                 COPYDATASTRUCT copyData = new COPYDATASTRUCT
                 {
                     dwData = new IntPtr(messageId),
-                    cbData = data.Length * 2, // unicodify
-                    lpData = data,
+                    cbData = data.Length,
+                    lpData = dataMem,
                 };
 
                 IntPtr copyDataMem = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
@@ -32,6 +35,7 @@ namespace MKW.GUI.SingleInstance
                 SendMessage(hwnd, WM.WM_COPYDATA, copyDataMem);
 
                 Marshal.FreeHGlobal(copyDataMem);
+                Marshal.FreeHGlobal(dataMem);
 
                 return true;
             }
@@ -101,11 +105,14 @@ namespace MKW.GUI.SingleInstance
             {
                 COPYDATASTRUCT copyData = Marshal.PtrToStructure<COPYDATASTRUCT>(lParam);
 
+                byte[] data = new byte[copyData.cbData];
+                Marshal.Copy(copyData.lpData, data, 0, copyData.cbData);
+
                 if (MessageReceived != null)
                 {
                     MessageReceivedEventArgs args =
                         new MessageReceivedEventArgs((uint)copyData.dwData.ToInt32(),
-                                                     copyData.lpData);
+                                                     data);
 
                     MessageReceived.Invoke(this, args);
                 }

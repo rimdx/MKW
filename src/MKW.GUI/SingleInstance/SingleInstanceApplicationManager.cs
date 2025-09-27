@@ -20,7 +20,7 @@ namespace MKW.GUI.SingleInstance
         {
             using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceConstants.SingleInstanceMutexName))
             {
-                string encoded = RunRequestSerializer.Serialize(request);
+                byte[] encoded = RunRequestSerializer.Serialize(request);
 
                 IReadOnlyCollection<IOtherAppWindow> windows = messageService.GetOtherAppWindows();
                 foreach (IOtherAppWindow window in windows)

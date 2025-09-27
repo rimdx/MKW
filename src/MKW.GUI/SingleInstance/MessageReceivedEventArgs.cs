@@ -1,8 +1,8 @@
 ﻿namespace MKW.GUI.SingleInstance
 {
-    internal class MessageReceivedEventArgs(uint messageId, string data) : EventArgs
+    internal class MessageReceivedEventArgs(uint messageId, byte[] data) : EventArgs
     {
         public uint MessageId { get; } = messageId;
-        public string Data { get; } = data;
+        public byte[] Data { get; } = data;
     }
 }
