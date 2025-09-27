@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Runtime.InteropServices;
 
 namespace MKW.Common
 {
@@ -35,6 +36,58 @@ namespace MKW.Common
             finally
             {
                 ArrayPool<byte>.Shared.Return(sharedBuffer);
+            }
+        }
+
+        public static async Task WriteAsync(this Stream stream,
+                                            ReadOnlyMemory<byte> buffer,
+                                            CancellationToken cancellationToken = default)
+        {
+            if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
+            {
+                await stream.WriteAsync(array.Array, array.Offset, array.Count, cancellationToken);
+            }
+            else
+            {
+                byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
+
+                try
+                {
+                    buffer.Span.CopyTo(sharedBuffer);
+                    await stream.WriteAsync(sharedBuffer, 0, buffer.Length, cancellationToken);
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(sharedBuffer);
+                }
+            }
+        }
+
+        public static async Task<int> ReadAsync(this Stream stream,
+                                                Memory<byte> buffer,
+                                                CancellationToken cancellationToken = default)
+        {
+            if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
+            {
+                return await stream.ReadAsync(array.Array, array.Offset, array.Count, cancellationToken);
+            }
+            else
+            {
+                byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
+
+                try
+                {
+                    int numRead = await stream.ReadAsync(sharedBuffer, 0, buffer.Length, cancellationToken);
+
+                    Span<byte> span = new Span<byte>(sharedBuffer);
+                    span.CopyTo(buffer.Span);
+
+                    return span.Length;
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(sharedBuffer);
+                }
             }
         }
     }
