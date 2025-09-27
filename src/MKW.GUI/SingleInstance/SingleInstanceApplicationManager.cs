@@ -15,13 +15,18 @@ namespace MKW.GUI.SingleInstance
             messageService = new MessageService();
         }
 
-        public void Run(string[] args)
+        public bool Run(string[] args)
         {
             using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceConstants.SingleInstanceMutexName))
             {
-                if (!messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, "123"))
+                if (messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, "123"))
                 {
-                    application.InvokeMainInstance(args);
+                    // messages broadcasted successfully -> no new host required
+                    return false;
+                }
+                else
+                {
+                    return true;
                 }
             }
         }

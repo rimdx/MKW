@@ -20,43 +20,41 @@ namespace MKW.GUI
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            manager.Run(e.Args);
-        }
-
-        public void InvokeMainInstance(string[] args)
-        {
-            using (MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model))
+            if (manager.Run(e.Args))
             {
-                foreach (string arg in args)
+                using (MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model))
                 {
-                    if (arg.StartsWith("/") || arg.StartsWith("-"))
+                    foreach (string arg in e.Args)
                     {
-                        // option, skip for now.
-                    }
-                    else
-                    {
-                        try
+                        if (arg.StartsWith("/") || arg.StartsWith("-"))
                         {
-                            DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(arg);
-                            if (tabItem != null)
+                            // option, skip for now.
+                        }
+                        else
+                        {
+                            try
                             {
-                                mainWindowViewModel.SelectedTab = tabItem;
+                                DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(arg);
+                                if (tabItem != null)
+                                {
+                                    mainWindowViewModel.SelectedTab = tabItem;
+                                }
+                                else
+                                {
+                                    mainWindowViewModel.OpenDatabase(DatabaseModel.Open(arg));
+                                }
                             }
-                            else
+                            catch
                             {
-                                mainWindowViewModel.OpenDatabase(DatabaseModel.Open(arg));
                             }
                         }
-                        catch
-                        {
-                        }
                     }
-                }
 
-                MainWindow = new MainWindow(mainWindowViewModel, manager)
-                {
-                    Visibility = Visibility.Visible
-                };
+                    MainWindow = new MainWindow(mainWindowViewModel, manager)
+                    {
+                        Visibility = Visibility.Visible
+                    };
+                }
             }
         }
 
