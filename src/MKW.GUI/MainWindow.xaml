@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Height="450" Width="800"
+        Height="720" Width="950"
         Closed="Window_Closed"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
   <Window.Resources>
