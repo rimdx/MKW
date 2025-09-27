@@ -12,7 +12,7 @@ namespace MKW.GUI.SingleInstance
         {
             this.application = application;
 
-            messageService = new MessageService();
+            messageService = new MessageService(SingleInstanceConstants.ApplicationMagic);
             messageService.MessageReceived += MessageReceived;
         }
 
@@ -25,7 +25,7 @@ namespace MKW.GUI.SingleInstance
                 IReadOnlyCollection<IOtherAppWindow> windows = messageService.GetOtherAppWindows();
                 foreach (IOtherAppWindow window in windows)
                 {
-                    window.SendDataMessage(SingleInstanceConstants.IdentifyMessageId, encoded);
+                    window.SendDataMessage(SingleInstanceConstants.DataMessageId.RunRequest, encoded);
 
                     // messages broadcasted successfully -> no new host required
                     return false;
@@ -44,6 +44,7 @@ namespace MKW.GUI.SingleInstance
         {
             try
             {
+                // TOOD: Check e.MessageId == SingleInstanceConstants.DataMessageId.RunRequest
                 RunRequest request = RunRequestSerializer.Deserialize(e.Data);
 
                 application.InvokeExternalInstance(request);

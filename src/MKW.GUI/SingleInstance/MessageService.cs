@@ -49,9 +49,10 @@ namespace MKW.GUI.SingleInstance
 
         public event EventHandler<MessageReceivedEventArgs>? MessageReceived;
 
-        public MessageService()
+        public MessageService(string applicationMagic)
         {
-            identifyMessageId = SingleInstanceConstants.IdentifyMessageId;
+            string identifyMessageName = $"{applicationMagic}.IdentifyMessage";
+            identifyMessageId = User32.RegisterWindowMessage(identifyMessageName);
         }
 
         private static IntPtr SendMessage(IntPtr windowHandle, uint messageId, IntPtr data)
