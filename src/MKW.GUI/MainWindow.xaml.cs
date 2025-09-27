@@ -88,13 +88,7 @@ namespace MKW.GUI
 
             try
             {
-                LoginWindowViewModel loginWindowViewModel =
-                    viewModel.CreateLoginViewModel(file.FullPath);
-                LoginWindow window = new LoginWindow(loginWindowViewModel, GetWindow(this));
-
-                window.ShowDialog();
-
-                viewModel.OpenDatabase(loginWindowViewModel);
+                DoOpenDatabase(file.FullPath);
             }
             catch (Exception ex)
             {
