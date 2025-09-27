@@ -51,7 +51,7 @@ namespace MKW.GUI.SingleInstance
             }
             catch (Exception ex)
             {
-                Debug.Fail(ex.ToString());
+                Debug.WriteLine($"Exception while handling Data Message: {ex.Message}");
             }
         }
     }
