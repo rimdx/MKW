@@ -39,11 +39,11 @@ namespace MKW.GUI.SingleInstance
         {
             foreach (Process process in Process.GetProcesses())
             {
-                if ((uint)SendMessage(process.MainWindowHandle, messageId, IntPtr.Zero) == messageId)
+                if ((uint)SendMessage(process.MainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero) == messageId)
                 {
                     COPYDATASTRUCT copyData = new COPYDATASTRUCT
                     {
-                        dwData = IntPtr.Zero,
+                        dwData = new IntPtr(messageId),
                         cbData = data.Length * 2, // unicodify
                         lpData = data,
                     };
@@ -86,7 +86,7 @@ namespace MKW.GUI.SingleInstance
                 if (MessageReceived != null)
                 {
                     MessageReceivedEventArgs args =
-                        new MessageReceivedEventArgs(SingleInstanceConstants.IdentifyMessageId,
+                        new MessageReceivedEventArgs((uint)copyData.dwData.ToInt32(),
                                                      copyData.lpData);
 
                     MessageReceived.Invoke(this, args);
