@@ -9,6 +9,6 @@ namespace MKW.GUI.SingleInstance
         public const string SingleInstanceMutexName = $"{ApplicationMagic}.SingleInstanceMutex";
         public const string OpenFileMessageName = $"{ApplicationMagic}.OpenFile";
 
-        public static uint OpenFileMessageId = User32.RegisterWindowMessage(OpenFileMessageName);
+        public static uint IdentifyMessageId = User32.RegisterWindowMessage(OpenFileMessageName);
     }
 }

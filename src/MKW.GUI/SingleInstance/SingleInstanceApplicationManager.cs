@@ -22,7 +22,7 @@ namespace MKW.GUI.SingleInstance
             {
                 string encoded = RunRequestSerializer.Serialize(request);
 
-                if (messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, encoded))
+                if (messageService.BroadcastMessage(SingleInstanceConstants.IdentifyMessageId, encoded))
                 {
                     // messages broadcasted successfully -> no new host required
                     return false;
