@@ -19,29 +19,11 @@ namespace MKW.GUI
             InitializeComponent();
         }
 
-        private RunRequest ParseCommandLine(string[] args)
-        {
-            List<string> paths = [];
-
-            foreach (string arg in args)
-            {
-                if (arg.StartsWith("/") || arg.StartsWith("-"))
-                {
-                    // option, skip for now.
-                }
-                else
-                {
-                    paths.Add(Path.GetFullPath(arg));
-                }
-            }
-
-            return new RunRequest([.. paths]);
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
-            RunRequest request = ParseCommandLine(e.Args);
+            CommandLineArgs args = CommandLineArgs.Parse(e.Args);
 
+            RunRequest request = new RunRequest(args.Paths);
             if (manager.Run(request))
             {
                 mainWindowViewModel.HandleRunRequest(request);
