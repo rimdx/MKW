@@ -1,6 +1,7 @@
 ﻿using MKW.GUI.Model;
 using MKW.GUI.SingleInstance;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace MKW.GUI
 {
@@ -52,7 +53,7 @@ namespace MKW.GUI
                     }
                 }
 
-                MainWindow = new MainWindow(mainWindowViewModel)
+                MainWindow = new MainWindow(mainWindowViewModel, manager)
                 {
                     Visibility = Visibility.Visible
                 };

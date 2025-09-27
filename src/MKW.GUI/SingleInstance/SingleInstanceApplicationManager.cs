@@ -1,39 +1,59 @@
-﻿using System;
+﻿using MKW.GUI.Win32;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace MKW.GUI.SingleInstance
 {
     public class SingleInstanceApplicationManager
     {
         private readonly ISingleInstanceApplication application;
+        private readonly MessageService messageService;
 
         public SingleInstanceApplicationManager(ISingleInstanceApplication application)
         {
             this.application = application;
+            messageService = new MessageService();
         }
 
         public void Run(string[] args)
         {
-            using (Mutex singleInstanceMutex = new Mutex(true,
-                                                         SingleInstanceConstants.SingleInstanceMutexName,
-                                                         out bool mainInstance))
+            using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceConstants.SingleInstanceMutexName))
             {
-                if (mainInstance)
+                if (!messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, "123"))
                 {
-                    CancellationTokenSource source = new CancellationTokenSource();
-
-                    using SingleInstanceServer server = new SingleInstanceServer(application);
-
-                    Task serverTask = server.Run(args, source.Token);
-
                     application.InvokeMainInstance(args);
+                }
+            }
+        }
 
-                    source.Cancel();
-                }
-                else
-                {
-                    using SingleInstanceClient client = new SingleInstanceClient();
-                    client.Run(args, default).Wait();
-                }
+        public void RunServer(HwndSource source)
+        {
+            source.AddHook(WndProc);
+        }
+
+        private IntPtr WndProc(IntPtr hwnd,
+                               int msg,
+                               IntPtr wParam,
+                               IntPtr lParam,
+                               ref bool handled)
+        {
+            if (msg == SingleInstanceConstants.OpenFileMessageId)
+            {
+                handled = true;
+                return new IntPtr(SingleInstanceConstants.OpenFileMessageId);
+            }
+            else if (msg == (uint)WM.WM_COPYDATA)
+            {
+                COPYDATASTRUCT copyData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
+
+                application.InvokeExternalInstance([]);
+
+                handled = true;
+                return IntPtr.Zero;
+            }
+            else
+            {
+                return IntPtr.Zero;
             }
         }
     }

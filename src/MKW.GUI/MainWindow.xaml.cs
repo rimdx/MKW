@@ -1,21 +1,36 @@
 ﻿using Microsoft.Win32;
 using MKW.GUI.CreateDatabaseWizard;
+using MKW.GUI.SingleInstance;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace MKW.GUI
 {
     public partial class MainWindow : Window
     {
         private readonly MainWindowViewModel viewModel;
+        private readonly SingleInstanceApplicationManager manager;
 
-        public MainWindow(MainWindowViewModel viewModel)
+        public MainWindow(MainWindowViewModel viewModel, SingleInstanceApplicationManager manager)
         {
             this.viewModel = viewModel;
+            this.manager = manager;
+
             DataContext = viewModel;
 
             InitializeComponent();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+            HwndSource source = HwndSource.FromHwnd(windowHandle);
+
+            manager.RunServer(source);
         }
 
         // File
