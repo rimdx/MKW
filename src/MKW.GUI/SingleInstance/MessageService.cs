@@ -78,7 +78,7 @@ namespace MKW.GUI.SingleInstance
                 IntPtr mainWindowHandle = process.MainWindowHandle;
 
                 IntPtr rv = SendMessage(mainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero);
-                if ((uint)rv == SingleInstanceConstants.IdentifyMessageId)
+                if (rv == new IntPtr(SingleInstanceConstants.IdentifyMessageId))
                 {
                     result.Add(new OtherAppWindow(mainWindowHandle));
                 }
