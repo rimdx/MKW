@@ -4,7 +4,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    internal class Entry
+    internal sealed class Entry
         : IEntrySession
         , IDisposable
     {
@@ -17,11 +17,11 @@ namespace MKW.Core.Client
 
         public EntryId Id => entryId;
 
-        protected Entry(IDatabase database,
-                        ICryptographyProvider crypto,
-                        IUserSession user,
-                        IAsymmetricPrivateTransformer privateKey,
-                        EntryId entryId)
+        private Entry(IDatabase database,
+                      ICryptographyProvider crypto,
+                      IUserSession user,
+                      IAsymmetricPrivateTransformer privateKey,
+                      EntryId entryId)
         {
             this.database = database;
             this.user = user;

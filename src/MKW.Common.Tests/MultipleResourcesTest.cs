@@ -19,7 +19,7 @@ namespace MKW.Common.Tests
             int PropB { get; }
         }
 
-        private class A : IA, IDisposeCounter, IDisposable
+        private sealed class A : IA, IDisposeCounter, IDisposable
         {
             public int PropA => 11;
             public int Disposed { get; private set; }
@@ -30,7 +30,7 @@ namespace MKW.Common.Tests
             }
         }
 
-        private class B : IB, IDisposeCounter, IDisposable
+        private sealed class B : IB, IDisposeCounter, IDisposable
         {
             public int PropB => 22;
             public int Disposed { get; private set; }
@@ -41,7 +41,7 @@ namespace MKW.Common.Tests
             }
         }
 
-        private class Complex : IA, IB, IDisposeCounter, IDisposable
+        private sealed class Complex : IA, IB, IDisposeCounter, IDisposable
         {
             private readonly Resource<IA> a;
             private readonly Resource<IB> b;

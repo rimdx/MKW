@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Storage.JSON
 {
-    internal record class JSONDatabaseUser
+    internal sealed record class JSONDatabaseUser
     {
         public required ReadOnlyMemory<byte> Salt { get; init; }
 

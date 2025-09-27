@@ -2,7 +2,7 @@
 
 namespace MKW.Cryptography.System
 {
-    internal class SystemRandomGenerator : IRandomGenerator
+    internal sealed class SystemRandomGenerator : IRandomGenerator
     {
         public SystemRandomGenerator()
         {

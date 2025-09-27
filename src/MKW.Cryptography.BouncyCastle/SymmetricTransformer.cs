@@ -8,7 +8,7 @@ using Org.BouncyCastle.Security;
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    internal class SymmetricTransformer : ISymmetricTransformer, IDisposable
+    internal sealed class SymmetricTransformer : ISymmetricTransformer, IDisposable
     {
         private readonly ICipherParameters parameters;
 
