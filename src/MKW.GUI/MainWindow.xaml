@@ -115,8 +115,15 @@
         <Separator />
         <Button Command="{x:Static local:AppCommands.LockDatabase}" 
                 CommandTarget="{Binding Path=SelectedTab.Content}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}"
                 ToolTip="Lock Database">
           <local:CrispImage Moniker="Lock" />
+        </Button>
+        <Button Command="{x:Static local:AppCommands.UnlockDatabase}" 
+                CommandTarget="{Binding Path=SelectedTab.Content}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                ToolTip="Unlock Database">
+          <local:CrispImage Moniker="Unlock" />
         </Button>
       </ToolBar>
     </ToolBarTray>
