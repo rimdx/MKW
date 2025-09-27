@@ -76,7 +76,7 @@ namespace MKW.GUI.SingleInstance
             foreach (Process process in Process.GetProcesses())
             {
                 IntPtr mainWindowHandle = process.MainWindowHandle;
-                if ((uint)SendMessage(process.MainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero) == SingleInstanceConstants.IdentifyMessageId)
+                if ((uint)SendMessage(mainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero) == SingleInstanceConstants.IdentifyMessageId)
                 {
                     result.Add(new OtherAppWindow(mainWindowHandle));
                 }
