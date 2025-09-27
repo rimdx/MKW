@@ -1,4 +1,5 @@
-﻿using System.Windows.Interop;
+﻿using System.Diagnostics;
+using System.Windows.Interop;
 
 namespace MKW.GUI.SingleInstance
 {
@@ -19,7 +20,9 @@ namespace MKW.GUI.SingleInstance
         {
             using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceConstants.SingleInstanceMutexName))
             {
-                if (messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, "123"))
+                string encoded = RunRequestSerializer.Serialize(new RunRequest(args));
+
+                if (messageService.BroadcastMessage(SingleInstanceConstants.OpenFileMessageId, encoded))
                 {
                     // messages broadcasted successfully -> no new host required
                     return false;
@@ -38,7 +41,16 @@ namespace MKW.GUI.SingleInstance
 
         private void MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            application.InvokeExternalInstance([]);
+            try
+            {
+                RunRequest decoded = RunRequestSerializer.Deserialize(e.Data);
+
+                application.InvokeExternalInstance(decoded.Args);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
     }
 }
