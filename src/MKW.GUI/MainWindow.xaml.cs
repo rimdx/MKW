@@ -30,7 +30,7 @@ namespace MKW.GUI
             IntPtr windowHandle = new WindowInteropHelper(this).Handle;
             HwndSource source = HwndSource.FromHwnd(windowHandle);
 
-            manager.RunServer(source);
+            manager.AddMessageSource(source);
         }
 
         // File

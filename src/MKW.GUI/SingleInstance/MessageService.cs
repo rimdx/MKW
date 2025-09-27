@@ -1,12 +1,15 @@
 ﻿using MKW.GUI.Win32;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace MKW.GUI.SingleInstance
 {
     internal class MessageService
     {
         private const int SendMessageDefaultTimeout = 2000;
+
+        public event EventHandler<MessageReceivedEventArgs>? MessageReceived;
 
         public MessageService()
         {
@@ -58,6 +61,44 @@ namespace MKW.GUI.SingleInstance
             }
 
             return false;
+        }
+
+        public void AddMessageSource(HwndSource source)
+        {
+            source.AddHook(WndProc);
+        }
+
+        private IntPtr WndProc(IntPtr hwnd,
+                               int msg,
+                               IntPtr wParam,
+                               IntPtr lParam,
+                               ref bool handled)
+        {
+            if (msg == SingleInstanceConstants.OpenFileMessageId)
+            {
+                handled = true;
+                return new IntPtr(SingleInstanceConstants.OpenFileMessageId);
+            }
+            else if (msg == (uint)WM.WM_COPYDATA)
+            {
+                COPYDATASTRUCT copyData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
+
+                if (MessageReceived != null)
+                {
+                    MessageReceivedEventArgs args =
+                        new MessageReceivedEventArgs(SingleInstanceConstants.OpenFileMessageId,
+                                                     copyData.lpData);
+
+                    MessageReceived.Invoke(this, args);
+                }
+
+                handled = true;
+                return IntPtr.Zero;
+            }
+            else
+            {
+                return IntPtr.Zero;
+            }
         }
     }
 }
