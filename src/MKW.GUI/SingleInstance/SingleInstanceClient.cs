@@ -6,10 +6,12 @@ namespace MKW.GUI.SingleInstance
     internal class SingleInstanceClient : IDisposable
     {
         private readonly NamedPipeClientStream pipe;
+        private readonly PacketRPC rpc;
 
         public SingleInstanceClient()
         {
             pipe = new NamedPipeClientStream(SingleInstanceConstants.SingleInstancePipeName);
+            rpc = new PacketRPC(pipe);
         }
 
         public async Task Run(string[] args, CancellationToken cancellationToken)
@@ -18,19 +20,7 @@ namespace MKW.GUI.SingleInstance
 
             ReadOnlyMemory<byte> buffer = new byte[] { 1, 2, 3 };
 
-            await pipe.WriteAsync(MakePacket(buffer.Span), cancellationToken);
-        }
-
-        private ReadOnlyMemory<byte> MakePacket(ReadOnlySpan<byte> buffer)
-        {
-            ReadOnlyMemory<byte> length = BitConverter.GetBytes(buffer.Length);
-
-            Memory<byte> packet = new byte[buffer.Length + length.Length];
-
-            length.Span.CopyTo(packet.Span.Slice(0));
-            buffer.CopyTo(packet.Span.Slice(length.Length));
-
-            return packet;
+            await rpc.WritePacketAsync(buffer, cancellationToken);
         }
 
         public void Dispose()
