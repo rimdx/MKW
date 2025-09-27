@@ -9,7 +9,6 @@ namespace MKW.GUI.Win32
 
         public int cbData;
 
-        [MarshalAs(UnmanagedType.LPStr)]
-        public string lpData;
+        public IntPtr lpData;
     }
 }
