@@ -2,7 +2,7 @@
 
 namespace MKW.GUI
 {
-    internal class AppModel
+    public class AppModel
     {
         public DatabaseModel? CreateDatabase(string databasePath, string password)
         {
