@@ -1,6 +1,6 @@
 ﻿namespace MKW.GUI
 {
-    public sealed class AboutDialogViewModel : ViewModelBase
+    internal sealed class AboutDialogViewModel : ViewModelBase
     {
         public string Version { get; }
 

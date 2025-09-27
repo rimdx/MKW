@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace MKW.GUI
 {
-    public partial class AboutDialog : DialogWindow
+    internal sealed partial class AboutDialog : DialogWindow
     {
         private readonly AboutDialogViewModel model;
 
