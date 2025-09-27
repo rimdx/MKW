@@ -17,9 +17,11 @@
 
   <UserControl.CommandBindings>
     <CommandBinding Command="{x:Static gui:AppCommands.LockDatabase}"
-                    Executed="LockDatabaseCommand_Executed" />
+                    Executed="LockDatabaseCommand_Executed"
+                    CanExecute="LockDatabaseCommand_CanExecute"/>
     <CommandBinding Command="{x:Static gui:AppCommands.UnlockDatabase}"
-                    Executed="UnlockDatabaseCommand_Executed" />
+                    Executed="UnlockDatabaseCommand_Executed"
+                    CanExecute="UnlockDatabaseCommand_CanExecute"/>
   </UserControl.CommandBindings>
 
   <Grid>

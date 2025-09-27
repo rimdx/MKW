@@ -16,6 +16,11 @@ namespace MKW.GUI.Database
             InitializeComponent();
         }
 
+        private void LockDatabaseCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (model.Database.UnlockedDatabase != null);
+        }
+
         private void LockDatabaseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
@@ -26,6 +31,11 @@ namespace MKW.GUI.Database
             {
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
+        }
+
+        private void UnlockDatabaseCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (model.Database.UnlockedDatabase == null);
         }
 
         private void UnlockDatabaseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
