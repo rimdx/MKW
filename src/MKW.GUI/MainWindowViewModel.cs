@@ -58,6 +58,7 @@ namespace MKW.GUI
         public RecentFilesCollectionViewModel RecentFiles { get; }
 
         public string Title => "Multi-Key Wallet";
+        public string Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
         public CreateDatabaseWizardViewModel CreateCreateDatabaseViewModel()
         {
