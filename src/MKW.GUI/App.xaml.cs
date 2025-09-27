@@ -1,4 +1,5 @@
-﻿using MKW.GUI.SingleInstance;
+﻿using MKW.GUI.Model;
+using MKW.GUI.SingleInstance;
 using System.Windows;
 
 namespace MKW.GUI
@@ -18,6 +19,32 @@ namespace MKW.GUI
         {
             using (MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model))
             {
+                foreach (string arg in args)
+                {
+                    if (arg.StartsWith("/") || arg.StartsWith("-"))
+                    {
+                        // option, skip for now.
+                    }
+                    else
+                    {
+                        try
+                        {
+                            DatabaseTabItemViewModel? tabItem = mainWindowViewModel.GetDatabaseByPath(arg);
+                            if (tabItem != null)
+                            {
+                                mainWindowViewModel.SelectedTab = tabItem;
+                            }
+                            else
+                            {
+                                mainWindowViewModel.OpenDatabase(DatabaseModel.Open(arg));
+                            }
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+
                 MainWindow = new MainWindow(mainWindowViewModel);
                 MainWindow.Visibility = Visibility.Visible;
 
