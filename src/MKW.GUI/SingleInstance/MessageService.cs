@@ -42,6 +42,9 @@ namespace MKW.GUI.SingleInstance
         }
 
         private const int SendMessageDefaultTimeout = 2000;
+        // Use uint to support 32-bit platoforms.
+        private const uint IdentifyMessageMagicReturnValue = 0x018d7d2e;
+
         private readonly uint identifyMessageId;
 
         public event EventHandler<MessageReceivedEventArgs>? MessageReceived;
@@ -80,7 +83,7 @@ namespace MKW.GUI.SingleInstance
                 IntPtr mainWindowHandle = process.MainWindowHandle;
 
                 IntPtr rv = SendMessage(mainWindowHandle, identifyMessageId, IntPtr.Zero);
-                if (rv == new IntPtr(identifyMessageId))
+                if (rv == new IntPtr(IdentifyMessageMagicReturnValue))
                 {
                     result.Add(new OtherAppWindow(mainWindowHandle));
                 }
@@ -103,7 +106,7 @@ namespace MKW.GUI.SingleInstance
             if (msg == identifyMessageId)
             {
                 handled = true;
-                return new IntPtr(identifyMessageId);
+                return new IntPtr(IdentifyMessageMagicReturnValue);
             }
             else if (msg == WM.WM_COPYDATA)
             {
