@@ -62,36 +62,13 @@ namespace MKW.GUI
 
         public CreateDatabaseWizardViewModel CreateCreateDatabaseViewModel()
         {
-            return new CreateDatabaseWizardViewModel(appModel, registryService);
+            return new CreateDatabaseWizardViewModel(this, registryService);
         }
 
         public LoginWindowViewModel CreateLoginViewModel(string filename)
         {
             DatabaseModel database = appModel.OpenDatabase(filename);
             return new LoginWindowViewModel(database /* move */);
-        }
-
-        public void OpenDatabase(CreateDatabaseWizardViewModel createDatabaseViewModel)
-        {
-            if (createDatabaseViewModel.Database != null)
-            {
-                recentFilesService.OnFileOpened(createDatabaseViewModel.Database.Path);
-                DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(createDatabaseViewModel.Database /* move */));
-                TabItems.Add(tabViewModel);
-                SelectedTab = tabViewModel;
-            }
-            else
-            {
-                /* no-op */
-            }
-
-            try
-            {
-                UpdateOpenFilesList();
-            }
-            catch
-            {
-            }
         }
 
         public void OpenDatabase(LoginWindowViewModel loginWindowViewModel)
@@ -108,6 +85,24 @@ namespace MKW.GUI
                 TabItems.Add(tabViewModel);
                 SelectedTab = tabViewModel;
             }
+
+            try
+            {
+                UpdateOpenFilesList();
+            }
+            catch
+            {
+            }
+        }
+
+        public void CreateDatabase(string databasePath, string password)
+        {
+            recentFilesService.OnFileOpened(databasePath);
+
+            DatabaseModel database = appModel.CreateDatabase(databasePath, password);
+
+            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(database);
+            SelectedTab = tabViewModel;
 
             try
             {

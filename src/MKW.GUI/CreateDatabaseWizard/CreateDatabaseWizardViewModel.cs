@@ -1,5 +1,4 @@
 ﻿using MKW.GUI.Images;
-using MKW.GUI.Model;
 using MKW.GUI.Services;
 using MKW.GUI.Wizard;
 using System.IO;
@@ -8,16 +7,15 @@ namespace MKW.GUI.CreateDatabaseWizard
 {
     public class CreateDatabaseWizardViewModel : WizardViewModel
     {
-        public DatabaseModel? Database { get; private set; }
         public PasswordViewModel Password { get; }
 
-        private readonly AppModel appModel;
+        private readonly MainWindowViewModel mainWindowViewModel;
         private readonly RegistryService registry;
 
-        public CreateDatabaseWizardViewModel(AppModel appModel, RegistryService registry)
+        public CreateDatabaseWizardViewModel(MainWindowViewModel mainWindowViewModel, RegistryService registry)
             : base("Create New Database", ImageMoniker.AddDatabase)
         {
-            this.appModel = appModel;
+            this.mainWindowViewModel = mainWindowViewModel;
             this.registry = registry;
 
             databaseDirectory = registry.GetLastDatabaseDirectory();
@@ -83,7 +81,7 @@ namespace MKW.GUI.CreateDatabaseWizard
 
         public void DoCreate()
         {
-            Database = appModel.CreateDatabase(DatabasePath, Password.Password);
+            mainWindowViewModel.CreateDatabase(DatabasePath, Password.Password);
         }
     }
 }
