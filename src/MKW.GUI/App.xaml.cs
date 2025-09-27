@@ -45,8 +45,10 @@ namespace MKW.GUI
                     }
                 }
 
-                MainWindow = new MainWindow(mainWindowViewModel);
-                MainWindow.Visibility = Visibility.Visible;
+                MainWindow = new MainWindow(mainWindowViewModel)
+                {
+                    Visibility = Visibility.Visible
+                };
 
                 Run();
             }
