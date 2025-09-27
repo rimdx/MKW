@@ -4,7 +4,7 @@ namespace MKW.Core
 {
     [JsonSourceGenerationOptions()]
     [JsonSerializable(typeof(UserMetadataJson))]
-    internal partial class UserMetadataJsonSerializerContext : JsonSerializerContext
+    internal sealed partial class UserMetadataJsonSerializerContext : JsonSerializerContext
     {
     }
 }

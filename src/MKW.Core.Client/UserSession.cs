@@ -4,7 +4,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    internal class UserSession
+    internal sealed class UserSession
         : IUserSession
         , IEntryController
         , ITrustProvider

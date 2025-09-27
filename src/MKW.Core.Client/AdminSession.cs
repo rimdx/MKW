@@ -4,7 +4,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    internal class AdminSession
+    internal sealed class AdminSession
         : IAdminSession
         , IUserSession
         , IUserHost

@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Storage.JSON
 {
-    internal class JSONDatabase
+    internal sealed class JSONDatabase
     {
         public JSONDatabaseUser? Admin { get; set; }
 

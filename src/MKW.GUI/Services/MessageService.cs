@@ -5,7 +5,7 @@ using System.Windows.Interop;
 
 namespace MKW.GUI.Services
 {
-    internal class MessageService
+    internal sealed class MessageService
     {
         private class OtherAppWindow : IOtherAppWindow
         {

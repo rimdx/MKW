@@ -9,7 +9,7 @@ namespace MKW.Common.Tests
             int Disposed { get; }
         }
 
-        private class TestResource : ITestResource
+        private sealed class TestResource : ITestResource
         {
             public int Disposed { get; private set; }
 

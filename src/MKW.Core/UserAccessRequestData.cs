@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core
 {
-    internal class UserAccessRequestData
+    internal sealed class UserAccessRequestData
     {
         public required ReadOnlyMemory<byte> Salt { get; set; }
 
