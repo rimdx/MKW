@@ -56,7 +56,7 @@
                   <ControlTemplate TargetType="MenuItem">
                     <MenuItem Header="{Binding FileName}"
                               Command="{x:Static local:AppCommands.OpenRecent}"
-                              CommandParameter="{Binding FullPath}"/>
+                              CommandParameter="{Binding FullPath}" />
                   </ControlTemplate>
                 </Setter.Value>
               </Setter>
