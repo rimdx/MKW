@@ -14,6 +14,7 @@ namespace MKW.GUI
         private readonly RegistryService registryService;
         private readonly RecentFilesService recentFilesService;
         private readonly AppModel appModel;
+        private string title;
 
         public ObservableCollection<DatabaseTabItemViewModel> TabItems { get; }
 
@@ -24,6 +25,7 @@ namespace MKW.GUI
             recentFilesService = new RecentFilesService(registryService);
             RecentFiles = new RecentFilesCollectionViewModel(recentFilesService);
             TabItems = new ObservableCollection<DatabaseTabItemViewModel>();
+            title = FormatTitle();
 
             ((INotifyPropertyChanged)TabItems).PropertyChanged += TabItems_PropertyChanged;
             TabItems_PropertyChanged(TabItems, new PropertyChangedEventArgs(null));
@@ -57,7 +59,11 @@ namespace MKW.GUI
 
         public RecentFilesCollectionViewModel RecentFiles { get; }
 
-        public string Title => "Multi-Key Wallet";
+        public string Title
+        {
+            get => title;
+            private set => SetProperty(ref title, value);
+        }
 
         public CreateDatabaseWizardViewModel CreateCreateDatabaseViewModel()
         {
@@ -223,6 +229,11 @@ namespace MKW.GUI
                 {
                 }
             }
+        }
+
+        private static string FormatTitle()
+        {
+            return "Multi-Key Wallet";
         }
     }
 }
