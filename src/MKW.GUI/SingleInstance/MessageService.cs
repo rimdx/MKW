@@ -42,11 +42,13 @@ namespace MKW.GUI.SingleInstance
         }
 
         private const int SendMessageDefaultTimeout = 2000;
+        private readonly uint identifyMessageId;
 
         public event EventHandler<MessageReceivedEventArgs>? MessageReceived;
 
         public MessageService()
         {
+            identifyMessageId = SingleInstanceConstants.IdentifyMessageId;
         }
 
         private static IntPtr SendMessage(IntPtr windowHandle, uint messageId, IntPtr data)
@@ -77,8 +79,8 @@ namespace MKW.GUI.SingleInstance
             {
                 IntPtr mainWindowHandle = process.MainWindowHandle;
 
-                IntPtr rv = SendMessage(mainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero);
-                if (rv == new IntPtr(SingleInstanceConstants.IdentifyMessageId))
+                IntPtr rv = SendMessage(mainWindowHandle, identifyMessageId, IntPtr.Zero);
+                if (rv == new IntPtr(identifyMessageId))
                 {
                     result.Add(new OtherAppWindow(mainWindowHandle));
                 }
@@ -98,10 +100,10 @@ namespace MKW.GUI.SingleInstance
                                IntPtr lParam,
                                ref bool handled)
         {
-            if (msg == SingleInstanceConstants.IdentifyMessageId)
+            if (msg == identifyMessageId)
             {
                 handled = true;
-                return new IntPtr(SingleInstanceConstants.IdentifyMessageId);
+                return new IntPtr(identifyMessageId);
             }
             else if (msg == WM.WM_COPYDATA)
             {
