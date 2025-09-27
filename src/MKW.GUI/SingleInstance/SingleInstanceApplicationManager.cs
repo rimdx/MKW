@@ -1,6 +1,4 @@
-﻿using MKW.GUI.Win32;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
+﻿using System.Windows.Interop;
 
 namespace MKW.GUI.SingleInstance
 {
