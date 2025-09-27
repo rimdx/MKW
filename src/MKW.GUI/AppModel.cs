@@ -6,7 +6,7 @@ namespace MKW.GUI
 {
     public class AppModel
     {
-        ICryptographyProvider cryptographyProvider;
+        private readonly ICryptographyProvider cryptographyProvider;
 
         public AppModel()
         {
