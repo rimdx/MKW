@@ -2,7 +2,7 @@
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    internal class BouncyCastleRandomGenerator : IRandomGenerator
+    internal sealed class BouncyCastleRandomGenerator : IRandomGenerator
     {
         private readonly SecureRandom random;
 
