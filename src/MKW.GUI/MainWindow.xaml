@@ -66,7 +66,7 @@
         <Separator />
         <MenuItem Header="_Close" Command="ApplicationCommands.Close" />
         <Separator />
-        <MenuItem Header="_Lock Database" 
+        <MenuItem Header="_Lock Database"
                   Command="{x:Static local:AppCommands.LockDatabase}" />
         <MenuItem Header="_Exit" Command="{x:Static local:AppCommands.Exit}" />
       </MenuItem>
