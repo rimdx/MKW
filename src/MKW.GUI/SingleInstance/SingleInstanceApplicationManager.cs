@@ -1,12 +1,9 @@
-﻿using System.IO.Pipes;
+﻿using System;
 
 namespace MKW.GUI.SingleInstance
 {
     public class SingleInstanceApplicationManager
     {
-        private static readonly string SingleInstanceMutexName = "{D22C3E6A-1B2F-4B80-9F54-A601E5CBEC37}";
-        private static readonly string SingleInstancePipeName = "{09FCE022-F082-45F0-9E3C-92556F6C6079}";
-
         private readonly ISingleInstanceApplication application;
 
         public SingleInstanceApplicationManager(ISingleInstanceApplication application)
@@ -17,16 +14,26 @@ namespace MKW.GUI.SingleInstance
         public void Run(string[] args)
         {
             using (Mutex singleInstanceMutex = new Mutex(true,
-                                                         SingleInstanceMutexName,
+                                                         SingleInstanceConstants.SingleInstanceMutexName,
                                                          out bool mainInstance))
             {
                 if (mainInstance)
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+
+                    using SingleInstanceServer server = new SingleInstanceServer(application);
+
+                    Task serverTask = server.Run(args, source.Token);
+
                     application.InvokeMainInstance(args);
+
+                    source.Cancel();
+                    serverTask.Wait();
                 }
                 else
                 {
-                    // signal main app
+                    using SingleInstanceClient client = new SingleInstanceClient();
+                    client.Run(args, default).Wait();
                 }
             }
         }
