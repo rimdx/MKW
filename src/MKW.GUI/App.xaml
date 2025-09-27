@@ -9,6 +9,7 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Styles/ListView.xaml" />
         <ResourceDictionary Source="/Styles/TabControl.xaml" />
+        <ResourceDictionary Source="/Styles/ToolBar.xaml" />
         <ResourceDictionary Source="/Styles/TreeView.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
