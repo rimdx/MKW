@@ -1,4 +1,6 @@
-﻿namespace MKW.GUI
+﻿using MKW.GUI.SingleInstance;
+
+namespace MKW.GUI
 {
     public static class Program
     {
@@ -6,7 +8,8 @@
         public static void Main(string[] args)
         {
             App app = new App();
-            app.Run();
+            SingleInstanceApplicationManager manager = new SingleInstanceApplicationManager(app);
+            manager.Run(args);
         }
     }
 }

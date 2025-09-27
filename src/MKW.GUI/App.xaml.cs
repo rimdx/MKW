@@ -1,8 +1,9 @@
-﻿using System.Windows;
+﻿using MKW.GUI.SingleInstance;
+using System.Windows;
 
 namespace MKW.GUI
 {
-    public partial class App : Application
+    public partial class App : Application, ISingleInstanceApplication
     {
         private readonly AppModel model;
 
@@ -10,10 +11,20 @@ namespace MKW.GUI
         {
             model = new AppModel();
 
+            InitializeComponent();
+        }
+
+        public void InvokeMainInstance(string[] args)
+        {
             MainWindow = new MainWindow(model);
             MainWindow.Visibility = Visibility.Visible;
 
-            InitializeComponent();
+            Run();
+        }
+
+        public void InvokeExternalInstance(string[] args)
+        {
+            throw new NotImplementedException();
         }
     }
 }
