@@ -59,6 +59,7 @@ namespace MKW.GUI
 
         public void InvokeExternalInstance(RunRequest request)
         {
+            mainWindowViewModel.HandleRunRequest(request);
         }
     }
 }
