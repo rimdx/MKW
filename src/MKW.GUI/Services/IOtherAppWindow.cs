@@ -1,4 +1,4 @@
-﻿namespace MKW.GUI.SingleInstance
+﻿namespace MKW.GUI.Services
 {
     internal interface IOtherAppWindow
     {

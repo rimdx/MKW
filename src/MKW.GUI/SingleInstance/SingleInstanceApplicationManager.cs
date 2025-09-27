@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using MKW.GUI.Services;
+using System.Diagnostics;
 using System.Windows.Interop;
 
 namespace MKW.GUI.SingleInstance
