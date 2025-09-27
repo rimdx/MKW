@@ -32,7 +32,7 @@
             Background="{DynamicResource ResourceKey={x:Static SystemColors.InfoBrushKey}}"
             Visibility="{Binding Database.WantRefresh,
                                  Converter={StaticResource BooleanToVisibilityConverter}}"
-            Padding="3">
+            Padding="6,3">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="auto" />
