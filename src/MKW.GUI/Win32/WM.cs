@@ -1,7 +1,7 @@
 ﻿namespace MKW.GUI.Win32
 {
-    public enum WM : uint
+    public static class WM
     {
-        WM_COPYDATA = 0x004A,
+        public const uint WM_COPYDATA = 0x004A;
     }
 }
