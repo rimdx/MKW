@@ -1,8 +1,14 @@
-﻿namespace MKW.GUI.SingleInstance
+﻿using MKW.GUI.Win32;
+
+namespace MKW.GUI.SingleInstance
 {
     internal class SingleInstanceConstants
     {
-        public static readonly string SingleInstanceMutexName = "{D22C3E6A-1B2F-4B80-9F54-A601E5CBEC37}";
-        public static readonly string SingleInstancePipeName = "{09FCE022-F082-45F0-9E3C-92556F6C6079}";
+        public const string ApplicationMagic = "MKW.{A2AF56DE-DDB8-4FC6-86BA-666ACC77EC98}";
+
+        public const string SingleInstanceMutexName = $"{ApplicationMagic}.SingleInstanceMutex";
+        public const string OpenFileMessageName = $"{ApplicationMagic}.OpenFile";
+
+        public static uint OpenFileMessageId = User32.RegisterWindowMessage(OpenFileMessageName);
     }
 }
