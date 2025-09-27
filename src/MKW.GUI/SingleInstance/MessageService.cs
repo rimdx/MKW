@@ -7,6 +7,36 @@ namespace MKW.GUI.SingleInstance
 {
     internal class MessageService
     {
+        private class OtherAppWindow : IOtherAppWindow
+        {
+            private readonly IntPtr hwnd;
+
+            public OtherAppWindow(IntPtr hwnd)
+            {
+                this.hwnd = hwnd;
+            }
+
+            public bool SendDataMessage(uint messageId, string data)
+            {
+                COPYDATASTRUCT copyData = new COPYDATASTRUCT
+                {
+                    dwData = new IntPtr(messageId),
+                    cbData = data.Length * 2, // unicodify
+                    lpData = data,
+                };
+
+                IntPtr copyDataMem = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
+
+                Marshal.StructureToPtr(copyData, copyDataMem, false);
+
+                SendMessage(hwnd, WM.WM_COPYDATA, copyDataMem);
+
+                Marshal.FreeHGlobal(copyDataMem);
+
+                return true;
+            }
+        }
+
         private const int SendMessageDefaultTimeout = 2000;
 
         public event EventHandler<MessageReceivedEventArgs>? MessageReceived;
@@ -15,7 +45,7 @@ namespace MKW.GUI.SingleInstance
         {
         }
 
-        public IntPtr SendMessage(IntPtr windowHandle, uint messageId, IntPtr data)
+        private static IntPtr SendMessage(IntPtr windowHandle, uint messageId, IntPtr data)
         {
             IntPtr hr = User32.SendMessageTimeout(windowHandle,
                                                   messageId,
@@ -35,32 +65,41 @@ namespace MKW.GUI.SingleInstance
             }
         }
 
-        public bool BroadcastMessage(uint messageId, string data)
+        public IReadOnlyCollection<IOtherAppWindow> GetOtherAppWindows()
         {
+            List<IOtherAppWindow> result = new List<IOtherAppWindow>();
+
             foreach (Process process in Process.GetProcesses())
             {
-                if ((uint)SendMessage(process.MainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero) == messageId)
+                IntPtr mainWindowHandle = process.MainWindowHandle;
+                if ((uint)SendMessage(process.MainWindowHandle, SingleInstanceConstants.IdentifyMessageId, IntPtr.Zero) == SingleInstanceConstants.IdentifyMessageId)
                 {
-                    COPYDATASTRUCT copyData = new COPYDATASTRUCT
-                    {
-                        dwData = new IntPtr(messageId),
-                        cbData = data.Length * 2, // unicodify
-                        lpData = data,
-                    };
-
-                    IntPtr copyDataMem = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
-
-                    Marshal.StructureToPtr(copyData, copyDataMem, false);
-
-                    SendMessage(process.MainWindowHandle, WM.WM_COPYDATA, copyDataMem);
-
-                    Marshal.FreeHGlobal(copyDataMem);
-
-                    return true;
+                    result.Add(new OtherAppWindow(mainWindowHandle));
                 }
             }
 
-            return false;
+            return result;
+        }
+
+        public bool BroadcastMessage(uint messageId, string data)
+        {
+            // TODO: Transitional.
+            IReadOnlyCollection<IOtherAppWindow> windows = GetOtherAppWindows();
+            if (windows.Count > 0)
+            {
+                foreach (IOtherAppWindow window in windows)
+                {
+                    window.SendDataMessage(messageId, data);
+
+                    return true;
+                }
+
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void AddMessageSource(HwndSource source)
