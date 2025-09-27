@@ -1,0 +1,80 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MKW.GUI">
+  <local:TreeViewIndentConverter x:Key="TreeViewIndentConverter" IndentSize="16" />
+
+  <Style TargetType="TreeView">
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TreeView">
+          <Border Name="Border"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  BorderBrush="{TemplateBinding BorderBrush}">
+            <ScrollViewer Focusable="False"
+                          CanContentScroll="False">
+              <ItemsPresenter />
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="TreeViewItem">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TreeViewItem">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border x:Name="HoverBorder"
+                    Background="{TemplateBinding Background}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                          Converter={StaticResource TreeViewIndentConverter}}" />
+                  <ColumnDefinition Width="auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="PART_Header"
+                      Grid.Row="0"
+                      Grid.Column="2"
+                      Padding="4,2">
+                  <ContentPresenter ContentSource="Header"
+                                  HorizontalAlignment="Stretch" />
+                </Border>
+              </Grid>
+            </Border>
+
+            <ItemsPresenter x:Name="ItemsHost"
+                            Grid.Row="1" />
+          </Grid>
+
+          <ControlTemplate.Triggers>
+            <Trigger SourceName="HoverBorder" Property="IsMouseOver" Value="True">
+              <Setter TargetName="HoverBorder" Property="Background"
+                      Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            </Trigger>
+
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="HoverBorder" Property="Background"
+                      Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>
