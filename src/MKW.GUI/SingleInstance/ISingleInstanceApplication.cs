@@ -2,6 +2,6 @@
 {
     public interface ISingleInstanceApplication
     {
-        void InvokeExternalInstance(string[] args);
+        void InvokeExternalInstance(RunRequest request);
     }
 }
