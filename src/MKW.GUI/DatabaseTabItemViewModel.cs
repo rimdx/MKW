@@ -28,7 +28,7 @@ namespace MKW.GUI
             Header = Path.GetFileNameWithoutExtension(databaseViewModel.Database.Path);
             Tooltip = databaseViewModel.Database.Path;
             Content = new DatabasePage(databaseViewModel);
-            Icon = GetIcon(databaseViewModel.Database);
+            Icon = GetIcon(databaseViewModel.Database.UnlockedDatabase);
 
             databaseViewModel.Database.PropertyChanged += Database_PropertyChanged;
         }
@@ -37,13 +37,13 @@ namespace MKW.GUI
         {
             if (e.MatchProperty(nameof(DatabaseModel.UnlockedDatabase)))
             {
-                Icon = GetIcon(databaseViewModel.Database);
+                Icon = GetIcon(databaseViewModel.Database.UnlockedDatabase);
             }
         }
 
-        private static ImageMoniker GetIcon(DatabaseModel database)
+        private static ImageMoniker GetIcon(DatabaseUnlockedModel? unlockedDatabase)
         {
-            if (database.UnlockedDatabase == null)
+            if (unlockedDatabase == null)
             {
                 return ImageMoniker.ReadOnlyDatabase;
             }
