@@ -48,7 +48,7 @@ namespace MKW.GUI.SingleInstance
                         lpData = data,
                     };
 
-                    IntPtr copyDataMem = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(COPYDATASTRUCT)));
+                    IntPtr copyDataMem = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
 
                     Marshal.StructureToPtr(copyData, copyDataMem, false);
 
@@ -81,7 +81,7 @@ namespace MKW.GUI.SingleInstance
             }
             else if (msg == WM.WM_COPYDATA)
             {
-                COPYDATASTRUCT copyData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
+                COPYDATASTRUCT copyData = Marshal.PtrToStructure<COPYDATASTRUCT>(lParam);
 
                 if (MessageReceived != null)
                 {
