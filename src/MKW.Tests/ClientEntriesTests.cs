@@ -13,7 +13,7 @@ namespace MKW.Tests
         {
             using ClientSandBox sbox = new ClientSandBox();
             using IDatabase db = sbox.OpenDatabase();
-            using ClientSession client = ClientSession.Open(db);
+            using ClientSession client = ClientSession.Open(db, sbox.Crypto);
 
             using IUserSession user = sbox.CreateUser(client, "secretprotector", out _);
             using IAdminSession admin = sbox.OpenAdmin(client);
@@ -47,7 +47,7 @@ namespace MKW.Tests
         {
             using ClientSandBox sbox = new ClientSandBox();
             using IDatabase db = sbox.OpenDatabase();
-            using ClientSession client = ClientSession.Open(db);
+            using ClientSession client = ClientSession.Open(db, sbox.Crypto);
 
             using IAdminSession admin = sbox.OpenAdmin(client);
             using IUserSession oldUser = sbox.CreateUser(client, "iamanoldman", out _);

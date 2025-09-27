@@ -225,7 +225,7 @@ namespace MKW.GUI
                     }
                     else
                     {
-                        OpenDatabase(DatabaseModel.Open(path));
+                        OpenDatabase(appModel.OpenDatabase(path));
                     }
                 }
                 catch

@@ -2,6 +2,7 @@
 using MKW.Core.Client;
 using MKW.Core.Storage;
 using MKW.Core.Storage.JSON;
+using MKW.Cryptography;
 
 namespace MKW.GUI.Model
 {
@@ -56,14 +57,14 @@ namespace MKW.GUI.Model
             private set => SetProperty(ref users, value);
         }
 
-        public static DatabaseModel Open(string path)
+        public static DatabaseModel Open(ICryptographyProvider crypto, string path)
         {
             JSONDatabaseSession database = JSONDatabaseSession.Open(path);
-            ClientSession client = ClientSession.Open(database);
+            ClientSession client = ClientSession.Open(database, crypto);
             return new DatabaseModel(database, path, client);
         }
 
-        public static DatabaseModel Create(string path, string adminPassword)
+        public static DatabaseModel Create(ICryptographyProvider crypto, string path, string adminPassword)
         {
             UserMetadata metadata = new UserMetadata // todo
             {
@@ -72,7 +73,7 @@ namespace MKW.GUI.Model
             };
 
             JSONDatabaseSession database = JSONDatabaseSession.Create(path);
-            ClientSession client = ClientSession.Create(database, adminPassword, metadata);
+            ClientSession client = ClientSession.Create(database, crypto, adminPassword, metadata);
             DatabaseModel model = new DatabaseModel(database, path, client);
 
             model.Unlock(UserId.Admin(), adminPassword);

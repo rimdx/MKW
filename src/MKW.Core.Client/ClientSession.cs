@@ -1,7 +1,6 @@
 ﻿using MKW.Core.Implementation;
 using MKW.Core.Storage;
 using MKW.Cryptography;
-using MKW.Cryptography.Loader;
 
 namespace MKW.Core.Client
 {
@@ -13,18 +12,18 @@ namespace MKW.Core.Client
         private readonly UserController userController;
         private readonly AdminController adminController;
 
-        protected ClientSession(IDatabase db)
+        protected ClientSession(IDatabase db, ICryptographyProvider crypto)
         {
             Database = db;
 
-            crypto = CryptographyLoader.GetProvider();
+            this.crypto = crypto;
             userController = new UserController(this, crypto, Database);
             adminController = new AdminController(crypto, Database);
         }
 
-        public static ClientSession Open(IDatabase db)
+        public static ClientSession Open(IDatabase db, ICryptographyProvider crypto)
         {
-            ClientSession client = new ClientSession(db);
+            ClientSession client = new ClientSession(db, crypto);
 
             // ensure the admin actually exists
             // a database without admin is invalid
@@ -34,10 +33,11 @@ namespace MKW.Core.Client
         }
 
         public static ClientSession Create(IDatabase db,
+                                           ICryptographyProvider crypto,
                                            string adminPassword,
                                            UserMetadata adminMetadata)
         {
-            ClientSession client = new ClientSession(db);
+            ClientSession client = new ClientSession(db, crypto);
 
             client.CreateAdmin(adminPassword, adminMetadata);
 
