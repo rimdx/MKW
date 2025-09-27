@@ -74,10 +74,10 @@ namespace MKW.GUI.SingleInstance
                                IntPtr lParam,
                                ref bool handled)
         {
-            if (msg == SingleInstanceConstants.OpenFileMessageId)
+            if (msg == SingleInstanceConstants.IdentifyMessageId)
             {
                 handled = true;
-                return new IntPtr(SingleInstanceConstants.OpenFileMessageId);
+                return new IntPtr(SingleInstanceConstants.IdentifyMessageId);
             }
             else if (msg == WM.WM_COPYDATA)
             {
@@ -86,7 +86,7 @@ namespace MKW.GUI.SingleInstance
                 if (MessageReceived != null)
                 {
                     MessageReceivedEventArgs args =
-                        new MessageReceivedEventArgs(SingleInstanceConstants.OpenFileMessageId,
+                        new MessageReceivedEventArgs(SingleInstanceConstants.IdentifyMessageId,
                                                      copyData.lpData);
 
                     MessageReceived.Invoke(this, args);
