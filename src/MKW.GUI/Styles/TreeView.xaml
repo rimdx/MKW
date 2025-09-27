@@ -39,7 +39,8 @@
             </Grid.RowDefinitions>
 
             <Border x:Name="HoverBorder"
-                    Background="{TemplateBinding Background}">
+                    Background="{TemplateBinding Background}"
+                    BorderThickness="1">
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent},
@@ -72,6 +73,23 @@
               <Setter TargetName="HoverBorder" Property="Background"
                       Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
             </Trigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsFocused" Value="True" />
+                <Condition Property="IsSelected" Value="True" />
+              </MultiTrigger.Conditions>
+
+              <MultiTrigger.Setters>
+                <Setter TargetName="HoverBorder"
+                        Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+
+                <Setter TargetName="HoverBorder"
+                        Property="BorderBrush"
+                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+              </MultiTrigger.Setters>
+            </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
