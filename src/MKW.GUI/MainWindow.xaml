@@ -21,15 +21,20 @@
   <Window.CommandBindings>
     <CommandBinding Command="{x:Static local:AppCommands.About}"
                     Executed="HelpAbout_Executed" />
+
     <CommandBinding Command="ApplicationCommands.Close"
                     Executed="FileClose_Executed"
                     CanExecute="FileClose_CanExecute"/>
+
     <CommandBinding Command="{x:Static local:AppCommands.Exit}"
                     Executed="FileExit_Executed" />
+
     <CommandBinding Command="ApplicationCommands.Open"
                     Executed="FileOpenCommand_Executed" />
+
     <CommandBinding Command="{x:Static local:AppCommands.OpenRecent}"
                     Executed="FileOpenRecentCommand_Executed" />
+
     <CommandBinding Command="ApplicationCommands.New"
                     Executed="FileNew_Executed" />
   </Window.CommandBindings>
