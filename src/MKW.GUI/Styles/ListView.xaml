@@ -178,19 +178,23 @@
 
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition Property="IsFocused" Value="True" />
+                <Condition Property="IsFocused" Value="False" />
                 <Condition Property="IsSelected" Value="True" />
               </MultiTrigger.Conditions>
 
-              <MultiTrigger.Setters>
-                <Setter TargetName="ItemBorder"
-                        Property="Background"
-                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+              <Setter TargetName="ItemBorder"
+                      Property="BorderBrush"
+                      Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+            </MultiTrigger>
 
-                <Setter TargetName="ItemBorder"
-                        Property="BorderBrush"
-                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-              </MultiTrigger.Setters>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsFocused" Value="True" />
+              </MultiTrigger.Conditions>
+
+              <Setter TargetName="ItemBorder"
+                      Property="BorderBrush"
+                      Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
             </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -223,19 +227,23 @@
 
             <MultiTrigger>
               <MultiTrigger.Conditions>
-                <Condition Property="IsFocused" Value="True" />
+                <Condition Property="IsFocused" Value="False" />
                 <Condition Property="IsSelected" Value="True" />
               </MultiTrigger.Conditions>
 
-              <MultiTrigger.Setters>
-                <Setter TargetName="ItemBorder"
-                        Property="Background"
-                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+              <Setter TargetName="ItemBorder"
+                      Property="BorderBrush"
+                      Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+            </MultiTrigger>
 
-                <Setter TargetName="ItemBorder"
-                        Property="BorderBrush"
-                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-              </MultiTrigger.Setters>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsFocused" Value="True" />
+              </MultiTrigger.Conditions>
+
+              <Setter TargetName="ItemBorder"
+                      Property="BorderBrush"
+                      Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
             </MultiTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
