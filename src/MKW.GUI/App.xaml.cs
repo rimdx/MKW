@@ -16,10 +16,13 @@ namespace MKW.GUI
 
         public void InvokeMainInstance(string[] args)
         {
-            MainWindow = new MainWindow(model);
-            MainWindow.Visibility = Visibility.Visible;
+            using (MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(model))
+            {
+                MainWindow = new MainWindow(mainWindowViewModel);
+                MainWindow.Visibility = Visibility.Visible;
 
-            Run();
+                Run();
+            }
         }
 
         public void InvokeExternalInstance(string[] args)
