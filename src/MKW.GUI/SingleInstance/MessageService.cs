@@ -81,27 +81,6 @@ namespace MKW.GUI.SingleInstance
             return result;
         }
 
-        public bool BroadcastMessage(uint messageId, string data)
-        {
-            // TODO: Transitional.
-            IReadOnlyCollection<IOtherAppWindow> windows = GetOtherAppWindows();
-            if (windows.Count > 0)
-            {
-                foreach (IOtherAppWindow window in windows)
-                {
-                    window.SendDataMessage(messageId, data);
-
-                    return true;
-                }
-
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public void AddMessageSource(HwndSource source)
         {
             source.AddHook(WndProc);
