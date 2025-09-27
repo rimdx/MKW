@@ -14,7 +14,7 @@ namespace MKW.Tests
         {
             using ClientSandBox sbox = new ClientSandBox();
             using IDatabase db = sbox.OpenDatabase();
-            using ClientSession session = ClientSession.Open(db);
+            using ClientSession session = ClientSession.Open(db, sbox.Crypto);
 
             using IUserSession s1 = sbox.CreateUser(session, "whattheheckamidoing", out UserInfo user);
 

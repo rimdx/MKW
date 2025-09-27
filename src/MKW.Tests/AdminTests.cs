@@ -22,7 +22,7 @@ namespace MKW.Tests
                 UserId = "admin@contoso.com"
             };
 
-            using ClientSession client = ClientSession.Create(db, sbox.AdminSecret, metadata);
+            using ClientSession client = ClientSession.Create(db, sbox.Crypto, sbox.AdminSecret, metadata);
 
             using IAdminSession adminSession = client.OpenAdmin(sbox.AdminSecret);
         }
@@ -103,7 +103,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
 
-            Assert.Throws<Exception>(() => ClientSession.Open(db));
+            Assert.Throws<Exception>(() => ClientSession.Open(db, sbox.Crypto));
 
             // todo: maybe do this somehow?
 

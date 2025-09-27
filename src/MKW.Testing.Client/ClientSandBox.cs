@@ -25,7 +25,7 @@ namespace MKW.Testing.Client
                 };
 
                 using JSONDatabaseSession db = JSONDatabaseSession.Create(DatabasePath);
-                using ClientSession client = ClientSession.Create(db, AdminSecret, metadata);
+                using ClientSession client = ClientSession.Create(db, Crypto, AdminSecret, metadata);
             }
         }
 
@@ -36,7 +36,7 @@ namespace MKW.Testing.Client
 
         public ClientSession OpenSession(IDatabase db)
         {
-            return ClientSession.Open(db);
+            return ClientSession.Open(db, Crypto);
         }
 
         public IAdminSession OpenAdmin(ClientSession client)
