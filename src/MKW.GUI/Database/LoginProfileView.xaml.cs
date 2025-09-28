@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MKW.GUI.RequestAccessWizard;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -18,6 +19,20 @@ namespace MKW.GUI.Database
             try
             {
                 ViewModel.Login();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
+
+        private void RequestAccess_Click(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                RequestAccessWizardViewModel dialogModel = ViewModel.CreateRequestAccessViewModel();
+                RequestAccessWizardDialog dialog = new RequestAccessWizardDialog(dialogModel, Window.GetWindow(this));
+                dialog.ShowDialog();
             }
             catch (Exception ex)
             {

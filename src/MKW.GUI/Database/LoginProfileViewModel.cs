@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Model;
+using MKW.GUI.RequestAccessWizard;
 
 namespace MKW.GUI.Database
 {
@@ -23,6 +24,11 @@ namespace MKW.GUI.Database
         public void Login()
         {
             database.Database.Database.Unlock(user.Id, Password);
+        }
+
+        public RequestAccessWizardViewModel CreateRequestAccessViewModel()
+        {
+            return database.Database.CreateRequestAccessViewModel();
         }
 
         public string LoginUserName => user.LoginUserName;
