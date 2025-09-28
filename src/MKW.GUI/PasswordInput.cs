@@ -13,21 +13,45 @@ namespace MKW.GUI
                                                      new FrameworkPropertyMetadata(typeof(PasswordInput)));
         }
 
+        private static FrameworkPropertyMetadata PasswordPropertyMetadata =
+            new FrameworkPropertyMetadata("",
+                                          FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                                          OnPasswordPropertyChanged);
+
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.Register(nameof(Password),
                                         typeof(string),
-                                        typeof(PasswordInput));
+                                        typeof(PasswordInput),
+                                        PasswordPropertyMetadata);
+
+        private static void OnPasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            PasswordInput input = (PasswordInput)d;
+
+            string oldPassword = (string)e.OldValue;
+            string newPassword = (string)e.NewValue;
+
+            if (oldPassword != newPassword)
+            {
+                input.OnPasswordPropertyChanged(oldPassword, newPassword);
+            }
+        }
+
+        private void OnPasswordPropertyChanged(string oldPassword, string newPassword)
+        {
+            if (passwordBox != null)
+            {
+                if (!passwordBox.IsFocused)
+                {
+                    passwordBox.Password = newPassword;
+                }
+            }
+        }
 
         public virtual string? Password
         {
             get => (string?)GetValue(PasswordProperty);
-            set
-            {
-                SetValue(PasswordProperty, value);
-
-                if (passwordBox != null)
-                    passwordBox.Password = value;
-            }
+            set => SetValue(PasswordProperty, value);
         }
 
         public override void OnApplyTemplate()
