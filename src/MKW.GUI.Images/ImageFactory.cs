@@ -32,6 +32,7 @@ namespace MKW.GUI.Images
             ImageMoniker.NewFolder => new NewFolder(),
             ImageMoniker.NewKey => new NewKey(),
             ImageMoniker.NewUser => new NewUser(),
+            ImageMoniker.Next => new Next(),
             ImageMoniker.OpenFile => new OpenFile(),
             ImageMoniker.OpenFolder => new OpenFolder(),
             ImageMoniker.PasswordBox => new PasswordBox(),
