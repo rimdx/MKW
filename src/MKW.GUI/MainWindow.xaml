@@ -93,13 +93,17 @@
           </MenuItem.Icon>
         </MenuItem>
 
-        <MenuItem Header="Edit Entry">
+        <MenuItem Header="Edit Entry"
+                  Command="{x:Static local:EntryCommands.EditEntry}"
+                  CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}">
           <MenuItem.Icon>
             <local:CrispImage Moniker="EditKey" />
           </MenuItem.Icon>
         </MenuItem>
 
-        <MenuItem Header="Delete Entry">
+        <MenuItem Header="Delete Entry"
+                  Command="{x:Static local:EntryCommands.DeleteEntry}"
+                  CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}">
           <MenuItem.Icon>
             <local:CrispImage Moniker="DeleteKey" />
           </MenuItem.Icon>

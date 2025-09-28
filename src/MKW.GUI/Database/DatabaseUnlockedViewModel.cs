@@ -97,16 +97,9 @@ namespace MKW.GUI.Database
             return new EditEntryWindowViewModel(database, database.OpenEntry(id));
         }
 
-        public bool DeleteEntry()
+        public void DeleteEntry(DatabaseEntryModel entry)
         {
-            if (SelectedEntry == null)
-            {
-                throw new Exception("No entry was selected.");
-            }
-
-            database.DeleteEntry(SelectedEntry.Id);
-
-            return true;
+            database.DeleteEntry(entry.Id);
         }
 
         // User
