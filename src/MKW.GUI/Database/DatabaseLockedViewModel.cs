@@ -12,7 +12,13 @@ namespace MKW.GUI.Database
         public DatabaseUserModel SelectedUser
         {
             get => selectedUser;
-            set => SetProperty(ref selectedUser, value);
+            set
+            {
+                if (SetProperty(ref selectedUser, value))
+                {
+                    Password = "";
+                }
+            }
         }
 
         private string password = "";
