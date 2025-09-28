@@ -3,7 +3,8 @@
                     xmlns:local="clr-namespace:MKW.GUI">
   <local:TreeViewIndentConverter x:Key="TreeViewIndentConverter" IndentSize="16" />
 
-  <Style TargetType="ListView">
+  <Style x:Key="ListViewStyle"
+         TargetType="ListView">
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
     <Setter Property="Background" Value="Transparent" />
@@ -14,6 +15,24 @@
         <ControlTemplate>
           <Border BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}">
+            <ScrollViewer Grid.Row="1"
+                          Focusable="False">
+              <ItemsPresenter />
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="GridViewStyle"
+         TargetType="ListView"
+         BasedOn="{StaticResource ListViewStyle}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Border BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}">
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
