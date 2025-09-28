@@ -14,7 +14,7 @@ namespace MKW.GUI.Database
             this.database = database;
 
             Entries = new DatabaseEntryCollectionViewModel(database);
-            Users = new DatabaseUserCollectionViewModel(database);
+            Users = new DatabaseUserCollectionViewModel(database.Database);
         }
 
         private enum PageType
