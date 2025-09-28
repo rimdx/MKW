@@ -29,6 +29,36 @@ namespace MKW.GUI.Model
             }
         }
 
+        public string LoginUserName
+        {
+            get
+            {
+                if (Id.IsAdmin)
+                {
+                    return "Admin";
+                }
+                else
+                {
+                    return Formatters.FormatLoginUserName(user.Metadata.UserId, user.Metadata.DisplayName);
+                }
+            }
+        }
+
+        public string ShortName
+        {
+            get
+            {
+                if (Id.IsAdmin)
+                {
+                    return "Admin";
+                }
+                else
+                {
+                    return Formatters.FormatShortName(user.Metadata.UserId, user.Metadata.DisplayName);
+                }
+            }
+        }
+
         public ImageMoniker Icon => IsAdmin ? ImageMoniker.Admin : ImageMoniker.User;
     }
 }

@@ -11,8 +11,21 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:Background="White">
   <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+          <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+
+        <ResourceDictionary Source="/Styles/ListView.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </UserControl.Resources>
+
+  <UserControl.CommandBindings>
+    <CommandBinding Command="{x:Static gui:AppCommands.Login}"
+                    Executed="LoginCommand_Executed" />
+  </UserControl.CommandBindings>
 
   <Grid>
     <Grid.RowDefinitions>
@@ -21,16 +34,82 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
-      <StackPanel Orientation="Horizontal">
-        <gui:CrispImage Moniker="Lock" Height="20" Margin="0,0,6,0"/>
-        <TextBlock FontSize="20" FontWeight="SemiBold">
-        Database is locked
-        </TextBlock>
-      </StackPanel>
-      <TextBlock Margin="0,6,0,0">
-        <Hyperlink Command="{x:Static gui:AppCommands.UnlockDatabase}">Unlock database...</Hyperlink>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="260" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <StackPanel Grid.Row="1"
+                Grid.Column="1"
+                Orientation="Vertical">
+      <gui:CrispImage Moniker="User" Height="96" Margin="0,0,6,0"/>
+
+      <TextBlock FontSize="16"
+                 FontWeight="SemiBold"
+                 TextAlignment="Center"
+                 Margin="0,0,0,6"
+                 Text="{Binding SelectedUser.LoginUserName, Mode=OneWay}"
+                 d:Text="Timofei Zhakov&#x0a;&lt;tima@contoso.com&gt;">
       </TextBlock>
+
+      <Label Content="Password"
+             Padding="0"
+             Margin="0,0,0,3" />
+      
+      <gui:PasswordInput x:Name="PasswordInput"
+                           Password="{Binding Password, Mode=OneWayToSource}">
+        <gui:PasswordInput.Template>
+          <ControlTemplate TargetType="gui:PasswordInput">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+              </Grid.ColumnDefinitions>
+
+              <PasswordBox x:Name="PART_PasswordBox"
+                           Padding="4"
+                           FontFamily="Consolas">
+                <PasswordBox.InputBindings>
+                  <KeyBinding Key="Return" Command="{x:Static gui:AppCommands.Login}" />
+                </PasswordBox.InputBindings>
+              </PasswordBox>
+
+              <Button Grid.Column="1" Padding="3"
+                      Margin="3,0,0,0"
+                      Command="{x:Static gui:AppCommands.Login}">
+                <gui:CrispImage Moniker="Next" />
+              </Button>
+            </Grid>
+          </ControlTemplate>
+        </gui:PasswordInput.Template>
+      </gui:PasswordInput>
     </StackPanel>
+
+    <ListView Grid.RowSpan="3"
+              VerticalAlignment="Bottom"
+              HorizontalAlignment="Left"
+              MinWidth="150"
+              BorderThickness="0"
+              ItemsSource="{Binding Users}"
+              SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+              Style="{StaticResource ListViewStyle}"
+              ItemContainerStyle="{StaticResource ListViewItemStyle}"
+              SelectionMode="Single"
+              Margin="12">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal"
+                      Margin="3,3,12,3">
+            <gui:CrispImage Moniker="{Binding Icon}"
+                            Margin="0,0,6,0"
+                            Height="32" />
+
+            <TextBlock Text="{Binding ShortName}"
+                       VerticalAlignment="Center" />
+          </StackPanel>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
   </Grid>
 </UserControl>

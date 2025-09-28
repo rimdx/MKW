@@ -10,5 +10,6 @@ namespace MKW.GUI
         public static RoutedUICommand LockDatabase { get; } = new RoutedUICommand();
         public static RoutedUICommand UnlockDatabase { get; } = new RoutedUICommand();
         public static RoutedUICommand ReloadDatabase { get; } = new RoutedUICommand();
+        public static RoutedUICommand Login { get; } = new RoutedUICommand();
     }
 }
