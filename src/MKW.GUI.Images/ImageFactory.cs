@@ -20,6 +20,7 @@ namespace MKW.GUI.Images
             ImageMoniker.DeleteDocument => new DeleteDocument(),
             ImageMoniker.DeleteFolder => new DeleteFolder(),
             ImageMoniker.DeleteKey => new DeleteKey(),
+            ImageMoniker.DeleteUser => new DeleteUser(),
             ImageMoniker.Edit => new Edit(),
             ImageMoniker.EditDatabase => new EditDatabase(),
             ImageMoniker.EditDocument => new EditDocument(),
