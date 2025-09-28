@@ -16,28 +16,25 @@ namespace MKW.GUI.Database
             {
                 if (SetProperty(ref selectedUser, value))
                 {
-                    Password = "";
+                    Profile = new LoginProfileViewModel(this, selectedUser);
                 }
             }
         }
 
-        private string password = "";
-        public string Password
+        private LoginProfileViewModel profile;
+        public LoginProfileViewModel Profile
         {
-            get => password;
-            set => SetProperty(ref password, value);
+            get => profile;
+            set => SetProperty(ref profile, value);
         }
 
         public DatabaseLockedViewModel(DatabaseViewModel database)
         {
             Database = database;
             Users = new DatabaseUserCollectionViewModel(database.Database);
-            selectedUser = Users[0];
-        }
 
-        public void Login()
-        {
-            Database.Database.Unlock(SelectedUser.Id, Password);
+            selectedUser = Users[0];
+            profile = new LoginProfileViewModel(this, selectedUser);
         }
     }
 }
