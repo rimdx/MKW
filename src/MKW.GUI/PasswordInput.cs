@@ -5,7 +5,7 @@ namespace MKW.GUI
 {
     public class PasswordInput : Control
     {
-        protected PasswordBox? _passwordBox;
+        protected PasswordBox? passwordBox;
 
         static PasswordInput()
         {
@@ -25,8 +25,8 @@ namespace MKW.GUI
             {
                 SetValue(PasswordProperty, value);
 
-                if (_passwordBox != null)
-                    _passwordBox.Password = value;
+                if (passwordBox != null)
+                    passwordBox.Password = value;
             }
         }
 
@@ -34,15 +34,15 @@ namespace MKW.GUI
         {
             base.OnApplyTemplate();
 
-            if (_passwordBox != null)
-                _passwordBox.PasswordChanged -= PasswordChanged;
+            if (passwordBox != null)
+                passwordBox.PasswordChanged -= PasswordChanged;
 
-            _passwordBox = GetTemplateChild("PART_PasswordBox") as PasswordBox;
+            passwordBox = GetTemplateChild("PART_PasswordBox") as PasswordBox;
 
-            if (_passwordBox != null)
+            if (passwordBox != null)
             {
-                _passwordBox.Password = Password;
-                _passwordBox.PasswordChanged += PasswordChanged;
+                passwordBox.Password = Password;
+                passwordBox.PasswordChanged += PasswordChanged;
             }
 
             Update();
@@ -50,9 +50,9 @@ namespace MKW.GUI
 
         protected virtual void Update()
         {
-            if (_passwordBox != null)
+            if (passwordBox != null)
             {
-                SetValue(PasswordProperty, _passwordBox.Password);
+                SetValue(PasswordProperty, passwordBox.Password);
             }
         }
 
@@ -65,9 +65,9 @@ namespace MKW.GUI
         {
             base.OnGotFocus(e);
 
-            if (_passwordBox != null)
+            if (passwordBox != null)
             {
-                _passwordBox.Focus();
+                passwordBox.Focus();
                 e.Handled = true;
             }
         }
