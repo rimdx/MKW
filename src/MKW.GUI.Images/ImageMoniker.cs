@@ -28,6 +28,7 @@ namespace MKW.GUI.Images
         NewFolder,
         NewKey,
         NewUser,
+        Next,
         OpenFile,
         OpenFolder,
         PasswordBox,
