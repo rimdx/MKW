@@ -15,6 +15,7 @@
     <ListView Grid.Row="1"
               Grid.Column="2"
               ItemsSource="{Binding Entries}"
+              Style="{StaticResource GridViewStyle}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
               BorderThickness="0"

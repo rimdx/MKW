@@ -13,6 +13,7 @@
              d:Background="White">
   <Grid>
     <ListView ItemsSource="{Binding Users}"
+              Style="{StaticResource GridViewStyle}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
               MouseDoubleClick="ListView_MouseDoubleClick"
