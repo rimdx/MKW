@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MKW.GUI.Database"
              xmlns:gui="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+             xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:LoginProfileViewModel}"
              d:DesignWidth="250"
@@ -43,7 +44,8 @@
 
               <PasswordBox x:Name="PART_PasswordBox"
                            Padding="4"
-                           FontFamily="Consolas">
+                           FontFamily="Consolas"
+                           behaviors:PasswordBoxBehavior.SelectAllTextOnFocus="True">
                 <PasswordBox.InputBindings>
                   <KeyBinding Key="Return" Command="{x:Static gui:AppCommands.Login}" />
                 </PasswordBox.InputBindings>
