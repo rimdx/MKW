@@ -93,9 +93,17 @@
           </MenuItem.Icon>
         </MenuItem>
 
-        <MenuItem Header="Edit Entry" />
+        <MenuItem Header="Edit Entry">
+          <MenuItem.Icon>
+            <local:CrispImage Moniker="EditKey" />
+          </MenuItem.Icon>
+        </MenuItem>
 
-        <MenuItem Header="Delete Entry" />
+        <MenuItem Header="Delete Entry">
+          <MenuItem.Icon>
+            <local:CrispImage Moniker="DeleteKey" />
+          </MenuItem.Icon>
+        </MenuItem>
       </MenuItem>
 
       <MenuItem Header="_Help">
