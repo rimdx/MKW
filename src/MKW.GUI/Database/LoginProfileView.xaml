@@ -14,6 +14,8 @@
   <UserControl.CommandBindings>
     <CommandBinding Command="{x:Static gui:AppCommands.Login}"
                     Executed="LoginCommand_Executed" />
+    <CommandBinding Command="{x:Static gui:AppCommands.RequestAccess}"
+                    Executed="RequestAccess_Click" />
   </UserControl.CommandBindings>
 
   <Grid>
@@ -33,7 +35,8 @@
              Margin="0,0,0,3" />
 
       <gui:PasswordInput x:Name="PasswordInput"
-                         Password="{Binding Password}">
+                         Password="{Binding Password}"
+                         Margin="0,0,0,6">
         <gui:PasswordInput.Template>
           <ControlTemplate TargetType="gui:PasswordInput">
             <Grid>
@@ -60,6 +63,10 @@
           </ControlTemplate>
         </gui:PasswordInput.Template>
       </gui:PasswordInput>
+
+      <TextBlock>
+        <Hyperlink Command="{x:Static gui:AppCommands.RequestAccess}">Request access...</Hyperlink>
+      </TextBlock>
     </StackPanel>
   </Grid>
 </UserControl>

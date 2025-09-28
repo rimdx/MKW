@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Model;
+using MKW.GUI.RequestAccessWizard;
 using System.ComponentModel;
 
 namespace MKW.GUI.Database
@@ -52,6 +53,11 @@ namespace MKW.GUI.Database
         public void LockDatabase()
         {
             Database.Lock();
+        }
+
+        public RequestAccessWizardViewModel CreateRequestAccessViewModel()
+        {
+            return new RequestAccessWizardViewModel(Database);
         }
 
         public LoginWindowViewModel CreateLoginViewModel()
