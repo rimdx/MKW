@@ -5,6 +5,7 @@ namespace MKW.GUI.Images
         None,
         Add,
         AddDatabase,
+        AddKey,
         AddUser,
         Admin,
         AsymmetricKey,

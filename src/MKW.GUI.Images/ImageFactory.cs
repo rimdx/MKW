@@ -9,6 +9,7 @@ namespace MKW.GUI.Images
             ImageMoniker.None => null,
             ImageMoniker.Add => new Add(),
             ImageMoniker.AddDatabase => new AddDatabase(),
+            ImageMoniker.AddKey => new AddKey(),
             ImageMoniker.AddUser => new AddUser(),
             ImageMoniker.Admin => new Admin(),
             ImageMoniker.AsymmetricKey => new AsymmetricKey(),
