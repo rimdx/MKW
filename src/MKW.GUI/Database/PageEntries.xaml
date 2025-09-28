@@ -33,11 +33,19 @@
 
           <MenuItem Header="_Edit Entry"
                     Click="EditEntry_Click"
-                    IsEnabled="{Binding IsEntrySelected}" />
+                    IsEnabled="{Binding IsEntrySelected}">
+            <MenuItem.Icon>
+              <gui:CrispImage Moniker="EditKey" />
+            </MenuItem.Icon>
+          </MenuItem>
 
           <MenuItem Header="_Delete Entry"
                     Click="DeleteEntry_Click"
-                    IsEnabled="{Binding IsEntrySelected}" />
+                    IsEnabled="{Binding IsEntrySelected}">
+            <MenuItem.Icon>
+              <gui:CrispImage Moniker="DeleteKey" />
+            </MenuItem.Icon>
+          </MenuItem>
           <Separator />
           <MenuItem Header="Select All"
                     Click="SelectAll_Click" />
