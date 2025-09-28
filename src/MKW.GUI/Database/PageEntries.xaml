@@ -8,7 +8,7 @@
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
              xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=local:DatabaseViewModel}"
+             d:DataContext="{d:DesignInstance Type=local:DatabaseUnlockedViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              d:Background="White">
   <Grid>
