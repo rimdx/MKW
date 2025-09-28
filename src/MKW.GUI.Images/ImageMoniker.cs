@@ -15,6 +15,7 @@ namespace MKW.GUI.Images
         Delete,
         DeleteDocument,
         DeleteFolder,
+        DeleteKey,
         Edit,
         EditDatabase,
         EditDocument,
