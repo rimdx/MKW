@@ -19,9 +19,6 @@
     <CommandBinding Command="{x:Static gui:AppCommands.LockDatabase}"
                     Executed="LockDatabaseCommand_Executed"
                     CanExecute="LockDatabaseCommand_CanExecute"/>
-    <CommandBinding Command="{x:Static gui:AppCommands.UnlockDatabase}"
-                    Executed="UnlockDatabaseCommand_Executed"
-                    CanExecute="UnlockDatabaseCommand_CanExecute"/>
     <CommandBinding Command="{x:Static gui:AppCommands.ReloadDatabase}"
                     Executed="ReloadDatabase_Executed"/>
   </UserControl.CommandBindings>
