@@ -33,27 +33,6 @@ namespace MKW.GUI.Database
             }
         }
 
-        private void UnlockDatabaseCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = (model.Database.UnlockedDatabase == null);
-        }
-
-        private void UnlockDatabaseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            try
-            {
-                LoginWindowViewModel loginViewModel = model.CreateLoginViewModel();
-
-                LoginWindow loginWindow = new LoginWindow(loginViewModel, Window.GetWindow(this));
-
-                loginWindow.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
-
         private void ReloadDatabase_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
