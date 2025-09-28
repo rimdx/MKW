@@ -22,11 +22,6 @@
     </ResourceDictionary>
   </UserControl.Resources>
 
-  <UserControl.CommandBindings>
-    <CommandBinding Command="{x:Static gui:AppCommands.Login}"
-                    Executed="LoginCommand_Executed" />
-  </UserControl.CommandBindings>
-
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -40,51 +35,8 @@
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <StackPanel Grid.Row="1"
-                Grid.Column="1"
-                Orientation="Vertical">
-      <gui:CrispImage Moniker="User" Height="96" Margin="0,0,6,0"/>
-
-      <TextBlock FontSize="16"
-                 FontWeight="SemiBold"
-                 TextAlignment="Center"
-                 Margin="0,0,0,6"
-                 Text="{Binding SelectedUser.LoginUserName, Mode=OneWay}"
-                 d:Text="Timofei Zhakov&#x0a;&lt;tima@contoso.com&gt;">
-      </TextBlock>
-
-      <Label Content="Password"
-             Padding="0"
-             Margin="0,0,0,3" />
-      
-      <gui:PasswordInput x:Name="PasswordInput"
-                         Password="{Binding Password}">
-        <gui:PasswordInput.Template>
-          <ControlTemplate TargetType="gui:PasswordInput">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-              </Grid.ColumnDefinitions>
-
-              <PasswordBox x:Name="PART_PasswordBox"
-                           Padding="4"
-                           FontFamily="Consolas">
-                <PasswordBox.InputBindings>
-                  <KeyBinding Key="Return" Command="{x:Static gui:AppCommands.Login}" />
-                </PasswordBox.InputBindings>
-              </PasswordBox>
-
-              <Button Grid.Column="1" Padding="3"
-                      Margin="3,0,0,0"
-                      Command="{x:Static gui:AppCommands.Login}">
-                <gui:CrispImage Moniker="Next" />
-              </Button>
-            </Grid>
-          </ControlTemplate>
-        </gui:PasswordInput.Template>
-      </gui:PasswordInput>
-    </StackPanel>
+    <local:LoginProfileView Grid.Column="1" Grid.Row="1"
+                            DataContext="{Binding Profile}" />
 
     <ListView Grid.RowSpan="3"
               VerticalAlignment="Bottom"

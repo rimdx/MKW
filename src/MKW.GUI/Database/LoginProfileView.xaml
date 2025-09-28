@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="MKW.GUI.Database.LoginProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MKW.GUI.Database"
+             xmlns:gui="clr-namespace:MKW.GUI"
+             xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=local:LoginProfileViewModel}"
+             d:DesignWidth="250"
+             d:Background="White">
+  <UserControl.CommandBindings>
+    <CommandBinding Command="{x:Static gui:AppCommands.Login}"
+                    Executed="LoginCommand_Executed" />
+  </UserControl.CommandBindings>
+
+  <Grid>
+    <StackPanel Orientation="Vertical">
+      <gui:CrispImage Moniker="User" Height="96" Margin="0,0,6,0"/>
+
+      <TextBlock FontSize="16"
+                 FontWeight="SemiBold"
+                 TextAlignment="Center"
+                 Margin="0,0,0,6"
+                 Text="{Binding LoginUserName, Mode=OneWay}"
+                 d:Text="Timofei Zhakov&#x0a;&lt;tima@contoso.com&gt;">
+      </TextBlock>
+
+      <Label Content="Password"
+             Padding="0"
+             Margin="0,0,0,3" />
+
+      <gui:PasswordInput x:Name="PasswordInput"
+                         Password="{Binding Password}">
+        <gui:PasswordInput.Template>
+          <ControlTemplate TargetType="gui:PasswordInput">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+              </Grid.ColumnDefinitions>
+
+              <PasswordBox x:Name="PART_PasswordBox"
+                           Padding="4"
+                           FontFamily="Consolas">
+                <PasswordBox.InputBindings>
+                  <KeyBinding Key="Return" Command="{x:Static gui:AppCommands.Login}" />
+                </PasswordBox.InputBindings>
+              </PasswordBox>
+
+              <Button Grid.Column="1" Padding="3"
+                      Margin="3,0,0,0"
+                      Command="{x:Static gui:AppCommands.Login}">
+                <gui:CrispImage Moniker="Next" />
+              </Button>
+            </Grid>
+          </ControlTemplate>
+        </gui:PasswordInput.Template>
+      </gui:PasswordInput>
+    </StackPanel>
+  </Grid>
+</UserControl>
