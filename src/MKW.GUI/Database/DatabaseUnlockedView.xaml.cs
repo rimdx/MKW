@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MKW.GUI.Database
 {
@@ -19,7 +20,7 @@ namespace MKW.GUI.Database
             UsersPage.Content = new PageUsers(model);
         }
 
-        private void AddEntry_Click(object sender, RoutedEventArgs e)
+        private void AddEntryCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {

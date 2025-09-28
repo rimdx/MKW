@@ -25,7 +25,7 @@
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Add Entry"
-                    Click="AddEntry_Click" />
+                    Command="{x:Static gui:EntryCommands.AddEntry}" />
 
           <MenuItem Header="_Edit Entry"
                     Click="EditEntry_Click"

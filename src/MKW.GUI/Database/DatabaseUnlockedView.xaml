@@ -10,6 +10,10 @@
              d:DataContext="{d:DesignInstance Type=local:DatabaseUnlockedViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              d:Background="White">
+  <UserControl.CommandBindings>
+    <CommandBinding Command="{x:Static gui:EntryCommands.AddEntry}"
+                    Executed="AddEntryCommand_Executed" />
+  </UserControl.CommandBindings>
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </UserControl.Resources>
