@@ -76,8 +76,6 @@ namespace MKW.GUI.Model
             ClientSession client = ClientSession.Create(database, crypto, adminPassword, metadata);
             DatabaseModel model = new DatabaseModel(database, path, client);
 
-            model.Unlock(UserId.Admin(), adminPassword);
-
             return model;
         }
 
