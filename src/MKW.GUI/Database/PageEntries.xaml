@@ -25,7 +25,11 @@
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Add Entry"
-                    Command="{x:Static gui:EntryCommands.AddEntry}" />
+                    Command="{x:Static gui:EntryCommands.AddEntry}">
+            <MenuItem.Icon>
+              <gui:CrispImage Moniker="NewKey" />
+            </MenuItem.Icon>
+          </MenuItem>
 
           <MenuItem Header="_Edit Entry"
                     Click="EditEntry_Click"
