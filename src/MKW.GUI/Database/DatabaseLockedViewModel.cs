@@ -14,6 +14,11 @@ namespace MKW.GUI.Database
             get => selectedUser;
             set
             {
+                if (value == null)
+                {
+                    return;
+                }
+
                 if (SetProperty(ref selectedUser, value))
                 {
                     Profile = new LoginProfileViewModel(this, selectedUser);
