@@ -27,10 +27,5 @@ namespace MKW.GUI
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
     }
 }

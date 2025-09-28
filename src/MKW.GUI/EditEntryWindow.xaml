@@ -46,7 +46,6 @@
       <Button Grid.Column="2"
               Content="Cancel"
               Width="70"
-              Click="Cancel_Click"
               IsCancel="True" />
     </Grid>
   </Grid>
