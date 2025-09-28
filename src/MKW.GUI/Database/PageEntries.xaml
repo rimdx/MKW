@@ -24,7 +24,7 @@
 
       <ListView.ContextMenu>
         <ContextMenu>
-          <MenuItem Header="_Add Entry"
+          <MenuItem Header="_Add Entry..."
                     Command="{x:Static gui:EntryCommands.AddEntry}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="NewKey" />
