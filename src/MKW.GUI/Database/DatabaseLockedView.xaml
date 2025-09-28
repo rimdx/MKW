@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MKW.GUI.Database"
              xmlns:gui="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+             xmlns:model="clr-namespace:MKW.GUI.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseLockedViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -15,12 +16,73 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
           <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+          <gui:EqualityConverter x:Key="EqualityConverter" />
+
+          <Style x:Key="UserSelectButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <Border x:Name="ItemBorder"
+                          Padding="4,2"
+                          Background="{TemplateBinding Background}">
+                    <StackPanel Orientation="Horizontal"
+                            Margin="3,3,12,3">
+                      <gui:CrispImage Moniker="{Binding Icon}"
+                                      Margin="0,0,6,0"
+                                      Height="32" />
+
+                      <TextBlock Text="{Binding ShortName}"
+                                  VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Border>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+              </Trigger>
+
+              <DataTrigger Value="True">
+                <DataTrigger.Binding>
+                  <MultiBinding Converter="{StaticResource EqualityConverter}">
+                    <Binding RelativeSource="{RelativeSource Self}"
+                             Path="DataContext" />
+
+                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"
+                             Path="DataContext.SelectedUser" />
+                  </MultiBinding>
+                </DataTrigger.Binding>
+
+                <Setter Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+              </DataTrigger>
+
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsFocused" Value="True" />
+                </MultiTrigger.Conditions>
+
+                <Setter Property="BorderBrush"
+                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+              </MultiTrigger>
+            </Style.Triggers>
+          </Style>
         </ResourceDictionary>
 
         <ResourceDictionary Source="/Styles/ListView.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
+
+  <UserControl.CommandBindings>
+    <CommandBinding Command="{x:Static gui:AppCommands.LoginSelectUser}"
+                    Executed="LoginSelectUser_Executed" />
+  </UserControl.CommandBindings>
 
   <Grid>
     <Grid.RowDefinitions>
@@ -35,33 +97,32 @@
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <local:LoginProfileView Grid.Column="1" Grid.Row="1"
+    <local:LoginProfileView x:Name="LoginProfileView"
+                            Grid.Column="1" Grid.Row="1"
                             DataContext="{Binding Profile}" />
 
-    <ListView Grid.RowSpan="3"
-              VerticalAlignment="Bottom"
-              HorizontalAlignment="Left"
-              MinWidth="150"
-              BorderThickness="0"
-              ItemsSource="{Binding Users}"
-              SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-              Style="{StaticResource ListViewStyle}"
-              ItemContainerStyle="{StaticResource ListViewItemStyle}"
-              SelectionMode="Single"
-              Margin="12">
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <StackPanel Orientation="Horizontal"
-                      Margin="3,3,12,3">
-            <gui:CrispImage Moniker="{Binding Icon}"
-                            Margin="0,0,6,0"
-                            Height="32" />
+    <ItemsControl Grid.RowSpan="3"
+                  VerticalAlignment="Bottom"
+                  HorizontalAlignment="Left"
+                  MinWidth="150"
+                  BorderThickness="0"
+                  ItemsSource="{Binding Users}"
+                  Margin="12"
+                  Focusable="False">
+      <ItemsControl.Template>
+        <ControlTemplate TargetType="ItemsControl">
+          <ScrollViewer Focusable="False">
+            <ItemsPresenter />
+          </ScrollViewer>
+        </ControlTemplate>
+      </ItemsControl.Template>
 
-            <TextBlock Text="{Binding ShortName}"
-                       VerticalAlignment="Center" />
-          </StackPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="{x:Type model:DatabaseUserModel}">
+          <Button Style="{StaticResource UserSelectButton}"
+                  Command="{x:Static gui:AppCommands.LoginSelectUser}" />
         </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
   </Grid>
 </UserControl>
