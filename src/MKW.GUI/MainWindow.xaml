@@ -85,7 +85,9 @@
       </MenuItem>
 
       <MenuItem Header="_Entry">
-        <MenuItem Header="Add Entry" />
+        <MenuItem Header="Add Entry" 
+                  Command="{x:Static local:EntryCommands.AddEntry}"
+                  CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}" />
 
         <MenuItem Header="Edit Entry" />
 
@@ -110,7 +112,9 @@
           <local:CrispImage Moniker="OpenFile" />
         </Button>
         <Separator />
-        <Button ToolTip="New Entry">
+        <Button ToolTip="New Entry" 
+                Command="{x:Static local:EntryCommands.AddEntry}"
+                CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}">
           <local:CrispImage Moniker="NewKey" />
         </Button>
         <Separator />

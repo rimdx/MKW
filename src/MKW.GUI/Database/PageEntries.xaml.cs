@@ -32,20 +32,6 @@ namespace MKW.GUI.Database
             }
         }
 
-        private void AddEntry_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NewEntryWindowViewModel viewModel = model.CreateNewEntryWindowViewModel();
-                NewEntryWindow window = new NewEntryWindow(viewModel, Window.GetWindow(this));
-                window.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
-
         private void EditEntry_Click(object sender, RoutedEventArgs e)
         {
             try
