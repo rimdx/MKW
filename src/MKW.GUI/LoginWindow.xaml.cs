@@ -30,10 +30,6 @@ namespace MKW.GUI
             }
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
 
         private void RequestAccess_Click(object sender, RoutedEventArgs e)
         {
