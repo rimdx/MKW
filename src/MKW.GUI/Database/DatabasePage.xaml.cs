@@ -54,7 +54,7 @@ namespace MKW.GUI.Database
             }
         }
 
-        private void RefreshDatabase_Click(object sender, RoutedEventArgs e)
+        private void ReloadDatabase_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {

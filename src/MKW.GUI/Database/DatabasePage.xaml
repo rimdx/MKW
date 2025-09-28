@@ -22,6 +22,8 @@
     <CommandBinding Command="{x:Static gui:AppCommands.UnlockDatabase}"
                     Executed="UnlockDatabaseCommand_Executed"
                     CanExecute="UnlockDatabaseCommand_CanExecute"/>
+    <CommandBinding Command="{x:Static gui:AppCommands.ReloadDatabase}"
+                    Executed="ReloadDatabase_Executed"/>
   </UserControl.CommandBindings>
 
   <Grid>
@@ -49,7 +51,7 @@
 
         <TextBlock Grid.Column="1">
           <Run>Database has been updated externaly.</Run>
-          <Hyperlink Click="RefreshDatabase_Click">Refresh</Hyperlink>
+          <Hyperlink Command="{x:Static gui:AppCommands.ReloadDatabase}">Refresh</Hyperlink>
         </TextBlock>
       </Grid>
     </Border>
