@@ -18,24 +18,15 @@
           <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
           <gui:EqualityConverter x:Key="EqualityConverter" />
 
-          <Style x:Key="UserSelectButton" TargetType="{x:Type Button}">
+          <Style x:Key="UserSelectButton" TargetType="{x:Type ListBoxItem}">
             <Setter Property="Background" Value="Transparent" />
 
             <Setter Property="Template">
               <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
                   <Border x:Name="ItemBorder"
-                          Padding="4,2"
                           Background="{TemplateBinding Background}">
-                    <StackPanel Orientation="Horizontal"
-                            Margin="3,3,12,3">
-                      <gui:CrispImage Moniker="{Binding Icon}"
-                                      Margin="0,0,6,0"
-                                      Height="32" />
-
-                      <TextBlock Text="{Binding ShortName}"
-                                  VerticalAlignment="Center" />
-                    </StackPanel>
+                    <ContentPresenter />
                   </Border>
                 </ControlTemplate>
               </Setter.Value>
@@ -47,20 +38,10 @@
                         Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
               </Trigger>
 
-              <DataTrigger Value="True">
-                <DataTrigger.Binding>
-                  <MultiBinding Converter="{StaticResource EqualityConverter}">
-                    <Binding RelativeSource="{RelativeSource Self}"
-                             Path="DataContext" />
-
-                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"
-                             Path="DataContext.SelectedUser" />
-                  </MultiBinding>
-                </DataTrigger.Binding>
-
+              <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background"
                         Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-              </DataTrigger>
+              </Trigger>
 
               <Trigger Property="IsFocused" Value="True">
                 <Setter Property="BorderBrush"
@@ -97,28 +78,36 @@
                             Grid.Column="1" Grid.Row="1"
                             DataContext="{Binding Profile}" />
 
-    <ItemsControl Grid.RowSpan="3"
-                  VerticalAlignment="Bottom"
-                  HorizontalAlignment="Left"
-                  MinWidth="150"
-                  BorderThickness="0"
-                  ItemsSource="{Binding Users}"
-                  Margin="12"
-                  Focusable="False">
-      <ItemsControl.Template>
-        <ControlTemplate TargetType="ItemsControl">
+    <ListBox Grid.RowSpan="3"
+             VerticalAlignment="Bottom"
+             HorizontalAlignment="Left"
+             MinWidth="150"
+             BorderThickness="0"
+             ItemsSource="{Binding Users}"
+             Margin="12"
+             Focusable="False"
+             ItemContainerStyle="{StaticResource UserSelectButton}">
+      <ListBox.Template>
+        <ControlTemplate TargetType="ListBox">
           <ScrollViewer Focusable="False">
             <ItemsPresenter />
           </ScrollViewer>
         </ControlTemplate>
-      </ItemsControl.Template>
+      </ListBox.Template>
 
-      <ItemsControl.ItemTemplate>
-        <DataTemplate DataType="{x:Type model:DatabaseUserModel}">
-          <Button Style="{StaticResource UserSelectButton}"
-                  Command="{x:Static gui:AppCommands.LoginSelectUser}" />
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal"
+                      Margin="3,3,12,3">
+            <gui:CrispImage Moniker="{Binding Icon}"
+                            Margin="0,0,6,0"
+                            Height="32" />
+
+            <TextBlock Text="{Binding ShortName}"
+                       VerticalAlignment="Center" />
+          </StackPanel>
         </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+      </ListBox.ItemTemplate>
+    </ListBox>
   </Grid>
 </UserControl>
