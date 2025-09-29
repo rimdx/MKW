@@ -84,6 +84,7 @@
              MinWidth="150"
              BorderThickness="0"
              ItemsSource="{Binding Users}"
+             SelectedItem="{Binding SelectedUser}"
              Margin="12"
              Focusable="False"
              ItemContainerStyle="{StaticResource UserSelectButton}">
