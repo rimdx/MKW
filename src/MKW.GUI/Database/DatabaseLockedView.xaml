@@ -62,14 +62,10 @@
                         Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
               </DataTrigger>
 
-              <MultiTrigger>
-                <MultiTrigger.Conditions>
-                  <Condition Property="IsFocused" Value="True" />
-                </MultiTrigger.Conditions>
-
+              <Trigger Property="IsFocused" Value="True">
                 <Setter Property="BorderBrush"
                         Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-              </MultiTrigger>
+              </Trigger>
             </Style.Triggers>
           </Style>
         </ResourceDictionary>
