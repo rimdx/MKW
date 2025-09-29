@@ -7,6 +7,7 @@
              xmlns:gui="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
              xmlns:model="clr-namespace:MKW.GUI.Model"
+             xmlns:controls="clr-namespace:MKW.GUI.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseLockedViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -17,41 +18,12 @@
         <ResourceDictionary>
           <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
           <gui:EqualityConverter x:Key="EqualityConverter" />
-
-          <Style x:Key="UserSelectButton" TargetType="{x:Type ListBoxItem}">
-            <Setter Property="Background" Value="Transparent" />
-
-            <Setter Property="Template">
-              <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                  <Border x:Name="ItemBorder"
-                          Background="{TemplateBinding Background}">
-                    <ContentPresenter />
-                  </Border>
-                </ControlTemplate>
-              </Setter.Value>
-            </Setter>
-
-            <Style.Triggers>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background"
-                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-              </Trigger>
-
-              <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background"
-                        Value="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
-              </Trigger>
-
-              <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush"
-                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-              </Trigger>
-            </Style.Triggers>
-          </Style>
         </ResourceDictionary>
 
         <ResourceDictionary Source="/Styles/ListView.xaml" />
+
+        <ResourceDictionary Source="/Controls/SelectorBox.xaml" />
+        <ResourceDictionary Source="/Controls/SelectorBoxItem.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </UserControl.Resources>
@@ -76,25 +48,15 @@
                             Grid.Column="1" Grid.Row="1"
                             DataContext="{Binding Profile}" />
 
-    <ListBox Grid.RowSpan="3"
-             VerticalAlignment="Bottom"
-             HorizontalAlignment="Left"
-             MinWidth="150"
-             BorderThickness="0"
-             ItemsSource="{Binding Users}"
-             SelectedItem="{Binding SelectedUser}"
-             Margin="12"
-             Focusable="False"
-             ItemContainerStyle="{StaticResource UserSelectButton}">
-      <ListBox.Template>
-        <ControlTemplate TargetType="ListBox">
-          <ScrollViewer Focusable="False">
-            <ItemsPresenter />
-          </ScrollViewer>
-        </ControlTemplate>
-      </ListBox.Template>
-
-      <ListBox.ItemTemplate>
+    <controls:SelectorBox Grid.RowSpan="3"
+                          VerticalAlignment="Bottom"
+                          HorizontalAlignment="Left"
+                          MinWidth="150"
+                          BorderThickness="0"
+                          ItemsSource="{Binding Users}"
+                          SelectedItem="{Binding SelectedUser}"
+                          Margin="12">
+      <controls:SelectorBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal"
                       Margin="3,3,12,3">
@@ -106,7 +68,7 @@
                        VerticalAlignment="Center" />
           </StackPanel>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      </controls:SelectorBox.ItemTemplate>
+    </controls:SelectorBox>
   </Grid>
 </UserControl>
