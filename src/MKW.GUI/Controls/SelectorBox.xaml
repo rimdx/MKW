@@ -1,0 +1,20 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:MKW.GUI.Controls"
+                    xmlns:gui="clr-namespace:MKW.GUI">
+
+  <Style TargetType="{x:Type controls:SelectorBox}">
+    <Setter Property="Focusable" Value="False" />
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:SelectorBox}">
+          <ScrollViewer Focusable="False">
+            <ItemsPresenter />
+          </ScrollViewer>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>
