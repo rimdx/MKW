@@ -57,8 +57,6 @@
   </UserControl.Resources>
 
   <UserControl.CommandBindings>
-    <CommandBinding Command="{x:Static gui:AppCommands.LoginSelectUser}"
-                    Executed="LoginSelectUser_Executed" />
   </UserControl.CommandBindings>
 
   <Grid>

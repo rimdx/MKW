@@ -15,14 +15,5 @@ namespace MKW.GUI.Database
 
             InitializeComponent();
         }
-
-        private void LoginSelectUser_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            Button button = (Button)e.OriginalSource;
-            DatabaseUserModel user = (DatabaseUserModel)button.DataContext;
-
-            model.SelectedUser = user;
-            LoginProfileView.PasswordInput.Focus();
-        }
     }
 }
