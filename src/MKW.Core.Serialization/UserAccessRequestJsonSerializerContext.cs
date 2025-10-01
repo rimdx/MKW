@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MKW.Core
+namespace MKW.Core.Serialization
 {
     [JsonSourceGenerationOptions()]
     [JsonSerializable(typeof(UserAccessRequestData))]

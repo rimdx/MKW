@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MKW.Core
+namespace MKW.Core.Serialization
 {
     public static class UserMetadataSerializer
     {

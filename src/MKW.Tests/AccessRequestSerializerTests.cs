@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Client;
+using MKW.Core.Serialization;
 using MKW.Core.Storage;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;

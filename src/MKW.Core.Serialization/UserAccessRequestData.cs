@@ -1,4 +1,4 @@
-﻿namespace MKW.Core
+﻿namespace MKW.Core.Serialization
 {
     internal sealed class UserAccessRequestData
     {
