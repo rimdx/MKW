@@ -50,6 +50,11 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
+  <Project Path="src/MKW.Core.Serialization/MKW.Core.Serialization.csproj" Id="4d1997d5-dc85-42d4-8840-8ac4c8277bf0">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
   <Project Path="src/MKW.Core.Storage.JSON/MKW.Core.Storage.JSON.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />

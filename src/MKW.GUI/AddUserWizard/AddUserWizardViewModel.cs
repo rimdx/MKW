@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.Core.Serialization;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;

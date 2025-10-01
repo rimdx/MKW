@@ -1,4 +1,5 @@
-﻿using MKW.Cryptography;
+﻿using MKW.Core.Serialization;
+using MKW.Cryptography;
 
 namespace MKW.Core.Implementation
 {
