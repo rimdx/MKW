@@ -6,7 +6,7 @@ namespace MKW.GUI.CreateDatabaseWizard
 {
     public partial class PageCompleted : WizardPage
     {
-        private CreateDatabaseWizardViewModel viewModel;
+        private readonly CreateDatabaseWizardViewModel viewModel;
 
         public PageCompleted(CreateDatabaseWizardViewModel viewModel)
             : base("Completed")
