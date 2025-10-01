@@ -1,6 +1,7 @@
 ﻿using MKW.GUI.Wizard;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
 
 namespace MKW.GUI.CreateDatabaseWizard
 {
@@ -16,7 +17,7 @@ namespace MKW.GUI.CreateDatabaseWizard
             InitializeComponent();
         }
 
-        private void RevealDatabaseInExplorer(object sender, System.Windows.RoutedEventArgs e)
+        private void RevealDatabaseInExplorer(object sender, RoutedEventArgs e)
         {
             Process.Start(new ProcessStartInfo
             {
