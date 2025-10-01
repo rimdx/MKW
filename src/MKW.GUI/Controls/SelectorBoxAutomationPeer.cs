@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Automation.Peers;
+﻿using System.Windows.Automation.Peers;
 
 namespace MKW.GUI.Controls
 {
@@ -23,30 +22,6 @@ namespace MKW.GUI.Controls
         protected override string GetClassNameCore()
         {
             return nameof(SelectorBox);
-        }
-
-        protected override List<AutomationPeer> GetChildrenCore()
-        {
-            SelectorBox owner = (SelectorBox)Owner;
-
-            List<AutomationPeer> children = [];
-
-            foreach (object? item in owner.Items)
-            {
-                DependencyObject container = owner.ItemContainerGenerator.ContainerFromItem(item);
-
-                if (container is SelectorBox selectorBox && selectorBox.IsVisible)
-                {
-                    AutomationPeer peer = FromElement(selectorBox) ?? CreatePeerForElement(selectorBox);
-
-                    if (peer != null)
-                    {
-                        children.Add(peer);
-                    }
-                }
-            }
-
-            return children;
         }
     }
 }
