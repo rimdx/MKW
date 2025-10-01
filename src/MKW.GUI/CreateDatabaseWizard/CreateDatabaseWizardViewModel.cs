@@ -52,7 +52,13 @@ namespace MKW.GUI.CreateDatabaseWizard
         public string DatabaseName
         {
             get => databaseName;
-            set => SetProperty(ref databaseName, value);
+            set
+            {
+                if (SetProperty(ref databaseName, value))
+                {
+                    OnPropertyChanged(nameof(DatabasePath));
+                }
+            }
         }
 
         private string databaseDirectory;
@@ -70,6 +76,8 @@ namespace MKW.GUI.CreateDatabaseWizard
                     {
                         registry.SetLastDatabaseDirectory(info.FullName);
                     }
+
+                    OnPropertyChanged(nameof(DatabasePath));
                 }
             }
         }
