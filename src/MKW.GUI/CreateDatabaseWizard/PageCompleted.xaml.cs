@@ -1,4 +1,6 @@
 ﻿using MKW.GUI.Wizard;
+using System.Diagnostics;
+using System.IO;
 
 namespace MKW.GUI.CreateDatabaseWizard
 {
@@ -12,6 +14,16 @@ namespace MKW.GUI.CreateDatabaseWizard
             this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        private void RevealDatabaseInExplorer(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "explorer.exe",
+                Arguments = Path.GetDirectoryName(viewModel.DatabasePath),
+                UseShellExecute = false,
+            });
         }
     }
 }
