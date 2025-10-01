@@ -76,7 +76,7 @@
     <ProjectReference Include="..\MKW.GUI\MKW.GUI.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mkw-testing.pfx" />
+    <None Include="MKW.Package_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\assets\icon.png" />
