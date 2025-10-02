@@ -4,30 +4,28 @@ namespace MKW.Core.Serialization
 {
     public static class UserAccessRequestSerializer
     {
+        private const string Type = "MKW ACCESS REQUEST";
+
         public static string Serialize(UserAccessRequest data)
         {
-            using MemoryStream stream = new MemoryStream();
-
-            using (DerSequenceGenerator writer = new DerSequenceGenerator(stream))
+            using StringWriter text = new StringWriter();
+            using (PemWriter pem = new PemWriter(text, Type))
             {
-                writer.AddObject(new UserAccessRequestStructure(data));
+                pem.AddObject(new UserAccessRequestStructure(data));
             }
 
-            byte[] bytes = stream.ToArray();
-
-            return Convert.ToBase64String(bytes);
+            return text.ToString();
         }
 
         public static UserAccessRequest Deserialize(string data)
         {
-            byte[] bytes = Convert.FromBase64String(data);
+            using StringReader text = new StringReader(data);
 
-            using Asn1InputStream stream = new Asn1InputStream(bytes);
-
-            using (Asn1SequenceReader sequence = Asn1SequenceReader.GetInstance(stream.ReadObject()))
+            using (PemReader pem = new PemReader(text, Type))
             {
-                Asn1Sequence innerSequence = Asn1Sequence.GetInstance(sequence.Next());
-                UserAccessRequestStructure structure = new UserAccessRequestStructure(innerSequence);
+                Asn1Sequence sequence = Asn1Sequence.GetInstance(pem.ReadObject());
+
+                UserAccessRequestStructure structure = new UserAccessRequestStructure(sequence);
                 return structure.GetValue();
             }
         }
