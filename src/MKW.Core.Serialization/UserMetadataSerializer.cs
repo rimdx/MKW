@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿using Org.BouncyCastle.Asn1;
 
 namespace MKW.Core.Serialization
 {
@@ -6,19 +6,24 @@ namespace MKW.Core.Serialization
     {
         public static UserMetadata Deserialize(ReadOnlySpan<byte> data)
         {
-            UserMetadata? metadata = JsonSerializer.Deserialize<UserMetadata>(data);
-
-            if (metadata == null)
+            using Asn1InputStream stream = new Asn1InputStream(data.ToArray());
             {
-                throw new NullReferenceException();
+                Asn1Object obj = stream.ReadObject();
+                UserMetadataStructure structure = new UserMetadataStructure(Asn1Sequence.GetInstance(obj));
+                return structure.GetValue();
             }
-
-            return metadata;
         }
 
         public static ReadOnlyMemory<byte> Serialize(UserMetadata metadata)
         {
-            return JsonSerializer.SerializeToUtf8Bytes(metadata);
+            using MemoryStream stream = new MemoryStream();
+
+            using Asn1OutputStream asn1 = Asn1OutputStream.Create(stream);
+            {
+                asn1.WriteObject(new UserMetadataStructure(metadata));
+            }
+
+            return stream.ToArray();
         }
     }
 }
