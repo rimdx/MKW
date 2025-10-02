@@ -24,17 +24,11 @@ namespace MKW.Core.Serialization
 
             using Asn1InputStream stream = new Asn1InputStream(bytes);
 
-            Asn1Sequence sequence = Asn1Sequence.GetInstance(stream.ReadObject());
-
-            if (sequence.Count == 1)
+            using (Asn1SequenceReader sequence = Asn1SequenceReader.GetInstance(stream.ReadObject()))
             {
-                Asn1Sequence innerSequence = Asn1Sequence.GetInstance(sequence[0]);
+                Asn1Sequence innerSequence = Asn1Sequence.GetInstance(sequence.Next());
                 UserAccessRequestStructure structure = new UserAccessRequestStructure(innerSequence);
                 return structure.GetValue();
-            }
-            else
-            {
-                throw new ArgumentException("Bad sequence size: " + sequence.Count);
             }
         }
     }

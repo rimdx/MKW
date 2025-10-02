@@ -16,13 +16,9 @@ namespace MKW.Core.Serialization
 
         public UserAccessRequestStructure(Asn1Sequence sequence)
         {
-            int count = sequence.Count;
-            if (count != 5)
-            {
-                throw new ArgumentException("Bad sequence size: " + count);
-            }
+            using Asn1SequenceReader reader = Asn1SequenceReader.GetInstance(sequence);
 
-            int version = DerInteger.GetInstance(sequence[0]).IntValueExact;
+            int version = DerInteger.GetInstance(reader.Next()).IntValueExact;
 
             if (version != Version)
             {
@@ -31,10 +27,10 @@ namespace MKW.Core.Serialization
 
             data = new UserAccessRequest
             {
-                Salt = Asn1OctetString.GetInstance(sequence[1]).GetOctets(),
-                PublicKey = Asn1OctetString.GetInstance(sequence[2]).GetOctets(),
-                EncryptedPrivateKey = new SecretPayload(Asn1OctetString.GetInstance(sequence[3]).GetOctets()),
-                AdminSignature = Asn1OctetString.GetInstance(sequence[4]).GetOctets(),
+                Salt = Asn1OctetString.GetInstance(reader.Next()).GetOctets(),
+                PublicKey = Asn1OctetString.GetInstance(reader.Next()).GetOctets(),
+                EncryptedPrivateKey = new SecretPayload(Asn1OctetString.GetInstance(reader.Next()).GetOctets()),
+                AdminSignature = Asn1OctetString.GetInstance(reader.Next()).GetOctets(),
             };
         }
 
