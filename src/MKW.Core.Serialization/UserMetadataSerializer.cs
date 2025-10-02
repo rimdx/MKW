@@ -8,9 +8,16 @@ namespace MKW.Core.Serialization
         {
             using Asn1InputStream stream = new Asn1InputStream(data.ToArray());
             {
-                Asn1Object obj = stream.ReadObject();
-                UserMetadataStructure structure = new UserMetadataStructure(Asn1Sequence.GetInstance(obj));
-                return structure.GetValue();
+                try
+                {
+                    Asn1Object obj = stream.ReadObject();
+                    UserMetadataStructure structure = new UserMetadataStructure(Asn1Sequence.GetInstance(obj));
+                    return structure.GetValue();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exceptions.InvalidUserAccessRequestException(ex);
+                }
             }
         }
 

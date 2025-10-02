@@ -23,10 +23,16 @@ namespace MKW.Core.Serialization
 
             using (PemReader pem = new PemReader(text, Type))
             {
-                Asn1Sequence sequence = Asn1Sequence.GetInstance(pem.ReadObject());
-
-                UserAccessRequestStructure structure = new UserAccessRequestStructure(sequence);
-                return structure.GetValue();
+                try
+                {
+                    Asn1Sequence sequence = Asn1Sequence.GetInstance(pem.ReadObject());
+                    UserAccessRequestStructure structure = new UserAccessRequestStructure(sequence);
+                    return structure.GetValue();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exceptions.InvalidUserAccessRequestException(ex);
+                }
             }
         }
     }
