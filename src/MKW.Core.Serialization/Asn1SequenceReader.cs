@@ -40,7 +40,7 @@ namespace MKW.Core.Serialization
             }
             else
             {
-                throw new BadSequenceLengthException(sequence.Count);
+                throw new Asn1BadSequenceLengthException(sequence.Count);
             }
         }
 
@@ -48,7 +48,7 @@ namespace MKW.Core.Serialization
         {
             if (position != sequence.Count)
             {
-                throw new BadSequenceLengthException(sequence.Count);
+                throw new Asn1BadSequenceLengthException(sequence.Count);
             }
         }
     }
