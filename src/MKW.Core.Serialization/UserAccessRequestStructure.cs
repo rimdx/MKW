@@ -5,7 +5,7 @@ namespace MKW.Core.Serialization
     internal sealed class UserAccessRequestStructure
         : Asn1Encodable
     {
-        private const int Version = 2;
+        private static readonly Asn1Version Version = new Asn1Version(2);
 
         private readonly UserAccessRequest data;
 
@@ -18,12 +18,7 @@ namespace MKW.Core.Serialization
         {
             using Asn1SequenceReader reader = Asn1SequenceReader.GetInstance(sequence);
 
-            int version = DerInteger.GetInstance(reader.Next()).IntValueExact;
-
-            if (version != Version)
-            {
-                throw new Exception($"Invalid version (expected {Version} but was {version}).");
-            }
+            Version.ConsumeVersion(reader.Next());
 
             data = new UserAccessRequest
             {
@@ -37,7 +32,7 @@ namespace MKW.Core.Serialization
         public override Asn1Object ToAsn1Object()
         {
             return new DerSequence(
-                new DerInteger(Version),
+                Version,
                 new DerOctetString(data.Salt.ToArray()),
                 new DerOctetString(data.PublicKey.ToArray()),
                 new DerOctetString(data.EncryptedPrivateKey.EncryptedPayload.ToArray()),
