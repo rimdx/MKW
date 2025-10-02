@@ -9,23 +9,54 @@
              d:DataContext="{d:DesignInstance Type=gui:EntryPayloadEditorViewModel}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
+  <UserControl.Resources>
+    <Style TargetType="{x:Type Label}">
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="0,0,0,3" />
+    </Style>
+
+    <Style TargetType="{x:Type TextBox}">
+      <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+    <Style TargetType="{x:Type gui:PasswordInput}">
+      <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+  </UserControl.Resources>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Row="0"
-            Content="Entry content:"
-            Target="PayloadInput"
-            Margin="0,0,0,3"
-            Padding="0" />
+    <StackPanel>
+      <Label Content="Title:"
+             Target="{Binding ElementName=TitleInput}" />
+      <TextBox x:Name="TitleInput"
+               Text="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-    <TextBox x:Name="PayloadInput"
+      <Label Content="User name:"
+             Target="{Binding ElementName=UsernameInput}" />
+      <TextBox x:Name="UsernameInput"
+               Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+      <Label Content="Password:"
+             Target="{Binding ElementName=PasswordInput}" />
+      <TextBox x:Name="PasswordInput"
+               Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+      <Label Content="URL:"
+             Target="{Binding ElementName=UrlInput}" />
+      <TextBox x:Name="UrlInput"
+               Text="{Binding Url, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+      <Label Content="Notes:"
+             Target="{Binding ElementName=NotesInput}" />
+    </StackPanel>
+
+    <TextBox x:Name="NotesInput"
              Grid.Row="1"
              Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-             FontFamily="Consolas"
-             AcceptsReturn="True"
-             Margin="0,0,0,6" />
+             AcceptsReturn="True" />
   </Grid>
 </UserControl>
