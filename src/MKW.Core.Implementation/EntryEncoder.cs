@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Storage;
 using MKW.Cryptography;
+using System.Text;
 
 namespace MKW.Core.Implementation
 {
@@ -22,7 +23,8 @@ namespace MKW.Core.Implementation
         {
             using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
 
-            ReadOnlyMemory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
+            ReadOnlyMemory<byte> serializedPayload = Encoding.UTF8.GetBytes(payload.Notes);
+            ReadOnlyMemory<byte> data = payloadEncoder.Encrypt(serializedPayload.Span);
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 

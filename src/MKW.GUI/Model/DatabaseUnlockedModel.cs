@@ -79,13 +79,22 @@ namespace MKW.GUI.Model
         public void CreateEntry(string payload)
         {
             using IEntrySession entry = user.CreateEntry();
-            entry.UpdatePayload(new EntryPayload(payload));
+
+            entry.UpdatePayload(new EntryPayload
+            {
+                Notes = payload,
+            });
+
             RefreshEntries();
         }
 
         public void UpdateEntry(IEntrySession entry, string text)
         {
-            entry.UpdatePayload(new EntryPayload(text));
+            entry.UpdatePayload(new EntryPayload
+            {
+                Notes = text 
+            });
+
             RefreshEntries();
         }
 

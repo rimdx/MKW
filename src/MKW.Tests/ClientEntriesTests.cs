@@ -20,7 +20,7 @@ namespace MKW.Tests
 
             EntryId entryId = EntryId.Create();
 
-            EntryInfo entry = admin.UpdateEntry(entryId, new EntryPayload("secret"));
+            EntryInfo entry = admin.UpdateEntry(entryId, new EntryPayload { Notes = "secret" });
 
             ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
             ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
@@ -36,9 +36,9 @@ namespace MKW.Tests
                 },
                 entry.EncodedForUsers);
 
-            ClassicAssert.AreEqual(new EntryPayload("secret"),
+            ClassicAssert.AreEqual(new EntryPayload { Notes = "secret" },
                                    user.OpenEntry(entry.Id).OpenPayload());
-            ClassicAssert.AreEqual(new EntryPayload("secret"),
+            ClassicAssert.AreEqual(new EntryPayload { Notes = "secret" },
                                    admin.OpenEntry(entry.Id).OpenPayload());
         }
 
@@ -56,8 +56,8 @@ namespace MKW.Tests
             EntryId id1 = EntryId.Create();
             EntryId id2 = EntryId.Create();
 
-            oldUser.UpdateEntry(id1, new EntryPayload("entry1"));
-            oldUser.UpdateEntry(id2, new EntryPayload("entry2"));
+            oldUser.UpdateEntry(id1, new EntryPayload { Notes = "entry1" });
+            oldUser.UpdateEntry(id2, new EntryPayload { Notes = "entry2" });
 
             {
                 DatabaseEntry entry = db.OpenEntry(id1);
@@ -68,8 +68,8 @@ namespace MKW.Tests
             CollectionAssert.AreEqual(
                 new EntryPayload?[]
                 {
-                    new EntryPayload("entry1"),
-                    new EntryPayload("entry2"),
+                    new EntryPayload { Notes = "entry1" },
+                    new EntryPayload { Notes = "entry2" },
                 },
                 oldUser.EnumerateEntries().Select(entry => entry.OpenPayload())
             );
@@ -77,26 +77,26 @@ namespace MKW.Tests
                 new EntryPayload?[]
                 {
                     null,
-                    new EntryPayload("entry2"),
+                    new EntryPayload { Notes = "entry2" },
                 },
                 newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
             );
 
-            oldUser.UpdateEntry(id1, new EntryPayload("newcontent"));
+            oldUser.UpdateEntry(id1, new EntryPayload { Notes = "newcontent" });
 
             CollectionAssert.AreEqual(
                 new EntryPayload?[]
                 {
-                    new EntryPayload("newcontent"),
-                    new EntryPayload("entry2"),
+                    new EntryPayload { Notes = "newcontent" },
+                    new EntryPayload { Notes = "entry2" },
                 },
                 oldUser.EnumerateEntries().Select(entry => entry.OpenPayload())
             );
             CollectionAssert.AreEqual(
                 new EntryPayload?[]
                 {
-                    new EntryPayload("newcontent"),
-                    new EntryPayload("entry2"),
+                    new EntryPayload { Notes = "newcontent" },
+                    new EntryPayload { Notes = "entry2" },
                 },
                 newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
             );
@@ -123,15 +123,15 @@ namespace MKW.Tests
                                        user.OpenEntry(entry.Id).OpenPayload());
 
                 // initial update
-                entry.UpdatePayload(new EntryPayload("data1"));
+                entry.UpdatePayload(new EntryPayload { Notes = "data1" });
 
-                ClassicAssert.AreEqual(new EntryPayload("data1"),
+                ClassicAssert.AreEqual(new EntryPayload { Notes = "data1" },
                                        user.OpenEntry(entry.Id).OpenPayload());
 
                 // another update
-                entry.UpdatePayload(new EntryPayload("data2"));
+                entry.UpdatePayload(new EntryPayload { Notes = "data2" });
 
-                ClassicAssert.AreEqual(new EntryPayload("data2"),
+                ClassicAssert.AreEqual(new EntryPayload { Notes = "data2" },
                                        user.OpenEntry(entry.Id).OpenPayload());
 
                 // create with same id
@@ -144,7 +144,7 @@ namespace MKW.Tests
             {
                 using IUserSession user = client.OpenUser("usersecret");
                 using IEntrySession entry = user.OpenEntry(entryId);
-                ClassicAssert.AreEqual(new EntryPayload("data2"),
+                ClassicAssert.AreEqual(new EntryPayload { Notes = "data2" },
                                        user.OpenEntry(entry.Id).OpenPayload());
 
                 // delete

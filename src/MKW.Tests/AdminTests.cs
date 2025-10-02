@@ -84,7 +84,7 @@ namespace MKW.Tests
             {
                 using IUserSession user = sbox.CreateUser(client, "user1", out _);
                 using IEntrySession entry = user.CreateEntry();
-                entry.UpdatePayload(new EntryPayload("data"));
+                entry.UpdatePayload(new EntryPayload { Notes = "data" });
                 entryId = entry.Id;
             }
 
@@ -92,7 +92,7 @@ namespace MKW.Tests
                 using IAdminSession admin = sbox.OpenAdmin(client);
                 using IEntrySession entry = admin.OpenEntry(entryId);
 
-                ClassicAssert.AreEqual(new EntryPayload("data"),
+                ClassicAssert.AreEqual(new EntryPayload{ Notes = "data" },
                                        entry.OpenPayload());
             }
         }
@@ -123,22 +123,22 @@ namespace MKW.Tests
             using IAdminSession admin = sbox.OpenAdmin(client);
 
             using IEntrySession entry1 = admin.CreateEntry();
-            entry1.UpdatePayload(new EntryPayload("data1"));
+            entry1.UpdatePayload(new EntryPayload{ Notes = "data1" });
 
             using IEntrySession entry2 = admin.CreateEntry();
-            entry2.UpdatePayload(new EntryPayload("data2"));
+            entry2.UpdatePayload(new EntryPayload{ Notes = "data2" });
 
             using IEntrySession entry3 = admin.CreateEntry();
-            entry3.UpdatePayload(new EntryPayload("data3"));
+            entry3.UpdatePayload(new EntryPayload{ Notes = "data3" });
 
             using IUserSession user = sbox.CreateUser(client, "user1", out _);
 
             CollectionAssert.AreEquivalent(
                 new[]
                 {
-                    new EntryPayload("data1"),
-                    new EntryPayload("data2"),
-                    new EntryPayload("data3"),
+                    new EntryPayload{ Notes = "data1" },
+                    new EntryPayload{ Notes = "data2" },
+                    new EntryPayload{ Notes = "data3" },
                 },
                 user.EnumerateEntries().Select(value => value.OpenPayload()));
         }
