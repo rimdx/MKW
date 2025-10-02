@@ -57,8 +57,7 @@ namespace MKW.GUI.AddUserWizard
         {
             try
             {
-                byte[] bytes = Convert.FromBase64String(RequestString);
-                Request = UserAccessRequestSerializer.Deserialize(bytes);
+                Request = UserAccessRequestSerializer.Deserialize(requestString);
             }
             catch (Exception)
             {

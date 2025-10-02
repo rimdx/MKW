@@ -1,40 +1,41 @@
-﻿using System.Text.Json;
+﻿using Org.BouncyCastle.Asn1;
 
 namespace MKW.Core.Serialization
 {
     public static class UserAccessRequestSerializer
     {
-        public static ReadOnlyMemory<byte> Serialize(UserAccessRequest data)
+        public static string Serialize(UserAccessRequest data)
         {
-            UserAccessRequestData obj = new UserAccessRequestData
+            using MemoryStream stream = new MemoryStream();
+
+            using (DerSequenceGenerator writer = new DerSequenceGenerator(stream))
             {
-                Salt = data.Salt,
-                PublicKey = data.PublicKey,
-                PrivateKey = data.EncryptedPrivateKey.EncryptedPayload,
-                AdminSignature = data.AdminSignature,
-            };
-
-            return JsonSerializer.SerializeToUtf8Bytes(
-                obj, UserAccessRequestJsonSerializerContext.Default.UserAccessRequestData);
-        }
-
-        public static UserAccessRequest Deserialize(ReadOnlySpan<byte> data)
-        {
-            UserAccessRequestData? parsed = JsonSerializer.Deserialize(
-                data, UserAccessRequestJsonSerializerContext.Default.UserAccessRequestData);
-
-            if (parsed == null)
-            {
-                throw new NullReferenceException();
+                writer.AddObject(new UserAccessRequestStructure(data));
             }
 
-            return new UserAccessRequest
+            byte[] bytes = stream.ToArray();
+
+            return Convert.ToBase64String(bytes);
+        }
+
+        public static UserAccessRequest Deserialize(string data)
+        {
+            byte[] bytes = Convert.FromBase64String(data);
+
+            using Asn1InputStream stream = new Asn1InputStream(bytes);
+
+            Asn1Sequence sequence = Asn1Sequence.GetInstance(stream.ReadObject());
+
+            if (sequence.Count == 1)
             {
-                Salt = parsed.Salt,
-                PublicKey = parsed.PublicKey,
-                EncryptedPrivateKey = new SecretPayload(parsed.PrivateKey),
-                AdminSignature = parsed.AdminSignature,
-            };
+                Asn1Sequence innerSequence = Asn1Sequence.GetInstance(sequence[0]);
+                UserAccessRequestStructure structure = new UserAccessRequestStructure(innerSequence);
+                return structure.GetValue();
+            }
+            else
+            {
+                throw new ArgumentException("Bad sequence size: " + sequence.Count);
+            }
         }
     }
 }

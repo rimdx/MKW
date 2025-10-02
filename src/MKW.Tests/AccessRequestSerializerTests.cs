@@ -18,8 +18,8 @@ namespace MKW.Tests
 
             UserAccessRequest req1 = client.CreateUserAccessRequest("abc");
 
-            ReadOnlyMemory<byte> data = UserAccessRequestSerializer.Serialize(req1);
-            UserAccessRequest req2 = UserAccessRequestSerializer.Deserialize(data.Span);
+            string data = UserAccessRequestSerializer.Serialize(req1);
+            UserAccessRequest req2 = UserAccessRequestSerializer.Deserialize(data);
 
             CollectionAssert.AreEqual(req1.Salt.ToArray(), req2.Salt.ToArray());
             CollectionAssert.AreEqual(req1.PublicKey.ToArray(), req2.PublicKey.ToArray());
