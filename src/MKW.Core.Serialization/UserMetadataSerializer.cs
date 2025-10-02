@@ -16,7 +16,7 @@ namespace MKW.Core.Serialization
                 }
                 catch (Exception ex)
                 {
-                    throw new Exceptions.InvalidUserAccessRequestException(ex);
+                    throw new Exceptions.InvalidUserMetadataException(ex);
                 }
             }
         }
