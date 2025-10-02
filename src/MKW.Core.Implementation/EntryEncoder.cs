@@ -1,7 +1,6 @@
 ﻿using MKW.Core.Serialization;
 using MKW.Core.Storage;
 using MKW.Cryptography;
-using System.Text;
 
 namespace MKW.Core.Implementation
 {
