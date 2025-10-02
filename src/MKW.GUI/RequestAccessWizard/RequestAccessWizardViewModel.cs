@@ -42,9 +42,7 @@ namespace MKW.GUI.RequestAccessWizard
 
             KeyFormatter keyFormatter = new KeyFormatter(52);
 
-            ReadOnlyMemory<byte> data = UserAccessRequestSerializer.Serialize(request);
-
-            RequestString = keyFormatter.GetBase64String(data.Span);
+            RequestString = UserAccessRequestSerializer.Serialize(request);
         }
 
         private static string FormatTitle(DatabaseModel database)
