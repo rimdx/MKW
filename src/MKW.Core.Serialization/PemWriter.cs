@@ -1,4 +1,6 @@
-﻿using Org.BouncyCastle.Asn1;
+﻿using MKW.Common;
+using Org.BouncyCastle.Asn1;
+using System.Security.Cryptography;
 
 namespace MKW.Core.Serialization
 {
@@ -22,14 +24,19 @@ namespace MKW.Core.Serialization
         {
             writer.WriteLine(header);
 
-            using (MemoryStream stream = new MemoryStream())
             {
-                obj.EncodeTo(stream, Asn1Encodable.Der);
+                // output to writer
 
-                byte[] bytes = stream.ToArray();
-                string base64 = Convert.ToBase64String(bytes, Base64FormattingOptions.InsertLineBreaks);
+                // in ascii encoding->text
+                using ASCIIStream encoder = new ASCIIStream(writer);
+                // add a line breaks every N symbols
+                using LineBreakTransform lineBreakTransform = new LineBreakTransform(52);
+                using CryptoStream lineBreakStream = new CryptoStream(encoder, lineBreakTransform, CryptoStreamMode.Write);
+                // convert bytes to ascii base64
+                using ToBase64Transform base64transform = new ToBase64Transform();
+                using CryptoStream base64stream = new CryptoStream(lineBreakStream, base64transform, CryptoStreamMode.Write);
 
-                writer.WriteLine(base64);
+                obj.EncodeTo(base64stream, Asn1Encodable.Der);
             }
 
             writer.WriteLine(footer);
