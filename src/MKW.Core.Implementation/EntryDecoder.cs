@@ -1,4 +1,5 @@
-﻿using MKW.Core.Storage;
+﻿using MKW.Core.Serialization;
+using MKW.Core.Storage;
 using MKW.Cryptography;
 using System.Text;
 
@@ -34,10 +35,7 @@ namespace MKW.Core.Implementation
 
             Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
 
-            return new EntryPayload
-            {
-                Notes = Encoding.UTF8.GetString(decryptedData.ToArray())
-            };
+            return EntryPayloadSerializer.Deserialize(decryptedData.Span);
         }
 
         public void Dispose()
