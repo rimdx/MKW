@@ -22,7 +22,7 @@ namespace MKW.Core.Implementation
         {
             using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
 
-            Memory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
+            ReadOnlyMemory<byte> data = payloadEncoder.Encrypt(payload.Data.Span);
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
