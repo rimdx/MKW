@@ -8,7 +8,7 @@ namespace MKW.GUI
         private readonly DatabaseUnlockedModel database;
         private readonly IEntrySession entry;
 
-        private readonly EntryPayload payload;
+        public EntryPayloadEditorViewModel Payload { get; }
 
         public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
         {
@@ -19,7 +19,7 @@ namespace MKW.GUI
 
             if (payload != null)
             {
-                this.payload = payload;
+                Payload = new EntryPayloadEditorViewModel(payload);
             }
             else
             {
@@ -27,15 +27,9 @@ namespace MKW.GUI
             }
         }
 
-        public string Notes
-        {
-            get => payload.Notes ?? string.Empty;
-            set => payload.Notes = value;
-        }
-
         public bool OnOK()
         {
-            database.UpdateEntry(entry, payload);
+            database.UpdateEntry(entry, Payload.GetPayload());
             return true;
         }
 

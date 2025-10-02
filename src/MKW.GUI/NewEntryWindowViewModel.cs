@@ -6,23 +6,18 @@ namespace MKW.GUI
     public class NewEntryWindowViewModel : ViewModelBase
     {
         private readonly DatabaseUnlockedModel database;
-        private readonly EntryPayload payload;
+
+        public EntryPayloadEditorViewModel Payload { get; }
 
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
-            payload = new EntryPayload();
-        }
-
-        public string Notes
-        {
-            get => payload.Notes ?? string.Empty;
-            set => payload.Notes = value;
+            Payload = new EntryPayloadEditorViewModel(new EntryPayload());
         }
 
         public bool OnOK()
         {
-            database.CreateEntry(payload);
+            database.CreateEntry(Payload.GetPayload());
             return true;
         }
     }
