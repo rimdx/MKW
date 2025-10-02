@@ -2,6 +2,6 @@
 {
     public sealed record class EntryPayload
     {
-        public string Notes { get; set; } = string.Empty;
+        public string? Notes { get; set; }
     }
 }

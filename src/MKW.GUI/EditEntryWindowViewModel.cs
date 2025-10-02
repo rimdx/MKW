@@ -29,7 +29,7 @@ namespace MKW.GUI
 
         public string Notes
         {
-            get => payload.Notes;
+            get => payload.Notes ?? string.Empty;
             set => payload.Notes = value;
         }
 
