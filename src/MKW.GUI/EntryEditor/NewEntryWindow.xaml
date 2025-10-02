@@ -18,6 +18,7 @@
     <local:PayloadEditor DataContext="{Binding Payload}" />
 
     <StackPanel Grid.Row="1"
+                Margin="0,6,0,0"
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
 
