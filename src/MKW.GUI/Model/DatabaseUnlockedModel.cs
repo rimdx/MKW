@@ -61,7 +61,7 @@ namespace MKW.GUI.Model
                     yield return new DatabaseEntryModel
                     {
                         Id = entry.Id,
-                        Payload = payload?.ToString()
+                        Payload = payload,
                     };
                 }
             }
@@ -76,24 +76,18 @@ namespace MKW.GUI.Model
             Entries = [.. EnumerateEntries()];
         }
 
-        public void CreateEntry(string payload)
+        public void CreateEntry(EntryPayload payload)
         {
             using IEntrySession entry = user.CreateEntry();
 
-            entry.UpdatePayload(new EntryPayload
-            {
-                Notes = payload,
-            });
+            entry.UpdatePayload(payload);
 
             RefreshEntries();
         }
 
-        public void UpdateEntry(IEntrySession entry, string text)
+        public void UpdateEntry(IEntrySession entry, EntryPayload payload)
         {
-            entry.UpdatePayload(new EntryPayload
-            {
-                Notes = text 
-            });
+            entry.UpdatePayload(payload);
 
             RefreshEntries();
         }

@@ -1,26 +1,28 @@
-﻿using MKW.GUI.Model;
+﻿using MKW.Core;
+using MKW.GUI.Model;
 
 namespace MKW.GUI
 {
     public class NewEntryWindowViewModel : ViewModelBase
     {
         private readonly DatabaseUnlockedModel database;
+        private readonly EntryPayload payload;
 
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
+            payload = new EntryPayload();
         }
 
-        private string _payload = "";
-        public string Payload
+        public string Notes
         {
-            get => _payload;
-            set => SetProperty(ref _payload, value);
+            get => payload.Notes;
+            set => payload.Notes = value;
         }
 
         public bool OnOK()
         {
-            database.CreateEntry(Payload);
+            database.CreateEntry(payload);
             return true;
         }
     }
