@@ -23,7 +23,7 @@
 
     <TextBox Grid.Row="1"
              x:Name="Payload"
-             Text="{Binding Payload, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+             Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
              FontFamily="Consolas"
              AcceptsReturn="True"
              Margin="0,0,0,6" />

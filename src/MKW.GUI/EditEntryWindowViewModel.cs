@@ -8,29 +8,34 @@ namespace MKW.GUI
         private readonly DatabaseUnlockedModel database;
         private readonly IEntrySession entry;
 
+        private readonly EntryPayload payload;
+
         public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
         {
             this.database = database;
             this.entry = entry;
 
-            string? payload = entry.OpenPayload()?.ToString();
+            EntryPayload? payload = entry.OpenPayload();
 
             if (payload != null)
             {
-                Payload = payload;
+                this.payload = payload;
+            }
+            else
+            {
+                throw new Exception("Can't open entry content.");
             }
         }
 
-        private string _payload = "";
-        public string Payload
+        public string Notes
         {
-            get => _payload;
-            set => SetProperty(ref _payload, value);
+            get => payload.Notes;
+            set => payload.Notes = value;
         }
 
         public bool OnOK()
         {
-            database.UpdateEntry(entry, Payload);
+            database.UpdateEntry(entry, payload);
             return true;
         }
 
