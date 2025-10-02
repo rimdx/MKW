@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core.Serialization
 {
-    internal class BadSequenceLengthException(int count)
+    internal class Asn1BadSequenceLengthException(int count)
         : Exception($"Bad sequence length: {count}")
     {
     }
