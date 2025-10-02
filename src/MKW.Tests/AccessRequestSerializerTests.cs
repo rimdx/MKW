@@ -7,7 +7,7 @@ using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
 {
-    public class AccessRequestSerializerTests<T>
+    public class AccessRequestSerializerTests
     {
         [Test]
         public void SimpleTest()
