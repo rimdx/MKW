@@ -1,34 +1,23 @@
-﻿<local:DialogWindow x:Class="MKW.GUI.NewEntryWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MKW.GUI"
-        mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:NewEntryWindowViewModel}"
-        Title="Create New Secret Entry"
-        Height="300" Width="400">
+﻿<gui:DialogWindow x:Class="MKW.GUI.NewEntryWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:gui="clr-namespace:MKW.GUI"
+                  xmlns:local="clr-namespace:MKW.GUI.EntryEditor"
+                  mc:Ignorable="d"
+                  d:DataContext="{d:DesignInstance Type=gui:NewEntryWindowViewModel}"
+                  Title="Create New Secret Entry"
+                  Height="300" Width="400">
   <Grid Margin="12">
     <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Row="0"
-           Content="Entry content:"
-           Target="Payload"
-           Margin="0,0,0,3"
-           Padding="0" />
+    <local:PayloadEditor DataContext="{Binding Payload}" />
 
-    <TextBox Grid.Row="1"
-             x:Name="Payload"
-             Text="{Binding Payload.Notes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-             FontFamily="Consolas"
-             AcceptsReturn="True"
-             Margin="0,0,0,6" />
-
-    <StackPanel Grid.Row="2"
+    <StackPanel Grid.Row="1"
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
 
@@ -45,4 +34,4 @@
               IsCancel="True" />
     </StackPanel>
   </Grid>
-</local:DialogWindow>
+</gui:DialogWindow>
