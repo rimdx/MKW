@@ -19,6 +19,9 @@ namespace MKW.Tests
             UserAccessRequest req1 = client.CreateUserAccessRequest("abc");
 
             string data = UserAccessRequestSerializer.Serialize(req1);
+
+            Console.Write(data);
+
             UserAccessRequest req2 = UserAccessRequestSerializer.Deserialize(data);
 
             CollectionAssert.AreEqual(req1.Salt.ToArray(), req2.Salt.ToArray());
