@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.GUI.EntryEditor;
 using System.ComponentModel;
 
 namespace MKW.GUI.Model
@@ -12,8 +13,8 @@ namespace MKW.GUI.Model
 
         public string Path => Database.Path;
 
-        private IReadOnlyCollection<DatabaseEntryModel> entries;
-        public IReadOnlyCollection<DatabaseEntryModel> Entries
+        private IReadOnlyCollection<EntryPayloadEditorViewModel> entries;
+        public IReadOnlyCollection<EntryPayloadEditorViewModel> Entries
         {
             get => entries;
             private set => SetProperty(ref entries, value);
@@ -50,7 +51,7 @@ namespace MKW.GUI.Model
             }
         }
 
-        private IEnumerable<DatabaseEntryModel> EnumerateEntries()
+        private IEnumerable<EntryPayloadEditorViewModel> EnumerateEntries()
         {
             if (user != null)
             {
@@ -58,11 +59,7 @@ namespace MKW.GUI.Model
                 {
                     EntryPayload? payload = entry.OpenPayload();
 
-                    yield return new DatabaseEntryModel
-                    {
-                        Id = entry.Id,
-                        Payload = payload,
-                    };
+                    yield return new EntryPayloadEditorViewModel(entry.Id, payload);
                 }
             }
             else
@@ -76,9 +73,9 @@ namespace MKW.GUI.Model
             Entries = [.. EnumerateEntries()];
         }
 
-        public void CreateEntry(EntryPayload payload)
+        public void CreateEntry(EntryId id, EntryPayload payload)
         {
-            using IEntrySession entry = user.CreateEntry();
+            using IEntrySession entry = user.CreateEntry(id);
 
             entry.UpdatePayload(payload);
 
