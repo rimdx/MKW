@@ -6,15 +6,15 @@ namespace MKW.Core.Serialization
     {
         public static EntryPayload Deserialize(ReadOnlySpan<byte> data)
         {
-            return new EntryPayload
-            {
-                Notes = Encoding.UTF8.GetString(data.ToArray()),
-            };
+            EntryPayload result = new EntryPayload();
+            string content = Encoding.UTF8.GetString(data.ToArray());
+            result.SetProperty(EntryPayloadCommonProperties.Notes, content);
+            return result;
         }
 
         public static ReadOnlyMemory<byte> Serialize(EntryPayload payload)
         {
-            return Encoding.UTF8.GetBytes(payload.Notes);
+            return Encoding.UTF8.GetBytes(payload.GetProperty(EntryPayloadCommonProperties.Notes));
         }
     }
 }

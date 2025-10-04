@@ -31,7 +31,9 @@ namespace MKW.Testing.Client
 
         public EntryPayload CreatePayload(string content)
         {
-            return new EntryPayload { Notes = content };
+            EntryPayload result = new EntryPayload();
+            result.SetProperty(EntryPayloadCommonProperties.Notes, content);
+            return result;
         }
 
         public IDatabase OpenDatabase()

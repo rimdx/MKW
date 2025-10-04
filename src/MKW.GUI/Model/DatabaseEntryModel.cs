@@ -7,6 +7,6 @@ namespace MKW.GUI.Model
         public required EntryId Id { get; init; }
         public required EntryPayload? Payload { get; init; }
 
-        public string? Notes => Payload?.Notes;
+        public string? Notes => Payload?.GetProperty(EntryPayloadCommonProperties.Notes);
     }
 }
