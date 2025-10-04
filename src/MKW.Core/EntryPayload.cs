@@ -20,9 +20,16 @@ namespace MKW.Core
             this.data = data;
         }
 
-        public static EntryPayload FromDictionary(Dictionary<EntryPayloadKey, string> items)
+        public static EntryPayload FromDictionary(IReadOnlyCollection<KeyValuePair<EntryPayloadKey, string>> items)
         {
-            return new EntryPayload(items);
+            Dictionary<EntryPayloadKey, string> dict = new Dictionary<EntryPayloadKey, string>(items.Count);
+
+            foreach (var item in items)
+            {
+                dict[item.Key] = item.Value;
+            }
+
+            return new EntryPayload(dict);
         }
 
         public string? GetProperty(EntryPayloadKey key)
