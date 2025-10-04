@@ -2,12 +2,12 @@
 {
     public static class EntryPayloadCommonProperties
     {
-        public const string DefaultNamespace = "mkw";
+        public readonly static EntryPayloadKey DefaultNamespace = new EntryPayloadKey("mkw");
 
-        public const string Title = $"{DefaultNamespace}:title";
-        public const string Username = $"{DefaultNamespace}:username";
-        public const string Password = $"{DefaultNamespace}:password";
-        public const string Url = $"{DefaultNamespace}:url";
-        public const string Notes = $"{DefaultNamespace}:notes";
+        public readonly static EntryPayloadKey Title = DefaultNamespace.Branch("title");
+        public readonly static EntryPayloadKey Username = DefaultNamespace.Branch("username");
+        public readonly static EntryPayloadKey Password = DefaultNamespace.Branch("password");
+        public readonly static EntryPayloadKey Url = DefaultNamespace.Branch("url");
+        public readonly static EntryPayloadKey Notes = DefaultNamespace.Branch("notes");
     }
 }
