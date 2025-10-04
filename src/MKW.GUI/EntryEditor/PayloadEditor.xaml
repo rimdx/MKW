@@ -12,7 +12,7 @@
   <UserControl.Resources>
     <Style TargetType="{x:Type Label}">
       <Setter Property="Padding" Value="0" />
-      <Setter Property="Margin" Value="0,0,0,3" />
+      <Setter Property="Margin" Value="0,4,18,0" />
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
@@ -27,36 +27,56 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <StackPanel>
-      <Label Content="Title:"
-             Target="{Binding ElementName=TitleInput}" />
-      <TextBox x:Name="TitleInput"
-               Text="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
-      <Label Content="User name:"
-             Target="{Binding ElementName=UsernameInput}" />
-      <TextBox x:Name="UsernameInput"
-               Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+    <Label Content="Title:"
+           Grid.Row="0"
+           Target="{Binding ElementName=TitleInput}" />
+    <TextBox x:Name="TitleInput"
+             Grid.Column="1"
+             Grid.Row="0"
+             Text="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-      <Label Content="Password:"
-             Target="{Binding ElementName=PasswordInput}" />
-      <TextBox x:Name="PasswordInput"
-               Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+    <Label Content="User name:"
+           Grid.Row="1"
+           Target="{Binding ElementName=UsernameInput}" />
+    <TextBox x:Name="UsernameInput"
+             Grid.Column="1"
+             Grid.Row="1"
+             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-      <Label Content="URL:"
-             Target="{Binding ElementName=UrlInput}" />
-      <TextBox x:Name="UrlInput"
-               Text="{Binding Url, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+    <Label Content="Password:"
+           Grid.Row="2"
+           Target="{Binding ElementName=PasswordInput}" />
+    <TextBox x:Name="PasswordInput"
+             Grid.Column="1"
+             Grid.Row="2"
+             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-      <Label Content="Notes:"
-             Target="{Binding ElementName=NotesInput}" />
-    </StackPanel>
+    <Label Content="URL:"
+           Grid.Row="3"
+           Target="{Binding ElementName=UrlInput}" />
+    <TextBox x:Name="UrlInput"
+             Grid.Column="1"
+             Grid.Row="3"
+             Text="{Binding Url, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+    <Label Content="Notes:"
+           Grid.Row="4"
+           Target="{Binding ElementName=NotesInput}" />
 
     <TextBox x:Name="NotesInput"
-             Grid.Row="1"
+             Grid.Column="1"
+             Grid.Row="4"
              Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
              AcceptsReturn="True" />
   </Grid>
