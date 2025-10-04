@@ -13,32 +13,32 @@ namespace MKW.GUI
 
         public string Title
         {
-            get => payload.Title ?? string.Empty;
-            set => payload.Title = value;
+            get => payload.GetPropertyOrEmpty(EntryPayloadCommonProperties.Title);
+            set => payload.SetProperty(EntryPayloadCommonProperties.Title, value);
         }
 
         public string Username
         {
-            get => payload.Username ?? string.Empty;
-            set => payload.Username = value;
+            get => payload.GetPropertyOrEmpty(EntryPayloadCommonProperties.Username);
+            set => payload.SetProperty(EntryPayloadCommonProperties.Username, value);
         }
 
         public string Password
         {
-            get => payload.Password ?? string.Empty;
-            set => payload.Password = value;
+            get => payload.GetPropertyOrEmpty(EntryPayloadCommonProperties.Password);
+            set => payload.SetProperty(EntryPayloadCommonProperties.Password, value);
         }
 
         public string Url
         {
-            get => payload.Url ?? string.Empty;
-            set => payload.Url = value;
+            get => payload.GetPropertyOrEmpty(EntryPayloadCommonProperties.Url);
+            set => payload.SetProperty(EntryPayloadCommonProperties.Url, value);
         }
 
         public string Notes
         {
-            get => payload.Notes ?? string.Empty;
-            set => payload.Notes = value;
+            get => payload.GetPropertyOrEmpty(EntryPayloadCommonProperties.Notes);
+            set => payload.SetProperty(EntryPayloadCommonProperties.Notes, value);
         }
 
         public EntryPayload GetPayload()
