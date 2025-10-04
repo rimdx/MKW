@@ -4,14 +4,14 @@ namespace MKW.Core
 {
     public sealed class EntryPayload
     {
-        private readonly Dictionary<string, string> data;
+        private readonly Dictionary<EntryPayloadKey, string> data;
 
         public EntryPayload()
         {
             data = [];
         }
 
-        public string? GetProperty(string key)
+        public string? GetProperty(EntryPayloadKey key)
         {
             if (data.TryGetValue(key, out string? value))
             {
@@ -23,12 +23,12 @@ namespace MKW.Core
             }
         }
 
-        public string GetPropertyOrEmpty(string key)
+        public string GetPropertyOrEmpty(EntryPayloadKey key)
         {
             return GetProperty(key) ?? string.Empty;
         }
 
-        public void SetProperty(string key, string? value)
+        public void SetProperty(EntryPayloadKey key, string? value)
         {
             if (value == null)
             {
@@ -55,7 +55,7 @@ namespace MKW.Core
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (KeyValuePair<string, string> pair in data)
+            foreach (KeyValuePair<EntryPayloadKey, string> pair in data)
             {
                 sb.AppendLine($"{pair.Key}\t = {pair.Value}");
             }
