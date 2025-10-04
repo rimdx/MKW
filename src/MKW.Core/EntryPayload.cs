@@ -11,6 +11,16 @@ namespace MKW.Core
             data = [];
         }
 
+        private EntryPayload(Dictionary<EntryPayloadKey, string> data)
+        {
+            this.data = data;
+        }
+
+        public static EntryPayload FromDictionary(Dictionary<EntryPayloadKey, string> items)
+        {
+            return new EntryPayload(items);
+        }
+
         public string? GetProperty(EntryPayloadKey key)
         {
             if (data.TryGetValue(key, out string? value))
