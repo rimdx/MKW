@@ -1,10 +1,14 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 
 namespace MKW.Core
 {
     public sealed class EntryPayload
+        : IReadOnlyCollection<KeyValuePair<EntryPayloadKey, string>>
     {
         private readonly Dictionary<EntryPayloadKey, string> data;
+
+        public int Count => data.Count;
 
         public EntryPayload()
         {
@@ -71,6 +75,16 @@ namespace MKW.Core
             }
 
             return sb.ToString();
+        }
+
+        public IEnumerator<KeyValuePair<EntryPayloadKey, string>> GetEnumerator()
+        {
+            return data.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return data.GetEnumerator();
         }
     }
 }
