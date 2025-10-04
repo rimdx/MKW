@@ -13,12 +13,12 @@ namespace MKW.GUI
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
-            Payload = new EntryPayloadEditorViewModel(new EntryPayload());
+            Payload = new EntryPayloadEditorViewModel(EntryId.Create(), new EntryPayload());
         }
 
         public bool OnOK()
         {
-            database.CreateEntry(Payload.GetPayload());
+            database.CreateEntry(Payload.Id, Payload.GetPayload());
             return true;
         }
     }
