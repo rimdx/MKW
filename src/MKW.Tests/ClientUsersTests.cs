@@ -78,7 +78,7 @@ namespace MKW.Tests
             EntryId entryId;
             using (IEntrySession entry = admin.CreateEntry())
             {
-                entry.UpdatePayload(new EntryPayload { Notes = "secret stuff" });
+                entry.UpdatePayload(sbox.CreatePayload("secret stuff"));
                 entryId = entry.Id;
             }
 
@@ -118,20 +118,20 @@ namespace MKW.Tests
 
             using (IEntrySession entry = userSession.OpenEntry(entryId))
             {
-                ClassicAssert.AreEqual(new EntryPayload { Notes = "secret stuff" },
+                ClassicAssert.AreEqual(sbox.CreatePayload("secret stuff"),
                                        entry.OpenPayload());
             }
 
             EntryId newEntryId;
             using (IEntrySession entry = userSession.CreateEntry())
             {
-                entry.UpdatePayload(new EntryPayload { Notes = "new entry" });
+                entry.UpdatePayload(sbox.CreatePayload("new entry"));
                 newEntryId = entry.Id;
             }
 
             using (IEntrySession entry = admin.OpenEntry(newEntryId))
             {
-                ClassicAssert.AreEqual(new EntryPayload { Notes = "new entry" },
+                ClassicAssert.AreEqual(sbox.CreatePayload("new entry"),
                                        entry.OpenPayload());
             }
         }

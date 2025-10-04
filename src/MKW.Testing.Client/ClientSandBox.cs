@@ -29,6 +29,11 @@ namespace MKW.Testing.Client
             }
         }
 
+        public EntryPayload CreatePayload(string content)
+        {
+            return new EntryPayload { Notes = content };
+        }
+
         public IDatabase OpenDatabase()
         {
             return JSONDatabaseSession.Open(DatabasePath);
