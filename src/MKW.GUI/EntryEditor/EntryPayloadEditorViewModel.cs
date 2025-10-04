@@ -1,6 +1,6 @@
 ﻿using MKW.Core;
 
-namespace MKW.GUI
+namespace MKW.GUI.EntryEditor
 {
     public class EntryPayloadEditorViewModel : ViewModelBase
     {

@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.GUI.EntryEditor;
 using MKW.GUI.Model;
 
 namespace MKW.GUI
