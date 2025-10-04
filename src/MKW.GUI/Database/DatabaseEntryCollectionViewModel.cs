@@ -1,10 +1,11 @@
-﻿using MKW.GUI.Model;
+﻿using MKW.GUI.EntryEditor;
+using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace MKW.GUI.Database
 {
-    public class DatabaseEntryCollectionViewModel : ObservableCollection<DatabaseEntryModel>, IDisposable
+    public class DatabaseEntryCollectionViewModel : ObservableCollection<EntryPayloadEditorViewModel>, IDisposable
     {
         private readonly DatabaseUnlockedModel database;
 
@@ -27,7 +28,7 @@ namespace MKW.GUI.Database
         {
             Clear();
 
-            foreach (DatabaseEntryModel entry in database.Entries)
+            foreach (EntryPayloadEditorViewModel entry in database.Entries)
             {
                 Add(entry);
             }

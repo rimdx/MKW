@@ -54,13 +54,25 @@
       <ListView.View>
         <GridView>
           <GridView.Columns>
-            <GridViewColumn Header="Entry ID"
-                            Width="250"
-                            DisplayMemberBinding="{Binding Id}" />
+            <GridViewColumn Header="Title"
+                            Width="175"
+                            DisplayMemberBinding="{Binding Title}" />
 
-            <GridViewColumn Header="Payload"
-                            Width="300"
-                            DisplayMemberBinding="{Binding Payload}" />
+            <GridViewColumn Header="User Name"
+                            Width="175"
+                            DisplayMemberBinding="{Binding Username}" />
+
+            <GridViewColumn Header="Password"
+                            Width="150"
+                            DisplayMemberBinding="{Binding Password}" />
+
+            <GridViewColumn Header="URL"
+                            Width="150"
+                            DisplayMemberBinding="{Binding Url}" />
+
+            <GridViewColumn Header="Notes"
+                            Width="225"
+                            DisplayMemberBinding="{Binding Notes}" />
           </GridView.Columns>
         </GridView>
       </ListView.View>
