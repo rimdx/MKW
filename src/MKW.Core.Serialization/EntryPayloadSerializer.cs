@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Org.BouncyCastle.Asn1;
 
 namespace MKW.Core.Serialization
 {
@@ -6,15 +6,35 @@ namespace MKW.Core.Serialization
     {
         public static EntryPayload Deserialize(ReadOnlySpan<byte> data)
         {
-            EntryPayload result = new EntryPayload();
-            string content = Encoding.UTF8.GetString(data.ToArray());
-            result.SetProperty(EntryPayloadCommonProperties.Notes, content);
-            return result;
+            using Asn1InputStream stream = new Asn1InputStream(data.ToArray());
+            {
+                try
+                {
+                    Asn1Object obj = stream.ReadObject();
+                    EntryPayloadStructure structure = new EntryPayloadStructure(Asn1Sequence.GetInstance(obj));
+                    return structure.GetValue();
+                }
+                catch (Exceptions.InvalidEntryPayload)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exceptions.InvalidEntryPayload(ex);
+                }
+            }
         }
 
         public static ReadOnlyMemory<byte> Serialize(EntryPayload payload)
         {
-            return Encoding.UTF8.GetBytes(payload.GetProperty(EntryPayloadCommonProperties.Notes));
+            using MemoryStream stream = new MemoryStream();
+
+            using Asn1OutputStream asn1 = Asn1OutputStream.Create(stream);
+            {
+                asn1.WriteObject(new EntryPayloadStructure(payload));
+            }
+
+            return stream.ToArray();
         }
     }
 }
