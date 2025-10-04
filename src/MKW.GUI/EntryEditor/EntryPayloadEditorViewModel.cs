@@ -6,8 +6,11 @@ namespace MKW.GUI.EntryEditor
     {
         private readonly EntryPayload payload;
 
-        public EntryPayloadEditorViewModel(EntryPayload payload)
+        public EntryId Id { get; }
+
+        public EntryPayloadEditorViewModel(EntryId id, EntryPayload payload)
         {
+            Id = id;
             this.payload = payload;
         }
 
