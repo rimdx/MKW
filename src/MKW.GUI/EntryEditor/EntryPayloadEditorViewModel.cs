@@ -1,5 +1,5 @@
 ﻿using MKW.Core;
-using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace MKW.GUI.EntryEditor
 {
@@ -18,8 +18,10 @@ namespace MKW.GUI.EntryEditor
 
             Properties = new EntryPayloadEditorPropertiesViewModel(payload);
 
-            CustomProperties = [];
-            RefreshCustomProperties();
+            CustomProperties = new ListCollectionView(Properties.Collection)
+            {
+                Filter = CustomPropertiesFilter,
+            };
         }
 
         public EntryPayload GetPayload()
@@ -27,15 +29,13 @@ namespace MKW.GUI.EntryEditor
             return payload;
         }
 
-        private void RefreshCustomProperties()
+        private bool CustomPropertiesFilter(object item)
         {
-            CustomProperties.Clear();
-            foreach (KeyValuePair<EntryPayloadKey, string> item in payload)
-            {
-                CustomProperties.Add(item);
-            }
+            EntryPayloadValueViewModel value = (EntryPayloadValueViewModel)item;
+
+            return EntryPayloadCommonProperties.CustomPropertyNamespace.IsInstance(value.Key);
         }
 
-        public ObservableCollection<KeyValuePair<EntryPayloadKey, string>> CustomProperties { get; }
+        public ListCollectionView CustomProperties { get; }
     }
 }
