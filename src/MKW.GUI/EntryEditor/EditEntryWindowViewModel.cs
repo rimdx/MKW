@@ -20,7 +20,8 @@ namespace MKW.GUI
 
             if (payload != null)
             {
-                Payload = new EntryPayloadEditorViewModel(entry.Id, payload);
+                Payload = new EntryPayloadEditorViewModel(entry.Id, payload,
+                                                          database.CommonPropertiesModel);
             }
             else
             {

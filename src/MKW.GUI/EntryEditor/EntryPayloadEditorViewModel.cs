@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.GUI.Model;
 using System.Windows.Data;
 
 namespace MKW.GUI.EntryEditor
@@ -11,12 +12,13 @@ namespace MKW.GUI.EntryEditor
 
         public EntryPayloadEditorPropertiesViewModel Properties { get; }
 
-        public EntryPayloadEditorViewModel(EntryId id, EntryPayload payload)
+        public EntryPayloadEditorViewModel(EntryId id, EntryPayload payload,
+                                           CommonEntryPropertiesModel commonPropertiesModel)
         {
             Id = id;
             this.payload = payload;
 
-            Properties = new EntryPayloadEditorPropertiesViewModel(payload);
+            Properties = new EntryPayloadEditorPropertiesViewModel(payload, commonPropertiesModel);
 
             CustomProperties = new ListCollectionView(Properties.Collection)
             {
@@ -33,7 +35,7 @@ namespace MKW.GUI.EntryEditor
         {
             EntryPayloadValueViewModel value = (EntryPayloadValueViewModel)item;
 
-            return EntryPayloadKey.IsInstance(EntryPayloadCommonProperties.CustomPropertyNamespace, value.Key);
+            return EntryPayloadKey.IsInstance(CommonEntryPropertiesModel.CustomPropertyNamespace, value.Key);
         }
 
         public NewCustomPropertyViewModel NewCustomProperty()

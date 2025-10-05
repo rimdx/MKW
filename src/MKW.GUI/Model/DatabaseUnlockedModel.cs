@@ -7,6 +7,7 @@ namespace MKW.GUI.Model
     public class DatabaseUnlockedModel : ViewModelBase, IDisposable
     {
         public DatabaseModel Database { get; }
+        public CommonEntryPropertiesModel CommonPropertiesModel { get; } 
 
         private readonly IUserSession user;
         private readonly IAdminSession? admin;
@@ -40,6 +41,8 @@ namespace MKW.GUI.Model
             entries = [.. EnumerateEntries()];
             users = database.Users;
 
+            CommonPropertiesModel = new CommonEntryPropertiesModel(entries);
+
             database.PropertyChanged += Database_PropertyChanged;
         }
 
@@ -59,7 +62,8 @@ namespace MKW.GUI.Model
                 {
                     EntryPayload? payload = entry.OpenPayload();
 
-                    yield return new EntryPayloadEditorViewModel(entry.Id, payload);
+                    yield return new EntryPayloadEditorViewModel(entry.Id, payload,
+                                                                 CommonPropertiesModel);
                 }
             }
             else
@@ -78,6 +82,7 @@ namespace MKW.GUI.Model
             using IEntrySession entry = user.CreateEntry(id);
 
             entry.UpdatePayload(payload);
+            CommonPropertiesModel.ReceivedEntry(payload);
 
             RefreshEntries();
         }
@@ -85,6 +90,7 @@ namespace MKW.GUI.Model
         public void UpdateEntry(IEntrySession entry, EntryPayload payload)
         {
             entry.UpdatePayload(payload);
+            CommonPropertiesModel.ReceivedEntry(payload);
 
             RefreshEntries();
         }
