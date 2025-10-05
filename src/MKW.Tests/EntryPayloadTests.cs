@@ -24,6 +24,9 @@ namespace MKW.Tests
 
             EntryPayloadKey k2 = new EntryPayloadKey("Hello:World");
             ClassicAssert.AreEqual("hello:world", k2.ToString());
+
+            EntryPayloadKey k3 = k2.Branch("Yo");
+            ClassicAssert.AreEqual("hello:world:yo", k3.ToString());
         }
     }
 }
