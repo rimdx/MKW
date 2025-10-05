@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.Core.Exceptions;
 using System.Collections.ObjectModel;
 
 namespace MKW.GUI.EntryEditor
@@ -52,12 +53,16 @@ namespace MKW.GUI.EntryEditor
 
         public void SetCustomProperty(EntryPayloadKey? oldKey, string name, string value)
         {
-            if (name == string.Empty)
-            {
-                throw new Exception("Property name cannot be empty.");
-            }
+            EntryPayloadKey newKey;
 
-            EntryPayloadKey newKey = EntryPayloadCommonProperties.CustomPropertyNamespace.Branch(name);
+            try
+            {
+                newKey = EntryPayloadCommonProperties.CustomPropertyNamespace.Branch(name);
+            }
+            catch (InvalidEntryPayloadKey ex)
+            {
+                throw new Exception($"Property name is invalid: {ex.Reason}", ex);
+            }
 
             if (oldKey == null)
             {
