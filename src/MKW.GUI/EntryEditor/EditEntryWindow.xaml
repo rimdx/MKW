@@ -18,12 +18,10 @@
 
     <local:PayloadEditor DataContext="{Binding Payload}" />
 
-    <Grid Grid.Row="1" Margin="0,12,0,0">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
-        <ColumnDefinition Width="auto" />
-      </Grid.ColumnDefinitions>
+    <StackPanel Grid.Row="1"
+                Margin="0,12,0,0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
 
       <Button Grid.Column="1"
               Content="OK"
@@ -36,6 +34,6 @@
               Content="Cancel"
               Width="70"
               IsCancel="True" />
-    </Grid>
+    </StackPanel>
   </Grid>
 </gui:DialogWindow>
