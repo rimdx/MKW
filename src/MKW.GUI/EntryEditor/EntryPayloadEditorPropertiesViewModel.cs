@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Exceptions;
+using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 
 namespace MKW.GUI.EntryEditor
@@ -11,10 +12,13 @@ namespace MKW.GUI.EntryEditor
         private readonly Dictionary<EntryPayloadKey, EntryPayloadValueViewModel> values;
 
         private readonly EntryPayload payload;
+        private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
-        public EntryPayloadEditorPropertiesViewModel(EntryPayload payload)
+        public EntryPayloadEditorPropertiesViewModel(EntryPayload payload,
+                                                     CommonEntryPropertiesModel commonPropertiesModel)
         {
             this.payload = payload;
+            this.commonPropertiesModel = commonPropertiesModel;
 
             Collection = [];
             values = [];
@@ -57,12 +61,14 @@ namespace MKW.GUI.EntryEditor
 
             try
             {
-                newKey = EntryPayloadCommonProperties.CustomPropertyNamespace.Branch(name);
+                newKey = CommonEntryPropertiesModel.CustomPropertyNamespace.Branch(name);
             }
             catch (InvalidEntryPayloadKey ex)
             {
                 throw new Exception($"Property name is invalid: {ex.Reason}", ex);
             }
+
+            commonPropertiesModel.ReceiveProperty(newKey);
 
             if (oldKey == null)
             {

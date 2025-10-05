@@ -13,7 +13,9 @@ namespace MKW.GUI
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
-            Payload = new EntryPayloadEditorViewModel(EntryId.Create(), new EntryPayload());
+
+            Payload = new EntryPayloadEditorViewModel(EntryId.Create(), new EntryPayload(),
+                                                      database.CommonPropertiesModel);
         }
 
         public bool OnOK()

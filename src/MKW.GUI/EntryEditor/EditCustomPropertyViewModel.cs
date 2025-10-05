@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.GUI.Model;
 
 namespace MKW.GUI.EntryEditor
 {
@@ -16,7 +17,7 @@ namespace MKW.GUI.EntryEditor
             this.key = key;
             this.content = content;
 
-            name = EntryPayloadKey.RelativeName(EntryPayloadCommonProperties.CustomPropertyNamespace, key);
+            name = EntryPayloadKey.RelativeName(CommonEntryPropertiesModel.CustomPropertyNamespace, key);
         }
 
         private string name;
