@@ -1,9 +1,12 @@
 ﻿using MKW.Core;
+using System.Collections.ObjectModel;
 
 namespace MKW.GUI.EntryEditor
 {
     public class EntryPayloadEditorPropertiesViewModel : ViewModelBase
     {
+        public ObservableCollection<EntryPayloadValueViewModel> Collection { get; }
+
         private readonly Dictionary<EntryPayloadKey, EntryPayloadValueViewModel> values;
 
         private readonly EntryPayload payload;
@@ -12,10 +15,15 @@ namespace MKW.GUI.EntryEditor
         {
             this.payload = payload;
 
+            Collection = [];
             values = [];
+
             foreach (KeyValuePair<EntryPayloadKey, string> item in payload)
             {
-                values[item.Key] = new EntryPayloadValueViewModel(payload, item.Key);
+                EntryPayloadValueViewModel value = new EntryPayloadValueViewModel(payload, item.Key);
+
+                values.Add(item.Key, value);
+                Collection.Add(value);
             }
         }
 
@@ -33,6 +41,7 @@ namespace MKW.GUI.EntryEditor
                 {
                     EntryPayloadValueViewModel result = new EntryPayloadValueViewModel(payload, key);
                     values.Add(key, result);
+                    Collection.Add(result);
                     return result;
                 }
             }
