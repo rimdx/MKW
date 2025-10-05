@@ -6,13 +6,16 @@ namespace MKW.GUI.EntryEditor
     public class EditCustomPropertyViewModel : ViewModelBase
     {
         private readonly EntryPayloadEditorPropertiesViewModel properties;
+        public CommonEntryPropertiesModel CommonPropertiesModel { get; }
 
         private readonly EntryPayloadKey key;
 
         public EditCustomPropertyViewModel(EntryPayloadEditorPropertiesViewModel properties,
+                                           CommonEntryPropertiesModel commonPropertiesModel,
                                            EntryPayloadKey key, string content)
         {
             this.properties = properties;
+            CommonPropertiesModel = commonPropertiesModel;
 
             this.key = key;
             this.content = content;

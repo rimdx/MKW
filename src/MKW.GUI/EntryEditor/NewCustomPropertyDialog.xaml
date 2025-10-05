@@ -24,11 +24,13 @@
            Margin="0,0,0,3"
            Target="{Binding ElementName=NameInput}" />
 
-    <TextBox x:Name="NameInput"
-             Grid.Row="1"
-             Padding="3"
-             Margin="0,0,0,6"
-             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+    <ComboBox x:Name="NameInput"
+              IsEditable="True"
+              Grid.Row="1"
+              Margin="0,0,0,6"
+              Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+              ItemsSource="{Binding CommonPropertiesModel.CommonCustomPropertyNames}">
+    </ComboBox>
 
     <Label Content="Content:"
            Grid.Row="2"

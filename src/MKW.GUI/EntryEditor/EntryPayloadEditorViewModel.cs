@@ -7,6 +7,7 @@ namespace MKW.GUI.EntryEditor
     public class EntryPayloadEditorViewModel : ViewModelBase
     {
         private readonly EntryPayload payload;
+        private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
         public EntryId Id { get; }
 
@@ -17,6 +18,7 @@ namespace MKW.GUI.EntryEditor
         {
             Id = id;
             this.payload = payload;
+            this.commonPropertiesModel = commonPropertiesModel;
 
             Properties = new EntryPayloadEditorPropertiesViewModel(payload, commonPropertiesModel);
 
@@ -40,12 +42,13 @@ namespace MKW.GUI.EntryEditor
 
         public NewCustomPropertyViewModel NewCustomProperty()
         {
-            return new NewCustomPropertyViewModel(Properties);
+            return new NewCustomPropertyViewModel(Properties, commonPropertiesModel);
         }
 
         public EditCustomPropertyViewModel EditCustomProperty(EntryPayloadValueViewModel property)
         {
-            return new EditCustomPropertyViewModel(Properties, property.Key, property.Value);
+            return new EditCustomPropertyViewModel(Properties, commonPropertiesModel,
+                                                   property.Key, property.Value);
         }
 
         public ListCollectionView CustomProperties { get; }
