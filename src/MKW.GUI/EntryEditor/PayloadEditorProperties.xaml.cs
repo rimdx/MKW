@@ -6,6 +6,8 @@ namespace MKW.GUI.EntryEditor
 {
     public partial class PayloadEditorProperties : UserControl
     {
+        private EntryPayloadEditorViewModel ViewModel => (EntryPayloadEditorViewModel)DataContext;
+
         public PayloadEditorProperties()
         {
             InitializeComponent();
@@ -27,7 +29,9 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                throw new NotImplementedException();
+                NewCustomPropertyViewModel dialogModel = ViewModel.NewCustomProperty();
+                NewCustomPropertyDialog dialog = new NewCustomPropertyDialog(Window.GetWindow(this), dialogModel);
+                dialog.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -39,7 +43,12 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                throw new NotImplementedException();
+                if (ViewModel.SelectedCustomProperty != null)
+                {
+                    EditCustomPropertyViewModel dialogModel = ViewModel.EditCustomProperty(ViewModel.SelectedCustomProperty);
+                    EditCustomPropertyDialog dialog = new EditCustomPropertyDialog(Window.GetWindow(this), dialogModel);
+                    dialog.ShowDialog();
+                }
             }
             catch (Exception ex)
             {

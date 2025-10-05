@@ -1,0 +1,61 @@
+﻿<gui:DialogWindow x:Class="MKW.GUI.EntryEditor.NewCustomPropertyDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:MKW.GUI.EntryEditor"
+                  xmlns:gui="clr-namespace:MKW.GUI"
+                  mc:Ignorable="d"
+                  Title="New Property"
+                  Width="380" Height="280"
+                  d:DataContext="{d:DesignInstance Type=local:NewCustomPropertyViewModel}">
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <Label Content="Name:"
+           Grid.Row="0"
+           Padding="0"
+           Margin="0,0,0,3"
+           Target="{Binding ElementName=NameInput}" />
+
+    <TextBox x:Name="NameInput"
+             Grid.Row="1"
+             Padding="3"
+             Margin="0,0,0,6"
+             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+    <Label Content="Content:"
+           Grid.Row="2"
+           Padding="0"
+           Margin="0,0,0,3"
+           Target="{Binding ElementName=ContentInput}" />
+
+    <TextBox x:Name="ContentInput"
+             Grid.Row="3"
+             Padding="3"
+             Margin="0,0,0,6"
+             Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+    <StackPanel Grid.Row="4"
+                Margin="0,12,0,0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+
+      <Button Content="OK"
+              Width="70"
+              Click="OK_Click"
+              IsDefault="True"
+              Margin="0,0,6,0" />
+
+      <Button Content="Cancel"
+              Width="70"
+              IsCancel="True" />
+    </StackPanel>
+  </Grid>
+</gui:DialogWindow>

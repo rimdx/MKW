@@ -21,7 +21,12 @@ namespace MKW.GUI.EntryEditor
         public string Value
         {
             get => payload.GetPropertyOrEmpty(Key);
-            set => payload.SetProperty(Key, value);
+            set
+            {
+                payload.SetProperty(Key, value);
+                OnPropertyChanged(nameof(Value));
+                OnPropertyChanged(nameof(DisplayValue));
+            }
         }
     }
 }
