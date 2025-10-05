@@ -16,15 +16,15 @@
             return new EntryPayloadKey(key + NamespaceSeparator + subkey);
         }
 
-        public bool IsInstance(EntryPayloadKey other)
+        public static bool IsInstance(EntryPayloadKey parent, EntryPayloadKey key)
         {
-            // key:     mkw:custom
+            // parent:  mkw:custom
             // dir:     mkw:custom:
-            // other:   mkw:custom:mycustomproperty
+            // key:     mkw:custom:mycustomproperty
 
-            string dir = key + NamespaceSeparator;
+            string dir = parent.key + NamespaceSeparator;
 
-            return other.key.StartsWith(dir);
+            return key.key.StartsWith(dir);
         }
 
         public override bool Equals(object? obj)
