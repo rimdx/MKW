@@ -32,7 +32,7 @@ namespace MKW.GUI.Model
             {
                 string name = EntryPayloadKey.RelativeName(CustomPropertyNamespace, key);
 
-                if (CommonCustomPropertyNames.Contains(name))
+                if (!CommonCustomPropertyNames.Contains(name))
                 {
                     CommonCustomPropertyNames.Add(name);
                 }
