@@ -1,4 +1,6 @@
-﻿namespace MKW.Core
+﻿using MKW.Core;
+
+namespace MKW.GUI
 {
     public static class EntryPayloadCommonProperties
     {

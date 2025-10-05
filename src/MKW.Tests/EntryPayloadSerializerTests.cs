@@ -13,9 +13,9 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
 
             EntryPayload p1 = new EntryPayload();
-            p1.SetProperty(EntryPayloadCommonProperties.Username, "rinrab");
-            p1.SetProperty(EntryPayloadCommonProperties.Password, "hah. no");
-            p1.SetProperty(EntryPayloadCommonProperties.Password, "hah. no2");
+            p1.SetProperty(new EntryPayloadKey("mkw:username"), "rinrab");
+            p1.SetProperty(new EntryPayloadKey("mkw:password"), "hah. no");
+            p1.SetProperty(new EntryPayloadKey("mkw:password"), "hah. no2");
 
             Console.WriteLine(p1);
 

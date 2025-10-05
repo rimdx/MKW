@@ -32,7 +32,7 @@ namespace MKW.Testing.Client
         public EntryPayload CreatePayload(string content)
         {
             EntryPayload result = new EntryPayload();
-            result.SetProperty(EntryPayloadCommonProperties.Notes, content);
+            result.SetProperty(new EntryPayloadKey("mkw:test:property"), content);
             return result;
         }
 
