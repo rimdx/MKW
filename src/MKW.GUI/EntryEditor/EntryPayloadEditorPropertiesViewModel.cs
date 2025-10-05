@@ -31,19 +31,22 @@ namespace MKW.GUI.EntryEditor
         {
             get
             {
-                EntryPayloadKey key = new EntryPayloadKey(keyStr);
+                return GetEditor(new EntryPayloadKey(keyStr));
+            }
+        }
 
-                if (values.TryGetValue(key, out EntryPayloadValueViewModel value))
-                {
-                    return value;
-                }
-                else
-                {
-                    EntryPayloadValueViewModel result = new EntryPayloadValueViewModel(payload, key);
-                    values.Add(key, result);
-                    Collection.Add(result);
-                    return result;
-                }
+        private EntryPayloadValueViewModel GetEditor(EntryPayloadKey key)
+        {
+            if (values.TryGetValue(key, out EntryPayloadValueViewModel value))
+            {
+                return value;
+            }
+            else
+            {
+                EntryPayloadValueViewModel result = new EntryPayloadValueViewModel(payload, key);
+                values.Add(key, result);
+                Collection.Add(result);
+                return result;
             }
         }
 
@@ -60,14 +63,14 @@ namespace MKW.GUI.EntryEditor
             {
                 // new
 
-                EntryPayloadValueViewModel valueModel = this[newKey.ToString()];
+                EntryPayloadValueViewModel valueModel = GetEditor(newKey);
                 valueModel.Value = value;
             }
             else if (oldKey.Equals(newKey))
             {
                 // edit
 
-                EntryPayloadValueViewModel valueModel = this[newKey.ToString()];
+                EntryPayloadValueViewModel valueModel = GetEditor(newKey);
                 valueModel.Value = value;
             }
             else
