@@ -46,5 +46,36 @@ namespace MKW.GUI.EntryEditor
                 }
             }
         }
+
+        public void SetCustomProperty(EntryPayloadKey? oldKey, string name, string value)
+        {
+            if (name == string.Empty)
+            {
+                throw new Exception("Property name cannot be empty.");
+            }
+
+            EntryPayloadKey newKey = EntryPayloadCommonProperties.CustomPropertyNamespace.Branch(name);
+
+            if (oldKey == null)
+            {
+                // new
+
+                EntryPayloadValueViewModel valueModel = this[newKey.ToString()];
+                valueModel.Value = value;
+            }
+            else if (oldKey.Equals(newKey))
+            {
+                // edit
+
+                EntryPayloadValueViewModel valueModel = this[newKey.ToString()];
+                valueModel.Value = value;
+            }
+            else
+            {
+                // rename
+
+                throw new NotImplementedException();
+            }
+        }
     }
 }

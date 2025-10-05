@@ -27,6 +27,24 @@
             return key.key.StartsWith(dir);
         }
 
+        public static string RelativeName(EntryPayloadKey parent, EntryPayloadKey key)
+        {
+            // parent:  mkw:custom
+            // dir:     mkw:custom:
+            // key:     mkw:custom:mycustomproperty
+            // result:  -----------mycustomproperty
+            //          skip ^   result ^
+
+            string dir = parent.key + NamespaceSeparator;
+
+            if (!key.key.StartsWith(dir))
+            {
+                throw new Exception($"Key name is not relative.");
+            }
+
+            return key.key.Substring(dir.Length);
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is EntryPayloadKey key &&

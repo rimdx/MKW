@@ -36,6 +36,23 @@ namespace MKW.GUI.EntryEditor
             return EntryPayloadKey.IsInstance(EntryPayloadCommonProperties.CustomPropertyNamespace, value.Key);
         }
 
+        public NewCustomPropertyViewModel NewCustomProperty()
+        {
+            return new NewCustomPropertyViewModel(Properties);
+        }
+
+        public EditCustomPropertyViewModel EditCustomProperty(EntryPayloadValueViewModel property)
+        {
+            return new EditCustomPropertyViewModel(Properties, property.Key, property.Value);
+        }
+
         public ListCollectionView CustomProperties { get; }
+
+        private EntryPayloadValueViewModel? selectedCustomProperty;
+        public EntryPayloadValueViewModel? SelectedCustomProperty
+        {
+            get => selectedCustomProperty;
+            set => SetProperty(ref selectedCustomProperty, value);
+        }
     }
 }
