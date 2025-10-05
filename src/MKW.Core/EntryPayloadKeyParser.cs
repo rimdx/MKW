@@ -2,7 +2,7 @@
 
 namespace MKW.Core
 {
-    internal static class EntryPayloadParser
+    internal static class EntryPayloadKeyParser
     {
         public const char NamespaceSeparator = ':';
 
