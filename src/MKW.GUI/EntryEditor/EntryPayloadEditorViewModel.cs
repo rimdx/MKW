@@ -33,7 +33,7 @@ namespace MKW.GUI.EntryEditor
         {
             EntryPayloadValueViewModel value = (EntryPayloadValueViewModel)item;
 
-            return EntryPayloadCommonProperties.CustomPropertyNamespace.IsInstance(value.Key);
+            return EntryPayloadKey.IsInstance(EntryPayloadCommonProperties.CustomPropertyNamespace, value.Key);
         }
 
         public ListCollectionView CustomProperties { get; }
