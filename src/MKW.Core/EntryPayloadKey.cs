@@ -2,18 +2,18 @@
 {
     public sealed class EntryPayloadKey
     {
-        public const char NamespaceSeparator = ':';
-
         private readonly string key;
 
         public EntryPayloadKey(string key)
         {
-            this.key = key;
+            this.key = EntryPayloadParser.ParseKey(key);
         }
 
         public EntryPayloadKey Branch(string subkey)
         {
-            return new EntryPayloadKey(key + NamespaceSeparator + subkey);
+            EntryPayloadParser.ValidateKeyComponent(subkey);
+
+            return new EntryPayloadKey(key + EntryPayloadParser.NamespaceSeparator + subkey);
         }
 
         public static bool IsInstance(EntryPayloadKey parent, EntryPayloadKey key)
@@ -22,7 +22,7 @@
             // dir:     mkw:custom:
             // key:     mkw:custom:mycustomproperty
 
-            string dir = parent.key + NamespaceSeparator;
+            string dir = parent.key + EntryPayloadParser.NamespaceSeparator;
 
             return key.key.StartsWith(dir);
         }
@@ -35,7 +35,7 @@
             // result:  -----------mycustomproperty
             //          skip ^   result ^
 
-            string dir = parent.key + NamespaceSeparator;
+            string dir = parent.key + EntryPayloadParser.NamespaceSeparator;
 
             if (!key.key.StartsWith(dir))
             {
