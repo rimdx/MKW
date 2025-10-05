@@ -9,5 +9,7 @@
         public readonly static EntryPayloadKey Password = DefaultNamespace.Branch("password");
         public readonly static EntryPayloadKey Url = DefaultNamespace.Branch("url");
         public readonly static EntryPayloadKey Notes = DefaultNamespace.Branch("notes");
+
+        public readonly static EntryPayloadKey CustomPropertyNamespace = DefaultNamespace.Branch("custom");
     }
 }
