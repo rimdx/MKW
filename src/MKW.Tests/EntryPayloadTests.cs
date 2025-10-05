@@ -23,10 +23,10 @@ namespace MKW.Tests
             Assert.Throws<InvalidEntryPayloadKey>(() => branch.Branch(":"));
 
             EntryPayloadKey k2 = new EntryPayloadKey("Hello:World");
-            ClassicAssert.AreEqual("hello:world", k2.ToString());
+            ClassicAssert.AreEqual("Hello:World", k2.ToString());
 
             EntryPayloadKey k3 = k2.Branch("Yo");
-            ClassicAssert.AreEqual("hello:world:yo", k3.ToString());
+            ClassicAssert.AreEqual("Hello:World:Yo", k3.ToString());
         }
     }
 }
