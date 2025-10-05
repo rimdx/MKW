@@ -9,10 +9,10 @@ namespace MKW.Tests
         [Test]
         public void EntryPayloadKeyParseTests()
         {
-            EntryPayloadKey key = new EntryPayloadKey("a:b:c");
-            ClassicAssert.AreEqual("a:b:c", key.ToString());
+            EntryPayloadKey k1 = new EntryPayloadKey("a:b:c");
+            ClassicAssert.AreEqual("a:b:c", k1.ToString());
 
-            EntryPayloadKey branch = key.Branch("x");
+            EntryPayloadKey branch = k1.Branch("x");
 
             Assert.Throws<InvalidEntryPayloadKey>(() => new EntryPayloadKey("a:b:c:"));
             Assert.Throws<InvalidEntryPayloadKey>(() => new EntryPayloadKey(""));
@@ -21,6 +21,9 @@ namespace MKW.Tests
             Assert.Throws<InvalidEntryPayloadKey>(() => branch.Branch("ъъ"));
             Assert.Throws<InvalidEntryPayloadKey>(() => branch.Branch("y:z"));
             Assert.Throws<InvalidEntryPayloadKey>(() => branch.Branch(":"));
+
+            EntryPayloadKey k2 = new EntryPayloadKey("Hello:World");
+            ClassicAssert.AreEqual("hello:world", k2.ToString());
         }
     }
 }
