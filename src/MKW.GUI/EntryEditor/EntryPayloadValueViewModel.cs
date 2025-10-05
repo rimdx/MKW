@@ -18,6 +18,9 @@ namespace MKW.GUI.EntryEditor
 
         public string DisplayValue => Value;
 
+        public string PropertyName => EntryPayloadKey.RelativeName(
+            EntryPayloadCommonProperties.CustomPropertyNamespace, Key);
+
         public string Value
         {
             get => payload.GetPropertyOrEmpty(Key);
