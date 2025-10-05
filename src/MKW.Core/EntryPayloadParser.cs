@@ -11,34 +11,39 @@ namespace MKW.Core
             "abcdefghijklmnopqrstuvwxyz" +
             "_";
 
-        public static void ValidateKeyComponent(string component)
+        public static string ParseKeyComponent(string component)
         {
-            if (component == string.Empty)
+            string lowered = component.ToLower();
+
+            if (lowered == string.Empty)
             {
                 throw new InvalidEntryPayloadKey("empty component found.");
             }
 
-            foreach (char c in component)
+            foreach (char c in lowered)
             {
                 if (!AllowedCharacters.Contains(c))
                 {
                     throw new InvalidEntryPayloadKey($"only Latin letters, numbers, and underscores are allowed.");
                 }
             }
+
+            return lowered;
         }
 
         public static string ParseKey(string key)
         {
             string lowered = key.ToLower();
 
-            string[] components = lowered.Split(NamespaceSeparator);
+            string[] oldComponents = lowered.Split(NamespaceSeparator);
+            List<string> newComponents = new List<string>(oldComponents.Length);
 
-            foreach (string component in components)
+            foreach (string component in oldComponents)
             {
-                ValidateKeyComponent(component);
+                newComponents.Add(ParseKeyComponent(component));
             }
 
-            return string.Join(NamespaceSeparator.ToString(), components);
+            return string.Join(NamespaceSeparator.ToString(), newComponents);
         }
     }
 }

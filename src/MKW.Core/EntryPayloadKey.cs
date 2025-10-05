@@ -11,9 +11,9 @@
 
         public EntryPayloadKey Branch(string subkey)
         {
-            EntryPayloadParser.ValidateKeyComponent(subkey);
+            string parsed = EntryPayloadParser.ParseKeyComponent(subkey);
 
-            return new EntryPayloadKey(key + EntryPayloadParser.NamespaceSeparator + subkey);
+            return new EntryPayloadKey(key + EntryPayloadParser.NamespaceSeparator + parsed);
         }
 
         public static bool IsInstance(EntryPayloadKey parent, EntryPayloadKey key)
