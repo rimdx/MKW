@@ -29,10 +29,12 @@ namespace MKW.GUI.EntryEditor
                 {
                     return value;
                 }
-
-                EntryPayloadValueViewModel result = new EntryPayloadValueViewModel(payload, key);
-                values.Add(key, result);
-                return result;
+                else
+                {
+                    EntryPayloadValueViewModel result = new EntryPayloadValueViewModel(payload, key);
+                    values.Add(key, result);
+                    return result;
+                }
             }
         }
     }
