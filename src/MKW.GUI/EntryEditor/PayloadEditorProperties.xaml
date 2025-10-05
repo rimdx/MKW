@@ -38,7 +38,7 @@
           <GridView.Columns>
             <GridViewColumn Header="Name"
                             Width="175"
-                            DisplayMemberBinding="{Binding Key}" />
+                            DisplayMemberBinding="{Binding PropertyName}" />
 
             <GridViewColumn Header="Value"
                             Width="175"
