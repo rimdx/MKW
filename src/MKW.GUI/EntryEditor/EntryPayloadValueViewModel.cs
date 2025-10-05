@@ -14,6 +14,8 @@ namespace MKW.GUI.EntryEditor
             Key = key;
         }
 
+        public string DisplayKey => Key.ToString();
+
         public string DisplayValue => Value;
 
         public string Value
