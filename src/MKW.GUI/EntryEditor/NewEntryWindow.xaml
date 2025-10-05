@@ -8,7 +8,8 @@
                   mc:Ignorable="d"
                   d:DataContext="{d:DesignInstance Type=gui:NewEntryWindowViewModel}"
                   Title="Create New Secret Entry"
-                  Height="380" Width="520">
+                  Height="380" Width="520"
+                  Background="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -18,7 +19,7 @@
     <local:PayloadEditor DataContext="{Binding Payload}" />
 
     <StackPanel Grid.Row="1"
-                Margin="0,6,0,0"
+                Margin="0,12,0,0"
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
 
