@@ -14,6 +14,10 @@
       <TabItem Header="General">
         <local:PayloadEditorGeneral FontWeight="Regular" />
       </TabItem>
+      <TabItem Header="Properties">
+        <local:PayloadEditorProperties FontWeight="Regular" />
+      </TabItem>
+
       <TabControl.ContentTemplate>
         <DataTemplate>
           <Border BorderThickness="1"

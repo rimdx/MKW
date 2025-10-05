@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using System.Collections.ObjectModel;
 
 namespace MKW.GUI.EntryEditor
 {
@@ -12,6 +13,9 @@ namespace MKW.GUI.EntryEditor
         {
             Id = id;
             this.payload = payload;
+
+            CustomProperties = [];
+            RefreshCustomProperties();
         }
 
         public string Title
@@ -48,5 +52,16 @@ namespace MKW.GUI.EntryEditor
         {
             return payload;
         }
+
+        private void RefreshCustomProperties()
+        {
+            CustomProperties.Clear();
+            foreach (KeyValuePair<EntryPayloadKey, string> item in payload)
+            {
+                CustomProperties.Add(item);
+            }
+        }
+
+        public ObservableCollection<KeyValuePair<EntryPayloadKey, string>> CustomProperties { get; }
     }
 }

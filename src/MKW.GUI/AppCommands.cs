@@ -12,5 +12,9 @@ namespace MKW.GUI
         public static RoutedUICommand ReloadDatabase { get; } = new RoutedUICommand();
         public static RoutedUICommand Login { get; } = new RoutedUICommand();
         public static RoutedUICommand RequestAccess { get; } = new RoutedUICommand();
+
+        public static RoutedUICommand EntryAddCustomProperty { get; } = new RoutedUICommand();
+        public static RoutedUICommand EntryEditCustomProperty { get; } = new RoutedUICommand();
+        public static RoutedUICommand EntryDeleteCustomProperty { get; } = new RoutedUICommand();
     }
 }
