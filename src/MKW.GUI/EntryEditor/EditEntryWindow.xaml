@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=gui:EditEntryWindowViewModel}"
         Title="Edit Entry"
-        Height="380" Width="520">
+        Height="380" Width="520"
+        Background="{DynamicResource ResourceKey={x:Static SystemColors.ControlBrushKey}}">
   <Grid Margin="12">
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -17,7 +18,7 @@
 
     <local:PayloadEditor DataContext="{Binding Payload}" />
 
-    <Grid Grid.Row="1" Margin="0,6,0,0">
+    <Grid Grid.Row="1" Margin="0,12,0,0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="auto" />
