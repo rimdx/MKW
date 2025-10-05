@@ -45,6 +45,19 @@
           </GridView.Columns>
         </GridView>
       </ListView.View>
+
+      <ListView.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="Add"
+                    Command="{x:Static gui:AppCommands.EntryAddCustomProperty}" />
+
+          <MenuItem Header="Edit"
+                    Command="{x:Static gui:AppCommands.EntryEditCustomProperty}" />
+
+          <MenuItem Header="Delete"
+                    Command="{x:Static gui:AppCommands.EntryDeleteCustomProperty}" />
+        </ContextMenu>
+      </ListView.ContextMenu>
     </ListView>
 
     <StackPanel Grid.Row="1"
