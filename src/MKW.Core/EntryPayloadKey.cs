@@ -2,7 +2,7 @@
 {
     public sealed class EntryPayloadKey
     {
-        public const string NamespaceSeparator = ":";
+        public const char NamespaceSeparator = ':';
 
         private readonly string key;
 
