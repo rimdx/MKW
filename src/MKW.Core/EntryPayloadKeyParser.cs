@@ -9,18 +9,17 @@ namespace MKW.Core
         private const string AllowedCharacters =
             "0123456789" +
             "abcdefghijklmnopqrstuvwxyz" +
-            "_";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+            " !\"#$%&'()*+,-./;<=>?@[\\]^_`{|}~";
 
         public static string ParseKeyComponent(string component)
         {
-            string lowered = component.ToLower();
-
-            if (lowered == string.Empty)
+            if (component == string.Empty)
             {
                 throw new InvalidEntryPayloadKey("empty component found.");
             }
 
-            foreach (char c in lowered)
+            foreach (char c in component)
             {
                 if (!AllowedCharacters.Contains(c))
                 {
@@ -28,14 +27,12 @@ namespace MKW.Core
                 }
             }
 
-            return lowered;
+            return component;
         }
 
         public static string ParseKey(string key)
         {
-            string lowered = key.ToLower();
-
-            string[] oldComponents = lowered.Split(NamespaceSeparator);
+            string[] oldComponents = key.Split(NamespaceSeparator);
             List<string> newComponents = new List<string>(oldComponents.Length);
 
             foreach (string component in oldComponents)
