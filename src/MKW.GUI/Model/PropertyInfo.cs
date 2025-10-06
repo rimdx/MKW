@@ -2,15 +2,16 @@
 
 namespace MKW.GUI.Model
 {
-    public sealed class CustomPropertyInfo : IPropertyInfo
+    public sealed class PropertyInfo : ViewModelBase, IPropertyInfo
     {
         public EntryPayloadKey Key { get; }
+
         public string Name { get; }
 
-        public CustomPropertyInfo(string name)
+        public PropertyInfo(EntryPayloadKey key, string name)
         {
+            Key = key;
             Name = name;
-            Key = CommonEntryPropertiesModel.CustomPropertyNamespace.Branch(name);
         }
 
         public override bool Equals(object? obj)

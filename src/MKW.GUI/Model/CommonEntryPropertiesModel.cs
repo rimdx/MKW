@@ -8,9 +8,19 @@ namespace MKW.GUI.Model
     {
         public ObservableCollection<CustomPropertyInfo> CommonCustomPropertyNames { get; }
 
+        public ObservableCollection<IPropertyInfo> CommonProperties { get; }
+
         public CommonEntryPropertiesModel(IEnumerable<EntryPayloadEditorViewModel> entries)
         {
             CommonCustomPropertyNames = [];
+
+            CommonProperties = [
+                Title,
+                Username,
+                Password,
+                Url,
+                Notes,
+            ];
 
             foreach (EntryPayloadEditorViewModel entry in entries)
             {
@@ -36,17 +46,30 @@ namespace MKW.GUI.Model
 
                 CommonCustomPropertyNames.Remove(property);
                 CommonCustomPropertyNames.Insert(0, property);
+
+                if (!CommonProperties.Contains(property))
+                {
+                    CommonProperties.Add(property);
+                }
             }
         }
 
         public readonly static EntryPayloadKey DefaultNamespace = new EntryPayloadKey("mkw");
-
-        public readonly static EntryPayloadKey Title = DefaultNamespace.Branch("title");
-        public readonly static EntryPayloadKey Username = DefaultNamespace.Branch("username");
-        public readonly static EntryPayloadKey Password = DefaultNamespace.Branch("password");
-        public readonly static EntryPayloadKey Url = DefaultNamespace.Branch("url");
-        public readonly static EntryPayloadKey Notes = DefaultNamespace.Branch("notes");
-
         public readonly static EntryPayloadKey CustomPropertyNamespace = DefaultNamespace.Branch("custom");
+
+        public readonly static PropertyInfo Title =
+            new PropertyInfo(DefaultNamespace.Branch("title"), "Title");
+
+        public readonly static PropertyInfo Username =
+            new PropertyInfo(DefaultNamespace.Branch("username"), "Username");
+
+        public readonly static PropertyInfo Password =
+            new PropertyInfo(DefaultNamespace.Branch("password"), "Password");
+
+        public readonly static PropertyInfo Url =
+            new PropertyInfo(DefaultNamespace.Branch("url"), "URL");
+
+        public readonly static PropertyInfo Notes =
+            new PropertyInfo(DefaultNamespace.Branch("notes"), "Notes");
     }
 }
