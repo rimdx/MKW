@@ -40,6 +40,14 @@ namespace MKW.GUI.EntryEditor
             }
         }
 
+        public EntryPayloadValueViewModel this[EntryPayloadKey key]
+        {
+            get
+            {
+                return GetEditor(key);
+            }
+        }
+
         private EntryPayloadValueViewModel GetEditor(EntryPayloadKey key)
         {
             if (values.TryGetValue(key, out EntryPayloadValueViewModel value))
