@@ -6,7 +6,7 @@ namespace MKW.GUI.Model
 {
     public sealed class CommonEntryPropertiesModel
     {
-        public ObservableCollection<string> CommonCustomPropertyNames { get; }
+        public ObservableCollection<CustomPropertyInfo> CommonCustomPropertyNames { get; }
 
         public CommonEntryPropertiesModel(IEnumerable<EntryPayloadEditorViewModel> entries)
         {
@@ -32,8 +32,10 @@ namespace MKW.GUI.Model
             {
                 string name = EntryPayloadKey.RelativeName(CustomPropertyNamespace, key);
 
-                CommonCustomPropertyNames.Remove(name);
-                CommonCustomPropertyNames.Insert(0, name);
+                CustomPropertyInfo property = new CustomPropertyInfo(name);
+
+                CommonCustomPropertyNames.Remove(property);
+                CommonCustomPropertyNames.Insert(0, property);
             }
         }
 
