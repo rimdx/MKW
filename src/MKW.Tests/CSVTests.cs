@@ -112,5 +112,35 @@ namespace MKW.Tests
                 tokens
             );
         }
+
+        [Test]
+        public void SerializeTest()
+        {
+            using StringReader reader = new StringReader("abc,xyz\n123,456");
+            using CSVTokenReader tokenizer = new CSVTokenReader(reader);
+            using CSVSerializer serializer = new CSVSerializer(tokenizer);
+
+            CSVRow row = serializer.ReadRow()!;
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new CSVField("abc"),
+                    new CSVField("xyz"),
+                },
+                row);
+
+            row = serializer.ReadRow()!;
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new CSVField("123"),
+                    new CSVField("456"),
+                },
+                row);
+
+            ClassicAssert.IsNull(serializer.ReadRow());
+        }
     }
 }
