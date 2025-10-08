@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using MKW.GUI.CreateDatabaseWizard;
+using MKW.GUI.ImportWizard;
 using MKW.GUI.SingleInstance;
 using System.Windows;
 using System.Windows.Controls;
@@ -143,6 +144,20 @@ namespace MKW.GUI
         private void DoOpenDatabase(string fullPath)
         {
             viewModel.OpenDatabase(fullPath);
+        }
+
+        private void Import_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                ImportWizardViewModel dialogModel = new ImportWizardViewModel();
+                ImportWizardDialog dialog = new ImportWizardDialog(dialogModel, this);
+                dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(this, ex);
+            }
         }
     }
 }

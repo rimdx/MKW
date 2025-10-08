@@ -16,5 +16,7 @@ namespace MKW.GUI
         public static RoutedUICommand EntryAddCustomProperty { get; } = new RoutedUICommand();
         public static RoutedUICommand EntryEditCustomProperty { get; } = new RoutedUICommand();
         public static RoutedUICommand EntryDeleteCustomProperty { get; } = new RoutedUICommand();
+
+        public static RoutedUICommand DataImport { get; } = new RoutedUICommand();
     }
 }
