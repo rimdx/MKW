@@ -39,6 +39,9 @@
 
     <CommandBinding Command="ApplicationCommands.New"
                     Executed="FileNew_Executed" />
+
+    <CommandBinding Command="{x:Static local:AppCommands.DataImport}"
+                    Executed="Import_Executed" />
   </Window.CommandBindings>
 
   <Grid>
@@ -112,6 +115,11 @@
             <local:CrispImage Moniker="DeleteKey" />
           </MenuItem.Icon>
         </MenuItem>
+      </MenuItem>
+
+      <MenuItem Header="_Data">
+        <MenuItem Header="_Import"
+                  Command="{x:Static local:AppCommands.DataImport}" />
       </MenuItem>
 
       <MenuItem Header="_Help">
