@@ -10,13 +10,16 @@
         Title="{Binding Title}"
         Height="720" Width="950"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </Window.Resources>
+
   <Window.InputBindings>
     <KeyBinding Command="ApplicationCommands.Close" Key="F4" Modifiers="Ctrl" />
     <KeyBinding Command="{x:Static local:AppCommands.LockDatabase}" Key="L" Modifiers="Ctrl" />
   </Window.InputBindings>
+
   <Window.CommandBindings>
     <CommandBinding Command="{x:Static local:AppCommands.About}"
                     Executed="HelpAbout_Executed" />
@@ -37,6 +40,7 @@
     <CommandBinding Command="ApplicationCommands.New"
                     Executed="FileNew_Executed" />
   </Window.CommandBindings>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
