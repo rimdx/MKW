@@ -3,24 +3,25 @@ using MKW.GUI.Model;
 
 namespace MKW.GUI
 {
-    public class EditEntryWindowViewModel : ViewModelBase, IDisposable
+    public class EditEntryWindowViewModel : EntryEditorViewModelBase, IDisposable
     {
         private readonly DatabaseUnlockedModel database;
         private readonly IEntrySession entry;
 
-        public EntryEditorModel Payload { get; }
-
         public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
+            : base(GetEditor(database, entry))
         {
             this.database = database;
             this.entry = entry;
+        }
 
+        private static EntryEditorModel GetEditor(DatabaseUnlockedModel database, IEntrySession entry)
+        {
             EntryPayload? payload = entry.OpenPayload();
 
             if (payload != null)
             {
-                Payload = new EntryEditorModel(entry.Id, payload,
-                                                          database.CommonPropertiesModel);
+                return new EntryEditorModel(entry.Id, payload, database.CommonPropertiesModel);
             }
             else
             {
@@ -28,10 +29,9 @@ namespace MKW.GUI
             }
         }
 
-        public bool OnOK()
+        protected override void SaveEntry(EntryPayload payload)
         {
-            database.UpdateEntry(entry, Payload.GetPayload());
-            return true;
+            database.UpdateEntry(entry, payload);
         }
 
         public void Dispose()
