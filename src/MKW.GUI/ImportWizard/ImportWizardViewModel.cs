@@ -10,6 +10,7 @@ namespace MKW.GUI.ImportWizard
         private readonly DatabaseUnlockedModel database;
 
         private string path;
+        private bool? isAllSelected;
         private BackupFormat backupFormat;
         private BackupModel? backupModel;
 
@@ -55,6 +56,21 @@ namespace MKW.GUI.ImportWizard
         {
             get => path;
             set => SetProperty(ref path, value);
+        }
+
+        public bool? IsAllSelected
+        {
+            get => isAllSelected;
+            set
+            {
+                if (SetProperty(ref isAllSelected, value) && BackupModel != null)
+                {
+                    foreach (BackupModelEntry entry in BackupModel.Entries)
+                    {
+                        entry.IsSelected = value ?? false;
+                    }
+                }
+            }
         }
 
         public BackupFormat BackupFormat
