@@ -2,38 +2,23 @@
 
 namespace MKW.GUI.EntryEditor
 {
-    public class NewCustomPropertyViewModel : ViewModelBase
+    public class NewCustomPropertyViewModel : CustomPropertyEditorViewModelBase
     {
         private readonly EntryPayloadEditorPropertiesModel properties;
+
         public CommonEntryPropertiesModel CommonPropertiesModel { get; }
 
         public NewCustomPropertyViewModel(EntryPayloadEditorPropertiesModel properties,
                                           CommonEntryPropertiesModel commonPropertiesModel)
+            : base(string.Empty, string.Empty)
         {
             this.properties = properties;
             CommonPropertiesModel = commonPropertiesModel;
-
-            content = string.Empty;
-            name= string.Empty;
         }
 
-        private string name;
-        public string Name
+        public override void OnOK()
         {
-            get => name;
-            set => SetProperty(ref name, value);
-        }
-
-        private string content;
-        public string Content
-        {
-            get => content;
-            set => SetProperty(ref content, value);
-        }
-
-        public void OnOK()
-        {
-            properties.SetCustomProperty(null, name, content);
+            properties.SetCustomProperty(null, Name, Content);
         }
     }
 }

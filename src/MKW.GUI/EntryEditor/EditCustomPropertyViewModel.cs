@@ -3,43 +3,31 @@ using MKW.GUI.Model;
 
 namespace MKW.GUI.EntryEditor
 {
-    public class EditCustomPropertyViewModel : ViewModelBase
+    public class EditCustomPropertyViewModel : CustomPropertyEditorViewModelBase
     {
         private readonly EntryPayloadEditorPropertiesModel properties;
-        public CommonEntryPropertiesModel CommonPropertiesModel { get; }
-
         private readonly EntryPayloadKey key;
+
+        public CommonEntryPropertiesModel CommonPropertiesModel { get; }
 
         public EditCustomPropertyViewModel(EntryPayloadEditorPropertiesModel properties,
                                            CommonEntryPropertiesModel commonPropertiesModel,
                                            EntryPayloadKey key, string content)
+            : base(GetName(key), content)
         {
             this.properties = properties;
             CommonPropertiesModel = commonPropertiesModel;
-
             this.key = key;
-            this.content = content;
-
-            name = EntryPayloadKey.RelativeName(CommonEntryPropertiesModel.CustomPropertyNamespace, key);
         }
 
-        private string name;
-        public string Name
+        private static string GetName(EntryPayloadKey key)
         {
-            get => name;
-            set => SetProperty(ref name, value);
+            return EntryPayloadKey.RelativeName(CommonEntryPropertiesModel.CustomPropertyNamespace, key);
         }
 
-        private string content;
-        public string Content
+        public override void OnOK()
         {
-            get => content;
-            set => SetProperty(ref content, value);
-        }
-
-        public void OnOK()
-        {
-            properties.SetCustomProperty(key, name, content);
+            properties.SetCustomProperty(key, Name, Content);
         }
     }
 }
