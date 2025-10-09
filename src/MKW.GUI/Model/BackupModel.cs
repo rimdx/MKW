@@ -31,5 +31,13 @@ namespace MKW.GUI.Model
                 entrySession.UpdatePayload(entry.Payload);
             }
         }
+
+        public void SetSelectedAll(bool isSelected)
+        {
+            foreach (BackupModelEntry entry in Entries)
+            {
+                entry.IsSelected = isSelected;
+            }
+        }
     }
 }

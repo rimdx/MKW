@@ -65,10 +65,7 @@ namespace MKW.GUI.ImportWizard
             {
                 if (SetProperty(ref isAllSelected, value) && BackupModel != null)
                 {
-                    foreach (BackupModelEntry entry in BackupModel.Entries)
-                    {
-                        entry.IsSelected = value ?? false;
-                    }
+                    BackupModel.SetSelectedAll(value ?? false);
                 }
             }
         }
