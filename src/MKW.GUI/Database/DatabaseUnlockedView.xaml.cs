@@ -1,4 +1,5 @@
-﻿using MKW.GUI.ImportWizard;
+﻿using MKW.GUI.EntryEditor;
+using MKW.GUI.ImportWizard;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

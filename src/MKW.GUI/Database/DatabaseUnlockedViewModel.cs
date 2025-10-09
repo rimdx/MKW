@@ -1,5 +1,6 @@
 ﻿using MKW.Core;
 using MKW.GUI.AddUserWizard;
+using MKW.GUI.EntryEditor;
 using MKW.GUI.ImportWizard;
 using MKW.GUI.Model;
 using MKW.GUI.RequestAccessWizard;

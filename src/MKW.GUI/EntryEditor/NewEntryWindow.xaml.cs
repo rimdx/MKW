@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using MKW.GUI.EntryEditor;
+using System.Windows;
 
-namespace MKW.GUI
+namespace MKW.GUI.EntryEditor
 {
     public partial class NewEntryWindow : DialogWindow
     {

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MKW.GUI.EntryEditor;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
