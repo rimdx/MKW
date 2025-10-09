@@ -14,7 +14,7 @@ namespace MKW.GUI.Model
         public EntryEditorPropertiesModel Properties { get; }
 
         public EntryEditorModel(EntryId id, EntryPayload payload,
-                                       CommonEntryPropertiesModel commonPropertiesModel)
+                                CommonEntryPropertiesModel commonPropertiesModel)
         {
             Id = id;
             this.payload = payload;
