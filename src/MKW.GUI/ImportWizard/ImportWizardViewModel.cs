@@ -1,5 +1,4 @@
-﻿using MKW.Core.Serialization.KeePassXML;
-using MKW.GUI.Images;
+﻿using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
 using System.IO;
@@ -37,11 +36,10 @@ namespace MKW.GUI.ImportWizard
         public void Confirm()
         {
             using FileStream stream = File.OpenRead(Path);
-            KeePassXmlReader reader = new KeePassXmlReader(stream);
 
-            KeePassXmlImporter importer = database.CreateImporter();
+            BackupModel backup = database.OpenBackup(stream);
 
-            importer.Import(reader);
+            backup.Import();
         }
 
         public BackupFormat BackupFormat
