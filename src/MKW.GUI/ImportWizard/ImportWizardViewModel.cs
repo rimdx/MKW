@@ -23,6 +23,7 @@ namespace MKW.GUI.ImportWizard
             AddPage(new PageWelcome(this));
             AddPage(new PageFormat(this));
             AddPage(new PageFile(this));
+            AddPage(new PageEntries(this));
             AddPage(new PageConfirmation(this));
             AddPage(new PageCompleted(this));
         }
