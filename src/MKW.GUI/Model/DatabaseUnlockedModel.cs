@@ -128,6 +128,11 @@ namespace MKW.GUI.Model
             return user.OpenEntry(entryId);
         }
 
+        public KeePassXmlImporter CreateImporter()
+        {
+            return new KeePassXmlImporter(user);
+        }
+
         public void Dispose()
         {
             user?.Dispose();
