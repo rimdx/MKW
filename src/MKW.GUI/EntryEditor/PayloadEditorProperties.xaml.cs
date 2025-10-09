@@ -7,7 +7,7 @@ namespace MKW.GUI.EntryEditor
 {
     public partial class PayloadEditorProperties : UserControl
     {
-        private EntryPayloadEditorModel ViewModel => (EntryPayloadEditorModel)DataContext;
+        private EntryEditorModel ViewModel => (EntryEditorModel)DataContext;
 
         public PayloadEditorProperties()
         {

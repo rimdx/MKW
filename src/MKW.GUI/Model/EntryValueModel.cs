@@ -2,13 +2,13 @@
 
 namespace MKW.GUI.Model
 {
-    public class EntryPayloadValueModel : ViewModelBase
+    public class EntryValueModel : ViewModelBase
     {
         private readonly EntryPayload payload;
 
         public EntryPayloadKey Key { get; }
 
-        public EntryPayloadValueModel(EntryPayload payload, EntryPayloadKey key)
+        public EntryValueModel(EntryPayload payload, EntryPayloadKey key)
         {
             this.payload = payload;
             Key = key;

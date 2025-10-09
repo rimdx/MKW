@@ -4,23 +4,23 @@ using System.Windows.Data;
 
 namespace MKW.GUI.Model
 {
-    public class EntryPayloadEditorModel : ViewModelBase
+    public class EntryEditorModel : ViewModelBase
     {
         private readonly EntryPayload payload;
         private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
         public EntryId Id { get; }
 
-        public EntryPayloadEditorPropertiesModel Properties { get; }
+        public EntryEditorPropertiesModel Properties { get; }
 
-        public EntryPayloadEditorModel(EntryId id, EntryPayload payload,
+        public EntryEditorModel(EntryId id, EntryPayload payload,
                                        CommonEntryPropertiesModel commonPropertiesModel)
         {
             Id = id;
             this.payload = payload;
             this.commonPropertiesModel = commonPropertiesModel;
 
-            Properties = new EntryPayloadEditorPropertiesModel(payload, commonPropertiesModel);
+            Properties = new EntryEditorPropertiesModel(payload, commonPropertiesModel);
 
             CustomProperties = new ListCollectionView(Properties.Collection)
             {
@@ -35,7 +35,7 @@ namespace MKW.GUI.Model
 
         private bool CustomPropertiesFilter(object item)
         {
-            EntryPayloadValueModel value = (EntryPayloadValueModel)item;
+            EntryValueModel value = (EntryValueModel)item;
 
             return EntryPayloadKey.IsInstance(CommonEntryPropertiesModel.CustomPropertyNamespace, value.Key);
         }
@@ -45,7 +45,7 @@ namespace MKW.GUI.Model
             return new NewCustomPropertyViewModel(Properties, commonPropertiesModel);
         }
 
-        public EditCustomPropertyViewModel EditCustomProperty(EntryPayloadValueModel property)
+        public EditCustomPropertyViewModel EditCustomProperty(EntryValueModel property)
         {
             return new EditCustomPropertyViewModel(Properties, commonPropertiesModel,
                                                    property.Key, property.Value);
@@ -53,8 +53,8 @@ namespace MKW.GUI.Model
 
         public ListCollectionView CustomProperties { get; }
 
-        private EntryPayloadValueModel? selectedCustomProperty;
-        public EntryPayloadValueModel? SelectedCustomProperty
+        private EntryValueModel? selectedCustomProperty;
+        public EntryValueModel? SelectedCustomProperty
         {
             get => selectedCustomProperty;
             set => SetProperty(ref selectedCustomProperty, value);
