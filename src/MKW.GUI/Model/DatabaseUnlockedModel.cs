@@ -1,6 +1,8 @@
 ﻿using MKW.Core;
+using MKW.Core.Serialization.KeePassXML;
 using MKW.GUI.EntryEditor;
 using System.ComponentModel;
+using System.IO;
 
 namespace MKW.GUI.Model
 {
@@ -128,9 +130,14 @@ namespace MKW.GUI.Model
             return user.OpenEntry(entryId);
         }
 
-        public KeePassXmlImporter CreateImporter()
+        public BackupModel OpenBackup(Stream stream)
         {
-            return new KeePassXmlImporter(user);
+            KeePassXmlReader reader = new KeePassXmlReader(stream);
+            KeePassXmlBackup backup = new KeePassXmlBackup(reader);
+
+            BackupModel model = new BackupModel(user, backup);
+
+            return model;
         }
 
         public void Dispose()

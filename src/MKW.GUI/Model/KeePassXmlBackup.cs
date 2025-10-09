@@ -4,13 +4,13 @@ using MKW.Core.Serialization.KeePassXML;
 
 namespace MKW.GUI.Model
 {
-    public sealed class KeePassXmlImporter
+    public sealed class KeePassXmlBackup
     {
-        private readonly IUserSession user;
+        private readonly KeePassXmlReader reader;
 
-        public KeePassXmlImporter(IUserSession user)
+        public KeePassXmlBackup(KeePassXmlReader reader)
         {
-            this.user = user;
+            this.reader = reader;
         }
 
         private static EntryPayloadKey ConvertPropertyName(string propname) => propname switch
@@ -23,9 +23,11 @@ namespace MKW.GUI.Model
             _ => CommonEntryPropertiesModel.CustomPropertyNamespace.Branch(propname),
         };
 
-        public void Import(KeePassXmlReader data)
+        public IEnumerable<EntryPayload> EnumerateEntries()
         {
-            foreach (BackupEntry backupEntry in data.EnumerateEntries())
+            reader.Reset();
+
+            foreach (BackupEntry backupEntry in reader.EnumerateEntries())
             {
                 EntryPayload payload = new EntryPayload();
 
@@ -34,8 +36,7 @@ namespace MKW.GUI.Model
                     payload.SetProperty(ConvertPropertyName(property.Key), property.Value);
                 }
 
-                using IEntrySession entrySession = user.CreateEntry();
-                entrySession.UpdatePayload(payload);
+                yield return payload;
             }
         }
     }
