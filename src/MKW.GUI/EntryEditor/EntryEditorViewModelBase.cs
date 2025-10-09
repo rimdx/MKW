@@ -1,7 +1,7 @@
 ﻿using MKW.Core;
 using MKW.GUI.Model;
 
-namespace MKW.GUI
+namespace MKW.GUI.EntryEditor
 {
     public abstract class EntryEditorViewModelBase : ViewModelBase
     {
