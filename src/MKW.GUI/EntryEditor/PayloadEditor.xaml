@@ -7,16 +7,16 @@
              xmlns:model="clr-namespace:MKW.GUI.Model"
              xmlns:gui="clr-namespace:MKW.GUI"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=model:EntryEditorModel}"
+             d:DataContext="{d:DesignInstance Type=local:EntryEditorViewModelBase}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
   <Grid>
     <TabControl>
       <TabItem Header="General">
-        <local:PayloadEditorGeneral FontWeight="Regular" />
+        <local:PayloadEditorGeneral FontWeight="Regular" DataContext="{Binding}" />
       </TabItem>
       <TabItem Header="Properties">
-        <local:PayloadEditorProperties FontWeight="Regular" />
+        <local:PayloadEditorProperties FontWeight="Regular" DataContext="{Binding}" />
       </TabItem>
 
       <TabControl.ContentTemplate>

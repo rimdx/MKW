@@ -16,7 +16,7 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
 
-    <local:PayloadEditor DataContext="{Binding Payload}" />
+    <local:PayloadEditor DataContext="{Binding}" />
 
     <StackPanel Grid.Row="1"
                 Margin="0,12,0,0"

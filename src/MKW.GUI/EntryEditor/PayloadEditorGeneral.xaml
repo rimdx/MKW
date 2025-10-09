@@ -7,7 +7,7 @@
              xmlns:model="clr-namespace:MKW.GUI.Model"
              xmlns:gui="clr-namespace:MKW.GUI"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=model:EntryEditorModel}"
+             d:DataContext="{d:DesignInstance Type=local:EntryEditorViewModelBase}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
   <UserControl.Resources>
@@ -45,7 +45,7 @@
     <TextBox x:Name="TitleInput"
              Grid.Column="1"
              Grid.Row="0"
-             Text="{Binding Properties[mkw:title].Value,
+             Text="{Binding Payload.Properties[mkw:title].Value,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
     <Label Content="User name:"
@@ -54,7 +54,7 @@
     <TextBox x:Name="UsernameInput"
              Grid.Column="1"
              Grid.Row="1"
-             Text="{Binding Properties[mkw:username].Value,
+             Text="{Binding Payload.Properties[mkw:username].Value,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
     <Label Content="Password:"
@@ -63,7 +63,7 @@
     <TextBox x:Name="PasswordInput"
              Grid.Column="1"
              Grid.Row="2"
-             Text="{Binding Properties[mkw:password].Value,
+             Text="{Binding Payload.Properties[mkw:password].Value,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
     <Label Content="URL:"
@@ -72,7 +72,7 @@
     <TextBox x:Name="UrlInput"
              Grid.Column="1"
              Grid.Row="3"
-             Text="{Binding Properties[mkw:url].Value,
+             Text="{Binding Payload.Properties[mkw:url].Value,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
     <Label Content="Notes:"
@@ -82,7 +82,7 @@
     <TextBox x:Name="NotesInput"
              Grid.Column="1"
              Grid.Row="4"
-             Text="{Binding Properties[mkw:notes].Value,
+             Text="{Binding Payload.Properties[mkw:notes].Value,
                             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
              AcceptsReturn="True" />
   </Grid>

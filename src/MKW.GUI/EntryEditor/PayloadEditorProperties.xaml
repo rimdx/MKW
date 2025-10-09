@@ -8,7 +8,7 @@
              xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
              xmlns:model="clr-namespace:MKW.GUI.Model"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=model:EntryEditorModel}"
+             d:DataContext="{d:DesignInstance Type=local:EntryEditorViewModelBase}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
   <UserControl.CommandBindings>
@@ -28,8 +28,8 @@
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     
-    <ListView ItemsSource="{Binding CustomProperties}"
-              SelectedItem="{Binding SelectedCustomProperty}"
+    <ListView ItemsSource="{Binding Payload.CustomProperties}"
+              SelectedItem="{Binding Payload.SelectedCustomProperty}"
               Style="{StaticResource GridViewStyle}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               MouseDoubleClick="PropertiesListView_MouseDoubleClick"

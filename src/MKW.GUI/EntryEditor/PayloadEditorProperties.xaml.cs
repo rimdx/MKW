@@ -1,5 +1,4 @@
-﻿using MKW.GUI.Model;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -7,7 +6,7 @@ namespace MKW.GUI.EntryEditor
 {
     public partial class PayloadEditorProperties : UserControl
     {
-        private EntryEditorModel ViewModel => (EntryEditorModel)DataContext;
+        private EntryEditorViewModelBase ViewModel => (EntryEditorViewModelBase)DataContext;
 
         public PayloadEditorProperties()
         {
@@ -30,7 +29,7 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                NewCustomPropertyViewModel dialogModel = ViewModel.NewCustomProperty();
+                NewCustomPropertyViewModel dialogModel = ViewModel.Payload.NewCustomProperty();
                 NewCustomPropertyDialog dialog = new NewCustomPropertyDialog(Window.GetWindow(this), dialogModel);
                 dialog.ShowDialog();
             }
@@ -44,9 +43,9 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                if (ViewModel.SelectedCustomProperty != null)
+                if (ViewModel.Payload.SelectedCustomProperty != null)
                 {
-                    EditCustomPropertyViewModel dialogModel = ViewModel.EditCustomProperty(ViewModel.SelectedCustomProperty);
+                    EditCustomPropertyViewModel dialogModel = ViewModel.Payload.EditCustomProperty(ViewModel.Payload.SelectedCustomProperty);
                     EditCustomPropertyDialog dialog = new EditCustomPropertyDialog(Window.GetWindow(this), dialogModel);
                     dialog.ShowDialog();
                 }
