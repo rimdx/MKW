@@ -6,12 +6,41 @@
                    xmlns:gui="clr-namespace:MKW.GUI"
                    xmlns:local="clr-namespace:MKW.GUI.ImportWizard"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+                   xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                    d:DataContext="{d:DesignInstance Type=local:ImportWizardViewModel}"
                    mc:Ignorable="d"
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
+  <wizard:WizardPage.CommandBindings>
+    <CommandBinding Command="{x:Static gui:AppCommands.PickFile}"
+                    Executed="PickFile_Executed" />
+  </wizard:WizardPage.CommandBindings>
+  
   <Grid Margin="12">
-    <TextBlock>please chose file</TextBlock>
+    <StackPanel Orientation="Vertical">
+      <Label Content="_File:"
+             Padding="0"
+             Margin="0,0,0,3" />
+
+      <Grid Margin="0,0,0,6">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Text="{Binding Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 d:Text="C:\tima\Documents\backup.xml"
+                 Padding="3"
+                 Margin="0,0,3,0"
+                 behaviors:TextBoxBehavior.SelectAllTextOnFocus="True" />
+
+        <Button Grid.Column="1" Padding="3" Command="{x:Static gui:AppCommands.PickFile}">
+          <images:OpenFolder />
+        </Button>
+      </Grid>
+    </StackPanel>
+
   </Grid>
 </wizard:WizardPage>
