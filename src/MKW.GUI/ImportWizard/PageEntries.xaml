@@ -14,5 +14,36 @@
                    d:DesignHeight="380" d:DesignWidth="520"
                    d:Background="White">
   <Grid Margin="12">
+    <ListView ItemsSource="{Binding BackupModel.Entries}"
+              Style="{StaticResource GridViewStyle}"
+              ItemContainerStyle="{StaticResource GridViewItemStyle}"
+              MouseDoubleClick="EntryListView_MouseDoubleClick"
+              behaviors:ListViewBehavior.DeselectOnClickAway="True">
+      <ListView.View>
+        <GridView>
+          <GridView.Columns>
+            <GridViewColumn Header="Title"
+                            Width="175"
+                            DisplayMemberBinding="{Binding [mkw:title]}" />
+
+            <GridViewColumn Header="User Name"
+                            Width="175"
+                            DisplayMemberBinding="{Binding [mkw:username]}" />
+
+            <GridViewColumn Header="Password"
+                            Width="150"
+                            DisplayMemberBinding="{Binding [mkw:password]}" />
+
+            <GridViewColumn Header="URL"
+                            Width="150"
+                            DisplayMemberBinding="{Binding [mkw:url]}" />
+
+            <GridViewColumn Header="Notes"
+                            Width="225"
+                            DisplayMemberBinding="{Binding [mkw:notes]}" />
+          </GridView.Columns>
+        </GridView>
+      </ListView.View>
+    </ListView>
   </Grid>
 </wizard:WizardPage>

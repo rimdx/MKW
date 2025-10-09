@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.Wizard;
+using System.Windows;
 
 namespace MKW.GUI.ImportWizard
 {
@@ -12,6 +13,18 @@ namespace MKW.GUI.ImportWizard
             this.viewModel = viewModel;
             DataContext = viewModel;
             InitializeComponent();
+        }
+
+        private void EntryListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
         }
     }
 }
