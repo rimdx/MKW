@@ -1,4 +1,4 @@
-﻿namespace MKW.GUI.ImportWizard
+﻿namespace MKW.GUI.Model
 {
     public enum BackupFormat
     {
