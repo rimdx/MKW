@@ -22,6 +22,22 @@
       <ListView.View>
         <GridView>
           <GridView.Columns>
+            <GridViewColumn Width="auto">
+              <GridViewColumn.HeaderTemplate>
+                <DataTemplate>
+                  <CheckBox IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wizard:WizardPage}},
+                                                Path=DataContext.IsAllSelected}"
+                            Margin="3,0" />
+                </DataTemplate>
+              </GridViewColumn.HeaderTemplate>
+
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <CheckBox IsChecked="{Binding IsSelected}" />
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+
             <GridViewColumn Header="Title"
                             Width="175"
                             DisplayMemberBinding="{Binding [mkw:title]}" />
