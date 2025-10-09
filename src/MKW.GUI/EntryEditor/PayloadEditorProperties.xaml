@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:MKW.GUI.EntryEditor"
              xmlns:gui="clr-namespace:MKW.GUI"
              xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+             xmlns:model="clr-namespace:MKW.GUI.Model"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=local:EntryEditorViewModel}"
+             d:DataContext="{d:DesignInstance Type=model:EntryEditorModel}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
   <UserControl.CommandBindings>
