@@ -30,5 +30,14 @@ namespace MKW.GUI
                 InputPath = folderName,
             };
         }
+
+        public static FileDialog CreateOpenBackupDialog()
+        {
+            return new OpenFileDialog
+            {
+                DefaultExt = ".xml",
+                Filter = "KeePass XML (2.x)|*.xml"
+            };
+        }
     }
 }
