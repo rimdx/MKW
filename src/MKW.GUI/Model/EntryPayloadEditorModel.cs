@@ -1,26 +1,26 @@
 ﻿using MKW.Core;
-using MKW.GUI.Model;
+using MKW.GUI.EntryEditor; // todo: remove
 using System.Windows.Data;
 
-namespace MKW.GUI.EntryEditor
+namespace MKW.GUI.Model
 {
-    public class EntryPayloadEditorViewModel : ViewModelBase
+    public class EntryPayloadEditorModel : ViewModelBase
     {
         private readonly EntryPayload payload;
         private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
         public EntryId Id { get; }
 
-        public EntryPayloadEditorPropertiesViewModel Properties { get; }
+        public EntryPayloadEditorPropertiesModel Properties { get; }
 
-        public EntryPayloadEditorViewModel(EntryId id, EntryPayload payload,
-                                           CommonEntryPropertiesModel commonPropertiesModel)
+        public EntryPayloadEditorModel(EntryId id, EntryPayload payload,
+                                       CommonEntryPropertiesModel commonPropertiesModel)
         {
             Id = id;
             this.payload = payload;
             this.commonPropertiesModel = commonPropertiesModel;
 
-            Properties = new EntryPayloadEditorPropertiesViewModel(payload, commonPropertiesModel);
+            Properties = new EntryPayloadEditorPropertiesModel(payload, commonPropertiesModel);
 
             CustomProperties = new ListCollectionView(Properties.Collection)
             {
@@ -35,7 +35,7 @@ namespace MKW.GUI.EntryEditor
 
         private bool CustomPropertiesFilter(object item)
         {
-            EntryPayloadValueViewModel value = (EntryPayloadValueViewModel)item;
+            EntryPayloadValueModel value = (EntryPayloadValueModel)item;
 
             return EntryPayloadKey.IsInstance(CommonEntryPropertiesModel.CustomPropertyNamespace, value.Key);
         }
@@ -45,7 +45,7 @@ namespace MKW.GUI.EntryEditor
             return new NewCustomPropertyViewModel(Properties, commonPropertiesModel);
         }
 
-        public EditCustomPropertyViewModel EditCustomProperty(EntryPayloadValueViewModel property)
+        public EditCustomPropertyViewModel EditCustomProperty(EntryPayloadValueModel property)
         {
             return new EditCustomPropertyViewModel(Properties, commonPropertiesModel,
                                                    property.Key, property.Value);
@@ -53,8 +53,8 @@ namespace MKW.GUI.EntryEditor
 
         public ListCollectionView CustomProperties { get; }
 
-        private EntryPayloadValueViewModel? selectedCustomProperty;
-        public EntryPayloadValueViewModel? SelectedCustomProperty
+        private EntryPayloadValueModel? selectedCustomProperty;
+        public EntryPayloadValueModel? SelectedCustomProperty
         {
             get => selectedCustomProperty;
             set => SetProperty(ref selectedCustomProperty, value);

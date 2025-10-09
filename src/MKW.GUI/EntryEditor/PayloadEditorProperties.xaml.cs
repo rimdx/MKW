@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MKW.GUI.Model;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -6,7 +7,7 @@ namespace MKW.GUI.EntryEditor
 {
     public partial class PayloadEditorProperties : UserControl
     {
-        private EntryPayloadEditorViewModel ViewModel => (EntryPayloadEditorViewModel)DataContext;
+        private EntryPayloadEditorModel ViewModel => (EntryPayloadEditorModel)DataContext;
 
         public PayloadEditorProperties()
         {

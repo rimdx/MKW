@@ -1,6 +1,5 @@
 ﻿using MKW.Core;
 using MKW.Core.Serialization.KeePassXML;
-using MKW.GUI.EntryEditor;
 using System.ComponentModel;
 using System.IO;
 
@@ -16,8 +15,8 @@ namespace MKW.GUI.Model
 
         public string Path => Database.Path;
 
-        private IReadOnlyCollection<EntryPayloadEditorViewModel> entries;
-        public IReadOnlyCollection<EntryPayloadEditorViewModel> Entries
+        private IReadOnlyCollection<EntryPayloadEditorModel> entries;
+        public IReadOnlyCollection<EntryPayloadEditorModel> Entries
         {
             get => entries;
             private set => SetProperty(ref entries, value);
@@ -56,7 +55,7 @@ namespace MKW.GUI.Model
             }
         }
 
-        private IEnumerable<EntryPayloadEditorViewModel> EnumerateEntries()
+        private IEnumerable<EntryPayloadEditorModel> EnumerateEntries()
         {
             if (user != null)
             {
@@ -64,7 +63,7 @@ namespace MKW.GUI.Model
                 {
                     EntryPayload? payload = entry.OpenPayload();
 
-                    yield return new EntryPayloadEditorViewModel(entry.Id, payload,
+                    yield return new EntryPayloadEditorModel(entry.Id, payload,
                                                                  CommonPropertiesModel);
                 }
             }

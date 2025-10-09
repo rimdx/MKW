@@ -4,10 +4,10 @@ namespace MKW.GUI.EntryEditor
 {
     public class NewCustomPropertyViewModel : ViewModelBase
     {
-        private readonly EntryPayloadEditorPropertiesViewModel properties;
+        private readonly EntryPayloadEditorPropertiesModel properties;
         public CommonEntryPropertiesModel CommonPropertiesModel { get; }
 
-        public NewCustomPropertyViewModel(EntryPayloadEditorPropertiesViewModel properties,
+        public NewCustomPropertyViewModel(EntryPayloadEditorPropertiesModel properties,
                                           CommonEntryPropertiesModel commonPropertiesModel)
         {
             this.properties = properties;
