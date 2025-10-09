@@ -19,5 +19,10 @@ namespace MKW.GUI.Model
             get => isSelected;
             set => SetProperty(ref isSelected, value);
         }
+
+        public string this[string key]
+        {
+            get => Payload.GetPropertyOrEmpty(new EntryPayloadKey(key));
+        }
     }
 }
