@@ -9,7 +9,7 @@ namespace MKW.GUI.ImportWizard
         private readonly ImportWizardViewModel viewModel;
 
         public PageFile(ImportWizardViewModel viewModel)
-            : base("Chose File")
+            : base("Choose File")
         {
             this.viewModel = viewModel;
             DataContext = viewModel;
