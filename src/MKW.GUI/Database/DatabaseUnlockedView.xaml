@@ -19,6 +19,8 @@
     <CommandBinding Command="{x:Static gui:EntryCommands.DeleteEntry}"
                     Executed="DeleteEntryCommand_Executed"
                     CanExecute="DeleteEntryCommand_CanExecute"/>
+    <CommandBinding Command="{x:Static gui:AppCommands.DataImport}"
+                    Executed="Import_Executed" />
   </UserControl.CommandBindings>
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>

@@ -1,6 +1,7 @@
 ﻿using MKW.Core;
 using MKW.GUI.AddUserWizard;
 using MKW.GUI.EntryEditor;
+using MKW.GUI.ImportWizard;
 using MKW.GUI.Model;
 using MKW.GUI.RequestAccessWizard;
 
@@ -135,6 +136,11 @@ namespace MKW.GUI.Database
             }
 
             database.DeleteUser(SelectedUser.Id);
+        }
+
+        public ImportWizardViewModel CreateImportViewModel()
+        {
+            return new ImportWizardViewModel(database);
         }
 
         public void Dispose()
