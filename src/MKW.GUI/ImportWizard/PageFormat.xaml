@@ -1,0 +1,27 @@
+﻿<wizard:WizardPage x:Class="MKW.GUI.ImportWizard.PageFormat"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:gui="clr-namespace:MKW.GUI"
+                   xmlns:local="clr-namespace:MKW.GUI.ImportWizard"
+                   xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+                   xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+                   xmlns:system="clr-namespace:System;assembly=mscorlib"
+                   d:DataContext="{d:DesignInstance Type=local:ImportWizardViewModel}"
+                   mc:Ignorable="d"
+                   d:DesignHeight="380" d:DesignWidth="520"
+                   d:Background="White">
+  <wizard:WizardPage.Resources>
+    <gui:RadioButtonEnumAdapter x:Key="RadioButtonEnumAdapter" />
+  </wizard:WizardPage.Resources>
+
+  <Grid Margin="12">
+    <RadioButton GroupName="FormatToggle"
+                 Content="KeePass XML V2"
+                 IsChecked="{Binding BackupFormat,
+                                     Converter={StaticResource RadioButtonEnumAdapter},
+                                     ConverterParameter={x:Static local:BackupFormat.KeePassXmlV2}}" />
+  </Grid>
+</wizard:WizardPage>

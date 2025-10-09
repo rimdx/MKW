@@ -11,6 +11,7 @@ namespace MKW.GUI.ImportWizard
         private readonly DatabaseUnlockedModel database;
 
         private string path;
+        private BackupFormat backupFormat;
 
         public ImportWizardViewModel(DatabaseUnlockedModel database)
             : base("Import Data", ImageMoniker.None)
@@ -18,8 +19,10 @@ namespace MKW.GUI.ImportWizard
             this.database = database;
 
             path = "";
+            backupFormat = BackupFormat.KeePassXmlV2;
 
             AddPage(new PageWelcome(this));
+            AddPage(new PageFormat(this));
             AddPage(new PageFile(this));
             AddPage(new PageConfirmation(this));
             AddPage(new PageCompleted(this));
@@ -39,6 +42,12 @@ namespace MKW.GUI.ImportWizard
             KeePassXmlImporter importer = database.CreateImporter();
 
             importer.Import(reader);
+        }
+
+        public BackupFormat BackupFormat
+        {
+            get => backupFormat;
+            set => SetProperty(ref backupFormat, value);
         }
     }
 }
