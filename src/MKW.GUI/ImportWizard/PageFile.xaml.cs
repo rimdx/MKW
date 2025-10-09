@@ -32,5 +32,19 @@ namespace MKW.GUI.ImportWizard
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
+
+        public override bool Next()
+        {
+            try
+            {
+                viewModel.OpenBackup();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+                return false;
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace MKW.GUI.ImportWizard
 
         private string path;
         private BackupFormat backupFormat;
+        private BackupModel? backupModel;
 
         public ImportWizardViewModel(DatabaseUnlockedModel database)
             : base("Import Data", ImageMoniker.None)
@@ -28,19 +29,32 @@ namespace MKW.GUI.ImportWizard
             AddPage(new PageCompleted(this));
         }
 
-        public string Path
+        public void OpenBackup()
         {
-            get => path;
-            set => SetProperty(ref path, value);
+            using FileStream stream = File.OpenRead(Path);
+            BackupModel = database.OpenBackup(stream);
         }
 
         public void Confirm()
         {
-            using FileStream stream = File.OpenRead(Path);
+            if (BackupModel is null)
+            {
+                throw new InvalidOperationException("Backup model is not initialized.");
+            }
 
-            BackupModel backup = database.OpenBackup(stream);
+            BackupModel.Import();
+        }
 
-            backup.Import();
+        public BackupModel? BackupModel
+        {
+            get => backupModel;
+            private set => SetProperty(ref backupModel, value);
+        }
+
+        public string Path
+        {
+            get => path;
+            set => SetProperty(ref path, value);
         }
 
         public BackupFormat BackupFormat
