@@ -14,17 +14,5 @@ namespace MKW.GUI.ImportWizard
             DataContext = viewModel;
             InitializeComponent();
         }
-
-        private void EntryListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(Window.GetWindow(this), ex);
-            }
-        }
     }
 }
