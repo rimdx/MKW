@@ -1,6 +1,7 @@
 ﻿using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
+using System.ComponentModel;
 using System.IO;
 
 namespace MKW.GUI.ImportWizard
@@ -34,6 +35,21 @@ namespace MKW.GUI.ImportWizard
         {
             using FileStream stream = File.OpenRead(Path);
             BackupModel = database.OpenBackup(stream);
+
+            foreach (var entry in BackupModel.Entries)
+            {
+                entry.PropertyChanged += EntryPropertyChanged;
+            }
+
+            IsAllSelected = BackupModel.GetSelectedAll();
+        }
+
+        private void EntryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.MatchProperty(nameof(BackupModelEntry.IsSelected)) && BackupModel != null)
+            {
+                IsAllSelected = BackupModel.GetSelectedAll();
+            }
         }
 
         public void Confirm()
@@ -63,7 +79,8 @@ namespace MKW.GUI.ImportWizard
             get => isAllSelected;
             set
             {
-                if (SetProperty(ref isAllSelected, value) && BackupModel != null)
+                if (SetProperty(ref isAllSelected, value) &&
+                    BackupModel != null && value != null)
                 {
                     BackupModel.SetSelectedAll(value ?? false);
                 }
