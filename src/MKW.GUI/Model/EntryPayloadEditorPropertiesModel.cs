@@ -1,21 +1,20 @@
 ﻿using MKW.Core;
 using MKW.Core.Exceptions;
-using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 
-namespace MKW.GUI.EntryEditor
+namespace MKW.GUI.Model
 {
-    public class EntryPayloadEditorPropertiesViewModel : ViewModelBase
+    public class EntryPayloadEditorPropertiesModel : ViewModelBase
     {
-        public ObservableCollection<EntryPayloadValueViewModel> Collection { get; }
+        public ObservableCollection<EntryPayloadValueModel> Collection { get; }
 
-        private readonly Dictionary<EntryPayloadKey, EntryPayloadValueViewModel> values;
+        private readonly Dictionary<EntryPayloadKey, EntryPayloadValueModel> values;
 
         private readonly EntryPayload payload;
         private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
-        public EntryPayloadEditorPropertiesViewModel(EntryPayload payload,
-                                                     CommonEntryPropertiesModel commonPropertiesModel)
+        public EntryPayloadEditorPropertiesModel(EntryPayload payload,
+                                                 CommonEntryPropertiesModel commonPropertiesModel)
         {
             this.payload = payload;
             this.commonPropertiesModel = commonPropertiesModel;
@@ -25,14 +24,14 @@ namespace MKW.GUI.EntryEditor
 
             foreach (KeyValuePair<EntryPayloadKey, string> item in payload)
             {
-                EntryPayloadValueViewModel value = new EntryPayloadValueViewModel(payload, item.Key);
+                EntryPayloadValueModel value = new EntryPayloadValueModel(payload, item.Key);
 
                 values.Add(item.Key, value);
                 Collection.Add(value);
             }
         }
 
-        public EntryPayloadValueViewModel this[string keyStr]
+        public EntryPayloadValueModel this[string keyStr]
         {
             get
             {
@@ -40,7 +39,7 @@ namespace MKW.GUI.EntryEditor
             }
         }
 
-        public EntryPayloadValueViewModel this[EntryPayloadKey key]
+        public EntryPayloadValueModel this[EntryPayloadKey key]
         {
             get
             {
@@ -48,15 +47,15 @@ namespace MKW.GUI.EntryEditor
             }
         }
 
-        private EntryPayloadValueViewModel GetEditor(EntryPayloadKey key)
+        private EntryPayloadValueModel GetEditor(EntryPayloadKey key)
         {
-            if (values.TryGetValue(key, out EntryPayloadValueViewModel value))
+            if (values.TryGetValue(key, out EntryPayloadValueModel value))
             {
                 return value;
             }
             else
             {
-                EntryPayloadValueViewModel result = new EntryPayloadValueViewModel(payload, key);
+                EntryPayloadValueModel result = new EntryPayloadValueModel(payload, key);
                 values.Add(key, result);
                 Collection.Add(result);
                 return result;
@@ -82,14 +81,14 @@ namespace MKW.GUI.EntryEditor
             {
                 // new
 
-                EntryPayloadValueViewModel valueModel = GetEditor(newKey);
+                EntryPayloadValueModel valueModel = GetEditor(newKey);
                 valueModel.Value = value;
             }
             else if (oldKey.Equals(newKey))
             {
                 // edit
 
-                EntryPayloadValueViewModel valueModel = GetEditor(newKey);
+                EntryPayloadValueModel valueModel = GetEditor(newKey);
                 valueModel.Value = value;
             }
             else

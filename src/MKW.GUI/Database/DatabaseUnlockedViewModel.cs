@@ -1,6 +1,5 @@
 ﻿using MKW.Core;
 using MKW.GUI.AddUserWizard;
-using MKW.GUI.EntryEditor;
 using MKW.GUI.ImportWizard;
 using MKW.GUI.Model;
 using MKW.GUI.RequestAccessWizard;
@@ -58,8 +57,8 @@ namespace MKW.GUI.Database
 
         public DatabaseEntryCollectionViewModel Entries { get; }
 
-        private EntryPayloadEditorViewModel? _selectedEntry;
-        public EntryPayloadEditorViewModel? SelectedEntry
+        private EntryPayloadEditorModel? _selectedEntry;
+        public EntryPayloadEditorModel? SelectedEntry
         {
             get => _selectedEntry;
             set
@@ -99,7 +98,7 @@ namespace MKW.GUI.Database
             return new EditEntryWindowViewModel(database, database.OpenEntry(id));
         }
 
-        public void DeleteEntry(EntryPayloadEditorViewModel entry)
+        public void DeleteEntry(EntryPayloadEditorModel entry)
         {
             database.DeleteEntry(entry.Id);
         }

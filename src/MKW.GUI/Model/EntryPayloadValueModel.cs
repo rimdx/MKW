@@ -1,15 +1,14 @@
 ﻿using MKW.Core;
-using MKW.GUI.Model;
 
-namespace MKW.GUI.EntryEditor
+namespace MKW.GUI.Model
 {
-    public class EntryPayloadValueViewModel : ViewModelBase
+    public class EntryPayloadValueModel : ViewModelBase
     {
         private readonly EntryPayload payload;
 
         public EntryPayloadKey Key { get; }
 
-        public EntryPayloadValueViewModel(EntryPayload payload, EntryPayloadKey key)
+        public EntryPayloadValueModel(EntryPayload payload, EntryPayloadKey key)
         {
             this.payload = payload;
             Key = key;

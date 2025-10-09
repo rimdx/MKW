@@ -1,5 +1,4 @@
 ﻿using MKW.Core;
-using MKW.GUI.EntryEditor;
 using MKW.GUI.Model;
 
 namespace MKW.GUI
@@ -8,13 +7,13 @@ namespace MKW.GUI
     {
         private readonly DatabaseUnlockedModel database;
 
-        public EntryPayloadEditorViewModel Payload { get; }
+        public EntryPayloadEditorModel Payload { get; }
 
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
 
-            Payload = new EntryPayloadEditorViewModel(EntryId.Create(), new EntryPayload(),
+            Payload = new EntryPayloadEditorModel(EntryId.Create(), new EntryPayload(),
                                                       database.CommonPropertiesModel);
         }
 
