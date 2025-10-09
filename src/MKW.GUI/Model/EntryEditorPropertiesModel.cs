@@ -14,7 +14,7 @@ namespace MKW.GUI.Model
         private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
         public EntryEditorPropertiesModel(EntryPayload payload,
-                                                 CommonEntryPropertiesModel commonPropertiesModel)
+                                          CommonEntryPropertiesModel commonPropertiesModel)
         {
             this.payload = payload;
             this.commonPropertiesModel = commonPropertiesModel;
