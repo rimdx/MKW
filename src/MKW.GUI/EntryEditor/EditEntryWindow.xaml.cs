@@ -17,10 +17,8 @@ namespace MKW.GUI
         {
             try
             {
-                if (model.OnOK())
-                {
-                    Close();
-                }
+                model.OnOK();
+                Close();
             }
             catch (Exception ex)
             {
