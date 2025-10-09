@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MKW.GUI.EntryEditor"
              xmlns:gui="clr-namespace:MKW.GUI"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=local:EntryPayloadEditorViewModel}"
+             d:DataContext="{d:DesignInstance Type=local:EntryEditorViewModel}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
   <UserControl.Resources>

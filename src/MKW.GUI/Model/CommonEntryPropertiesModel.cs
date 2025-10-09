@@ -9,7 +9,7 @@ namespace MKW.GUI.Model
 
         public ObservableCollection<IPropertyInfo> CommonProperties { get; }
 
-        public CommonEntryPropertiesModel(IEnumerable<EntryPayloadEditorModel> entries)
+        public CommonEntryPropertiesModel(IEnumerable<EntryEditorModel> entries)
         {
             CommonCustomPropertyNames = [];
 
@@ -21,7 +21,7 @@ namespace MKW.GUI.Model
                 Notes,
             ];
 
-            foreach (EntryPayloadEditorModel entry in entries)
+            foreach (EntryEditorModel entry in entries)
             {
                 ReceivedEntry(entry.GetPayload());
             }

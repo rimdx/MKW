@@ -7,13 +7,13 @@ namespace MKW.GUI
     {
         private readonly DatabaseUnlockedModel database;
 
-        public EntryPayloadEditorModel Payload { get; }
+        public EntryEditorModel Payload { get; }
 
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
 
-            Payload = new EntryPayloadEditorModel(EntryId.Create(), new EntryPayload(),
+            Payload = new EntryEditorModel(EntryId.Create(), new EntryPayload(),
                                                       database.CommonPropertiesModel);
         }
 

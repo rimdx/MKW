@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 
 namespace MKW.GUI.Model
 {
-    public class EntryPayloadEditorPropertiesModel : ViewModelBase
+    public class EntryEditorPropertiesModel : ViewModelBase
     {
-        public ObservableCollection<EntryPayloadValueModel> Collection { get; }
+        public ObservableCollection<EntryValueModel> Collection { get; }
 
-        private readonly Dictionary<EntryPayloadKey, EntryPayloadValueModel> values;
+        private readonly Dictionary<EntryPayloadKey, EntryValueModel> values;
 
         private readonly EntryPayload payload;
         private readonly CommonEntryPropertiesModel commonPropertiesModel;
 
-        public EntryPayloadEditorPropertiesModel(EntryPayload payload,
+        public EntryEditorPropertiesModel(EntryPayload payload,
                                                  CommonEntryPropertiesModel commonPropertiesModel)
         {
             this.payload = payload;
@@ -24,14 +24,14 @@ namespace MKW.GUI.Model
 
             foreach (KeyValuePair<EntryPayloadKey, string> item in payload)
             {
-                EntryPayloadValueModel value = new EntryPayloadValueModel(payload, item.Key);
+                EntryValueModel value = new EntryValueModel(payload, item.Key);
 
                 values.Add(item.Key, value);
                 Collection.Add(value);
             }
         }
 
-        public EntryPayloadValueModel this[string keyStr]
+        public EntryValueModel this[string keyStr]
         {
             get
             {
@@ -39,7 +39,7 @@ namespace MKW.GUI.Model
             }
         }
 
-        public EntryPayloadValueModel this[EntryPayloadKey key]
+        public EntryValueModel this[EntryPayloadKey key]
         {
             get
             {
@@ -47,15 +47,15 @@ namespace MKW.GUI.Model
             }
         }
 
-        private EntryPayloadValueModel GetEditor(EntryPayloadKey key)
+        private EntryValueModel GetEditor(EntryPayloadKey key)
         {
-            if (values.TryGetValue(key, out EntryPayloadValueModel value))
+            if (values.TryGetValue(key, out EntryValueModel value))
             {
                 return value;
             }
             else
             {
-                EntryPayloadValueModel result = new EntryPayloadValueModel(payload, key);
+                EntryValueModel result = new EntryValueModel(payload, key);
                 values.Add(key, result);
                 Collection.Add(result);
                 return result;
@@ -81,14 +81,14 @@ namespace MKW.GUI.Model
             {
                 // new
 
-                EntryPayloadValueModel valueModel = GetEditor(newKey);
+                EntryValueModel valueModel = GetEditor(newKey);
                 valueModel.Value = value;
             }
             else if (oldKey.Equals(newKey))
             {
                 // edit
 
-                EntryPayloadValueModel valueModel = GetEditor(newKey);
+                EntryValueModel valueModel = GetEditor(newKey);
                 valueModel.Value = value;
             }
             else

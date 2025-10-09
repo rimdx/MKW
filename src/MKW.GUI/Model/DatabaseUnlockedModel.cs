@@ -15,8 +15,8 @@ namespace MKW.GUI.Model
 
         public string Path => Database.Path;
 
-        private IReadOnlyCollection<EntryPayloadEditorModel> entries;
-        public IReadOnlyCollection<EntryPayloadEditorModel> Entries
+        private IReadOnlyCollection<EntryEditorModel> entries;
+        public IReadOnlyCollection<EntryEditorModel> Entries
         {
             get => entries;
             private set => SetProperty(ref entries, value);
@@ -55,7 +55,7 @@ namespace MKW.GUI.Model
             }
         }
 
-        private IEnumerable<EntryPayloadEditorModel> EnumerateEntries()
+        private IEnumerable<EntryEditorModel> EnumerateEntries()
         {
             if (user != null)
             {
@@ -63,7 +63,7 @@ namespace MKW.GUI.Model
                 {
                     EntryPayload? payload = entry.OpenPayload();
 
-                    yield return new EntryPayloadEditorModel(entry.Id, payload,
+                    yield return new EntryEditorModel(entry.Id, payload,
                                                                  CommonPropertiesModel);
                 }
             }

@@ -8,7 +8,7 @@ namespace MKW.GUI
         private readonly DatabaseUnlockedModel database;
         private readonly IEntrySession entry;
 
-        public EntryPayloadEditorModel Payload { get; }
+        public EntryEditorModel Payload { get; }
 
         public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
         {
@@ -19,7 +19,7 @@ namespace MKW.GUI
 
             if (payload != null)
             {
-                Payload = new EntryPayloadEditorModel(entry.Id, payload,
+                Payload = new EntryEditorModel(entry.Id, payload,
                                                           database.CommonPropertiesModel);
             }
             else

@@ -5,12 +5,12 @@ namespace MKW.GUI.EntryEditor
 {
     public class EditCustomPropertyViewModel : CustomPropertyEditorViewModelBase
     {
-        private readonly EntryPayloadEditorPropertiesModel properties;
+        private readonly EntryEditorPropertiesModel properties;
         private readonly EntryPayloadKey key;
 
         public CommonEntryPropertiesModel CommonPropertiesModel { get; }
 
-        public EditCustomPropertyViewModel(EntryPayloadEditorPropertiesModel properties,
+        public EditCustomPropertyViewModel(EntryEditorPropertiesModel properties,
                                            CommonEntryPropertiesModel commonPropertiesModel,
                                            EntryPayloadKey key, string content)
             : base(GetName(key), content)
