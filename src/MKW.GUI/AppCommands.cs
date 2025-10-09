@@ -18,5 +18,7 @@ namespace MKW.GUI
         public static RoutedUICommand EntryDeleteCustomProperty { get; } = new RoutedUICommand();
 
         public static RoutedUICommand DataImport { get; } = new RoutedUICommand();
+
+        public static RoutedUICommand PickFile { get; } = new RoutedUICommand();
     }
 }

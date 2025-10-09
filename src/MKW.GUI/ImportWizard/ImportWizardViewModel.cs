@@ -1,22 +1,32 @@
 ﻿using MKW.GUI.Images;
+using MKW.GUI.Model;
 using MKW.GUI.Wizard;
 
 namespace MKW.GUI.ImportWizard
 {
     public class ImportWizardViewModel : WizardViewModel
     {
-        public ImportWizardViewModel()
+        private readonly DatabaseUnlockedModel database;
+
+        private string path;
+
+        public ImportWizardViewModel(DatabaseUnlockedModel database)
             : base("Import Data", ImageMoniker.None)
         {
+            this.database = database;
+
+            path = "";
+
             AddPage(new PageWelcome(this));
             AddPage(new PageFile(this));
             AddPage(new PageConfirmation(this));
             AddPage(new PageCompleted(this));
         }
 
-        public void Confirm()
+        public string Path
         {
-            throw new NotImplementedException();
+            get => path;
+            set => SetProperty(ref path, value);
         }
     }
 }
