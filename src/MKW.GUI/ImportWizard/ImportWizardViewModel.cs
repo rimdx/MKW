@@ -1,6 +1,8 @@
-﻿using MKW.GUI.Images;
+﻿using MKW.Core.Serialization.KeePassXML;
+using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
+using System.IO;
 
 namespace MKW.GUI.ImportWizard
 {
@@ -27,6 +29,16 @@ namespace MKW.GUI.ImportWizard
         {
             get => path;
             set => SetProperty(ref path, value);
+        }
+
+        public void Confirm()
+        {
+            using FileStream stream = File.OpenRead(Path);
+            KeePassXmlReader reader = new KeePassXmlReader(stream);
+
+            KeePassXmlImporter importer = database.CreateImporter();
+
+            importer.Import(reader);
         }
     }
 }
