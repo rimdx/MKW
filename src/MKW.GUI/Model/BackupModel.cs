@@ -39,5 +39,24 @@ namespace MKW.GUI.Model
                 entry.IsSelected = isSelected;
             }
         }
+
+        public bool? GetSelectedAll()
+        {
+            bool? isSelected = null;
+
+            foreach (BackupModelEntry entry in Entries)
+            {
+                if (isSelected is null)
+                {
+                    isSelected = entry.IsSelected;
+                }
+                else if (isSelected != entry.IsSelected)
+                {
+                    return null;
+                }
+            }
+
+            return isSelected;
+        }
     }
 }
