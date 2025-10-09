@@ -5,11 +5,6 @@ namespace MKW.GUI.Model
     public sealed class BackupModelEntry : ViewModelBase
     {
         private bool isSelected;
-        public bool IsSelected
-        {
-            get => isSelected;
-            set => SetProperty(ref isSelected, value);
-        }
 
         public EntryPayload Payload { get; }
 
@@ -17,6 +12,12 @@ namespace MKW.GUI.Model
         {
             isSelected = true;
             Payload = payload;
+        }
+
+        public bool IsSelected
+        {
+            get => isSelected;
+            set => SetProperty(ref isSelected, value);
         }
     }
 }
