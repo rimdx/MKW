@@ -37,7 +37,7 @@
                  behaviors:TextBoxBehavior.SelectAllTextOnFocus="True" />
 
         <Button Grid.Column="1" Padding="3" Command="{x:Static gui:AppCommands.PickFile}">
-          <images:OpenFolder />
+          <images:OpenFile />
         </Button>
       </Grid>
     </StackPanel>
