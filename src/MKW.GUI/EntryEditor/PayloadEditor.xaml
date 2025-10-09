@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MKW.GUI.EntryEditor"
+             xmlns:model="clr-namespace:MKW.GUI.Model"
              xmlns:gui="clr-namespace:MKW.GUI"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=local:EntryPayloadEditorViewModel}"
+             d:DataContext="{d:DesignInstance Type=model:EntryEditorModel}"
              d:DesignHeight="380" d:DesignWidth="520"
              d:Background="White">
   <Grid>
