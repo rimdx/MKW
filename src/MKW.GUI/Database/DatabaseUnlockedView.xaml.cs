@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MKW.GUI.ImportWizard;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -77,6 +78,20 @@ namespace MKW.GUI.Database
                         model.DeleteEntry(model.SelectedEntry);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
+
+        private void Import_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                ImportWizardViewModel dialogModel = model.CreateImportViewModel();
+                ImportWizardDialog dialog = new ImportWizardDialog(dialogModel, Window.GetWindow(this));
+                dialog.ShowDialog();
             }
             catch (Exception ex)
             {

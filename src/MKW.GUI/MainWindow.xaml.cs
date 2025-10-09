@@ -145,19 +145,5 @@ namespace MKW.GUI
         {
             viewModel.OpenDatabase(fullPath);
         }
-
-        private void Import_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            try
-            {
-                ImportWizardViewModel dialogModel = new ImportWizardViewModel();
-                ImportWizardDialog dialog = new ImportWizardDialog(dialogModel, this);
-                dialog.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                ErrorReporter.HandleException(this, ex);
-            }
-        }
     }
 }
