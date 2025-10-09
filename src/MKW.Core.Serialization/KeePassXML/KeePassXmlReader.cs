@@ -13,7 +13,7 @@
             groupsStack = [];
             entriesStack = [];
 
-            groupsStack.Push(file.Root.RootGroup);
+            Reset();
         }
 
         public BackupEntry? NextEntry()
@@ -98,6 +98,14 @@
                     yield return entry;
                 }
             }
+        }
+
+        public void Reset()
+        {
+            groupsStack.Clear();
+            entriesStack.Clear();
+
+            groupsStack.Push(file.Root.RootGroup);
         }
     }
 }
