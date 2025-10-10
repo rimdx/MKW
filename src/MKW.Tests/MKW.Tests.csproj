@@ -32,7 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="key_pass_export.xml">
+    <None Update="key_pass_export_v1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="key_pass_export_v2.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
