@@ -1,5 +1,4 @@
-﻿using MKW.Core.Serialization.KeePassXmlV2;
-using System.IO;
+﻿using System.IO;
 
 namespace MKW.GUI.Backup
 {
@@ -9,7 +8,7 @@ namespace MKW.GUI.Backup
 
         public IBackup Open(Stream file)
         {
-            return new KeePassXmlV2Backup(new KeePassXmlV2Reader(file));
+            return new KeePassXmlV2Backup(file);
         }
     }
 }
