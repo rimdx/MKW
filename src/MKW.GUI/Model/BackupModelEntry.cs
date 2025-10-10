@@ -1,6 +1,6 @@
 ﻿using MKW.Core;
 
-namespace MKW.GUI.Backup
+namespace MKW.GUI.Model
 {
     public sealed class BackupModelEntry : ViewModelBase
     {

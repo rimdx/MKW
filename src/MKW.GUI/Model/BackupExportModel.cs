@@ -1,6 +1,6 @@
-﻿using MKW.GUI.Model;
+﻿using MKW.GUI.Backup;
 
-namespace MKW.GUI.Backup
+namespace MKW.GUI.Model
 {
     public sealed class BackupExportModel : BackupModelBase, IDisposable
     {
