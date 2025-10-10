@@ -42,6 +42,7 @@ namespace MKW.GUI.ImportWizard
             }
             catch (Exception ex)
             {
+                stream.Dispose();
                 throw new Exception($"File cannot be processed. Make sure it is valid and the proper format was chosen.", ex);
             }
 
