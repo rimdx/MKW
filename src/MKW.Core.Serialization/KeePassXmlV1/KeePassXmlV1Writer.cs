@@ -5,6 +5,7 @@ namespace MKW.Core.Serialization.KeePassXmlV1
     public sealed class KeePassXmlV1Writer : IDisposable
     {
         private readonly XmlWriter writer;
+        private bool disposed = false;
 
         public KeePassXmlV1Writer(Stream stream)
         {
@@ -33,8 +34,19 @@ namespace MKW.Core.Serialization.KeePassXmlV1
 
         public void Dispose()
         {
-            writer.WriteEndDocument();
-            writer.Dispose();
+            if (!disposed)
+            {
+                try
+                {
+                    writer.WriteEndDocument();
+                }
+                catch
+                {
+                }
+
+                writer.Dispose();
+                disposed = true;
+            }
         }
     }
 }
