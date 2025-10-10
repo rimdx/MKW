@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace MKW.Core.Serialization.KeePassXML
+namespace MKW.Core.Serialization.KeePassXmlV2
 {
     internal static class KeePassXmlSerializer
     {

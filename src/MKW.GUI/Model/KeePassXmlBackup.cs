@@ -1,6 +1,6 @@
 ﻿using MKW.Core;
 using MKW.Core.Serialization;
-using MKW.Core.Serialization.KeePassXML;
+using MKW.Core.Serialization.KeePassXmlV2;
 
 namespace MKW.GUI.Model
 {
