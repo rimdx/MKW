@@ -8,7 +8,7 @@ namespace MKW.GUI.EntryEditor
         private readonly DatabaseUnlockedModel database;
 
         public NewEntryWindowViewModel(DatabaseUnlockedModel database)
-            : base(GetEditor(database))
+            : base(GetEditor(database), database.CommonPropertiesModel)
         {
             this.database = database;
         }

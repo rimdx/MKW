@@ -40,24 +40,6 @@ namespace MKW.GUI.Model
             return EntryPayloadKey.IsInstance(CommonEntryPropertiesModel.CustomPropertyNamespace, value.Key);
         }
 
-        public NewCustomPropertyViewModel NewCustomProperty()
-        {
-            return new NewCustomPropertyViewModel(Properties, commonPropertiesModel);
-        }
-
-        public EditCustomPropertyViewModel EditCustomProperty(EntryValueModel property)
-        {
-            return new EditCustomPropertyViewModel(Properties, commonPropertiesModel,
-                                                   property.Key, property.Value);
-        }
-
         public ListCollectionView CustomProperties { get; }
-
-        private EntryValueModel? selectedCustomProperty;
-        public EntryValueModel? SelectedCustomProperty
-        {
-            get => selectedCustomProperty;
-            set => SetProperty(ref selectedCustomProperty, value);
-        }
     }
 }
