@@ -47,7 +47,7 @@ namespace MKW.GUI.ImportWizard
                 throw new Exception($"File cannot be processed. Make sure it is valid and the proper format was chosen.", ex);
             }
 
-            foreach (var entry in BackupModel.Entries)
+            foreach (BackupModelEntry entry in BackupModel.Entries)
             {
                 entry.PropertyChanged += EntryPropertyChanged;
             }

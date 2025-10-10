@@ -39,7 +39,7 @@ namespace MKW.GUI.Database
 
         private void EditEntryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (model.SelectedEntry != null);
+            e.CanExecute = model.SelectedEntry != null;
         }
 
         private void EditEntryCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -61,7 +61,7 @@ namespace MKW.GUI.Database
 
         private void DeleteEntryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (model.SelectedEntry != null);
+            e.CanExecute = model.SelectedEntry != null;
         }
 
         private void DeleteEntryCommand_Executed(object sender, ExecutedRoutedEventArgs e)

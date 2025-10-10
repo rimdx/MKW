@@ -25,10 +25,10 @@ namespace MKW.GUI.Wizard
 
         public WizardPage CurrentPage => Pages[CurrentPageIndex];
 
-        public virtual bool IsCompleted => (CurrentPageIndex == Pages.Count - 1);
+        public virtual bool IsCompleted => CurrentPageIndex == Pages.Count - 1;
 
         public virtual bool CanGoBack => (CurrentPageIndex > 0) && !IsCompleted;
-        public virtual bool CanGoNext => (CurrentPageIndex < Pages.Count - 1);
+        public virtual bool CanGoNext => CurrentPageIndex < Pages.Count - 1;
         public virtual bool CanFinish => IsCompleted;
 
         public string PageHeader => CurrentPage.Header;

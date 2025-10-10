@@ -6,7 +6,7 @@ namespace MKW.GUI.Model
     public class DatabaseUnlockedModel : ViewModelBase, IDisposable
     {
         public DatabaseModel Database { get; }
-        public CommonEntryPropertiesModel CommonPropertiesModel { get; } 
+        public CommonEntryPropertiesModel CommonPropertiesModel { get; }
 
         private readonly IUserSession user;
         private readonly IAdminSession? admin;

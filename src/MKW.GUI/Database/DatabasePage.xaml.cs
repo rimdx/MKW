@@ -18,7 +18,7 @@ namespace MKW.GUI.Database
 
         private void LockDatabaseCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (model.Database.UnlockedDatabase != null);
+            e.CanExecute = model.Database.UnlockedDatabase != null;
         }
 
         private void LockDatabaseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
