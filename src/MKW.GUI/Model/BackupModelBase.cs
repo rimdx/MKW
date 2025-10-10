@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace MKW.GUI.Backup
+namespace MKW.GUI.Model
 {
     public abstract class BackupModelBase : ViewModelBase
     {
