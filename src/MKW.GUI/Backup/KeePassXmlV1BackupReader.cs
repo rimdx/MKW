@@ -6,11 +6,11 @@ using System.IO;
 
 namespace MKW.GUI.Backup
 {
-    public sealed class KeePassXmlV1Backup : IBackupReader, IDisposable
+    public sealed class KeePassXmlV1BackupReader : IBackupReader, IDisposable
     {
         private readonly Stream stream;
 
-        public KeePassXmlV1Backup(Stream stream)
+        public KeePassXmlV1BackupReader(Stream stream)
         {
             this.stream = stream;
         }

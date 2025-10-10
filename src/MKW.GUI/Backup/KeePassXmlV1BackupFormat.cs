@@ -10,7 +10,7 @@ namespace MKW.GUI.Backup
 
         public IBackupReader OpenRead(Stream file)
         {
-            return new KeePassXmlV1Backup(file);
+            return new KeePassXmlV1BackupReader(file);
         }
 
         public IBackupWriter OpenWrite(Stream file)
