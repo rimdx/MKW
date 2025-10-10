@@ -29,8 +29,10 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                NewCustomPropertyViewModel dialogModel = ViewModel.Payload.NewCustomProperty();
-                NewCustomPropertyDialog dialog = new NewCustomPropertyDialog(Window.GetWindow(this), dialogModel);
+                NewCustomPropertyViewModel dialogModel =
+                    ViewModel.NewCustomProperty();
+                NewCustomPropertyDialog dialog =
+                    new NewCustomPropertyDialog(Window.GetWindow(this), dialogModel);
                 dialog.ShowDialog();
             }
             catch (Exception ex)
@@ -43,10 +45,12 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                if (ViewModel.Payload.SelectedCustomProperty != null)
+                if (ViewModel.SelectedCustomProperty != null)
                 {
-                    EditCustomPropertyViewModel dialogModel = ViewModel.Payload.EditCustomProperty(ViewModel.Payload.SelectedCustomProperty);
-                    EditCustomPropertyDialog dialog = new EditCustomPropertyDialog(Window.GetWindow(this), dialogModel);
+                    EditCustomPropertyViewModel dialogModel =
+                        ViewModel.EditCustomProperty(ViewModel.SelectedCustomProperty);
+                    EditCustomPropertyDialog dialog =
+                        new EditCustomPropertyDialog(Window.GetWindow(this), dialogModel);
                     dialog.ShowDialog();
                 }
             }
