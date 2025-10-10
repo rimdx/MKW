@@ -18,7 +18,7 @@ namespace MKW.GUI.ExportWizard
         public BackupExportModel BackupModel { get; }
 
         public ExportWizardViewModel(DatabaseUnlockedModel database)
-            : base("Export Data", ImageMoniker.None)
+            : base("Export Data", ImageMoniker.Export)
         {
             this.database = database;
 
