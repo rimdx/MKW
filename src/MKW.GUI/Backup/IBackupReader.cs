@@ -2,7 +2,7 @@
 
 namespace MKW.GUI.Backup
 {
-    public interface IBackup : IDisposable
+    public interface IBackupReader : IDisposable
     {
         IEnumerable<EntryPayload> EnumerateEntries();
     }

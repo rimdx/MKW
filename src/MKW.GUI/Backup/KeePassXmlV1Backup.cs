@@ -6,7 +6,7 @@ using System.IO;
 
 namespace MKW.GUI.Backup
 {
-    public sealed class KeePassXmlV1Backup : IBackup, IDisposable
+    public sealed class KeePassXmlV1Backup : IBackupReader, IDisposable
     {
         private readonly Stream stream;
 
