@@ -21,6 +21,13 @@
   <Grid Margin="12">
     <StackPanel Orientation="Vertical">
       <RadioButton GroupName="FormatToggle"
+                   Content="KeePass XML V1"
+                   Margin="0,0,0,6"
+                   IsChecked="{Binding BackupFormat,
+                                       Converter={StaticResource RadioButtonEnumAdapter},
+                                       ConverterParameter={x:Static model:BackupFormat.KeePassXmlV1}}" />
+
+      <RadioButton GroupName="FormatToggle"
                    Content="KeePass XML V2"
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,

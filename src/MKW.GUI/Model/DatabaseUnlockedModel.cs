@@ -131,6 +131,7 @@ namespace MKW.GUI.Model
 
         private IBackup OpenBackupFile(Stream stream, BackupFormat format) => format switch
         {
+            BackupFormat.KeePassXmlV1 => new KeePassXmlV1Backup(stream),
             BackupFormat.KeePassXmlV2 => new KeePassXmlV2Backup(new KeePassXmlV2Reader(stream)),
             BackupFormat.KeePassCSV => new KeePassCSVBackup(stream),
         };
