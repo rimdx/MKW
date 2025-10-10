@@ -15,7 +15,7 @@ namespace MKW.GUI.ExportWizard
         private bool? isAllSelected;
         private IBackupFormat backupFormat;
 
-        public BackupModel BackupModel { get; }
+        public BackupExportModel BackupModel { get; }
 
         public ExportWizardViewModel(DatabaseUnlockedModel database)
             : base("Export Data", ImageMoniker.None)
@@ -24,7 +24,7 @@ namespace MKW.GUI.ExportWizard
 
             path = "";
             backupFormat = CommonBackupFormats.KeePassXmlV1;
-            BackupModel = new BackupModel(database);
+            BackupModel = new BackupExportModel(database);
 
             AddPage(new PageWelcome(this));
             AddPage(new PageEntries(this));

@@ -14,7 +14,7 @@ namespace MKW.GUI.ImportWizard
         private string path;
         private bool? isAllSelected;
         private IBackupFormat backupFormat;
-        private BackupModel? backupModel;
+        private BackupImportModel? backupModel;
 
         public ImportWizardViewModel(DatabaseUnlockedModel database)
             : base("Import Data", ImageMoniker.None)
@@ -38,7 +38,8 @@ namespace MKW.GUI.ImportWizard
 
             try
             {
-                BackupModel = database.OpenBackup(stream, BackupFormat);
+                IBackupReader backup = BackupFormat.OpenRead(stream);
+                BackupModel = new BackupImportModel(database, backup);
             }
             catch (Exception ex)
             {
@@ -72,12 +73,12 @@ namespace MKW.GUI.ImportWizard
             BackupModel.Import();
         }
 
-        public BackupModel? BackupModel
+        public BackupImportModel? BackupModel
         {
             get => backupModel;
             private set
             {
-                BackupModel? oldValue = backupModel;
+                BackupImportModel? oldValue = backupModel;
 
                 if (SetProperty(ref backupModel, value))
                 {
