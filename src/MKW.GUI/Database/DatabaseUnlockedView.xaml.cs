@@ -90,7 +90,7 @@ namespace MKW.GUI.Database
         {
             try
             {
-                ImportWizardViewModel dialogModel = model.CreateImportViewModel();
+                using ImportWizardViewModel dialogModel = model.CreateImportViewModel();
                 ImportWizardDialog dialog = new ImportWizardDialog(dialogModel, Window.GetWindow(this));
                 dialog.ShowDialog();
             }

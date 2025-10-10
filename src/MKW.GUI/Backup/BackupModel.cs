@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace MKW.GUI.Backup
 {
-    public class BackupModel : ViewModelBase
+    public class BackupModel : ViewModelBase, IDisposable
     {
         private readonly IUserSession user;
         private readonly IBackup backup;
@@ -57,6 +57,11 @@ namespace MKW.GUI.Backup
             }
 
             return isSelected;
+        }
+
+        public void Dispose()
+        {
+            backup.Dispose();
         }
     }
 }
