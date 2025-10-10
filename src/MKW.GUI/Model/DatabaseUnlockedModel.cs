@@ -134,7 +134,7 @@ namespace MKW.GUI.Model
         {
             IBackupReader backup = format.OpenRead(file);
 
-            BackupModel model = new BackupModel(user, backup);
+            BackupModel model = new BackupModel(this, backup);
 
             return model;
         }

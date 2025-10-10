@@ -14,7 +14,8 @@ namespace MKW.GUI.ExportWizard
         private string path;
         private bool? isAllSelected;
         private IBackupFormat backupFormat;
-        private BackupModel? backupModel;
+
+        public BackupModel BackupModel { get; }
 
         public ExportWizardViewModel(DatabaseUnlockedModel database)
             : base("Export Data", ImageMoniker.None)
@@ -23,67 +24,43 @@ namespace MKW.GUI.ExportWizard
 
             path = "";
             backupFormat = CommonBackupFormats.KeePassXmlV1;
+            BackupModel = new BackupModel(database);
 
             AddPage(new PageWelcome(this));
+            AddPage(new PageEntries(this));
             AddPage(new PageFormat(this));
             AddPage(new PageFile(this));
-            AddPage(new PageEntries(this));
             AddPage(new PageConfirmation(this));
             AddPage(new PageCompleted(this));
-        }
 
-        public void OpenBackup()
-        {
-            FileStream stream = File.OpenRead(Path);
-
-            try
-            {
-                BackupModel = database.OpenBackup(stream, BackupFormat);
-            }
-            catch (Exception ex)
-            {
-                stream.Dispose();
-                throw new Exception($"File cannot be processed. Make sure it is valid and the proper format was chosen.", ex);
-            }
-
-            foreach (var entry in BackupModel.Entries)
-            {
-                entry.PropertyChanged += EntryPropertyChanged;
-            }
-
-            IsAllSelected = BackupModel.GetSelectedAll();
+            isAllSelected = BackupModel.GetSelectedAll();
         }
 
         private void EntryPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.MatchProperty(nameof(BackupModelEntry.IsSelected)) && BackupModel != null)
+            if (e.MatchProperty(nameof(BackupModelEntry.IsSelected)))
             {
                 IsAllSelected = BackupModel.GetSelectedAll();
             }
         }
 
-        public void Confirm()
+        public void VerifyPath()
         {
-            if (BackupModel is null)
-            {
-                throw new InvalidOperationException("Backup model is not initialized.");
-            }
+            FileInfo file = new FileInfo(Path);
+            DirectoryInfo dir = file.Directory;
 
-            BackupModel.Import();
+            if (!dir.Exists)
+            {
+                throw new Exception($"The system cannot find the path specified.");
+            }
         }
 
-        public BackupModel? BackupModel
+        public void Confirm()
         {
-            get => backupModel;
-            private set
-            {
-                BackupModel? oldValue = backupModel;
+            using FileStream file = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.Write);
+            using IBackupWriter writer = BackupFormat.OpenWrite(file);
 
-                if (SetProperty(ref backupModel, value))
-                {
-                    oldValue?.Dispose();
-                }
-            }
+            BackupModel.Export(writer);
         }
 
         public string Path
