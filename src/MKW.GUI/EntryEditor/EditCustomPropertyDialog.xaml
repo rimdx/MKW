@@ -29,13 +29,7 @@
               Grid.Row="1"
               Margin="0,0,0,6"
               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-              ItemsSource="{Binding CommonPropertiesModel.CommonCustomPropertyNames}">
-      <ComboBox.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding Name, Mode=OneWay}" />
-        </DataTemplate>
-      </ComboBox.ItemTemplate>
-    </ComboBox>
+              ItemsSource="{Binding CommonPropertiesModel.CommonCustomPropertyNames}" />
 
     <Label Content="Content:"
            Grid.Row="2"
