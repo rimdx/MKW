@@ -1,4 +1,4 @@
-﻿namespace MKW.Core.Serialization.KeePassXML
+﻿namespace MKW.Core.Serialization.KeePassXmlV2
 {
     public sealed class KeePassXmlReader
     {

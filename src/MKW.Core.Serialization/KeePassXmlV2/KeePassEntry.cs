@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
 
-namespace MKW.Core.Serialization.KeePassXML
+namespace MKW.Core.Serialization.KeePassXmlV2
 {
     public sealed record class KeePassEntry
     {

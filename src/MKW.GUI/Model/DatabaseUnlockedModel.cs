@@ -1,5 +1,5 @@
 ﻿using MKW.Core;
-using MKW.Core.Serialization.KeePassXML;
+using MKW.Core.Serialization.KeePassXmlV2;
 using System.ComponentModel;
 using System.IO;
 
