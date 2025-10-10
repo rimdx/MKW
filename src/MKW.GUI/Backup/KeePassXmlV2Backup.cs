@@ -5,7 +5,7 @@ using MKW.GUI.Model;
 
 namespace MKW.GUI.Backup
 {
-    public sealed class KeePassXmlV2Backup : IBackup
+    public sealed class KeePassXmlV2Backup : IBackup, IDisposable
     {
         private readonly KeePassXmlV2Reader reader;
 
@@ -39,6 +39,10 @@ namespace MKW.GUI.Backup
 
                 yield return payload;
             }
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

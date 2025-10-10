@@ -7,7 +7,7 @@ using System.IO;
 
 namespace MKW.GUI.ImportWizard
 {
-    public class ImportWizardViewModel : WizardViewModel
+    public class ImportWizardViewModel : WizardViewModel, IDisposable
     {
         private readonly DatabaseUnlockedModel database;
 
@@ -66,7 +66,15 @@ namespace MKW.GUI.ImportWizard
         public BackupModel? BackupModel
         {
             get => backupModel;
-            private set => SetProperty(ref backupModel, value);
+            private set
+            {
+                BackupModel? oldValue = backupModel;
+
+                if (SetProperty(ref backupModel, value))
+                {
+                    oldValue?.Dispose();
+                }
+            }
         }
 
         public string Path
@@ -92,6 +100,11 @@ namespace MKW.GUI.ImportWizard
         {
             get => backupFormat;
             set => SetProperty(ref backupFormat, value);
+        }
+
+        public void Dispose()
+        {
+            BackupModel?.Dispose();
         }
     }
 }
