@@ -4,11 +4,11 @@ using MKW.Core.Serialization.KeePassXmlV2;
 
 namespace MKW.GUI.Model
 {
-    public sealed class KeePassXmlBackup : IBackup
+    public sealed class KeePassXmlV2Backup : IBackup
     {
         private readonly KeePassXmlV2Reader reader;
 
-        public KeePassXmlBackup(KeePassXmlV2Reader reader)
+        public KeePassXmlV2Backup(KeePassXmlV2Reader reader)
         {
             this.reader = reader;
         }
