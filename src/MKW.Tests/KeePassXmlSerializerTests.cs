@@ -1,5 +1,6 @@
 ﻿using MKW.Core.Serialization;
 using MKW.Core.Serialization.KeePassXML;
+using MKW.Core.Serialization.KeePassXmlV1;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests
@@ -15,6 +16,17 @@ namespace MKW.Tests
             BackupEntry[] entries = reader.EnumerateEntries().ToArray();
 
             ClassicAssert.AreEqual(3, entries.Length);
+        }
+
+        [Test]
+        public void ReadV1()
+        {
+            FileStream stream = File.OpenRead("key_pass_export_v1.xml");
+            KeePassXmlV1Reader reader = new KeePassXmlV1Reader(stream);
+
+            BackupEntry[] entries = reader.GetEntriesEnumerator().ToArray();
+
+            ClassicAssert.AreEqual(5, entries.Length);
         }
     }
 }
