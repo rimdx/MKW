@@ -12,7 +12,7 @@ namespace MKW.GUI.ImportWizard
 
         private string path;
         private bool? isAllSelected;
-        private BackupFormat backupFormat;
+        private IBackupFormat backupFormat;
         private BackupModel? backupModel;
 
         public ImportWizardViewModel(DatabaseUnlockedModel database)
@@ -21,7 +21,7 @@ namespace MKW.GUI.ImportWizard
             this.database = database;
 
             path = "";
-            backupFormat = BackupFormat.KeePassXmlV1;
+            backupFormat = CommonBackupFormats.KeePassXmlV1;
 
             AddPage(new PageWelcome(this));
             AddPage(new PageFormat(this));
@@ -87,7 +87,7 @@ namespace MKW.GUI.ImportWizard
             }
         }
 
-        public BackupFormat BackupFormat
+        public IBackupFormat BackupFormat
         {
             get => backupFormat;
             set => SetProperty(ref backupFormat, value);
