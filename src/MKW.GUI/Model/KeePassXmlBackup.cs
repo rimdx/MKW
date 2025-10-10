@@ -6,9 +6,9 @@ namespace MKW.GUI.Model
 {
     public sealed class KeePassXmlBackup : IBackup
     {
-        private readonly KeePassXmlReader reader;
+        private readonly KeePassXmlV2Reader reader;
 
-        public KeePassXmlBackup(KeePassXmlReader reader)
+        public KeePassXmlBackup(KeePassXmlV2Reader reader)
         {
             this.reader = reader;
         }
