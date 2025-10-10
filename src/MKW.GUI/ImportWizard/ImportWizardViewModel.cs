@@ -35,7 +35,15 @@ namespace MKW.GUI.ImportWizard
         public void OpenBackup()
         {
             FileStream stream = File.OpenRead(Path);
-            BackupModel = database.OpenBackup(stream, BackupFormat);
+
+            try
+            {
+                BackupModel = database.OpenBackup(stream, BackupFormat);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"File cannot be processed. Make sure it is valid and the proper format was chosen.", ex);
+            }
 
             foreach (var entry in BackupModel.Entries)
             {
