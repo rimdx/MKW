@@ -1,12 +1,12 @@
 ﻿namespace MKW.Core.Serialization.KeePassXmlV2
 {
-    public sealed class KeePassXmlReader
+    public sealed class KeePassXmlV2Reader
     {
         private readonly KeePassFile file;
         private readonly Stack<KeePassGroup> groupsStack;
         private readonly Stack<KeePassEntry> entriesStack;
 
-        public KeePassXmlReader(Stream stream)
+        public KeePassXmlV2Reader(Stream stream)
         {
             file = KeePassXmlSerializer.Deserialize(stream);
 
