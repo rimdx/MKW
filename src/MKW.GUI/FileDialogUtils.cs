@@ -40,6 +40,14 @@ namespace MKW.GUI
             };
         }
 
+        public static FileDialog CreateSaveBackupDialog(IBackupFormat backupFormat)
+        {
+            return new SaveFileDialog
+            {
+                Filter = MakeFilter(backupFormat.Name, backupFormat.FileExtensions)
+            };
+        }
+
         private static string MakeFilter(string description, IEnumerable<string> extensions)
         {
             return $"{description}|{string.Join(";", extensions)}";

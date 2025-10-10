@@ -20,7 +20,7 @@ namespace MKW.GUI.ExportWizard
         {
             try
             {
-                FileDialog dialog = FileDialogUtils.CreateOpenBackupDialog(viewModel.BackupFormat);
+                FileDialog dialog = FileDialogUtils.CreateSaveBackupDialog(viewModel.BackupFormat);
 
                 if (dialog.ShowDialog() == true)
                 {
