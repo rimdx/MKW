@@ -17,7 +17,7 @@ namespace MKW.GUI.ImportWizard
         private BackupImportModel? backupModel;
 
         public ImportWizardViewModel(DatabaseUnlockedModel database)
-            : base("Import Data", ImageMoniker.None)
+            : base("Import Data", ImageMoniker.Image)
         {
             this.database = database;
 
