@@ -2,6 +2,7 @@
 using MKW.Core.Serialization.KeePassXmlV2;
 using MKW.Core.Serialization.KeePassXmlV1;
 using NUnit.Framework.Legacy;
+using System.Text;
 
 namespace MKW.Tests
 {
@@ -27,6 +28,42 @@ namespace MKW.Tests
             BackupEntry[] entries = reader.GetEntriesEnumerator().ToArray();
 
             ClassicAssert.AreEqual(5, entries.Length);
+        }
+
+        [Test]
+        public void ReadWriteV1()
+        {
+            BackupEntry entry = new BackupEntry(new Dictionary<string, string>
+            {
+                { "title", "Title 1" },
+                { "username", "User 1" },
+            });
+
+            byte[] bytes;
+
+            {
+                using MemoryStream stream = new MemoryStream();
+
+                using (KeePassXmlV1Writer writer = new KeePassXmlV1Writer(stream))
+                {
+                    writer.WriteEntry(entry);
+                    writer.WriteEntry(entry);
+                }
+
+                bytes = stream.ToArray();
+                Console.WriteLine(Encoding.UTF8.GetString(bytes));
+            }
+
+            {
+                using MemoryStream stream = new MemoryStream(bytes);
+                using KeePassXmlV1Reader reader = new KeePassXmlV1Reader(stream);
+
+                BackupEntry[] entries = reader.GetEntriesEnumerator().ToArray();
+
+                ClassicAssert.AreEqual(2, entries.Length);
+
+                CollectionAssert.AreEqual(entry.Fields, entries[0].Fields);
+            }
         }
     }
 }
