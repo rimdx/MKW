@@ -1,5 +1,4 @@
 ﻿using MKW.Core;
-using MKW.GUI.EntryEditor; // todo: remove
 using System.Windows.Data;
 
 namespace MKW.GUI.Model

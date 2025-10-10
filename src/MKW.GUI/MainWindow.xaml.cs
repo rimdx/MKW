@@ -1,9 +1,7 @@
 ﻿using Microsoft.Win32;
 using MKW.GUI.CreateDatabaseWizard;
-using MKW.GUI.ImportWizard;
 using MKW.GUI.SingleInstance;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 
