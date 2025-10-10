@@ -2,16 +2,19 @@
 using MKW.Core.Serialization;
 using MKW.Core.Serialization.KeePassXmlV2;
 using MKW.GUI.Model;
+using System.IO;
 
 namespace MKW.GUI.Backup
 {
     public sealed class KeePassXmlV2Backup : IBackup, IDisposable
     {
         private readonly KeePassXmlV2Reader reader;
+        private readonly Stream file;
 
-        public KeePassXmlV2Backup(KeePassXmlV2Reader reader)
+        public KeePassXmlV2Backup(Stream file)
         {
-            this.reader = reader;
+            this.file = file;
+            reader = new KeePassXmlV2Reader(file);
         }
 
         private static EntryPayloadKey ConvertPropertyName(string propname) => propname switch
@@ -43,6 +46,8 @@ namespace MKW.GUI.Backup
 
         public void Dispose()
         {
+            reader.Dispose();
+            file.Dispose();
         }
     }
 }
