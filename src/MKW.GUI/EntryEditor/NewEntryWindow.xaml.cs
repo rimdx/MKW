@@ -1,5 +1,4 @@
-﻿using MKW.GUI.EntryEditor;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MKW.GUI.EntryEditor
 {

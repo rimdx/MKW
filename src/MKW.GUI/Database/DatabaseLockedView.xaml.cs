@@ -1,6 +1,4 @@
-﻿using MKW.GUI.Model;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 
 namespace MKW.GUI.Database
 {

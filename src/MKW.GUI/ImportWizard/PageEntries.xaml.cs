@@ -1,5 +1,4 @@
 ﻿using MKW.GUI.Wizard;
-using System.Windows;
 
 namespace MKW.GUI.ImportWizard
 {
