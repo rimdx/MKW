@@ -1,10 +1,11 @@
 ﻿namespace MKW.Core.Serialization.KeePassXmlV2
 {
-    public sealed class KeePassXmlV2Reader
+    public sealed class KeePassXmlV2Reader : IDisposable
     {
         private readonly KeePassFile file;
         private readonly Stack<KeePassGroup> groupsStack;
         private readonly Stack<KeePassEntry> entriesStack;
+        private readonly Stream stream;
 
         public KeePassXmlV2Reader(Stream stream)
         {
@@ -14,6 +15,7 @@
             entriesStack = [];
 
             Reset();
+            this.stream = stream;
         }
 
         public BackupEntry? NextEntry()
@@ -106,6 +108,11 @@
             entriesStack.Clear();
 
             groupsStack.Push(file.Root.RootGroup);
+        }
+
+        public void Dispose()
+        {
+            stream.Dispose();
         }
     }
 }
