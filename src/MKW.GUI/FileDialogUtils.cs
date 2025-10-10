@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MKW.GUI.Backup;
 
 namespace MKW.GUI
 {
@@ -31,13 +32,17 @@ namespace MKW.GUI
             };
         }
 
-        public static FileDialog CreateOpenBackupDialog()
+        public static FileDialog CreateOpenBackupDialog(IBackupFormat backupFormat)
         {
             return new OpenFileDialog
             {
-                DefaultExt = ".xml",
-                Filter = "KeePass XML (2.x)|*.xml"
+                Filter = MakeFilter(backupFormat.Name, backupFormat.FileExtensions)
             };
+        }
+
+        private static string MakeFilter(string description, IEnumerable<string> extensions)
+        {
+            return $"{description}|{string.Join(";", extensions)}";
         }
     }
 }
