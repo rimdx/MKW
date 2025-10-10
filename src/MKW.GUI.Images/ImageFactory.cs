@@ -29,7 +29,7 @@ namespace MKW.GUI.Images
             ImageMoniker.Export => new Export(),
             ImageMoniker.FolderClosed => new FolderClosed(),
             ImageMoniker.FolderOpened => new FolderOpened(),
-            ImageMoniker.Image => new Image(),
+            ImageMoniker.Import => new Import(),
             ImageMoniker.Key => new Key(),
             ImageMoniker.Lock => new Lock(),
             ImageMoniker.LoginUser => new LoginUser(),
