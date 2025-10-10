@@ -6,11 +6,11 @@ namespace MKW.GUI.Model
     public class BackupModel : ViewModelBase
     {
         private readonly IUserSession user;
-        private readonly KeePassXmlBackup backup;
+        private readonly IBackup backup;
 
         public ObservableCollection<BackupModelEntry> Entries { get; }
 
-        public BackupModel(IUserSession user, KeePassXmlBackup backup)
+        public BackupModel(IUserSession user, IBackup backup)
         {
             this.user = user;
             this.backup = backup;

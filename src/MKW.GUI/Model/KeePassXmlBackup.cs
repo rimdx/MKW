@@ -4,7 +4,7 @@ using MKW.Core.Serialization.KeePassXML;
 
 namespace MKW.GUI.Model
 {
-    public sealed class KeePassXmlBackup
+    public sealed class KeePassXmlBackup : IBackup
     {
         private readonly KeePassXmlReader reader;
 
