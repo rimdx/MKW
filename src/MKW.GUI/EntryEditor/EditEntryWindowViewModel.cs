@@ -9,7 +9,7 @@ namespace MKW.GUI.EntryEditor
         private readonly IEntrySession entry;
 
         public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
-            : base(GetEditor(database, entry))
+            : base(GetEditor(database, entry), database.CommonPropertiesModel)
         {
             this.database = database;
             this.entry = entry;
