@@ -2,7 +2,6 @@
 using MKW.Core.Serialization.KeePassXML;
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.Remoting.Messaging;
 
 namespace MKW.GUI.Model
 {
