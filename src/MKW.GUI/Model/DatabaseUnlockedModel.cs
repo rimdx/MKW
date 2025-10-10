@@ -130,15 +130,6 @@ namespace MKW.GUI.Model
             return user.OpenEntry(entryId);
         }
 
-        public BackupModel OpenBackup(Stream file, IBackupFormat format)
-        {
-            IBackupReader backup = format.OpenRead(file);
-
-            BackupModel model = new BackupModel(this, backup);
-
-            return model;
-        }
-
         public void Dispose()
         {
             user?.Dispose();
