@@ -1,0 +1,69 @@
+﻿using MKW.Common;
+using MKW.Core;
+using MKW.Core.Serialization.CSV;
+using System.IO;
+
+namespace MKW.GUI.Model
+{
+    public sealed class KeePassCSVBackup : IBackup, IDisposable
+    {
+        private readonly Stream file;
+
+        private static readonly IReadOnlyList<EntryPayloadKey> FieldMap = [
+            CommonEntryPropertiesModel.Title.Key,
+            CommonEntryPropertiesModel.Username.Key,
+            CommonEntryPropertiesModel.Password.Key,
+            CommonEntryPropertiesModel.Url.Key,
+            CommonEntryPropertiesModel.Notes.Key,
+        ];
+
+        public KeePassCSVBackup(Stream file)
+        {
+            this.file = file;
+        }
+
+        public IEnumerable<EntryPayload> EnumerateEntries()
+        {
+            using StreamReader reader = new StreamReader(new StreamDisown(file));
+            using CSVTokenReader tokens = new CSVTokenReader(reader);
+            using CSVSerializer csv = new CSVSerializer(tokens);
+
+            CSVRow? header = csv.ReadRow();
+
+            if (header == null)
+            {
+                throw new Exception("Header row is missing.");
+            }
+
+            if (header.Count != FieldMap.Count)
+            {
+                throw new Exception("Header length does not match expected field count.");
+            }
+
+            foreach (CSVRow row in csv.EnumerateRows())
+            {
+                if (row.Count != FieldMap.Count)
+                {
+                    throw new Exception("Row length does not match header length.");
+                }
+
+                EntryPayload entry = new EntryPayload();
+
+                for (int i = 0; i < row.Count; i++)
+                {
+                    EntryPayloadKey key = FieldMap[i];
+                    CSVField value = row[entry.Count];
+
+                    entry.SetProperty(key, value.Value);
+                }
+
+                yield return entry;
+            }
+        }
+
+        public void Dispose()
+        {
+            file.Dispose();
+        }
+    }
+}

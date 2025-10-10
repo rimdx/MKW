@@ -2,6 +2,7 @@
 using MKW.Core.Serialization.KeePassXML;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 namespace MKW.GUI.Model
 {
@@ -129,10 +130,15 @@ namespace MKW.GUI.Model
             return user.OpenEntry(entryId);
         }
 
-        public BackupModel OpenBackup(Stream stream)
+        private IBackup OpenBackupFile(Stream stream, BackupFormat format) => format switch
         {
-            KeePassXmlReader reader = new KeePassXmlReader(stream);
-            KeePassXmlBackup backup = new KeePassXmlBackup(reader);
+            BackupFormat.KeePassXmlV2 => new KeePassXmlBackup(new KeePassXmlReader(stream)),
+            BackupFormat.KeePassCSV => new KeePassCSVBackup(stream),
+        };
+
+        public BackupModel OpenBackup(Stream stream, BackupFormat format)
+        {
+            IBackup backup = OpenBackupFile(stream, format);
 
             BackupModel model = new BackupModel(user, backup);
 

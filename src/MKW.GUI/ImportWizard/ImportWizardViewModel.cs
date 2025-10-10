@@ -33,8 +33,8 @@ namespace MKW.GUI.ImportWizard
 
         public void OpenBackup()
         {
-            using FileStream stream = File.OpenRead(Path);
-            BackupModel = database.OpenBackup(stream);
+            FileStream stream = File.OpenRead(Path);
+            BackupModel = database.OpenBackup(stream, BackupFormat);
 
             foreach (var entry in BackupModel.Entries)
             {
