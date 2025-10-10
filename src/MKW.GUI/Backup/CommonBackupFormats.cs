@@ -1,4 +1,4 @@
-﻿namespace MKW.GUI.Model
+﻿namespace MKW.GUI.Backup
 {
     public static class CommonBackupFormats
     {

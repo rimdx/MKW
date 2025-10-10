@@ -1,9 +1,10 @@
 ﻿using MKW.Core;
 using MKW.Core.Serialization;
 using MKW.Core.Serialization.KeePassXmlV1;
+using MKW.GUI.Model;
 using System.IO;
 
-namespace MKW.GUI.Model
+namespace MKW.GUI.Backup
 {
     public sealed class KeePassXmlV1Backup : IBackup, IDisposable
     {

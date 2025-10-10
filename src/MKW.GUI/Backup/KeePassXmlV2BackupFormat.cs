@@ -1,7 +1,7 @@
 ﻿using MKW.Core.Serialization.KeePassXmlV2;
 using System.IO;
 
-namespace MKW.GUI.Model
+namespace MKW.GUI.Backup
 {
     public sealed class KeePassXmlV2BackupFormat : IBackupFormat
     {

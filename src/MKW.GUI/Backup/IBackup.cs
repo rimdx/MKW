@@ -1,6 +1,6 @@
 ﻿using MKW.Core;
 
-namespace MKW.GUI.Model
+namespace MKW.GUI.Backup
 {
     public interface IBackup
     {
