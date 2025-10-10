@@ -8,9 +8,14 @@ namespace MKW.GUI.Backup
 
         public IReadOnlyList<string> FileExtensions => ["*.xml"];
 
-        public IBackupReader Open(Stream file)
+        public IBackupReader OpenRead(Stream file)
         {
             return new KeePassXmlV2Backup(file);
+        }
+
+        public IBackupWriter OpenWrite(Stream file)
+        {
+            throw new NotSupportedException();
         }
     }
 }

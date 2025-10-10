@@ -8,9 +8,14 @@ namespace MKW.GUI.Backup
 
         public IReadOnlyList<string> FileExtensions => ["*.csv"];
 
-        public IBackupReader Open(Stream file)
+        public IBackupReader OpenRead(Stream file)
         {
             return new KeePassCSVBackup(file);
+        }
+
+        public IBackupWriter OpenWrite(Stream file)
+        {
+            throw new NotSupportedException();
         }
     }
 }

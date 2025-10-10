@@ -132,7 +132,7 @@ namespace MKW.GUI.Model
 
         public BackupModel OpenBackup(Stream file, IBackupFormat format)
         {
-            IBackupReader backup = format.Open(file);
+            IBackupReader backup = format.OpenRead(file);
 
             BackupModel model = new BackupModel(user, backup);
 

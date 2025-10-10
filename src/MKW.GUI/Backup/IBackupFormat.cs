@@ -7,6 +7,7 @@ namespace MKW.GUI.Backup
         string Name { get; }
         IReadOnlyList<string> FileExtensions { get; }
 
-        IBackupReader Open(Stream file);
+        IBackupReader OpenRead(Stream file);
+        IBackupWriter OpenWrite(Stream file);
     }
 }
