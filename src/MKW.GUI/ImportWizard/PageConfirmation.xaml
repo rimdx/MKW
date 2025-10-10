@@ -33,7 +33,7 @@
         <TextBlock Grid.Column="0" Grid.Row="0"
                    Text="Format:" />
         <TextBlock Grid.Column="2" Grid.Row="0"
-                   Text="{Binding BackupFormat}"
+                   Text="{Binding BackupFormat.Name}"
                    d:Text="KeePassXml V2" />
 
         <TextBlock Grid.Column="0" Grid.Row="1"

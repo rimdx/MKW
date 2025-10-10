@@ -129,16 +129,9 @@ namespace MKW.GUI.Model
             return user.OpenEntry(entryId);
         }
 
-        private IBackup OpenBackupFile(Stream stream, BackupFormat format) => format switch
+        public BackupModel OpenBackup(Stream file, IBackupFormat format)
         {
-            BackupFormat.KeePassXmlV1 => new KeePassXmlV1Backup(stream),
-            BackupFormat.KeePassXmlV2 => new KeePassXmlV2Backup(new KeePassXmlV2Reader(stream)),
-            BackupFormat.KeePassCSV => new KeePassCSVBackup(stream),
-        };
-
-        public BackupModel OpenBackup(Stream stream, BackupFormat format)
-        {
-            IBackup backup = OpenBackupFile(stream, format);
+            IBackup backup = format.Open(file);
 
             BackupModel model = new BackupModel(user, backup);
 

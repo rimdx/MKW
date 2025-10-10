@@ -21,25 +21,25 @@
   <Grid Margin="12">
     <StackPanel Orientation="Vertical">
       <RadioButton GroupName="FormatToggle"
-                   Content="KeePass XML V1"
+                   Content="KeePass XML (1.x)"
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static model:BackupFormat.KeePassXmlV1}}" />
+                                       ConverterParameter={x:Static model:CommonBackupFormats.KeePassXmlV1}}" />
 
       <RadioButton GroupName="FormatToggle"
-                   Content="KeePass XML V2"
+                   Content="KeePass XML (2.x)"
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static model:BackupFormat.KeePassXmlV2}}" />
+                                       ConverterParameter={x:Static model:CommonBackupFormats.KeePassXmlV2}}" />
 
       <RadioButton GroupName="FormatToggle"
                    Content="KeePass CSV (1.x)"
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static model:BackupFormat.KeePassCSV}}" />
+                                       ConverterParameter={x:Static model:CommonBackupFormats.KeePassCSV}}" />
     </StackPanel>
   </Grid>
 </wizard:WizardPage>
