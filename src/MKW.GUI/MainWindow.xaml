@@ -118,6 +118,10 @@
         <MenuItem Header="_Import"
                   Command="{x:Static local:AppCommands.DataImport}"
                   CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}" />
+
+        <MenuItem Header="_Export"
+                  Command="{x:Static local:AppCommands.DataExport}"
+                  CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}" />
       </MenuItem>
 
       <MenuItem Header="_Help">
