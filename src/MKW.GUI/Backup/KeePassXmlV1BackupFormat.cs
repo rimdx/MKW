@@ -15,7 +15,7 @@ namespace MKW.GUI.Backup
 
         public IBackupWriter OpenWrite(Stream file)
         {
-            throw new NotSupportedException();
+            return new KeePassXmlV1BackupWriter(file);
         }
     }
 }
