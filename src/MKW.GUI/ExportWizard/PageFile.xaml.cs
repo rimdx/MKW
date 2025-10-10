@@ -37,7 +37,7 @@ namespace MKW.GUI.ExportWizard
         {
             try
             {
-                viewModel.OpenBackup();
+                viewModel.VerifyPath();
                 return true;
             }
             catch (Exception ex)

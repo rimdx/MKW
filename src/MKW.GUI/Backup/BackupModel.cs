@@ -1,19 +1,20 @@
 ﻿using MKW.Core;
+using MKW.GUI.Model;
 using System.Collections.ObjectModel;
 
 namespace MKW.GUI.Backup
 {
     public class BackupModel : ViewModelBase, IDisposable
     {
-        private readonly IUserSession user;
-        private readonly IBackupReader backup;
+        private readonly IBackupReader reader;
+        private readonly DatabaseUnlockedModel database;
 
         public ObservableCollection<BackupModelEntry> Entries { get; }
 
-        public BackupModel(IUserSession user, IBackupReader backup)
+        public BackupModel(DatabaseUnlockedModel database, IBackupReader backup)
         {
-            this.user = user;
-            this.backup = backup;
+            this.database = database;
+            reader = backup;
 
             Entries = [];
 
@@ -23,12 +24,31 @@ namespace MKW.GUI.Backup
             }
         }
 
+        public BackupModel(DatabaseUnlockedModel database)
+        {
+            this.database = database;
+
+            Entries = [];
+
+            foreach (EntryEditorModel entry in database.Entries)
+            {
+                Entries.Add(new BackupModelEntry(entry.GetPayload()));
+            }
+        }
+
         public void Import()
         {
             foreach (BackupModelEntry entry in Entries)
             {
-                using IEntrySession entrySession = user.CreateEntry();
-                entrySession.UpdatePayload(entry.Payload);
+                database.CreateEntry(EntryId.Create(), entry.Payload);
+            }
+        }
+
+        public void Export(IBackupWriter writer)
+        {
+            foreach (BackupModelEntry entry in Entries)
+            {
+                writer.WriteEntry(entry.Payload);
             }
         }
 
@@ -61,7 +81,7 @@ namespace MKW.GUI.Backup
 
         public void Dispose()
         {
-            backup.Dispose();
+            reader?.Dispose();
         }
     }
 }
