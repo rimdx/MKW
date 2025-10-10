@@ -21,7 +21,7 @@ namespace MKW.GUI.ImportWizard
             this.database = database;
 
             path = "";
-            backupFormat = BackupFormat.KeePassXmlV2;
+            backupFormat = BackupFormat.KeePassXmlV1;
 
             AddPage(new PageWelcome(this));
             AddPage(new PageFormat(this));
