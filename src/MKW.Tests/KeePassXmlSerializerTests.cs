@@ -9,7 +9,7 @@ namespace MKW.Tests
         [Test]
         public void SimpleTest()
         {
-            FileStream stream = new FileStream("key_pass_export.xml", FileMode.Open, FileAccess.Read);
+            FileStream stream = new FileStream("key_pass_export_v2.xml", FileMode.Open, FileAccess.Read);
             KeePassXmlReader reader = new KeePassXmlReader(stream);
 
             BackupEntry[] entries = reader.EnumerateEntries().ToArray();
