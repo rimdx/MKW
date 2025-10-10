@@ -56,6 +56,16 @@
             return key.GetHashCode();
         }
 
+        public static bool operator ==(EntryPayloadKey? left, EntryPayloadKey? right)
+        {
+            return left?.key == right?.key;
+        }
+
+        public static bool operator !=(EntryPayloadKey? left, EntryPayloadKey? right)
+        {
+            return !(left == right);
+        }
+
         public override string ToString()
         {
             return key;
