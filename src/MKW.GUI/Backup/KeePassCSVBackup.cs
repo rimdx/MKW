@@ -1,9 +1,10 @@
 ﻿using MKW.Common;
 using MKW.Core;
 using MKW.Core.Serialization.CSV;
+using MKW.GUI.Model;
 using System.IO;
 
-namespace MKW.GUI.Model
+namespace MKW.GUI.Backup
 {
     public sealed class KeePassCSVBackup : IBackup, IDisposable
     {

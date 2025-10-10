@@ -9,6 +9,7 @@
                    xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
                    xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
                    xmlns:model="clr-namespace:MKW.GUI.Model"
+                   xmlns:backup="clr-namespace:MKW.GUI.Backup"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                    d:DataContext="{d:DesignInstance Type=local:ImportWizardViewModel}"
                    mc:Ignorable="d"
@@ -25,21 +26,21 @@
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static model:CommonBackupFormats.KeePassXmlV1}}" />
+                                       ConverterParameter={x:Static backup:CommonBackupFormats.KeePassXmlV1}}" />
 
       <RadioButton GroupName="FormatToggle"
                    Content="KeePass XML (2.x)"
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static model:CommonBackupFormats.KeePassXmlV2}}" />
+                                       ConverterParameter={x:Static backup:CommonBackupFormats.KeePassXmlV2}}" />
 
       <RadioButton GroupName="FormatToggle"
                    Content="KeePass CSV (1.x)"
                    Margin="0,0,0,6"
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static model:CommonBackupFormats.KeePassCSV}}" />
+                                       ConverterParameter={x:Static backup:CommonBackupFormats.KeePassCSV}}" />
     </StackPanel>
   </Grid>
 </wizard:WizardPage>

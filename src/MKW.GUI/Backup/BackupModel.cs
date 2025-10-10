@@ -1,7 +1,7 @@
 ﻿using MKW.Core;
 using System.Collections.ObjectModel;
 
-namespace MKW.GUI.Model
+namespace MKW.GUI.Backup
 {
     public class BackupModel : ViewModelBase
     {

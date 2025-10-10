@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace MKW.GUI.Model
+namespace MKW.GUI.Backup
 {
     public sealed class KeePassXmlV1BackupFormat : IBackupFormat
     {
