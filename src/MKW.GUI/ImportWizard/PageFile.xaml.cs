@@ -20,7 +20,7 @@ namespace MKW.GUI.ImportWizard
         {
             try
             {
-                FileDialog dialog = FileDialogUtils.CreateOpenBackupDialog();
+                FileDialog dialog = FileDialogUtils.CreateOpenBackupDialog(viewModel.BackupFormat);
 
                 if (dialog.ShowDialog() == true)
                 {

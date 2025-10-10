@@ -6,6 +6,8 @@ namespace MKW.GUI.Backup
     {
         public string Name => "KeePass CSV (1.x)";
 
+        public IReadOnlyList<string> FileExtensions => ["*.csv"];
+
         public IBackup Open(Stream file)
         {
             return new KeePassCSVBackup(file);
