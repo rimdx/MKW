@@ -25,7 +25,7 @@ namespace MKW.GUI.Images
         Export,
         FolderClosed,
         FolderOpened,
-        Image,
+        Import,
         Key,
         Lock,
         LoginUser,

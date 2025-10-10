@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace MKW.GUI.Images
 {
-    public partial class Image : Viewbox
+    public partial class Import : Viewbox
     {
-        public Image()
+        public Import()
         {
             InitializeComponent();
         }
