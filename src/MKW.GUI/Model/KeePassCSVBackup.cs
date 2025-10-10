@@ -24,6 +24,8 @@ namespace MKW.GUI.Model
 
         public IEnumerable<EntryPayload> EnumerateEntries()
         {
+            file.Seek(0, SeekOrigin.Begin);
+
             using StreamReader reader = new StreamReader(new StreamDisown(file));
             using CSVTokenReader tokens = new CSVTokenReader(reader);
             using CSVSerializer csv = new CSVSerializer(tokens);
