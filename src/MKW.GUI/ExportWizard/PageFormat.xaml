@@ -27,20 +27,6 @@
                    IsChecked="{Binding BackupFormat,
                                        Converter={StaticResource RadioButtonEnumAdapter},
                                        ConverterParameter={x:Static backup:CommonBackupFormats.KeePassXmlV1}}" />
-
-      <RadioButton GroupName="FormatToggle"
-                   Content="KeePass XML (2.x)"
-                   Margin="0,0,0,6"
-                   IsChecked="{Binding BackupFormat,
-                                       Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static backup:CommonBackupFormats.KeePassXmlV2}}" />
-
-      <RadioButton GroupName="FormatToggle"
-                   Content="KeePass CSV (1.x)"
-                   Margin="0,0,0,6"
-                   IsChecked="{Binding BackupFormat,
-                                       Converter={StaticResource RadioButtonEnumAdapter},
-                                       ConverterParameter={x:Static backup:CommonBackupFormats.KeePassCSV}}" />
     </StackPanel>
   </Grid>
 </wizard:WizardPage>
