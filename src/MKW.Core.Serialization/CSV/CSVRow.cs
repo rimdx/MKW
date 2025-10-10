@@ -2,7 +2,7 @@
 
 namespace MKW.Core.Serialization.CSV
 {
-    public sealed record class CSVRow : IReadOnlyCollection<CSVField>
+    public sealed record class CSVRow : IReadOnlyList<CSVField>
     {
         private readonly List<CSVField> values;
 
@@ -10,6 +10,8 @@ namespace MKW.Core.Serialization.CSV
         {
             this.values = values;
         }
+
+        public CSVField this[int index] => values[index];
 
         public int Count => values.Count;
 
