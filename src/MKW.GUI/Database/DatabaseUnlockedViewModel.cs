@@ -1,6 +1,7 @@
 ﻿using MKW.Core;
 using MKW.GUI.AddUserWizard;
 using MKW.GUI.EntryEditor;
+using MKW.GUI.ExportWizard;
 using MKW.GUI.ImportWizard;
 using MKW.GUI.Model;
 using MKW.GUI.RequestAccessWizard;
@@ -141,6 +142,11 @@ namespace MKW.GUI.Database
         public ImportWizardViewModel CreateImportViewModel()
         {
             return new ImportWizardViewModel(database);
+        }
+
+        public ExportWizardViewModel CreateExportViewModel()
+        {
+            return new ExportWizardViewModel(database);
         }
 
         public void Dispose()

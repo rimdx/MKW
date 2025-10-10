@@ -1,0 +1,52 @@
+﻿<wizard:WizardPage x:Class="MKW.GUI.ExportWizard.PageEntries"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:gui="clr-namespace:MKW.GUI"
+                   xmlns:local="clr-namespace:MKW.GUI.ExportWizard"
+                   xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
+                   xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+                   xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+                   xmlns:system="clr-namespace:System;assembly=mscorlib"
+                   d:DataContext="{d:DesignInstance Type=local:ExportWizardViewModel}"
+                   mc:Ignorable="d"
+                   d:DesignHeight="380" d:DesignWidth="520"
+                   d:Background="White">
+  <Grid Margin="12">
+    <ListView ItemsSource="{Binding BackupModel.Entries}"
+              Style="{StaticResource GridViewStyle}"
+              ItemContainerStyle="{StaticResource GridViewItemStyle}"
+              behaviors:ListViewBehavior.DeselectOnClickAway="True">
+      <ListView.View>
+        <GridView>
+          <GridView.Columns>
+            <GridViewColumn Width="auto">
+              <GridViewColumn.HeaderTemplate>
+                <DataTemplate>
+                  <CheckBox IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wizard:WizardPage}},
+                                                Path=DataContext.IsAllSelected}"
+                            Margin="3,0" />
+                </DataTemplate>
+              </GridViewColumn.HeaderTemplate>
+
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <CheckBox IsChecked="{Binding IsSelected}" />
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+
+            <GridViewColumn Header="Title"
+                            Width="175"
+                            DisplayMemberBinding="{Binding [mkw:title]}" />
+
+            <GridViewColumn Header="User Name"
+                            Width="175"
+                            DisplayMemberBinding="{Binding [mkw:username]}" />
+          </GridView.Columns>
+        </GridView>
+      </ListView.View>
+    </ListView>
+  </Grid>
+</wizard:WizardPage>

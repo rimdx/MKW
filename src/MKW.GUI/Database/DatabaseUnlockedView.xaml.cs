@@ -1,4 +1,5 @@
 ﻿using MKW.GUI.EntryEditor;
+using MKW.GUI.ExportWizard;
 using MKW.GUI.ImportWizard;
 using System.Windows;
 using System.Windows.Controls;
@@ -92,6 +93,20 @@ namespace MKW.GUI.Database
             {
                 using ImportWizardViewModel dialogModel = model.CreateImportViewModel();
                 ImportWizardDialog dialog = new ImportWizardDialog(dialogModel, Window.GetWindow(this));
+                dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
+        }
+
+        private void Export_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                using ExportWizardViewModel dialogModel = model.CreateExportViewModel();
+                ExportWizardDialog dialog = new ExportWizardDialog(dialogModel, Window.GetWindow(this));
                 dialog.ShowDialog();
             }
             catch (Exception ex)
