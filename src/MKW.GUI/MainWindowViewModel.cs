@@ -53,8 +53,8 @@ namespace MKW.GUI
 
         private void TabItems_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            IsTabControlVisible = (TabItems.Count > 0);
-            IsStartPageVisible = (TabItems.Count <= 0);
+            IsTabControlVisible = TabItems.Count > 0;
+            IsStartPageVisible = TabItems.Count <= 0;
         }
 
         public RecentFilesCollectionViewModel RecentFiles { get; }
@@ -177,8 +177,8 @@ namespace MKW.GUI
         private DatabaseTabItemViewModel? selectedTab;
 
         public DatabaseTabItemViewModel? SelectedTab
-        { 
-            get => selectedTab; 
+        {
+            get => selectedTab;
             set
             {
                 if (SetProperty(ref selectedTab, value))
@@ -191,17 +191,17 @@ namespace MKW.GUI
         private bool isStartPageVisible;
 
         public bool IsStartPageVisible
-        { 
-            get => isStartPageVisible; 
-            set => SetProperty(ref isStartPageVisible, value); 
+        {
+            get => isStartPageVisible;
+            set => SetProperty(ref isStartPageVisible, value);
         }
 
-        private bool  isTabControlVisible;
+        private bool isTabControlVisible;
 
         public bool IsTabControlVisible
-        { 
-            get => isTabControlVisible; 
-            set => SetProperty(ref isTabControlVisible, value); 
+        {
+            get => isTabControlVisible;
+            set => SetProperty(ref isTabControlVisible, value);
         }
 
         private void UpdateOpenFilesList()

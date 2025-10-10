@@ -47,7 +47,7 @@ namespace MKW.GUI.RequestAccessWizard
 
         private static string FormatTitle(DatabaseModel database)
         {
-            return $"Request Access - { Path.GetFileName(database.Path) }";
+            return $"Request Access - {Path.GetFileName(database.Path)}";
         }
 
         public void EnsurePassword()

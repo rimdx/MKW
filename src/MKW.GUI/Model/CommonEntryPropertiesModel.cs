@@ -53,22 +53,22 @@ namespace MKW.GUI.Model
             }
         }
 
-        public readonly static EntryPayloadKey DefaultNamespace = new EntryPayloadKey("mkw");
-        public readonly static EntryPayloadKey CustomPropertyNamespace = DefaultNamespace.Branch("custom");
+        public static readonly EntryPayloadKey DefaultNamespace = new EntryPayloadKey("mkw");
+        public static readonly EntryPayloadKey CustomPropertyNamespace = DefaultNamespace.Branch("custom");
 
-        public readonly static PropertyInfo Title =
+        public static readonly PropertyInfo Title =
             new PropertyInfo(DefaultNamespace.Branch("title"), "Title");
 
-        public readonly static PropertyInfo Username =
+        public static readonly PropertyInfo Username =
             new PropertyInfo(DefaultNamespace.Branch("username"), "Username");
 
-        public readonly static PropertyInfo Password =
+        public static readonly PropertyInfo Password =
             new PropertyInfo(DefaultNamespace.Branch("password"), "Password");
 
-        public readonly static PropertyInfo Url =
+        public static readonly PropertyInfo Url =
             new PropertyInfo(DefaultNamespace.Branch("url"), "URL");
 
-        public readonly static PropertyInfo Notes =
+        public static readonly PropertyInfo Notes =
             new PropertyInfo(DefaultNamespace.Branch("notes"), "Notes");
     }
 }

@@ -13,7 +13,7 @@ namespace MKW.GUI
                                                      new FrameworkPropertyMetadata(typeof(PasswordInput)));
         }
 
-        private static FrameworkPropertyMetadata PasswordPropertyMetadata =
+        private static readonly FrameworkPropertyMetadata PasswordPropertyMetadata =
             new FrameworkPropertyMetadata("",
                                           FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                                           OnPasswordPropertyChanged);
