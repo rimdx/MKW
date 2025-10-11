@@ -36,8 +36,14 @@
                  Margin="0,0,3,0"
                  behaviors:TextBoxBehavior.SelectAllTextOnFocus="True" />
 
-        <Button Grid.Column="1" Padding="3" Command="{x:Static gui:AppCommands.PickFile}">
-          <images:OpenFile />
+        <Button Grid.Column="1" Padding="6,0"
+                Command="{x:Static gui:AppCommands.PickFile}">
+          <StackPanel Orientation="Horizontal">
+            <images:OpenFile />
+            <Label Content="B_rowse..."
+                   Margin="3,0,0,0"
+                   Padding="0" />
+          </StackPanel>
         </Button>
       </Grid>
     </StackPanel>
