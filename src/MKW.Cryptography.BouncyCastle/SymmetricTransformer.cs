@@ -1,8 +1,10 @@
 ﻿using MKW.Common;
 using MKW.Cryptography.Exceptions;
-using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.IO;
+using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 
@@ -10,9 +12,13 @@ namespace MKW.Cryptography.BouncyCastle
 {
     internal sealed class SymmetricTransformer : ISymmetricTransformer, IDisposable
     {
-        private readonly ICipherParameters parameters;
+        private readonly IBlockCipher blockCipher;
+        private readonly IBlockCipherPadding padding;
+        private readonly IBlockCipherMode blockCipherMode;
 
         private readonly IBufferedCipher cipher;
+
+        private readonly ICipherParameters parameters;
 
         private readonly ReadOnlyMemory<byte> key;
         private readonly ReadOnlyMemory<byte> iv;
@@ -29,7 +35,12 @@ namespace MKW.Cryptography.BouncyCastle
                 throw new Exceptions.InvalidKeyException($"Symmetric IV length must be 16 bytes.");
             }
 
-            cipher = CipherUtilities.GetCipher(NistObjectIdentifiers.IdAes128Cbc);
+            blockCipher = new AesEngine();
+            blockCipherMode = new CbcBlockCipher(blockCipher);
+            padding = new Pkcs7Padding();
+
+            cipher = new PaddedBufferedBlockCipher(blockCipherMode, padding);
+
             parameters = new ParametersWithIV(new KeyParameter(key.ToArray()), iv.ToArray());
 
             this.key = key.ToArray();
