@@ -24,7 +24,16 @@ namespace MKW.Core.Serialization.KeePassXmlV1
 
             foreach (KeyValuePair<string, string> field in entry.Fields)
             {
-                writer.WriteStartElement(field.Key);
+                if (KeePassXmlV1CommonFields.KeywordFields.Contains(field.Key))
+                {
+                    writer.WriteStartElement(field.Key);
+                }
+                else
+                {
+                    writer.WriteStartElement("pwcustom");
+                    writer.WriteAttributeString("key", field.Key);
+                }
+
                 writer.WriteString(field.Value);
                 writer.WriteEndElement();
             }
