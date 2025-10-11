@@ -4,7 +4,7 @@
     {
         private readonly KeePassFile file;
         private readonly Stack<KeePassGroup> groupsStack;
-        private readonly Stack<KeePassEntry> entriesStack;
+        private readonly Queue<KeePassEntry> entriesQueue;
         private readonly Stream stream;
 
         public KeePassXmlV2Reader(Stream stream)
@@ -12,7 +12,7 @@
             file = KeePassXmlSerializer.Deserialize(stream);
 
             groupsStack = [];
-            entriesStack = [];
+            entriesQueue = [];
 
             Reset();
             this.stream = stream;
@@ -20,7 +20,7 @@
 
         public BackupEntry? NextEntry()
         {
-            while (entriesStack.Count == 0)
+            while (entriesQueue.Count == 0)
             {
                 if (!StepGroups())
                 {
@@ -28,7 +28,7 @@
                 }
             }
 
-            return ConvertEntry(entriesStack.Pop());
+            return ConvertEntry(entriesQueue.Dequeue());
         }
 
         private static BackupEntry ConvertEntry(KeePassEntry entry)
@@ -80,7 +80,7 @@
             {
                 foreach (KeePassEntry entry in current.Entries)
                 {
-                    entriesStack.Push(entry);
+                    entriesQueue.Enqueue(entry);
                 }
             }
         }
@@ -105,7 +105,7 @@
         public void Reset()
         {
             groupsStack.Clear();
-            entriesStack.Clear();
+            entriesQueue.Clear();
 
             groupsStack.Push(file.Root.RootGroup);
         }
