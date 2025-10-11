@@ -12,6 +12,9 @@ namespace MKW.GUI.Model
         private readonly IUserSession user;
         private readonly IAdminSession? admin;
 
+        // For our test-suite only!
+        public IUserSession UserUnsafe => user;
+
         public string Path => Database.Path;
 
         private IReadOnlyCollection<EntryEditorModel> entries;
