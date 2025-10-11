@@ -15,6 +15,7 @@ namespace MKW.GUI.Database
         {
             this.model = model;
             DataContext = model;
+            model.UnlockedViewNeededToBindTheFuckingCommand = this;
 
             InitializeComponent();
 

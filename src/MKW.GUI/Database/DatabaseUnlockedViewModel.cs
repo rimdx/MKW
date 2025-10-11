@@ -149,6 +149,13 @@ namespace MKW.GUI.Database
             return new ExportWizardViewModel(database);
         }
 
+        private DatabaseUnlockedView idontcareifitsactuallywrong;
+        public DatabaseUnlockedView UnlockedViewNeededToBindTheFuckingCommand
+        {
+            get => idontcareifitsactuallywrong;
+            set => SetProperty(ref idontcareifitsactuallywrong, value);
+        }
+
         public void Dispose()
         {
             Entries.Dispose();
