@@ -53,7 +53,7 @@
       </Grid>
     </Border>
 
-    <ContentPresenter Grid.Row="1"
-                      Content="{Binding ContentView}" />
+    <ContentPresenter x:Name="ContentView"
+                      Grid.Row="1" />
   </Grid>
 </UserControl>
