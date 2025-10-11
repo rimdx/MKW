@@ -50,7 +50,7 @@ namespace MKW.GUI.Tests
             {
                 backupfile.Seek(0, SeekOrigin.Begin);
                 using IBackupReader reader = format.OpenRead(new StreamDisown(backupfile));
-                using BackupImportModel importer = new BackupImportModel(unlocked, reader);
+                using BackupImportModel importer = unlocked.CreateImporter(reader);
 
                 ClassicAssert.AreEqual(2, importer.Entries.Count);
 
@@ -66,7 +66,7 @@ namespace MKW.GUI.Tests
             {
                 backupfile.Seek(0, SeekOrigin.Begin);
                 using IBackupReader reader = format.OpenRead(new StreamDisown(backupfile));
-                using BackupImportModel importer = new BackupImportModel(unlocked, reader);
+                using BackupImportModel importer = unlocked.CreateImporter(reader);
 
                 ClassicAssert.AreEqual(2, importer.Entries.Count);
 
@@ -120,7 +120,7 @@ namespace MKW.GUI.Tests
                 using IBackupReader reader = format.OpenRead(new StreamDisown(backupfile));
 
                 timer.Restart();
-                using BackupImportModel importer = new BackupImportModel(unlocked, reader);
+                using BackupImportModel importer = unlocked.CreateImporter(reader);
                 timer.Stop();
                 Console.WriteLine($"Load took {timer.ElapsedMilliseconds} ms");
 

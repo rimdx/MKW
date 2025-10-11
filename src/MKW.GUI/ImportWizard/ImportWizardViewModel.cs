@@ -39,7 +39,7 @@ namespace MKW.GUI.ImportWizard
             try
             {
                 IBackupReader backup = BackupFormat.OpenRead(stream);
-                BackupModel = new BackupImportModel(database, backup);
+                BackupModel = database.CreateImporter(backup);
             }
             catch (Exception ex)
             {

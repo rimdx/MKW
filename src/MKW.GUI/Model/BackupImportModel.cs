@@ -6,11 +6,15 @@ namespace MKW.GUI.Model
     public sealed class BackupImportModel : BackupModelBase, IDisposable
     {
         private readonly DatabaseUnlockedModel database;
+        private readonly IUserSession user;
         private readonly IBackupReader backup;
 
-        public BackupImportModel(DatabaseUnlockedModel database, IBackupReader backup)
+        public BackupImportModel(DatabaseUnlockedModel database,
+                                 IUserSession user,
+                                 IBackupReader backup)
         {
             this.database = database;
+            this.user = user;
             this.backup = backup;
 
             foreach (EntryPayload payload in backup.EnumerateEntries())
@@ -58,9 +62,12 @@ namespace MKW.GUI.Model
             {
                 if (entry.IsSelected)
                 {
-                    database.CreateEntry(EntryId.Create(), entry.Payload);
+                    using IEntrySession newEntry = user.CreateEntry();
+                    newEntry.UpdatePayload(entry.Payload);
                 }
             }
+
+            database.RefreshEntries();
         }
 
         public void Dispose()
