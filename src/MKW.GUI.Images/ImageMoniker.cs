@@ -10,6 +10,8 @@ namespace MKW.GUI.Images
         Admin,
         AsymmetricKey,
         Close,
+        CloseAll,
+        CloseSolution,
         Database,
         DatabaseFile,
         DataList,
