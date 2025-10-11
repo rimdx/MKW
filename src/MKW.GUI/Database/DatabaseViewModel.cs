@@ -23,15 +23,15 @@ namespace MKW.GUI.Database
             }
         }
 
-        private ViewModelBase UpdateContentView()
+        private object UpdateContentView()
         {
-            if (Database.UnlockedDatabase != null && contentView is not DatabaseUnlockedViewModel)
+            if (Database.UnlockedDatabase != null && contentView is not DatabaseUnlockedView)
             {
-                ContentView = new DatabaseUnlockedViewModel(Database.UnlockedDatabase);
+                ContentView = new DatabaseUnlockedView(new DatabaseUnlockedViewModel(Database.UnlockedDatabase));
             }
-            else if (Database.UnlockedDatabase == null && contentView is not DatabaseLockedViewModel)
+            else if (Database.UnlockedDatabase == null && contentView is not DatabaseLockedView)
             {
-                ContentView = new DatabaseLockedViewModel(this);
+                ContentView = new DatabaseLockedView(new DatabaseLockedViewModel(this));
             }
 
             return contentView;
@@ -42,8 +42,9 @@ namespace MKW.GUI.Database
             Database.Dispose();
         }
 
-        private ViewModelBase contentView;
-        public ViewModelBase ContentView
+        private object contentView;
+
+        public object ContentView
         {
             get => contentView;
             set => SetProperty(ref contentView, value);
