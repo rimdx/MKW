@@ -13,9 +13,11 @@
   <UserControl.CommandBindings>
     <CommandBinding Command="{x:Static gui:EntryCommands.AddEntry}"
                     Executed="AddEntryCommand_Executed" />
+
     <CommandBinding Command="{x:Static gui:EntryCommands.EditEntry}"
                     Executed="EditEntryCommand_Executed"
                     CanExecute="EditEntryCommand_CanExecute"/>
+
     <CommandBinding Command="{x:Static gui:EntryCommands.DeleteEntry}"
                     Executed="DeleteEntryCommand_Executed"
                     CanExecute="DeleteEntryCommand_CanExecute"/>
@@ -26,6 +28,7 @@
     <CommandBinding Command="{x:Static gui:AppCommands.DataExport}"
                     Executed="Export_Executed" />
   </UserControl.CommandBindings>
+
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
   </UserControl.Resources>
