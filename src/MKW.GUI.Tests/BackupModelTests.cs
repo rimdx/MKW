@@ -80,7 +80,7 @@ namespace MKW.GUI.Tests
         }
 
         [Test]
-        [TestCase(10)]
+        [TestCase(100)]
         public void PerformanceTest(int count)
         {
             KeePassXmlV1BackupFormat format = CommonBackupFormats.KeePassXmlV1;
@@ -90,12 +90,20 @@ namespace MKW.GUI.Tests
             using DatabaseModel database = DatabaseModel.Create(sbox.Crypto, sbox.DatabasePath, sbox.AdminSecret);
             using DatabaseUnlockedModel unlocked = database.Unlock(UserId.Admin(), sbox.AdminSecret);
 
+            timer.Restart();
+
             for (int i = 0; i < count; i++)
             {
-                EntryPayload entry = new EntryPayload();
-                entry.SetProperty(CommonEntryPropertiesModel.Title.Key, $"entry{i}");
-                unlocked.CreateEntry(EntryId.Create(), entry);
+                EntryPayload payload = new EntryPayload();
+                payload.SetProperty(CommonEntryPropertiesModel.Title.Key, $"entry{i}");
+
+                using IEntrySession entry = unlocked.UserUnsafe.CreateEntry();
+                entry.UpdatePayload(payload);
             }
+            unlocked.RefreshEntries();
+
+            timer.Stop();
+            Console.WriteLine($"Creating gazillion entries took {timer.ElapsedMilliseconds} ms");
 
             using MemoryStream backupfile = new MemoryStream();
 
@@ -111,8 +119,9 @@ namespace MKW.GUI.Tests
             EntryId[] ids = [.. unlocked.Entries.Select(e => e.Id)];
             foreach (EntryId id in ids)
             {
-                unlocked.DeleteEntry(id);
+                unlocked.UserUnsafe.DeleteEntry(id);
             }
+            unlocked.RefreshEntries();
 
             {
                 backupfile.Seek(0, SeekOrigin.Begin);
