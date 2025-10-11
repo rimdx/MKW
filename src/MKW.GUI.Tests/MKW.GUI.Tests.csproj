@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MKW.Testing.Common\MKW.Testing.Common.csproj" />
+    <ProjectReference Include="..\MKW.Testing.Client\MKW.Testing.Client.csproj" />
     <ProjectReference Include="..\MKW.GUI\MKW.GUI.csproj" />
   </ItemGroup>
 

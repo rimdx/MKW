@@ -1,0 +1,81 @@
+﻿using MKW.Common;
+using MKW.Core;
+using MKW.GUI.Backup;
+using MKW.GUI.Model;
+using MKW.Testing.Client;
+using NUnit.Framework.Legacy;
+
+namespace MKW.GUI.Tests
+{
+    public class BackupModelTests
+    {
+        [Test]
+        public void SimpleTest()
+        {
+            KeePassXmlV1BackupFormat format = CommonBackupFormats.KeePassXmlV1;
+
+            EntryPayload entry1 = new EntryPayload();
+            EntryId entry1key = EntryId.Create();
+            entry1.SetProperty(CommonEntryPropertiesModel.Title.Key, "entry1");
+
+            EntryPayload entry2 = new EntryPayload();
+            EntryId entry2key = EntryId.Create();
+            entry2.SetProperty(CommonEntryPropertiesModel.Title.Key, "entry2");
+
+            EntryPayload entry3 = new EntryPayload();
+            EntryId entry3key = EntryId.Create();
+            entry3.SetProperty(CommonEntryPropertiesModel.Title.Key, "entry3");
+
+            using ClientSandBox sbox = new ClientSandBox(false);
+            using DatabaseModel database = DatabaseModel.Create(sbox.Crypto, sbox.DatabasePath, sbox.AdminSecret);
+            using DatabaseUnlockedModel unlocked = database.Unlock(UserId.Admin(), sbox.AdminSecret);
+
+            unlocked.CreateEntry(entry1key, entry1);
+            unlocked.CreateEntry(entry2key, entry2);
+            unlocked.CreateEntry(entry3key, entry3);
+            ClassicAssert.AreEqual(3, unlocked.Entries.Count);
+
+            using MemoryStream backupfile = new MemoryStream();
+
+            {
+                using BackupExportModel exporter = new BackupExportModel(unlocked);
+                exporter.Entries[0].IsSelected = false;
+                exporter.Entries[1].IsSelected = true;
+                exporter.Entries[2].IsSelected = true;
+                using IBackupWriter writer = format.OpenWrite(new StreamDisown(backupfile));
+                exporter.Export(writer);
+            }
+
+            {
+                backupfile.Seek(0, SeekOrigin.Begin);
+                using IBackupReader reader = format.OpenRead(new StreamDisown(backupfile));
+                using BackupImportModel importer = new BackupImportModel(unlocked, reader);
+
+                ClassicAssert.AreEqual(2, importer.Entries.Count);
+
+                ClassicAssert.IsFalse(importer.Entries[0].IsSelected);
+                ClassicAssert.IsFalse(importer.Entries[1].IsSelected);
+
+                importer.Import();
+            }
+
+            unlocked.DeleteEntry(entry2key);
+            ClassicAssert.AreEqual(2, unlocked.Entries.Count);
+
+            {
+                backupfile.Seek(0, SeekOrigin.Begin);
+                using IBackupReader reader = format.OpenRead(new StreamDisown(backupfile));
+                using BackupImportModel importer = new BackupImportModel(unlocked, reader);
+
+                ClassicAssert.AreEqual(2, importer.Entries.Count);
+
+                ClassicAssert.IsTrue(importer.Entries[0].IsSelected);
+                ClassicAssert.IsFalse(importer.Entries[1].IsSelected);
+
+                importer.Import();
+            }
+
+            ClassicAssert.AreEqual(3, unlocked.Entries.Count);
+        }
+    }
+}
