@@ -37,6 +37,7 @@ namespace MKW.Tests
             {
                 { "title", "Title 1" },
                 { "username", "User 1" },
+                { "123%^&<><> \"uihiu niuj (_", "3&*@#!^DNHASJD*782791" },
             });
 
             byte[] bytes;

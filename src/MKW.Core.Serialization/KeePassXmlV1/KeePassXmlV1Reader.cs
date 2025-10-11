@@ -79,7 +79,14 @@ namespace MKW.Core.Serialization.KeePassXmlV1
                 {
                     if (key == null)
                     {
-                        key = fieldReader.Name;
+                        if (fieldReader.Name == "pwcustom")
+                        {
+                            key = fieldReader.GetAttribute("key");
+                        }
+                        else
+                        {
+                            key = fieldReader.Name;
+                        }
                     }
                     else
                     {
