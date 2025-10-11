@@ -26,21 +26,24 @@
       <ListView.ContextMenu>
         <ContextMenu>
           <MenuItem Header="_Add Entry..."
-                    Command="{x:Static gui:EntryCommands.AddEntry}">
+                    Command="{x:Static gui:EntryCommands.AddEntry}"
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheFuckingCommand}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="NewKey" />
             </MenuItem.Icon>
           </MenuItem>
 
           <MenuItem Header="_Edit Entry"
-                    Command="{x:Static gui:EntryCommands.EditEntry}">
+                    Command="{x:Static gui:EntryCommands.EditEntry}"
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheFuckingCommand}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="EditKey" />
             </MenuItem.Icon>
           </MenuItem>
 
           <MenuItem Header="_Delete Entry"
-                    Command="{x:Static gui:EntryCommands.DeleteEntry}">
+                    Command="{x:Static gui:EntryCommands.DeleteEntry}"
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheFuckingCommand}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="DeleteKey" />
             </MenuItem.Icon>
