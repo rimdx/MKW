@@ -88,16 +88,19 @@ namespace MKW.Cryptography.Tests
             ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(
                 key1.ExportKey().Span, key1.ExportIV().Span);
 
-            Memory<byte> encrypted2 = key1.Encrypt(data);
-            Memory<byte> decrypted2 = key1.Decrypt(encrypted1.Span);
+            Memory<byte> encrypted2 = key2.Encrypt(data);
+            Memory<byte> decrypted2 = key2.Decrypt(encrypted1.Span);
 
             CollectionAssert.AreEqual(encrypted1.ToArray(), encrypted2.ToArray());
             CollectionAssert.AreEqual(decrypted1.ToArray(), decrypted2.ToArray());
 
             for (int i = 0; i < extraTries; i++)
             {
-                Memory<byte> encrypted3 = key1.Encrypt(data);
-                Memory<byte> decrypted3 = key1.Decrypt(encrypted3.Span);
+                ISymmetricTransformer key3 = crypto.OpenSymmetricTransformer(
+                    key1.ExportKey().Span, key1.ExportIV().Span);
+
+                Memory<byte> encrypted3 = key3.Encrypt(data);
+                Memory<byte> decrypted3 = key3.Decrypt(encrypted3.Span);
 
                 CollectionAssert.AreEqual(encrypted1.ToArray(), encrypted3.ToArray());
                 CollectionAssert.AreEqual(decrypted1.ToArray(), decrypted3.ToArray());
