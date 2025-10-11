@@ -56,7 +56,10 @@ namespace MKW.GUI.Model
         {
             foreach (BackupModelEntry entry in Entries)
             {
-                database.CreateEntry(EntryId.Create(), entry.Payload);
+                if (entry.IsSelected)
+                {
+                    database.CreateEntry(EntryId.Create(), entry.Payload);
+                }
             }
         }
 
