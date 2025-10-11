@@ -4,7 +4,6 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.IO;
 using Org.BouncyCastle.Crypto.Modes;
-using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 
@@ -13,8 +12,7 @@ namespace MKW.Cryptography.BouncyCastle
     internal sealed class SymmetricTransformer : ISymmetricTransformer, IDisposable
     {
         private readonly IBlockCipher blockCipher;
-        private readonly IBlockCipherPadding padding;
-        private readonly IBlockCipherMode blockCipherMode;
+        private readonly IAeadBlockCipher blockCipherMode;
 
         private readonly IBufferedCipher cipher;
 
@@ -36,12 +34,12 @@ namespace MKW.Cryptography.BouncyCastle
             }
 
             blockCipher = new AesEngine();
-            blockCipherMode = new CbcBlockCipher(blockCipher);
-            padding = new Pkcs7Padding();
+            blockCipherMode = new GcmBlockCipher(blockCipher);
 
-            cipher = new PaddedBufferedBlockCipher(blockCipherMode, padding);
+            cipher = new BufferedAeadBlockCipher(blockCipherMode);
 
-            parameters = new ParametersWithIV(new KeyParameter(key.ToArray()), iv.ToArray());
+            KeyParameter aesKey = new KeyParameter(key.ToArray());
+            parameters = new AeadParameters(aesKey, 128, iv.ToArray());
 
             this.key = key.ToArray();
             this.iv = iv.ToArray();
