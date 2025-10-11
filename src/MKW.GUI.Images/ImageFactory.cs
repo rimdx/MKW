@@ -14,6 +14,8 @@ namespace MKW.GUI.Images
             ImageMoniker.Admin => new Admin(),
             ImageMoniker.AsymmetricKey => new AsymmetricKey(),
             ImageMoniker.Close => new Close(),
+            ImageMoniker.CloseAll => new CloseAll(),
+            ImageMoniker.CloseSolution => new CloseSolution(),
             ImageMoniker.Database => new Database(),
             ImageMoniker.DatabaseFile => new DatabaseFile(),
             ImageMoniker.DataList => new DataList(),
