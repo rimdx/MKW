@@ -4,6 +4,7 @@ using MKW.GUI.Backup;
 using MKW.GUI.Model;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
+using System.Diagnostics;
 
 namespace MKW.GUI.Tests
 {
@@ -76,6 +77,60 @@ namespace MKW.GUI.Tests
             }
 
             ClassicAssert.AreEqual(3, unlocked.Entries.Count);
+        }
+
+        [Test]
+        [TestCase(10)]
+        public void PerformanceTest(int count)
+        {
+            KeePassXmlV1BackupFormat format = CommonBackupFormats.KeePassXmlV1;
+            Stopwatch timer = new Stopwatch();
+
+            using ClientSandBox sbox = new ClientSandBox(false);
+            using DatabaseModel database = DatabaseModel.Create(sbox.Crypto, sbox.DatabasePath, sbox.AdminSecret);
+            using DatabaseUnlockedModel unlocked = database.Unlock(UserId.Admin(), sbox.AdminSecret);
+
+            for (int i = 0; i < count; i++)
+            {
+                EntryPayload entry = new EntryPayload();
+                entry.SetProperty(CommonEntryPropertiesModel.Title.Key, $"entry{i}");
+                unlocked.CreateEntry(EntryId.Create(), entry);
+            }
+
+            using MemoryStream backupfile = new MemoryStream();
+
+            {
+                timer.Restart();
+                using BackupExportModel exporter = new BackupExportModel(unlocked);
+                using IBackupWriter writer = format.OpenWrite(new StreamDisown(backupfile));
+                exporter.Export(writer);
+                timer.Stop();
+                Console.WriteLine($"Export took {timer.ElapsedMilliseconds} ms");
+            }
+
+            EntryId[] ids = [.. unlocked.Entries.Select(e => e.Id)];
+            foreach (EntryId id in ids)
+            {
+                unlocked.DeleteEntry(id);
+            }
+
+            {
+                backupfile.Seek(0, SeekOrigin.Begin);
+
+                using IBackupReader reader = format.OpenRead(new StreamDisown(backupfile));
+
+                timer.Restart();
+                using BackupImportModel importer = new BackupImportModel(unlocked, reader);
+                timer.Stop();
+                Console.WriteLine($"Load took {timer.ElapsedMilliseconds} ms");
+
+                ClassicAssert.AreEqual(count, importer.Entries.Count);
+
+                timer.Restart();
+                importer.Import();
+                timer.Stop();
+                Console.WriteLine($"Import took {timer.ElapsedMilliseconds} ms");
+            }
         }
     }
 }
