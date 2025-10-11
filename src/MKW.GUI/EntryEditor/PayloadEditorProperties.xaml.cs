@@ -17,7 +17,14 @@ namespace MKW.GUI.EntryEditor
         {
             try
             {
-                throw new NotImplementedException();
+                if (ViewModel.SelectedCustomProperty != null)
+                {
+                    EditCustomPropertyViewModel dialogModel =
+                        ViewModel.EditCustomProperty(ViewModel.SelectedCustomProperty);
+                    EditCustomPropertyDialog dialog =
+                        new EditCustomPropertyDialog(Window.GetWindow(this), dialogModel);
+                    dialog.ShowDialog();
+                }
             }
             catch (Exception ex)
             {
