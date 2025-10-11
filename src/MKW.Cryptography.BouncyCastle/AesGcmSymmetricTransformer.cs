@@ -9,7 +9,7 @@ using Org.BouncyCastle.Security;
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    internal sealed class SymmetricTransformer : ISymmetricTransformer, IDisposable
+    internal sealed class AesGcmSymmetricTransformer : ISymmetricTransformer, IDisposable
     {
         private readonly IBlockCipher blockCipher;
         private readonly IAeadBlockCipher blockCipherMode;
@@ -21,41 +21,20 @@ namespace MKW.Cryptography.BouncyCastle
         private readonly ReadOnlyMemory<byte> key;
         private readonly ReadOnlyMemory<byte> iv;
 
-        private SymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
+        public AesGcmSymmetricTransformer(ReadOnlySpan<byte> key,
+                                          ReadOnlySpan<byte> iv,
+                                          SymmetricAlgorithmConfiguration config)
         {
-            if (key.Length != 16)
-            {
-                throw new Exceptions.InvalidKeyException($"Symmetric key length must be 16 bytes.");
-            }
-
-            if (iv.Length != 16)
-            {
-                throw new Exceptions.InvalidKeyException($"Symmetric IV length must be 16 bytes.");
-            }
-
             blockCipher = new AesEngine();
             blockCipherMode = new GcmBlockCipher(blockCipher);
 
             cipher = new BufferedAeadBlockCipher(blockCipherMode);
 
             KeyParameter aesKey = new KeyParameter(key.ToArray());
-            parameters = new AeadParameters(aesKey, 128, iv.ToArray());
+            parameters = new AeadParameters(aesKey, config.IVSizeBits, iv.ToArray());
 
             this.key = key.ToArray();
             this.iv = iv.ToArray();
-        }
-
-        public static SymmetricTransformer Create()
-        {
-            SecureRandom random = new SecureRandom();
-
-            return new SymmetricTransformer(SecureRandom.GetNextBytes(random, 16),
-                                            SecureRandom.GetNextBytes(random, 16));
-        }
-
-        public static SymmetricTransformer Open(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
-        {
-            return new SymmetricTransformer(key, iv);
         }
 
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
