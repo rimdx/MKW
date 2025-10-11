@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.GUI.Backup;
 using System.ComponentModel;
 
 namespace MKW.GUI.Model
@@ -125,6 +126,11 @@ namespace MKW.GUI.Model
         public IEntrySession OpenEntry(EntryId entryId)
         {
             return user.OpenEntry(entryId);
+        }
+
+        public BackupImportModel CreateImporter(IBackupReader backup)
+        {
+            return new BackupImportModel(this, user, backup);
         }
 
         public void Dispose()
