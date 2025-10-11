@@ -57,7 +57,7 @@ namespace MKW.GUI.ExportWizard
 
         public void Confirm()
         {
-            using FileStream file = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.Write);
+            using FileStream file = new FileStream(Path, FileMode.Create, FileAccess.Write);
             using IBackupWriter writer = BackupFormat.OpenWrite(file);
 
             BackupModel.Export(writer);
