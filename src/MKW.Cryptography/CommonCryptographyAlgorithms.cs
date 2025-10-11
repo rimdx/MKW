@@ -9,5 +9,13 @@
                 KeySizeBits = 128,
                 IVSizeBits = 128,
             };
+
+        public static readonly AsymmetricAlgorithmConfiguration Rsa2048 =
+            new AsymmetricAlgorithmConfiguration
+            {
+                Engine = AsymmetricAlgorithmEngine.Rsa,
+                HashEngine = HashAlgorithmEngine.Sha256,
+                StrengthBits = 2048,
+            };
     }
 }

@@ -10,7 +10,7 @@ using Org.BouncyCastle.X509;
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    public class AsymmetricTransformer
+    public class RsaAsymmetricTransformer
         : IAsymmetricPrivateTransformer
         , IAsymmetricPublicTransformer
         , IDisposable
@@ -21,56 +21,20 @@ namespace MKW.Cryptography.BouncyCastle
         private readonly AsymmetricKeyParameter publicKey;
         private readonly AsymmetricKeyParameter? privateKey;
 
-        public AsymmetricTransformer(AsymmetricKeyParameter publicKey, AsymmetricKeyParameter? privateKey)
+        public RsaAsymmetricTransformer(AsymmetricKeyParameter publicKey,
+                                        AsymmetricKeyParameter? privateKey,
+                                        AsymmetricAlgorithmConfiguration config)
         {
             this.publicKey = publicKey;
             this.privateKey = privateKey;
 
             cipher = CipherUtilities.GetCipher(PkcsObjectIdentifiers.RsaEncryption);
-            signer = SignerUtilities.GetSigner(PkcsObjectIdentifiers.Sha256WithRsaEncryption);
-        }
 
-        public static AsymmetricTransformer Create()
-        {
-            SecureRandom random = new SecureRandom();
-            IAsymmetricCipherKeyPairGenerator keyPairGen = GeneratorUtilities.GetKeyPairGenerator("RSA");
-
-            keyPairGen.Init(new KeyGenerationParameters(random, 2048));
-
-            AsymmetricCipherKeyPair key = keyPairGen.GenerateKeyPair();
-
-            return new AsymmetricTransformer(key.Public, key.Private);
-        }
-
-        public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey)
-        {
-            try
+            signer = config.HashEngine switch
             {
-                AsymmetricKeyParameter publicParameter = PublicKeyFactory.CreateKey(publicKey.ToArray());
-
-                return new AsymmetricTransformer(publicParameter, null);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new Exceptions.InvalidKeyException(ex);
-            }
-        }
-
-        public static AsymmetricTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
-        {
-            // todo: verify keypair
-
-            try
-            {
-                AsymmetricKeyParameter publicParameter = PublicKeyFactory.CreateKey(publicKey.ToArray());
-                AsymmetricKeyParameter privateParameter = PrivateKeyFactory.CreateKey(privateKey.ToArray());
-
-                return new AsymmetricTransformer(publicParameter, privateParameter);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new Exceptions.InvalidKeyException(ex);
-            }
+                HashAlgorithmEngine.Sha256 => SignerUtilities.GetSigner(
+                    PkcsObjectIdentifiers.Sha256WithRsaEncryption),
+            };
         }
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
