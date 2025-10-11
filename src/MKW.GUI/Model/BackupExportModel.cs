@@ -16,7 +16,10 @@ namespace MKW.GUI.Model
         {
             foreach (BackupModelEntry entry in Entries)
             {
-                writer.WriteEntry(entry.Payload);
+                if (entry.IsSelected)
+                {
+                    writer.WriteEntry(entry.Payload);
+                }
             }
         }
 
