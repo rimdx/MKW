@@ -8,9 +8,9 @@ namespace MKW.GUI.Model
 {
     public class DatabaseModel : ViewModelBase, IDisposable
     {
-        public DatabaseModel(IDatabase database,
-                             string path,
-                             ClientSession client)
+        private DatabaseModel(IDatabase database,
+                              string path,
+                              ClientSession client)
         {
             Database = database;
             Path = path;
