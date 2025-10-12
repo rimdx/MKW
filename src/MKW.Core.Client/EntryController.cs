@@ -47,40 +47,6 @@ namespace MKW.Core.Client
             };
         }
 
-        public IEntrySession EnsureEntry(EntryId id, out bool created)
-        {
-            created = !database.HasEntry(id);
-
-            if (created)
-            {
-                return CreateEntry(id);
-            }
-            else
-            {
-                return OpenEntry(id);
-            }
-        }
-
-        public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
-        {
-            if (payload == null)
-            {
-                return DeleteEntry(id);
-            }
-            else
-            {
-                using IEntrySession entry = EnsureEntry(id, out bool created);
-
-                EntryInfo notify = entry.UpdatePayload(payload);
-
-                return new EntryInfo
-                {
-                    Id = notify.Id,
-                    EncodedForUsers = notify.EncodedForUsers,
-                };
-            }
-        }
-
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
             foreach (DatabaseEntry entry in database.EnumerateEntries())

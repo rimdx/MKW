@@ -18,15 +18,14 @@ namespace MKW.Tests
             using IUserSession user = sbox.CreateUser(client, "secretprotector", out _);
             using IAdminSession admin = sbox.OpenAdmin(client);
 
-            EntryId entryId = EntryId.Create();
-
-            EntryInfo entry = admin.UpdateEntry(entryId, sbox.CreatePayload("secret"));
+            using IEntrySession entry = admin.CreateEntry();
+            entry.UpdatePayload(sbox.CreatePayload("secret"));
 
             ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
             ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
             ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
 
-            ClassicAssert.AreEqual(entryId, db.EnumerateEntries().First().Id);
+            ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
 
             CollectionAssert.AreEqual(
                 new[]
@@ -34,7 +33,7 @@ namespace MKW.Tests
                     UserId.Admin(),
                     user.Id,
                 },
-                entry.EncodedForUsers);
+                entry.EnumerateAccess());
 
             ClassicAssert.AreEqual(sbox.CreatePayload("secret"),
                                    user.OpenEntry(entry.Id).OpenPayload());
@@ -53,16 +52,16 @@ namespace MKW.Tests
             using IUserSession oldUser = sbox.CreateUser(client, "iamanoldman", out _);
             using IUserSession newUser = sbox.CreateUser(client, "ihatehimbutcantseehisstuff", out _);
 
-            EntryId id1 = EntryId.Create();
-            EntryId id2 = EntryId.Create();
+            using IEntrySession entry1 = oldUser.CreateEntry();
+            entry1.UpdatePayload(sbox.CreatePayload("entry1"));
 
-            oldUser.UpdateEntry(id1, sbox.CreatePayload("entry1"));
-            oldUser.UpdateEntry(id2, sbox.CreatePayload("entry2"));
+            using IEntrySession entry2 = oldUser.CreateEntry();
+            entry2.UpdatePayload(sbox.CreatePayload("entry2"));
 
             {
-                DatabaseEntry entry = db.OpenEntry(id1);
+                DatabaseEntry entry = db.OpenEntry(entry1.Id);
                 entry.Keys.Remove(newUser.Id);
-                db.UpdateEntry(id1, entry);
+                db.UpdateEntry(entry1.Id, entry);
             }
 
             CollectionAssert.AreEqual(
@@ -82,7 +81,7 @@ namespace MKW.Tests
                 newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
             );
 
-            oldUser.UpdateEntry(id1, sbox.CreatePayload("newcontent"));
+            entry1.UpdatePayload(sbox.CreatePayload("newcontent"));
 
             CollectionAssert.AreEqual(
                 new EntryPayload?[]
