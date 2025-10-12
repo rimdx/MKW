@@ -8,10 +8,10 @@ namespace MKW.Core.Client
         : IUserSession
         , IDisposable
     {
+        private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
         private readonly IAsymmetricPrivateTransformer transformer;
 
-        private readonly EntryController entryController;
         private readonly UserMetadataDecoder metadata;
         private readonly IAsymmetricPublicTransformer adminPublicKey;
         private readonly UserTrustProvider trustProvider;
@@ -25,6 +25,7 @@ namespace MKW.Core.Client
                            DatabaseUser user /* reference */,
                            ReadOnlySpan<byte> privateKey)
         {
+            this.crypto = crypto;
             this.database = database;
             this.user = user;
 
@@ -39,7 +40,6 @@ namespace MKW.Core.Client
                 admin.PublicKey.Payload.Span,
                 CommonCryptographyAlgorithms.Rsa2048);
 
-            entryController = new EntryController(crypto, database, this, transformer);
             metadata = new UserMetadataDecoder(adminPublicKey);
             trustProvider = new UserTrustProvider(database, crypto, transformer, adminPublicKey);
         }
@@ -49,33 +49,31 @@ namespace MKW.Core.Client
             return metadata.OpenMetadata(user);
         }
 
-        // IEntryController
-
         public IEntrySession OpenEntry(EntryId id)
         {
-            return entryController.OpenEntry(id);
+            return Entry.Open(database, crypto, this, transformer, id);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
-            return entryController.CreateEntry(id);
+            return Entry.Create(database, crypto, this, transformer, id);
         }
 
         public IEntrySession CreateEntry()
         {
-            return entryController.CreateEntry();
+            return CreateEntry(EntryId.Create());
         }
 
         public void DeleteEntry(EntryId id)
         {
-            entryController.DeleteEntry(id);
+            database.DeleteEntry(id);
         }
 
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
-            foreach (IEntrySession entry in entryController.EnumerateEntries())
+            foreach (DatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return entry;
+                yield return OpenEntry(entry.Id);
             }
         }
 
@@ -98,7 +96,6 @@ namespace MKW.Core.Client
         {
             transformer.Dispose();
             trustProvider.Dispose();
-            entryController.Dispose();
             adminPublicKey.Dispose();
         }
     }

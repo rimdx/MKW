@@ -14,7 +14,6 @@ namespace MKW.Core.Client
         private readonly DatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
 
-        private readonly EntryController entryController;
         private readonly UserMetadataDecoder metadata;
         private readonly UserTrustProvider trustProvider;
 
@@ -36,7 +35,6 @@ namespace MKW.Core.Client
                 privateKey,
                 CommonCryptographyAlgorithms.Rsa2048);
 
-            entryController = new EntryController(crypto, database, this, transformer);
             metadata = new UserMetadataDecoder(transformer);
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
 
@@ -91,33 +89,31 @@ namespace MKW.Core.Client
             return metadata.OpenMetadata(admin);
         }
 
-        // IEntryController
-
         public IEntrySession OpenEntry(EntryId id)
         {
-            return entryController.OpenEntry(id);
+            return Entry.Open(database, crypto, this, transformer, id);
         }
 
         public IEntrySession CreateEntry(EntryId id)
         {
-            return entryController.CreateEntry(id);
+            return Entry.Create(database, crypto, this, transformer, id);
         }
 
         public IEntrySession CreateEntry()
         {
-            return entryController.CreateEntry();
+            return CreateEntry(EntryId.Create());
         }
 
         public void DeleteEntry(EntryId id)
         {
-            entryController.DeleteEntry(id);
+            database.DeleteEntry(id);
         }
 
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
-            foreach (IEntrySession entry in entryController.EnumerateEntries())
+            foreach (DatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return entry;
+                yield return OpenEntry(entry.Id);
             }
         }
 
@@ -140,7 +136,6 @@ namespace MKW.Core.Client
         {
             transformer.Dispose();
             trustProvider.Dispose();
-            entryController.Dispose();
         }
     }
 }
