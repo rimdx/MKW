@@ -26,7 +26,7 @@ namespace MKW.GUI.Database
                         Width = column.Width,
                         DisplayMemberBinding = new Binding()
                         {
-                            Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].DisplayValue", column.PropertyName)
+                            Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].${nameof(EntryValueModel.DisplayKey)}", column.PropertyName)
                         }
                     });
             }
