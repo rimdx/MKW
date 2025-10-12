@@ -150,7 +150,7 @@ namespace MKW.GUI.Database
         }
 
         private DatabaseUnlockedView idontcareifitsactuallywrong;
-        public DatabaseUnlockedView UnlockedViewNeededToBindTheFuckingCommand
+        public DatabaseUnlockedView UnlockedViewNeededToBindTheCommand
         {
             get => idontcareifitsactuallywrong;
             set => SetProperty(ref idontcareifitsactuallywrong, value);

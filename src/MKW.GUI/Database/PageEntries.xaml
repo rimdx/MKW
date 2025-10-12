@@ -27,7 +27,7 @@
         <ContextMenu>
           <MenuItem Header="_Add Entry..."
                     Command="{x:Static gui:EntryCommands.AddEntry}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheFuckingCommand}">
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="NewKey" />
             </MenuItem.Icon>
@@ -35,7 +35,7 @@
 
           <MenuItem Header="_Edit Entry"
                     Command="{x:Static gui:EntryCommands.EditEntry}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheFuckingCommand}">
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="EditKey" />
             </MenuItem.Icon>
@@ -43,7 +43,7 @@
 
           <MenuItem Header="_Delete Entry"
                     Command="{x:Static gui:EntryCommands.DeleteEntry}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheFuckingCommand}">
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="DeleteKey" />
             </MenuItem.Icon>
