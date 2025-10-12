@@ -3,7 +3,7 @@
     public class EntryListColumn : ViewModelBase
     {
         private string header;
-        private int width;
+        private double width;
         private string propertyName;
 
         public EntryListColumn(string header, int width, string propertyName)
@@ -19,7 +19,7 @@
             set => SetProperty(ref header, value);
         }
 
-        public int Width 
+        public double Width 
         { 
             get => width;
             set => SetProperty(ref width, value);
