@@ -1,37 +1,22 @@
-﻿using MKW.Cryptography;
-using MKW.Cryptography.Loader;
-using System.IO;
+﻿using System.IO;
 
 namespace MKW.GUI.Model
 {
     public sealed class DocumentTable
     {
-        private readonly ICryptographyProvider cryptographyProvider;
         private readonly List<Document> documents;
 
         public DocumentTable()
         {
-            cryptographyProvider = CryptographyLoader.GetProvider();
             documents = [];
         }
 
-        public IDocumentLock CreateDatabase(string databasePath, string password)
-        {
-            Document? doc = GetDocumentByPath(databasePath);
-            if (doc == null)
-            {
-                doc = AddDocument(DatabaseModel.Create(cryptographyProvider, databasePath, password));
-            }
-
-            return doc.ObtainLock();
-        }
-
-        public IDocumentLock OpenDatabase(string filename)
+        public IDocumentLock OpenDocument(string filename, Func<DatabaseModel> documentDataFactory)
         {
             Document? doc = GetDocumentByPath(filename);
             if (doc == null)
             {
-                doc = AddDocument(DatabaseModel.Open(cryptographyProvider, filename));
+                doc = AddDocument(documentDataFactory());
             }
 
             return doc.ObtainLock();
