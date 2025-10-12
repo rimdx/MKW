@@ -18,7 +18,7 @@ namespace MKW.GUI
 
         public DatabaseModel OpenDatabase(string filename)
         {
-            return documentTable.OpenTable(filename).Database;
+            return documentTable.OpenDatabase(filename).Database;
         }
     }
 }
