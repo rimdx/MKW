@@ -149,11 +149,11 @@ namespace MKW.GUI.Database
             return new ExportWizardViewModel(database);
         }
 
-        private DatabaseUnlockedView idontcareifitsactuallywrong;
+        private DatabaseUnlockedView unlockedViewNeededToBindTheCommand;
         public DatabaseUnlockedView UnlockedViewNeededToBindTheCommand
         {
-            get => idontcareifitsactuallywrong;
-            set => SetProperty(ref idontcareifitsactuallywrong, value);
+            get => unlockedViewNeededToBindTheCommand;
+            set => SetProperty(ref unlockedViewNeededToBindTheCommand, value);
         }
 
         public void Dispose()
