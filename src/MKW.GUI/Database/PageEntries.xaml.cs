@@ -21,10 +21,7 @@ namespace MKW.GUI.Database
             {
                 GridViewColumn gridViewColumn = new GridViewColumn()
                 {
-                    DisplayMemberBinding = new Binding()
-                    {
-                        Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName)
-                    }
+                    DisplayMemberBinding = MakeDisplayMemberBinding(column),
                 };
 
                 BindingOperations.SetBinding(gridViewColumn, GridViewColumn.HeaderProperty, new Binding(nameof(column.Header)) { Source = column, Mode = BindingMode.OneWay });
@@ -33,6 +30,8 @@ namespace MKW.GUI.Database
                 gridView.Columns.Add(gridViewColumn);
             }
         }
+
+        public string HiddenValueText => "********";
 
         private void EntryListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -52,6 +51,24 @@ namespace MKW.GUI.Database
         }
         private void SelectAll_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        private BindingBase MakeDisplayMemberBinding(EntryListColumn column)
+        {
+            if (column.HideValue)
+            {
+                return new Binding(nameof(HiddenValueText))
+                {
+                    Source = this
+                };
+            }
+            else
+            {
+                return new Binding()
+                {
+                    Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName)
+                };
+            }
         }
     }
 }
