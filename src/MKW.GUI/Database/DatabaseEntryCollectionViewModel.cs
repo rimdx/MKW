@@ -22,7 +22,7 @@ namespace MKW.GUI.Database
             }
         }
 
-        public void RefreshEntries()
+        private void RefreshEntries()
         {
             SetItems(database.Entries);
         }
