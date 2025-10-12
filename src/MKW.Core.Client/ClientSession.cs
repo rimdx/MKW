@@ -1,5 +1,4 @@
-﻿using MKW.Core.Implementation;
-using MKW.Core.Storage;
+﻿using MKW.Core.Storage;
 using MKW.Cryptography;
 
 namespace MKW.Core.Client
@@ -42,48 +41,6 @@ namespace MKW.Core.Client
             client.CreateAdmin(adminPassword, adminMetadata);
 
             return client;
-        }
-
-        // todo: ITrustProvider
-
-        public IEnumerable<UserId> EnumerateUsersTrust()
-        {
-            DatabaseUser admin = Database.OpenUser(UserId.Admin());
-
-            using IAsymmetricPublicTransformer key = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span,
-                CommonCryptographyAlgorithms.Rsa2048);
-
-            using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, key, key);
-
-            IEnumerable<UserId> trust = trustProvider.EnumerateTrustedUsers();
-
-            // Convert IEnumerable to an array, before returning from function,
-            // because outside the trustProvider will be disposed.
-            //
-            // Dear .NET, why??
-            return trust.ToArray();
-        }
-
-        public IEnumerable<UserId> EnumerateUsersTrust(UserId userId)
-        {
-            DatabaseUser user = Database.OpenUser(userId);
-            DatabaseUser admin = Database.OpenUser(UserId.Admin());
-
-            using IAsymmetricPublicTransformer userKey = crypto.OpenAsymmetricTransformer(
-                user.PublicKey.Payload.Span,
-                CommonCryptographyAlgorithms.Rsa2048);
-
-            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span,
-                CommonCryptographyAlgorithms.Rsa2048);
-
-            using UserTrustProvider trustProvider = new UserTrustProvider(Database, crypto, userKey, adminKey);
-
-            foreach (UserId trust in trustProvider.EnumerateTrustedUsers())
-            {
-                yield return trust;
-            }
         }
 
         // IUserController
