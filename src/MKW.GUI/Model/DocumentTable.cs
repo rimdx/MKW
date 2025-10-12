@@ -20,7 +20,9 @@ namespace MKW.GUI.Model
             Document? doc = GetDocumentByPath(databasePath);
             if (doc == null)
             {
-                doc = new Document(DatabaseModel.Create(cryptographyProvider, databasePath, password));
+                doc = new Document(this, DatabaseModel.Create(cryptographyProvider, databasePath, password));
+
+                documents.Add(doc);
             }
 
             return doc.ObtainLock();
@@ -31,7 +33,9 @@ namespace MKW.GUI.Model
             Document? doc = GetDocumentByPath(filename);
             if (doc == null)
             {
-                doc = new Document(DatabaseModel.Open(cryptographyProvider, filename));
+                doc = new Document(this, DatabaseModel.Open(cryptographyProvider, filename));
+
+                documents.Add(doc);
             }
 
             return doc.ObtainLock();
@@ -56,9 +60,12 @@ namespace MKW.GUI.Model
         {
             public DatabaseModel Database { get; }
             private int lockCount;
+            private bool disposed;
+            private readonly DocumentTable documentTable;
 
-            public Document(DatabaseModel database)
+            public Document(DocumentTable documentTable, DatabaseModel database)
             {
+                this.documentTable = documentTable;
                 Database = database;
                 lockCount = 0;
             }
@@ -72,7 +79,13 @@ namespace MKW.GUI.Model
 
             public void Dispose()
             {
-                Database.Dispose();
+                if (!disposed)
+                {
+                    Database.Dispose();
+                    documentTable.documents.Remove(this);
+
+                    disposed = true;
+                }
             }
 
             private void ReleaseLock()
@@ -95,6 +108,11 @@ namespace MKW.GUI.Model
                 }
 
                 public DatabaseModel Database => document.Database;
+
+                public IDocumentLock Clone()
+                {
+                    return document.ObtainLock();
+                }
 
                 public void Dispose()
                 {
