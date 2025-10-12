@@ -6,12 +6,13 @@ namespace MKW.GUI.Database
 {
     public class DatabaseViewModel : ViewModelBase, IDisposable
     {
-        public DatabaseModel Database { get; }
+        public DatabaseModel Database => documentLock.Database;
+        private readonly IDocumentLock documentLock;
 
-        public DatabaseViewModel(DatabaseModel database)
+        public DatabaseViewModel(IDocumentLock documentLock)
         {
-            Database = database;
-            database.PropertyChanged += Database_PropertyChanged;
+            this.documentLock = documentLock;
+            Database.PropertyChanged += Database_PropertyChanged;
             contentView = UpdateContentView();
         }
 
@@ -39,7 +40,7 @@ namespace MKW.GUI.Database
 
         public void Dispose()
         {
-            Database.Dispose();
+            documentLock.Dispose();
         }
 
         private object contentView;

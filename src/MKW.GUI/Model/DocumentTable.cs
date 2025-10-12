@@ -23,7 +23,7 @@ namespace MKW.GUI.Model
                 doc = new Document(DatabaseModel.Create(cryptographyProvider, databasePath, password));
             }
 
-            return new DocumentLock(doc);
+            return doc.ObtainLock();
         }
 
         public IDocumentLock OpenDatabase(string filename)
@@ -34,7 +34,7 @@ namespace MKW.GUI.Model
                 doc = new Document(DatabaseModel.Open(cryptographyProvider, filename));
             }
 
-            return new DocumentLock(doc);
+            return doc.ObtainLock();
         }
 
         private Document? GetDocumentByPath(string path)
@@ -55,32 +55,55 @@ namespace MKW.GUI.Model
         private class Document : IDisposable
         {
             public DatabaseModel Database { get; }
+            private int lockCount;
 
             public Document(DatabaseModel database)
             {
                 Database = database;
+                lockCount = 0;
+            }
+
+            public IDocumentLock ObtainLock()
+            {
+                lockCount++;
+
+                return new DocumentLock(this);
             }
 
             public void Dispose()
             {
                 Database.Dispose();
             }
-        }
 
-        private class DocumentLock : IDocumentLock
-        {
-            private readonly Document document;
-
-            public DocumentLock(Document document)
+            private void ReleaseLock()
             {
-                this.document = document;
+                lockCount--;
+                if (lockCount == 0)
+                {
+                    Dispose();
+                }
             }
 
-            public DatabaseModel Database => document.Database;
-
-            public void Dispose()
+            private class DocumentLock : IDocumentLock
             {
-                // TODO: 
+                private readonly Document document;
+                private bool disposed;
+
+                public DocumentLock(Document document)
+                {
+                    this.document = document;
+                }
+
+                public DatabaseModel Database => document.Database;
+
+                public void Dispose()
+                {
+                    if (!disposed)
+                    {
+                        document.ReleaseLock();
+                        disposed = true;
+                    }
+                }
             }
         }
     }

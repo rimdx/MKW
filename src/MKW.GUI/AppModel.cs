@@ -11,14 +11,14 @@ namespace MKW.GUI
             documentTable = new DocumentTable();
         }
 
-        public DatabaseModel CreateDatabase(string databasePath, string password)
+        public IDocumentLock CreateDatabase(string databasePath, string password)
         {
-            return documentTable.CreateDatabase(databasePath, password).Database;
+            return documentTable.CreateDatabase(databasePath, password);
         }
 
-        public DatabaseModel OpenDatabase(string filename)
+        public IDocumentLock OpenDatabase(string filename)
         {
-            return documentTable.OpenDatabase(filename).Database;
+            return documentTable.OpenDatabase(filename);
         }
     }
 }
