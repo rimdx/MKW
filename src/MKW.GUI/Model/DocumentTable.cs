@@ -20,9 +20,7 @@ namespace MKW.GUI.Model
             Document? doc = GetDocumentByPath(databasePath);
             if (doc == null)
             {
-                doc = Document.Make(this, DatabaseModel.Create(cryptographyProvider, databasePath, password));
-
-                documents.Add(doc);
+                doc = AddDocument(DatabaseModel.Create(cryptographyProvider, databasePath, password));
             }
 
             return doc.ObtainLock();
@@ -33,12 +31,19 @@ namespace MKW.GUI.Model
             Document? doc = GetDocumentByPath(filename);
             if (doc == null)
             {
-                doc = Document.Make(this, DatabaseModel.Open(cryptographyProvider, filename));
-
-                documents.Add(doc);
+                doc = AddDocument(DatabaseModel.Open(cryptographyProvider, filename));
             }
 
             return doc.ObtainLock();
+        }
+
+        private Document AddDocument(DatabaseModel databaseModel)
+        {
+            Document doc = Document.Make(this, databaseModel);
+
+            documents.Add(doc);
+
+            return doc;
         }
 
         private Document? GetDocumentByPath(string path)
