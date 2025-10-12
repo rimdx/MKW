@@ -7,7 +7,6 @@ namespace MKW.Core.Client
     internal sealed class AdminSession
         : IAdminSession
         , IUserSession
-        , IEntryController
         , ITrustProvider
         , IDisposable
     {
@@ -16,7 +15,7 @@ namespace MKW.Core.Client
         private readonly DatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
 
-        private readonly IEntryController entryController;
+        private readonly EntryController entryController;
         private readonly UserMetadataDecoder metadata;
         private readonly UserTrustProvider trustProvider;
 

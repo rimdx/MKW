@@ -2,7 +2,6 @@
 {
     public interface IAdminSession
         : IUserSession
-        , IEntryController
         , ITrustProvider
         , IDisposable
     {
