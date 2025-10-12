@@ -1,8 +1,6 @@
 ﻿namespace MKW.Core
 {
-    public interface IUserSession
-        : ITrustProvider
-        , IDisposable
+    public interface IUserSession : IDisposable
     {
         UserId Id { get; }
 
@@ -14,6 +12,10 @@
         IEntrySession OpenEntry(EntryId id);
 
         IEnumerable<IEntrySession> EnumerateEntries();
+
+        IEnumerable<UserId> EnumerateTrustedUsers();
+
+        bool VerifyTrust(UserId userId);
 
         UserMetadata OpenMetadata();
     }

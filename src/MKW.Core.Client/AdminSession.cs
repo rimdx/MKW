@@ -7,7 +7,6 @@ namespace MKW.Core.Client
     internal sealed class AdminSession
         : IAdminSession
         , IUserSession
-        , ITrustProvider
         , IDisposable
     {
         private readonly ICryptographyProvider crypto;
@@ -61,7 +60,7 @@ namespace MKW.Core.Client
             database.CreateUser(userId, user);
 
             EntryDecoder decoder = new EntryDecoder(crypto, this, transformer);
-            EntryEncoder encoder = new EntryEncoder(crypto, database, trustProvider);
+            EntryEncoder encoder = new EntryEncoder(crypto, database, this);
             DatabaseEntry[] entries = [.. database.EnumerateEntries()];
 
             foreach (DatabaseEntry entry in entries)
