@@ -12,14 +12,29 @@ namespace MKW.GUI.Model
             cryptographyProvider = CryptographyLoader.GetProvider();
         }
 
-        public DatabaseModel CreateDatabase(string databasePath, string password)
+        public IDocumentLock CreateDatabase(string databasePath, string password)
         {
-             return DatabaseModel.Create(cryptographyProvider, databasePath, password);
+             return new DocumentLock(DatabaseModel.Create(cryptographyProvider, databasePath, password));
         }
 
-        public DatabaseModel OpenTable(string filename)
+        public IDocumentLock OpenTable(string filename)
         {
-            return DatabaseModel.Open(cryptographyProvider, filename);
+            return new DocumentLock(DatabaseModel.Open(cryptographyProvider, filename));
+        }
+
+        private class DocumentLock : IDocumentLock
+        {
+            public DatabaseModel Database { get; }
+
+            public DocumentLock(DatabaseModel databaseModel)
+            {
+                Database = databaseModel;
+            }
+
+            public void Dispose()
+            {
+                // TODO: 
+            }
         }
     }
 }
