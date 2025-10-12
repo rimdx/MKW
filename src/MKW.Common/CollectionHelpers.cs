@@ -2,13 +2,23 @@
 {
     public static class CollectionHelpers
     {
-        public static IEnumerable<LeftRightPair<T>> Merge<T>(IEnumerable<T> left,
-                                                             IEnumerable<T> right,
-                                                             IComparer<T> comparer)
+        public static IEnumerable<LeftRightPair<T>> Merge<T, TKey>(
+            IEnumerable<T> left,
+            IEnumerable<T> right,
+            Func<T, TKey> getKey)
+
             where T : class
+            where TKey : IComparable<TKey>
         {
             List<T> leftSorted = [.. left];
             List<T> rightSorted = [.. right];
+
+            Comparer<TKey> keyComparer = Comparer<TKey>.Default;
+
+            Comparer<T> comparer = Comparer<T>.Create((a, b) =>
+            {
+                return keyComparer.Compare(getKey(a), getKey(b));
+            });
 
             leftSorted.Sort(comparer);
             rightSorted.Sort(comparer);

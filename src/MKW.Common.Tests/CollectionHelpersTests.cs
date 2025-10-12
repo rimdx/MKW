@@ -10,7 +10,7 @@ namespace MKW.Common.Tests
             List<string> left = ["1", "2"];
             List<string> right = ["2", "3"];
 
-            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, Comparer<string>.Default).ToList();
+            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, value => value).ToList();
 
             CollectionAssert.AreEqual(
                 new[]
@@ -28,7 +28,7 @@ namespace MKW.Common.Tests
             List<string> left = ["2", "3"];
             List<string> right = ["1", "2"];
 
-            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, Comparer<string>.Default).ToList();
+            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, value => value).ToList();
 
             CollectionAssert.AreEqual(
                 new[]
@@ -46,7 +46,7 @@ namespace MKW.Common.Tests
             List<string> left = ["1", "2", "3"];
             List<string> right = ["3", "4"];
 
-            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, Comparer<string>.Default).ToList();
+            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, value => value).ToList();
 
             CollectionAssert.AreEqual(
                 new[]
@@ -65,7 +65,7 @@ namespace MKW.Common.Tests
             List<string> left = ["3", "4"];
             List<string> right = ["1", "2", "3"];
 
-            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, Comparer<string>.Default).ToList();
+            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, value => value).ToList();
 
             CollectionAssert.AreEqual(
                 new[]
@@ -84,7 +84,7 @@ namespace MKW.Common.Tests
             List<string> left = ["abc", "123"];
             List<string> right = ["abc", "xyz"];
 
-            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, Comparer<string>.Default).ToList();
+            List<LeftRightPair<string>> diff = CollectionHelpers.Merge(left, right, value => value).ToList();
 
             CollectionAssert.AreEqual(
                 new[]
