@@ -21,13 +21,14 @@ namespace MKW.GUI.Database
             {
                 GridViewColumn gridViewColumn = new GridViewColumn()
                 {
-                    Header = column.Header,
-                    Width = column.Width,
                     DisplayMemberBinding = new Binding()
                     {
                         Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName)
                     }
                 };
+
+                BindingOperations.SetBinding(gridViewColumn, GridViewColumn.HeaderProperty, new Binding(nameof(column.Header)) { Source = column, Mode = BindingMode.OneWay });
+                BindingOperations.SetBinding(gridViewColumn, GridViewColumn.WidthProperty, new Binding(nameof(column.Width)) { Source = column, Mode = BindingMode.TwoWay });
 
                 gridView.Columns.Add(gridViewColumn);
             }
