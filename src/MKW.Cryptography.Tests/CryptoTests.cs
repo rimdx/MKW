@@ -37,8 +37,12 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void UserCredentialsTests()
         {
-            IUserCredentials pass1 = crypto.CreateUserCredentials("pass11");
-            IUserCredentials pass2 = crypto.OpenUserCredentials("pass11", pass1.ExportSalt());
+            IUserCredentials pass1 = crypto.CreateUserCredentials("pass11",
+                                                                  CommonCryptographyAlgorithms.Pbkdf2);
+
+            IUserCredentials pass2 = crypto.OpenUserCredentials("pass11",
+                                                                pass1.ExportSalt(),
+                                                                CommonCryptographyAlgorithms.Pbkdf2);
 
             CollectionAssert.AreEqual(pass1.GetSecretKey().ToArray(), pass2.GetSecretKey().ToArray());
         }

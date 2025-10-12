@@ -26,7 +26,7 @@ namespace MKW.Core.Client
 
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
+            IUserCredentials userCreds = crypto.CreateUserCredentials(password, CommonCryptographyAlgorithms.Pbkdf2);
             using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             // TODO: prompt user?
@@ -53,7 +53,9 @@ namespace MKW.Core.Client
                 DatabaseUser user = database.OpenUser(id);
 
                 // Credentials can be opened within the entered password and the public salt
-                IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
+                IUserCredentials creds = crypto.OpenUserCredentials(password,
+                                                                    user.Salt,
+                                                                    CommonCryptographyAlgorithms.Pbkdf2);
 
                 return OpenUserInternal(user, creds);
             }
@@ -65,7 +67,9 @@ namespace MKW.Core.Client
             {
                 try
                 {
-                    IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
+                    IUserCredentials creds = crypto.OpenUserCredentials(password,
+                                                                        user.Salt,
+                                                                        CommonCryptographyAlgorithms.Pbkdf2);
 
                     return OpenUserInternal(database.OpenUser(user.Id), creds);
                 }

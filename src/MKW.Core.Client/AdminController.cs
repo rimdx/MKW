@@ -21,7 +21,9 @@ namespace MKW.Core.Client
         {
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
+            IUserCredentials userCreds = crypto.CreateUserCredentials(password,
+                                                                      CommonCryptographyAlgorithms.Pbkdf2);
+
             using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(systemCreds.Transformer);
@@ -47,7 +49,9 @@ namespace MKW.Core.Client
             {
                 DatabaseUser admin = database.OpenUser(UserId.Admin());
 
-                IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
+                IUserCredentials creds = crypto.OpenUserCredentials(password,
+                                                                    admin.Salt,
+                                                                    CommonCryptographyAlgorithms.Pbkdf2);
 
                 using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
                     creds.GetSecretKey().Span,

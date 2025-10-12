@@ -36,12 +36,15 @@
             return AsymmetricTransformer.Open(publicKey, privateKey);
         }
 
-        public IUserCredentials CreateUserCredentials(string password)
+        public IUserCredentials CreateUserCredentials(string password,
+                                                      PasswordDerivationConfiguration config)
         {
             return UserCredentials.Create(password);
         }
 
-        public IUserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt)
+        public IUserCredentials OpenUserCredentials(string password,
+                                                    ReadOnlyMemory<byte> salt,
+                                                    PasswordDerivationConfiguration config)
         {
             return UserCredentials.Open(password, salt);
         }
