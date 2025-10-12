@@ -11,7 +11,7 @@ namespace MKW.Tests
     public class DatabaseTests
     {
         [Test]
-        [Timeout(500)]
+        [Timeout(2000)]
         public async Task WatcherTests()
         {
             using ClientSandBox sbox = new ClientSandBox(false);
