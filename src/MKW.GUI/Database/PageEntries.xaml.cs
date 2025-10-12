@@ -19,13 +19,12 @@ namespace MKW.GUI.Database
 
             foreach (EntryListColumn column in model.Columns)
             {
-                GridViewColumn gridViewColumn = new GridViewColumn()
-                {
-                    DisplayMemberBinding = MakeDisplayMemberBinding(column),
-                };
+                GridViewColumn gridViewColumn = new GridViewColumn();
 
                 BindingOperations.SetBinding(gridViewColumn, GridViewColumn.HeaderProperty, new Binding(nameof(column.Header)) { Source = column, Mode = BindingMode.OneWay });
                 BindingOperations.SetBinding(gridViewColumn, GridViewColumn.WidthProperty, new Binding(nameof(column.Width)) { Source = column, Mode = BindingMode.TwoWay });
+
+                gridViewColumn.CellTemplate = MakeCellTemplate(column);
 
                 gridView.Columns.Add(gridViewColumn);
             }
@@ -53,6 +52,20 @@ namespace MKW.GUI.Database
         {
         }
 
+        private DataTemplate MakeCellTemplate(EntryListColumn column)
+        {
+            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
+
+            factory.SetBinding(TextBlock.TextProperty, MakeDisplayMemberBinding(column));
+            factory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.NoWrap);
+            factory.SetValue(TextBlock.TextTrimmingProperty, TextTrimming.CharacterEllipsis);
+
+            return new DataTemplate()
+            {
+                VisualTree = factory
+            };
+        }
+
         private BindingBase MakeDisplayMemberBinding(EntryListColumn column)
         {
             if (column.HideValue)
@@ -66,7 +79,8 @@ namespace MKW.GUI.Database
             {
                 return new Binding()
                 {
-                    Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName)
+                    Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName),
+                    Converter = SingleLineConverter.Instance,
                 };
             }
         }
