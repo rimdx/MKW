@@ -8,15 +8,15 @@ namespace MKW.Core.Implementation
     {
         private readonly ICryptographyProvider crypto;
         private readonly IDatabase database;
-        private readonly ITrustProvider trustProvider;
+        private readonly IUserSession user;
 
         public EntryEncoder(ICryptographyProvider crypto,
                             IDatabase database,
-                            ITrustProvider trustProvider)
+                            IUserSession user)
         {
             this.crypto = crypto;
             this.database = database;
-            this.trustProvider = trustProvider;
+            this.user = user;
         }
 
         public DatabaseEntry EncodeEntry(DatabaseEntry entry, EntryPayload payload)
@@ -29,7 +29,7 @@ namespace MKW.Core.Implementation
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
-            foreach (UserId userId in trustProvider.EnumerateTrustedUsers())
+            foreach (UserId userId in user.EnumerateTrustedUsers())
             {
                 DatabaseUser user = database.OpenUser(userId);
 

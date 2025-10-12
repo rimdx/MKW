@@ -3,7 +3,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Implementation
 {
-    public class UserTrustProvider : ITrustProvider, IDisposable
+    public class UserTrustProvider : IDisposable
     {
         protected readonly IDatabase database;
         protected readonly ICryptographyProvider crypto;

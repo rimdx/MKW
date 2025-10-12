@@ -6,7 +6,6 @@ namespace MKW.Core.Client
 {
     internal sealed class UserSession
         : IUserSession
-        , ITrustProvider
         , IDisposable
     {
         private readonly IDatabase database;
