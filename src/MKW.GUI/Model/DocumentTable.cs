@@ -46,7 +46,7 @@ namespace MKW.GUI.Model
             return null;
         }
 
-        private class Document : IDisposable
+        private sealed class Document : IDisposable
         {
             public DatabaseModel Database { get; }
             private int lockCount;
@@ -92,7 +92,7 @@ namespace MKW.GUI.Model
                 }
             }
 
-            private class DocumentLock : IDocumentLock
+            private sealed class DocumentLock : IDocumentLock
             {
                 private readonly Document document;
                 private bool disposed;
