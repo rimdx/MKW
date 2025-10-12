@@ -2,10 +2,10 @@
 {
     public interface IAdminSession
         : IUserSession
-        , IUserHost
         , IEntryController
         , ITrustProvider
         , IDisposable
     {
+        UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata);
     }
 }

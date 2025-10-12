@@ -7,7 +7,6 @@ namespace MKW.Core.Client
     internal sealed class AdminSession
         : IAdminSession
         , IUserSession
-        , IUserHost
         , IEntryController
         , ITrustProvider
         , IDisposable
