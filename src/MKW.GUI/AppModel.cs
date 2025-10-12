@@ -13,12 +13,12 @@ namespace MKW.GUI
 
         public DatabaseModel CreateDatabase(string databasePath, string password)
         {
-            return documentTable.CreateDatabase(databasePath, password);
+            return documentTable.CreateDatabase(databasePath, password).Database;
         }
 
         public DatabaseModel OpenDatabase(string filename)
         {
-            return documentTable.OpenTable(filename);
+            return documentTable.OpenTable(filename).Database;
         }
     }
 }
