@@ -4,7 +4,7 @@
     {
         EntryId Id { get; }
 
-        EntryInfo UpdatePayload(EntryPayload payload);
+        void UpdatePayload(EntryPayload payload);
         EntryPayload? OpenPayload();
 
         IEnumerable<UserId> EnumerateAccess();

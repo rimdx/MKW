@@ -66,9 +66,9 @@ namespace MKW.Core.Client
             return entryController.CreateEntry();
         }
 
-        public EntryInfo DeleteEntry(EntryId id)
+        public void DeleteEntry(EntryId id)
         {
-            return entryController.DeleteEntry(id);
+            entryController.DeleteEntry(id);
         }
 
         public IEnumerable<IEntrySession> EnumerateEntries()
