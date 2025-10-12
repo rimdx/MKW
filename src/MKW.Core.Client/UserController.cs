@@ -90,7 +90,7 @@ namespace MKW.Core.Client
                 // also needs some data stored in the public section of the object).
                 using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
                     creds.GetSecretKey().Span,
-                    creds.ExportSalt().Span,
+                    user.Salt.Span,
                     CommonCryptographyAlgorithms.Aes128Gcm);
 
                 // Let's try'N decode the private key. We could potentially fail here. So
