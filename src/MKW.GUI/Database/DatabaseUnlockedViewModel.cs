@@ -59,8 +59,8 @@ namespace MKW.GUI.Database
 
         public DatabaseEntryCollectionViewModel Entries { get; }
 
-        private EntryEditorModel? _selectedEntry;
-        public EntryEditorModel? SelectedEntry
+        private EntryListViewModel? _selectedEntry;
+        public EntryListViewModel? SelectedEntry
         {
             get => _selectedEntry;
             set
@@ -100,7 +100,7 @@ namespace MKW.GUI.Database
             return new EditEntryWindowViewModel(database, database.OpenEntry(id));
         }
 
-        public void DeleteEntry(EntryEditorModel entry)
+        public void DeleteEntry(EntryListViewModel entry)
         {
             database.DeleteEntry(entry.Id);
         }

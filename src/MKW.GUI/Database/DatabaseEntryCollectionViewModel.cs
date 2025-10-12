@@ -1,11 +1,9 @@
-﻿using MKW.Common;
-using MKW.GUI.Model;
-using System.Collections.ObjectModel;
+﻿using MKW.GUI.Model;
 using System.ComponentModel;
 
 namespace MKW.GUI.Database
 {
-    public class DatabaseEntryCollectionViewModel : ObservableCollection<EntryEditorModel>, IDisposable
+    public class DatabaseEntryCollectionViewModel : TransformedObservableCollection<EntryListViewModel, EntryEditorModel>, IDisposable
     {
         private readonly DatabaseUnlockedModel database;
 
@@ -26,26 +24,17 @@ namespace MKW.GUI.Database
 
         public void RefreshEntries()
         {
-            foreach (LeftRightPair<EntryEditorModel> pair in CollectionHelpers.Merge(this, database.Entries, value => value.Id))
-            {
-                if (pair.Left == null && pair.Right != null)
-                {
-                    Add(pair.Right);
-                }
-                else if (pair.Left != null && pair.Right == null)
-                {
-                    Remove(pair.Left);
-                }
-                else if (pair.Left != null && pair.Right != null)
-                {
-                    SetItem(IndexOf(pair.Left), pair.Right);
-                }
-            }
+            SetItems(database.Entries);
         }
 
         public void Dispose()
         {
             database.PropertyChanged -= Database_PropertyChanged;
         }
+
+        protected override EntryListViewModel CreateViewModel(EntryEditorModel item) => new EntryListViewModel(item);
+        protected override void UpdateViewModel(EntryListViewModel viewModel, EntryEditorModel item) => viewModel.EntryEditorModel = item;
+        protected override object GetViewModelKey(EntryListViewModel viewModel) => viewModel.EntryEditorModel.Id;
+        protected override object GetItemKey(EntryEditorModel item) => item.Id;
     }
 }
