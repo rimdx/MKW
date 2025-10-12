@@ -26,7 +26,7 @@ namespace MKW.GUI.Model
             return new DocumentLock(doc);
         }
 
-        public IDocumentLock OpenTable(string filename)
+        public IDocumentLock OpenDatabase(string filename)
         {
             Document? doc = GetDocumentByPath(filename);
             if (doc == null)
