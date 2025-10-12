@@ -6,27 +6,32 @@
         {
         }
 
-        public ISymmetricTransformer CreateSymmetricTransformer()
+        public ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config)
         {
             return SymmetricTransformer.Create();
         }
 
-        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
+        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key,
+                                                              ReadOnlySpan<byte> iv,
+                                                              SymmetricAlgorithmConfiguration config)
         {
             return SymmetricTransformer.Open(key, iv);
         }
 
-        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer()
+        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer(AsymmetricAlgorithmConfiguration config)
         {
             return AsymmetricTransformer.Create();
         }
 
-        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey)
+        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
+                                                                      AsymmetricAlgorithmConfiguration config)
         {
             return AsymmetricTransformer.Open(publicKey);
         }
 
-        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
+        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
+                                                                       ReadOnlySpan<byte> privateKey,
+                                                                       AsymmetricAlgorithmConfiguration config)
         {
             return AsymmetricTransformer.Open(publicKey, privateKey);
         }

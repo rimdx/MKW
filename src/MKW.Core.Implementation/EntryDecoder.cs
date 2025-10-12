@@ -30,7 +30,9 @@ namespace MKW.Core.Implementation
             Memory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
 
             using ISymmetricTransformer dataDecoder = crypto.OpenSymmetricTransformer(
-                decryptedKey.Span, entry.Salt.Span);
+                decryptedKey.Span,
+                entry.Salt.Span,
+                CommonCryptographyAlgorithms.Aes128Gcm);
 
             Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
 

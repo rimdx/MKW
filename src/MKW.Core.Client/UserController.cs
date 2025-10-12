@@ -85,7 +85,9 @@ namespace MKW.Core.Client
                 // Private data of the user is encrypted symmetrically using our creds (decoder
                 // also needs some data stored in the public section of the object).
                 using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
-                    creds.GetSecretKey().Span, creds.ExportSalt().Span);
+                    creds.GetSecretKey().Span,
+                    creds.ExportSalt().Span,
+                    CommonCryptographyAlgorithms.Aes128Gcm);
 
                 // Let's try'N decode the private key. We could potentially fail here. So
                 // some validation may be required.
@@ -109,7 +111,8 @@ namespace MKW.Core.Client
             DatabaseUser admin = database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span);
+                admin.PublicKey.Payload.Span,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
@@ -125,7 +128,8 @@ namespace MKW.Core.Client
             DatabaseUser user = database.OpenUser(id);
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span);
+                admin.PublicKey.Payload.Span,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 

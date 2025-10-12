@@ -50,7 +50,9 @@ namespace MKW.Core.Client
                 IUserCredentials creds = crypto.OpenUserCredentials(password, admin.Salt);
 
                 using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
-                    creds.GetSecretKey().Span, creds.ExportSalt().Span);
+                    creds.GetSecretKey().Span,
+                    creds.ExportSalt().Span,
+                    CommonCryptographyAlgorithms.Aes128Gcm);
 
                 Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.EncryptedPayload.Span);
 
@@ -72,7 +74,8 @@ namespace MKW.Core.Client
             DatabaseUser admin = database.OpenUser(UserId.Admin());
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span);
+                admin.PublicKey.Payload.Span,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
