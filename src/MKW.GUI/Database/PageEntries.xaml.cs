@@ -19,16 +19,17 @@ namespace MKW.GUI.Database
 
             foreach (EntryListColumn column in model.Columns)
             {
-                gridView.Columns.Add(
-                    new GridViewColumn()
+                GridViewColumn gridViewColumn = new GridViewColumn()
+                {
+                    Header = column.Header,
+                    Width = column.Width,
+                    DisplayMemberBinding = new Binding()
                     {
-                        Header = column.Header,
-                        Width = column.Width,
-                        DisplayMemberBinding = new Binding()
-                        {
-                            Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName)
-                        }
-                    });
+                        Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName)
+                    }
+                };
+
+                gridView.Columns.Add(gridViewColumn);
             }
         }
 
