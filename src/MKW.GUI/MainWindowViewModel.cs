@@ -38,8 +38,8 @@ namespace MKW.GUI
                 {
                     try
                     {
-                        DatabaseModel databaseModel = appModel.OpenDatabase(file);
-                        AddDatabaseTab(databaseModel);
+                        IDocumentLock document = appModel.OpenDatabase(file);
+                        AddDatabaseTab(document);
                     }
                     catch
                     {
@@ -77,9 +77,9 @@ namespace MKW.GUI
             tabViewModel = GetDatabaseByPath(databasePath);
             if (tabViewModel == null)
             {
-                DatabaseModel database = appModel.OpenDatabase(databasePath);
+                IDocumentLock document = appModel.OpenDatabase(databasePath);
 
-                tabViewModel = AddDatabaseTab(database);
+                tabViewModel = AddDatabaseTab(document);
 
                 try
                 {
@@ -101,9 +101,9 @@ namespace MKW.GUI
         {
             recentFilesService.OnFileOpened(databasePath);
 
-            DatabaseModel database = appModel.CreateDatabase(databasePath, password);
+            IDocumentLock document = appModel.CreateDatabase(databasePath, password);
 
-            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(database);
+            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(document);
             SelectedTab = tabViewModel;
 
             try
@@ -115,11 +115,11 @@ namespace MKW.GUI
             }
         }
 
-        private void OpenDatabaseInternal(DatabaseModel database)
+        private void OpenDatabaseInternal(IDocumentLock document)
         {
-            recentFilesService.OnFileOpened(database.Path);
+            recentFilesService.OnFileOpened(document.Database.Path);
 
-            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(database);
+            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(document);
             SelectedTab = tabViewModel;
 
             try
@@ -146,9 +146,9 @@ namespace MKW.GUI
             return null;
         }
 
-        private DatabaseTabItemViewModel AddDatabaseTab(DatabaseModel database)
+        private DatabaseTabItemViewModel AddDatabaseTab(IDocumentLock document)
         {
-            DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(database));
+            DatabaseTabItemViewModel tabViewModel = new DatabaseTabItemViewModel(new DatabaseViewModel(document));
             TabItems.Add(tabViewModel);
 
             return tabViewModel;
