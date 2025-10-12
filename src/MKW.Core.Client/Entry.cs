@@ -69,19 +69,13 @@ namespace MKW.Core.Client
                              entryId);
         }
 
-        public EntryInfo UpdatePayload(EntryPayload payload)
+        public void UpdatePayload(EntryPayload payload)
         {
             DatabaseEntry entry = database.OpenEntry(entryId);
 
             DatabaseEntry newEntry = encoder.EncodeEntry(entry, payload);
 
             database.UpdateEntry(Id, newEntry);
-
-            return new EntryInfo
-            {
-                Id = newEntry.Id,
-                EncodedForUsers = [.. user.EnumerateTrustedUsers()]
-            };
         }
 
         public EntryPayload? OpenPayload()

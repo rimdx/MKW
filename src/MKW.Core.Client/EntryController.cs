@@ -36,15 +36,9 @@ namespace MKW.Core.Client
             return CreateEntry(EntryId.Create());
         }
 
-        public EntryInfo DeleteEntry(EntryId id)
+        public void DeleteEntry(EntryId id)
         {
             database.DeleteEntry(id);
-
-            return new EntryInfo
-            {
-                Id = id,
-                EncodedForUsers = []
-            };
         }
 
         public IEnumerable<IEntrySession> EnumerateEntries()

@@ -7,7 +7,7 @@
         IEntrySession CreateEntry();
         IEntrySession CreateEntry(EntryId id);
 
-        EntryInfo DeleteEntry(EntryId id);
+        void DeleteEntry(EntryId id);
 
         IEntrySession OpenEntry(EntryId id);
 
