@@ -59,23 +59,23 @@
           <GridView.Columns>
             <GridViewColumn Header="Title"
                             Width="175"
-                            DisplayMemberBinding="{Binding Properties[mkw:title].DisplayValue}" />
+                            DisplayMemberBinding="{Binding EntryEditorModel. Properties[mkw:title].DisplayValue}" />
 
             <GridViewColumn Header="User Name"
                             Width="175"
-                            DisplayMemberBinding="{Binding Properties[mkw:username].DisplayValue}" />
+                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:username].DisplayValue}" />
 
             <GridViewColumn Header="Password"
                             Width="150"
-                            DisplayMemberBinding="{Binding Properties[mkw:password].DisplayValue}" />
+                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:password].DisplayValue}" />
 
             <GridViewColumn Header="URL"
                             Width="150"
-                            DisplayMemberBinding="{Binding Properties[mkw:url].DisplayValue}" />
+                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:url].DisplayValue}" />
 
             <GridViewColumn Header="Notes"
                             Width="225"
-                            DisplayMemberBinding="{Binding Properties[mkw:notes].DisplayValue}" />
+                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:notes].DisplayValue}" />
           </GridView.Columns>
         </GridView>
       </ListView.View>
