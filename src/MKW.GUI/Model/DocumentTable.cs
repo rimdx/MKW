@@ -20,7 +20,7 @@ namespace MKW.GUI.Model
             Document? doc = GetDocumentByPath(databasePath);
             if (doc == null)
             {
-                doc = new Document(this, DatabaseModel.Create(cryptographyProvider, databasePath, password));
+                doc = Document.Make(this, DatabaseModel.Create(cryptographyProvider, databasePath, password));
 
                 documents.Add(doc);
             }
@@ -33,7 +33,7 @@ namespace MKW.GUI.Model
             Document? doc = GetDocumentByPath(filename);
             if (doc == null)
             {
-                doc = new Document(this, DatabaseModel.Open(cryptographyProvider, filename));
+                doc = Document.Make(this, DatabaseModel.Open(cryptographyProvider, filename));
 
                 documents.Add(doc);
             }
@@ -63,11 +63,16 @@ namespace MKW.GUI.Model
             private bool disposed;
             private readonly DocumentTable documentTable;
 
-            public Document(DocumentTable documentTable, DatabaseModel database)
+            private Document(DocumentTable documentTable, DatabaseModel database)
             {
                 this.documentTable = documentTable;
                 Database = database;
                 lockCount = 0;
+            }
+
+            public static Document Make(DocumentTable documentTable, DatabaseModel database)
+            {
+                return new Document(documentTable, database);
             }
 
             public IDocumentLock ObtainLock()
