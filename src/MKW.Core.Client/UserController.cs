@@ -1,7 +1,6 @@
 ﻿using MKW.Core.Implementation;
 using MKW.Core.Storage;
 using MKW.Cryptography;
-using MKW.Cryptography.Exceptions;
 
 namespace MKW.Core.Client
 {
@@ -50,6 +49,8 @@ namespace MKW.Core.Client
             }
             else
             {
+                SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
+
                 DatabaseUser user = database.OpenUser(id);
 
                 // Credentials can be opened within the entered password and the public salt
@@ -57,7 +58,9 @@ namespace MKW.Core.Client
                                                                     user.Salt,
                                                                     CommonCryptographyAlgorithms.Pbkdf2);
 
-                return OpenUserInternal(user, creds);
+                SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
+
+                return new UserSession(crypto, database, user, systemCreds.Transformer);
             }
         }
 
@@ -67,11 +70,15 @@ namespace MKW.Core.Client
             {
                 try
                 {
+                    SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
+
                     IUserCredentials creds = crypto.OpenUserCredentials(password,
                                                                         user.Salt,
                                                                         CommonCryptographyAlgorithms.Pbkdf2);
 
-                    return OpenUserInternal(database.OpenUser(user.Id), creds);
+                    SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
+
+                    return new UserSession(crypto, database, user, systemCreds.Transformer);
                 }
                 catch (Exceptions.InvalidPasswordException)
                 {
@@ -80,34 +87,6 @@ namespace MKW.Core.Client
             }
 
             throw new Exception("No valid user found with the provided password.");
-        }
-
-        private IUserSession OpenUserInternal(DatabaseUser user, IUserCredentials creds)
-        {
-            try
-            {
-                // Private data of the user is encrypted symmetrically using our creds (decoder
-                // also needs some data stored in the public section of the object).
-                using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
-                    creds.GetSecretKey().Span,
-                    user.Salt.Span,
-                    CommonCryptographyAlgorithms.Aes128Gcm);
-
-                // Let's try'N decode the private key. We could potentially fail here. So
-                // some validation may be required.
-                Memory<byte> privateKeyBytes = decoder.Decrypt(user.PrivateKey.EncryptedPayload.Span);
-
-                return new UserSession(crypto, database, user, privateKeyBytes.Span);
-            }
-            catch (SymmetricOperationFailedException ex)
-            {
-                throw new Exceptions.InvalidPasswordException(ex);
-            }
-            catch (InvalidKeyException ex)
-            {
-                // Possible occurrence, as experiments have shown. Fails in 1/~35 times.
-                throw new Exceptions.InvalidPasswordException(ex);
-            }
         }
 
         public IEnumerable<UserInfo> EnumerateUsers()
