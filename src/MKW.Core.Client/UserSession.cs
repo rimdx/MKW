@@ -73,11 +73,6 @@ namespace MKW.Core.Client
             return entryController.DeleteEntry(id);
         }
 
-        public EntryInfo UpdateEntry(EntryId id, EntryPayload? payload)
-        {
-            return entryController.UpdateEntry(id, payload);
-        }
-
         public IEnumerable<IEntrySession> EnumerateEntries()
         {
             foreach (IEntrySession entry in entryController.EnumerateEntries())
