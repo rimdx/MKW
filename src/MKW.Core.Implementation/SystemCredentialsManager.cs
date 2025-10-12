@@ -14,11 +14,13 @@ namespace MKW.Core.Implementation
         public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer();
+            IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
             // Symmetric encoder for secret section.
             using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(
-                userCredentials.GetSecretKey().Span, userCredentials.ExportSalt().Span);
+                userCredentials.GetSecretKey().Span,
+                userCredentials.ExportSalt().Span,
+                CommonCryptographyAlgorithms.Aes128Gcm);
 
             Memory<byte> privateKeyBytes = userKey.ExportPrivateKey();
             Memory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);

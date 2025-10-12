@@ -20,7 +20,7 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void DummySignTest()
         {
-            using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
+            using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
             Memory<byte> data = EncodingConverter.GetBytes("killmepls");
 
@@ -46,12 +46,15 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void SymmetricTransformerTests()
         {
-            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer();
+            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
 
             byte[] data = [1, 2, 3];
             Memory<byte> encrypted = key1.Encrypt(data);
 
-            ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(key1.ExportKey().Span, key1.ExportIV().Span);
+            ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(
+                key1.ExportKey().Span,
+                key1.ExportIV().Span,
+                CommonCryptographyAlgorithms.Aes128Gcm);
 
             CollectionAssert.AreEqual(data, key1.Decrypt(encrypted.Span).ToArray());
             CollectionAssert.AreEqual(data, key2.Decrypt(encrypted.Span).ToArray());
@@ -71,7 +74,7 @@ namespace MKW.Cryptography.Tests
         [TestCase(1024 * 1024, 2)] // 1 MB
         public void SymmetricTransformerRandomTests(int len, int extraTries)
         {
-            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer();
+            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
 
             byte[] data = new byte[len];
 
@@ -86,7 +89,7 @@ namespace MKW.Cryptography.Tests
             CollectionAssert.AreEqual(data, decrypted1.ToArray());
 
             ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(
-                key1.ExportKey().Span, key1.ExportIV().Span);
+                key1.ExportKey().Span, key1.ExportIV().Span, CommonCryptographyAlgorithms.Aes128Gcm);
 
             Memory<byte> encrypted2 = key2.Encrypt(data);
             Memory<byte> decrypted2 = key2.Decrypt(encrypted1.Span);
@@ -97,7 +100,9 @@ namespace MKW.Cryptography.Tests
             for (int i = 0; i < extraTries; i++)
             {
                 ISymmetricTransformer key3 = crypto.OpenSymmetricTransformer(
-                    key1.ExportKey().Span, key1.ExportIV().Span);
+                    key1.ExportKey().Span,
+                    key1.ExportIV().Span,
+                    CommonCryptographyAlgorithms.Aes128Gcm);
 
                 Memory<byte> encrypted3 = key3.Encrypt(data);
                 Memory<byte> decrypted3 = key3.Decrypt(encrypted3.Span);
@@ -110,13 +115,16 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerTests()
         {
-            ISymmetricTransformer symkey = crypto.CreateSymmetricTransformer();
-            IAsymmetricPrivateTransformer key = crypto.CreateAsymmetricTransformer();
+            ISymmetricTransformer symkey = crypto.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            IAsymmetricPrivateTransformer key = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
             Memory<byte> data = symkey.ExportKey();
             Memory<byte> encrypted = key.Encrypt(data.Span);
 
-            IAsymmetricPrivateTransformer decoder = crypto.OpenAsymmetricTransformer(key.ExportPublicKey().Span, key.ExportPrivateKey().Span);
+            IAsymmetricPrivateTransformer decoder = crypto.OpenAsymmetricTransformer(
+                key.ExportPublicKey().Span,
+                key.ExportPrivateKey().Span,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             CollectionAssert.AreEqual(data.ToArray(),
                                       key.Decrypt(encrypted.Span).ToArray());
@@ -127,7 +135,9 @@ namespace MKW.Cryptography.Tests
             CollectionAssert.AreNotEqual(key.Encrypt(data.Span).ToArray(),
                                          key.Encrypt(data.Span).ToArray());
 
-            IAsymmetricPublicTransformer encoder = crypto.OpenAsymmetricTransformer(key.ExportPublicKey().Span);
+            IAsymmetricPublicTransformer encoder = crypto.OpenAsymmetricTransformer(
+                key.ExportPublicKey().Span,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             Memory<byte> encrypted2 = key.Encrypt(data.Span);
             CollectionAssert.AreNotEqual(encrypted.ToArray(),
@@ -144,7 +154,7 @@ namespace MKW.Cryptography.Tests
         {
             for (int i = 0; i < 10; i++)
             {
-                using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
+                using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
                 _ = transformer.ExportPrivateKey();
                 _ = transformer.ExportPublicKey();
             }
@@ -154,19 +164,24 @@ namespace MKW.Cryptography.Tests
         [TestCase(5000)]
         public void AsymmetricTransformerOpenBenchmark(int iterations)
         {
-            using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer();
+            using IAsymmetricPrivateTransformer transformer = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
             Memory<byte> priv = transformer.ExportPrivateKey();
             Memory<byte> pub = transformer.ExportPublicKey();
 
             for (int i = 0; i < iterations; i++)
             {
-                using IAsymmetricPublicTransformer t2 = crypto.OpenAsymmetricTransformer(pub.Span);
+                using IAsymmetricPublicTransformer t2 = crypto.OpenAsymmetricTransformer(
+                    pub.Span,
+                    CommonCryptographyAlgorithms.Rsa2048);
             }
 
             for (int i = 0; i < iterations; i++)
             {
-                using IAsymmetricPrivateTransformer t2 = crypto.OpenAsymmetricTransformer(pub.Span, priv.Span);
+                using IAsymmetricPrivateTransformer t2 = crypto.OpenAsymmetricTransformer(
+                    pub.Span,
+                    priv.Span,
+                    CommonCryptographyAlgorithms.Rsa2048);
             }
         }
     }

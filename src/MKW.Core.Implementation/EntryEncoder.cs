@@ -21,7 +21,8 @@ namespace MKW.Core.Implementation
 
         public DatabaseEntry EncodeEntry(DatabaseEntry entry, EntryPayload payload)
         {
-            using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer();
+            using ISymmetricTransformer payloadEncoder = crypto.CreateSymmetricTransformer(
+                CommonCryptographyAlgorithms.Aes128Gcm);
 
             ReadOnlyMemory<byte> serializedPayload = EntryPayloadSerializer.Serialize(payload);
             ReadOnlyMemory<byte> data = payloadEncoder.Encrypt(serializedPayload.Span);
@@ -33,7 +34,8 @@ namespace MKW.Core.Implementation
                 DatabaseUser user = database.OpenUser(userId);
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
-                    user.PublicKey.Payload.Span);
+                    user.PublicKey.Payload.Span,
+                    CommonCryptographyAlgorithms.Rsa2048);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 

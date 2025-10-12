@@ -29,10 +29,17 @@ namespace MKW.Core.Client
         {
             this.database = database;
             this.user = user;
-            transformer = crypto.OpenAsymmetricTransformer(user.PublicKey.Payload.Span, privateKey);
+
+            transformer = crypto.OpenAsymmetricTransformer(
+                user.PublicKey.Payload.Span,
+                privateKey,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             DatabaseUser admin = database.OpenUser(UserId.Admin());
-            adminPublicKey = crypto.OpenAsymmetricTransformer(admin.PublicKey.Payload.Span);
+
+            adminPublicKey = crypto.OpenAsymmetricTransformer(
+                admin.PublicKey.Payload.Span,
+                CommonCryptographyAlgorithms.Rsa2048);
 
             entryController = new EntryController(crypto, database, this, transformer);
             metadata = new UserMetadataDecoder(adminPublicKey);

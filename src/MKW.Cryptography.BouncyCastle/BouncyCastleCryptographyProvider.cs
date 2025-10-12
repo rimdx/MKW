@@ -9,11 +9,6 @@ namespace MKW.Cryptography.BouncyCastle
         {
         }
 
-        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
-        {
-            return OpenSymmetricTransformer(key, iv, CommonCryptographyAlgorithms.Aes128Gcm);
-        }
-
         public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key,
                                                               ReadOnlySpan<byte> iv,
                                                               SymmetricAlgorithmConfiguration config)
@@ -68,11 +63,6 @@ namespace MKW.Cryptography.BouncyCastle
             AsymmetricCipherKeyPair key = keyPairGen.GenerateKeyPair();
 
             return new RsaAsymmetricTransformer(key.Public, key.Private, config);
-        }
-
-        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer()
-        {
-            return CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
         }
 
         public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
