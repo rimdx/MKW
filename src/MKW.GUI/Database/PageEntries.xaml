@@ -55,28 +55,8 @@
       </ListView.ContextMenu>
 
       <ListView.View>
-        <GridView>
-          <GridView.Columns>
-            <GridViewColumn Header="Title"
-                            Width="175"
-                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:title].DisplayValue}" />
-
-            <GridViewColumn Header="User Name"
-                            Width="175"
-                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:username].DisplayValue}" />
-
-            <GridViewColumn Header="Password"
-                            Width="150"
-                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:password].DisplayValue}" />
-
-            <GridViewColumn Header="URL"
-                            Width="150"
-                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:url].DisplayValue}" />
-
-            <GridViewColumn Header="Notes"
-                            Width="225"
-                            DisplayMemberBinding="{Binding EntryEditorModel.Properties[mkw:notes].DisplayValue}" />
-          </GridView.Columns>
+        <GridView x:Name="gridView"
+                  x:FieldModifier="private">
         </GridView>
       </ListView.View>
     </ListView>

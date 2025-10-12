@@ -5,6 +5,7 @@ using MKW.GUI.ExportWizard;
 using MKW.GUI.ImportWizard;
 using MKW.GUI.Model;
 using MKW.GUI.RequestAccessWizard;
+using System.Collections.ObjectModel;
 
 namespace MKW.GUI.Database
 {
@@ -15,6 +16,15 @@ namespace MKW.GUI.Database
         public DatabaseUnlockedViewModel(DatabaseUnlockedModel database)
         {
             this.database = database;
+
+            Columns = new ObservableCollection<EntryListColumn>()
+            {
+                new EntryListColumn("Title", 175, "mkw:title"),
+                new EntryListColumn("User Name", 175,  "mkw:username"),
+                new EntryListColumn("Password", 150,  "mkw:password"),
+                new EntryListColumn("URL", 150, "mkw:url"),
+                new EntryListColumn("Notes", 225, "mkw:notes"),
+            };
 
             Entries = new DatabaseEntryCollectionViewModel(database);
             Users = new DatabaseUserCollectionViewModel(database.Database);
@@ -87,6 +97,8 @@ namespace MKW.GUI.Database
         }
 
         public bool IsUserSelected => _selectedUser != null;
+
+        public ObservableCollection<EntryListColumn> Columns { get; }
 
         // Entry
 
