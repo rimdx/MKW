@@ -1,26 +1,24 @@
-﻿using MKW.Cryptography;
-using MKW.Cryptography.Loader;
-using MKW.GUI.Model;
+﻿using MKW.GUI.Model;
 
 namespace MKW.GUI
 {
     public class AppModel
     {
-        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly DocumentTable documentTable;
 
         public AppModel()
         {
-            cryptographyProvider = CryptographyLoader.GetProvider();
+            documentTable = new DocumentTable();
         }
 
         public DatabaseModel CreateDatabase(string databasePath, string password)
         {
-            return DatabaseModel.Create(cryptographyProvider, databasePath, password);
+            return documentTable.CreateDatabase(databasePath, password);
         }
 
         public DatabaseModel OpenDatabase(string filename)
         {
-            return DatabaseModel.Open(cryptographyProvider, filename);
+            return documentTable.OpenTable(filename);
         }
     }
 }
