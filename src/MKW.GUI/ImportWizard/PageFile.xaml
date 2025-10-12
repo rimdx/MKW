@@ -6,7 +6,7 @@
                    xmlns:gui="clr-namespace:MKW.GUI"
                    xmlns:local="clr-namespace:MKW.GUI.ImportWizard"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
-                   xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+                   xmlns:controls="clr-namespace:MKW.GUI.Controls"
                    xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                    d:DataContext="{d:DesignInstance Type=local:ImportWizardViewModel}"
@@ -34,7 +34,7 @@
                  d:Text="C:\tima\Documents\backup.xml"
                  Padding="3"
                  Margin="0,0,3,0"
-                 behaviors:TextBoxBehavior.SelectAllTextOnFocus="True" />
+                 controls:TextBoxBehavior.SelectAllTextOnFocus="True" />
 
         <Button Grid.Column="1" Padding="6,0"
                 Command="{x:Static gui:AppCommands.PickFile}">

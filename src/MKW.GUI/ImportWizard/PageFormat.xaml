@@ -6,7 +6,6 @@
                    xmlns:gui="clr-namespace:MKW.GUI"
                    xmlns:local="clr-namespace:MKW.GUI.ImportWizard"
                    xmlns:wizard="clr-namespace:MKW.GUI.Wizard"
-                   xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
                    xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
                    xmlns:model="clr-namespace:MKW.GUI.Model"
                    xmlns:backup="clr-namespace:MKW.GUI.Backup"
