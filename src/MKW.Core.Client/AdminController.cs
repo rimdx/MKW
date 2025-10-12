@@ -1,7 +1,6 @@
 ﻿using MKW.Core.Implementation;
 using MKW.Core.Storage;
 using MKW.Cryptography;
-using MKW.Cryptography.Exceptions;
 
 namespace MKW.Core.Client
 {
@@ -45,32 +44,17 @@ namespace MKW.Core.Client
 
         public IAdminSession OpenAdmin(string password)
         {
-            try
-            {
-                DatabaseUser admin = database.OpenUser(UserId.Admin());
+            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-                IUserCredentials creds = crypto.OpenUserCredentials(password,
-                                                                    admin.Salt,
-                                                                    CommonCryptographyAlgorithms.Pbkdf2);
+            DatabaseUser admin = database.OpenUser(UserId.Admin());
 
-                using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
-                    creds.GetSecretKey().Span,
-                    admin.Salt.Span,
-                    CommonCryptographyAlgorithms.Aes128Gcm);
+            IUserCredentials creds = crypto.OpenUserCredentials(password,
+                                                                admin.Salt,
+                                                                CommonCryptographyAlgorithms.Pbkdf2);
 
-                Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.EncryptedPayload.Span);
+            SystemCredentials systemCreds = credManager.OpenCredentials(admin, creds);
 
-                return new AdminSession(crypto, database, admin, privateKeyBytes.Span);
-            }
-            catch (SymmetricOperationFailedException ex)
-            {
-                throw new Exceptions.InvalidPasswordException(ex);
-            }
-            catch (InvalidKeyException ex)
-            {
-                // Possible occurrence, as experiments have shown. Fails in 1/~35 times.
-                throw new Exceptions.InvalidPasswordException(ex);
-            }
+            return new AdminSession(crypto, database, admin, systemCreds.Transformer);
         }
 
         public UserInfo GetAdminInfo()

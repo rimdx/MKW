@@ -24,16 +24,12 @@ namespace MKW.Core.Client
         public AdminSession(ICryptographyProvider crypto,
                             IDatabase database,
                             DatabaseUser admin,
-                            ReadOnlySpan<byte> privateKey)
+                            IAsymmetricPrivateTransformer transformer)
         {
             this.crypto = crypto;
             this.database = database;
             this.admin = admin;
-
-            transformer = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span,
-                privateKey,
-                CommonCryptographyAlgorithms.Rsa2048);
+            this.transformer = transformer;
 
             metadata = new UserMetadataDecoder(transformer);
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
