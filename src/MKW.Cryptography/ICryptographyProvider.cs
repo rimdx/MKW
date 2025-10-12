@@ -17,8 +17,12 @@
                                                        ReadOnlySpan<byte> iv,
                                                        SymmetricAlgorithmConfiguration config);
 
-        IUserCredentials CreateUserCredentials(string password);
-        IUserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt);
+        IUserCredentials CreateUserCredentials(string password,
+                                               PasswordDerivationConfiguration config);
+
+        IUserCredentials OpenUserCredentials(string password,
+                                             ReadOnlyMemory<byte> salt,
+                                             PasswordDerivationConfiguration config);
 
         IRandomGenerator CreateRandomGenerator();
     }

@@ -114,14 +114,30 @@ namespace MKW.Cryptography.BouncyCastle
             return OpenAsymmetricTransformer(publicKey, CommonCryptographyAlgorithms.Rsa2048);
         }
 
-        public IUserCredentials CreateUserCredentials(string password)
+        public IUserCredentials CreateUserCredentials(string password,
+                                                      PasswordDerivationConfiguration config)
         {
-            return UserCredentials.Create(password);
+            IRandomGenerator random = CreateRandomGenerator();
+
+            ReadOnlyMemory<byte> salt = random.NextBytes(config.SaltSizeBits / 8);
+            ReadOnlyMemory<byte> passwordBytes = EncodingConverter.GetBytes(password);
+
+            return config.Engine switch
+            {
+                PasswordDerivationEngine.Pbkdf2 => new UserCredentials(passwordBytes, salt, config),
+            };
         }
 
-        public IUserCredentials OpenUserCredentials(string password, ReadOnlyMemory<byte> salt)
+        public IUserCredentials OpenUserCredentials(string password,
+                                                    ReadOnlyMemory<byte> salt,
+                                                    PasswordDerivationConfiguration config)
         {
-            return UserCredentials.Open(password, salt);
+            ReadOnlyMemory<byte> passwordBytes = EncodingConverter.GetBytes(password);
+
+            return config.Engine switch
+            {
+                PasswordDerivationEngine.Pbkdf2 => new UserCredentials(passwordBytes, salt, config),
+            };
         }
 
         public IRandomGenerator CreateRandomGenerator()
