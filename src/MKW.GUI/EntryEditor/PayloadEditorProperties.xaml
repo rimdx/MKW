@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MKW.GUI.EntryEditor"
              xmlns:gui="clr-namespace:MKW.GUI"
-             xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+             xmlns:controls="clr-namespace:MKW.GUI.Controls"
              xmlns:model="clr-namespace:MKW.GUI.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:EntryEditorViewModelBase}"
@@ -33,7 +33,7 @@
               Style="{StaticResource GridViewStyle}"
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               MouseDoubleClick="PropertiesListView_MouseDoubleClick"
-              behaviors:ListViewBehavior.DeselectOnClickAway="True">
+              controls:ListViewBehavior.DeselectOnClickAway="True">
       <ListView.View>
         <GridView>
           <GridView.Columns>

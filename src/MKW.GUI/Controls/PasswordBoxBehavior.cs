@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace MKW.GUI.Behaviors
+namespace MKW.GUI.Controls
 {
-    public static class TextBoxBehavior
+    public class PasswordBoxBehavior
     {
         public const string SelectAllTextOnFocusPropertyPropertyName = "SelectAllTextOnFocus";
 
@@ -12,7 +12,7 @@ namespace MKW.GUI.Behaviors
             DependencyProperty.RegisterAttached(
                 "SelectAllTextOnFocusPropertyPropertyName",
                 typeof(bool),
-                typeof(TextBoxBehavior),
+                typeof(PasswordBoxBehavior),
                 new UIPropertyMetadata(false, OnSelectAllTextOnFocusChanged));
 
         public static void SetSelectAllTextOnFocus(UIElement element, bool value)
@@ -27,35 +27,35 @@ namespace MKW.GUI.Behaviors
 
         private static void OnSelectAllTextOnFocusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TextBox textBox && e.NewValue is bool newValue)
+            if (d is PasswordBox input && e.NewValue is bool newValue)
             {
                 if (newValue)
                 {
-                    textBox.GotFocus += TextBox_GotFocus;
-                    textBox.PreviewMouseDown += TextBox_PreviewMouseDown;
+                    input.GotFocus += PasswordBox_GotFocus;
+                    input.PreviewMouseDown += PasswordBox_PreviewMouseDown;
                 }
                 else
                 {
-                    textBox.GotFocus -= TextBox_GotFocus;
-                    textBox.PreviewMouseDown -= TextBox_PreviewMouseDown;
+                    input.GotFocus -= PasswordBox_GotFocus;
+                    input.PreviewMouseDown -= PasswordBox_PreviewMouseDown;
                 }
             }
         }
 
-        private static void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        private static void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox? textBox = e.OriginalSource as TextBox;
-            textBox?.SelectAll();
+            PasswordBox? input = e.OriginalSource as PasswordBox;
+            input?.SelectAll();
         }
 
-        private static void TextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private static void PasswordBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is TextBox textBox)
+            if (sender is PasswordBox input)
             {
-                if (textBox.IsReadOnly || !textBox.IsKeyboardFocusWithin)
+                if (!input.IsKeyboardFocusWithin)
                 {
                     e.Handled = true;
-                    textBox.Focus();
+                    input.Focus();
                 }
             }
         }

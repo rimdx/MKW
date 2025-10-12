@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MKW.GUI.Database"
              xmlns:gui="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
-             xmlns:behaviors="clr-namespace:MKW.GUI.Behaviors"
+             xmlns:controls="clr-namespace:MKW.GUI.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseUnlockedViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -21,7 +21,7 @@
               BorderThickness="0"
               MouseDoubleClick="EntryListView_MouseDoubleClick"
               SnapsToDevicePixels="True"
-              behaviors:ListViewBehavior.DeselectOnClickAway="True">
+              controls:ListViewBehavior.DeselectOnClickAway="True">
 
       <ListView.ContextMenu>
         <ContextMenu>
