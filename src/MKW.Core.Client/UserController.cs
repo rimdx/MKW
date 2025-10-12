@@ -5,7 +5,7 @@ using MKW.Cryptography.Exceptions;
 
 namespace MKW.Core.Client
 {
-    internal sealed class UserController : IUserController, IDisposable
+    internal sealed class UserController : IDisposable
     {
         private readonly ClientSession client;
         private readonly ICryptographyProvider crypto;
