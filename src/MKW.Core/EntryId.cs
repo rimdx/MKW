@@ -1,6 +1,6 @@
 ﻿namespace MKW.Core
 {
-    public record class EntryId
+    public record class EntryId : IComparable<EntryId>
     {
         private readonly Guid id;
 
@@ -27,6 +27,11 @@
         public static EntryId Create()
         {
             return new EntryId(Guid.NewGuid());
+        }
+
+        public int CompareTo(EntryId? other)
+        {
+            return id.CompareTo(other?.id);
         }
     }
 }
