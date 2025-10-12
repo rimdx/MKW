@@ -4,7 +4,7 @@ using MKW.Cryptography;
 
 namespace MKW.Core.Client
 {
-    public class ClientSession : IUserController, IAdminController, IDisposable
+    public class ClientSession : IDisposable
     {
         public IDatabase Database { get; }
 
