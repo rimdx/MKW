@@ -1,6 +1,8 @@
 ﻿using MKW.GUI.EntryEditor;
+using MKW.GUI.Model;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace MKW.GUI.Database
@@ -14,6 +16,20 @@ namespace MKW.GUI.Database
             this.model = model;
             DataContext = model;
             InitializeComponent();
+
+            foreach (EntryListColumn column in model.Columns)
+            {
+                gridView.Columns.Add(
+                    new GridViewColumn()
+                    {
+                        Header = column.Header,
+                        Width = column.Width,
+                        DisplayMemberBinding = new Binding()
+                        {
+                            Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].DisplayValue", column.PropertyName)
+                        }
+                    });
+            }
         }
 
         private void EntryListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
