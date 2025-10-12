@@ -55,7 +55,7 @@ namespace MKW.Core.Client
 
                 using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(
                     creds.GetSecretKey().Span,
-                    creds.ExportSalt().Span,
+                    admin.Salt.Span,
                     CommonCryptographyAlgorithms.Aes128Gcm);
 
                 Memory<byte> privateKeyBytes = decoder.Decrypt(admin.PrivateKey.EncryptedPayload.Span);
