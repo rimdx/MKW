@@ -5,6 +5,7 @@
         private string header;
         private double width;
         private string propertyName;
+        private bool hideValue;
 
         public EntryListColumn(string header, int width, string propertyName)
         {
@@ -29,6 +30,12 @@
         { 
             get => propertyName;
             set => SetProperty(ref propertyName, value);
+        }
+
+        public bool HideValue
+        {
+            get => hideValue;
+            set => SetProperty(ref hideValue, value);
         }
     }
 }
