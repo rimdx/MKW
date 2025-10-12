@@ -38,8 +38,10 @@ namespace MKW.GUI
                 {
                     try
                     {
-                        IDocumentLock document = appModel.OpenDatabase(file);
-                        AddDatabaseTab(document);
+                        using (IDocumentLock document = appModel.OpenDatabase(file))
+                        {
+                            AddDatabaseTab(document);
+                        }
                     }
                     catch
                     {
@@ -74,37 +76,39 @@ namespace MKW.GUI
         {
             DatabaseTabItemViewModel? tabViewModel;
 
-            tabViewModel = GetDatabaseByPath(databasePath);
-            if (tabViewModel == null)
+            using (IDocumentLock document = appModel.OpenDatabase(databasePath))
             {
-                IDocumentLock document = appModel.OpenDatabase(databasePath);
-
-                tabViewModel = AddDatabaseTab(document);
-
-                try
+                tabViewModel = GetTabItemByDocument(document);
+                if (tabViewModel == null)
                 {
-                    UpdateOpenFilesList();
+                    tabViewModel = AddDatabaseTab(document);
+
+                    try
+                    {
+                        UpdateOpenFilesList();
+                    }
+                    catch
+                    {
+                    }
                 }
-                catch
-                {
-                }
+
+                SelectedTab = tabViewModel;
+
+                recentFilesService.OnFileOpened(databasePath);
+
+                return tabViewModel;
             }
-
-            SelectedTab = tabViewModel;
-
-            recentFilesService.OnFileOpened(databasePath);
-
-            return tabViewModel;
         }
 
         public void CreateDatabase(string databasePath, string password)
         {
             recentFilesService.OnFileOpened(databasePath);
 
-            IDocumentLock document = appModel.CreateDatabase(databasePath, password);
-
-            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(document);
-            SelectedTab = tabViewModel;
+            using (IDocumentLock document = appModel.CreateDatabase(databasePath, password))
+            {
+                DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(document);
+                SelectedTab = tabViewModel;
+            }
 
             try
             {
@@ -115,29 +119,11 @@ namespace MKW.GUI
             }
         }
 
-        private void OpenDatabaseInternal(IDocumentLock document)
+        private DatabaseTabItemViewModel? GetTabItemByDocument(IDocumentLock document)
         {
-            recentFilesService.OnFileOpened(document.Database.Path);
-
-            DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(document);
-            SelectedTab = tabViewModel;
-
-            try
-            {
-                UpdateOpenFilesList();
-            }
-            catch
-            {
-            }
-        }
-
-        private DatabaseTabItemViewModel? GetDatabaseByPath(string path)
-        {
-            string fullPath = Path.GetFullPath(path);
-
             foreach (DatabaseTabItemViewModel tabItem in TabItems)
             {
-                if (string.Compare(Path.GetFullPath(tabItem.DatabaseViewModel.Database.Path), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
+                if (tabItem.DatabaseViewModel.Database == document.Database)
                 {
                     return tabItem;
                 }
@@ -221,14 +207,27 @@ namespace MKW.GUI
             {
                 try
                 {
-                    DatabaseTabItemViewModel? tabItem = GetDatabaseByPath(path);
-                    if (tabItem != null)
+                    using (IDocumentLock document = appModel.OpenDatabase(path))
                     {
+                        DatabaseTabItemViewModel? tabItem = GetTabItemByDocument(document);
+                        if (tabItem != null)
+                        {
+                            SelectedTab = tabItem;
+                        }
+                        else
+                        {
+                            AddDatabaseTab(document);
+                        }
+
                         SelectedTab = tabItem;
-                    }
-                    else
-                    {
-                        OpenDatabaseInternal(appModel.OpenDatabase(path));
+
+                        try
+                        {
+                            UpdateOpenFilesList();
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
                 catch

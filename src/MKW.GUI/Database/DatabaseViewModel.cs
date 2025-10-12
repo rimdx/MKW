@@ -11,9 +11,17 @@ namespace MKW.GUI.Database
 
         public DatabaseViewModel(IDocumentLock documentLock)
         {
-            this.documentLock = documentLock;
-            Database.PropertyChanged += Database_PropertyChanged;
-            contentView = UpdateContentView();
+            try
+            {
+                this.documentLock = documentLock.Clone();
+                Database.PropertyChanged += Database_PropertyChanged;
+                contentView = UpdateContentView();
+            }
+            catch
+            {
+                Dispose();
+                throw;
+            }
         }
 
         private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -40,7 +48,7 @@ namespace MKW.GUI.Database
 
         public void Dispose()
         {
-            documentLock.Dispose();
+            documentLock?.Dispose();
         }
 
         private object contentView;
