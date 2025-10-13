@@ -32,9 +32,24 @@ namespace MKW.GUI.Database
             database.PropertyChanged -= Database_PropertyChanged;
         }
 
-        protected override EntryListViewModel CreateViewModel(EntryEditorModel item) => new EntryListViewModel(item);
-        protected override void UpdateViewModel(EntryListViewModel viewModel, EntryEditorModel item) => viewModel.EntryEditorModel = item;
-        protected override object GetViewModelKey(EntryListViewModel viewModel) => viewModel.EntryEditorModel.Id;
-        protected override object GetItemKey(EntryEditorModel item) => item.Id;
+        protected override EntryListViewModel CreateViewModel(EntryEditorModel item)
+        {
+            return new EntryListViewModel(item);
+        }
+
+        protected override void UpdateViewModel(EntryListViewModel viewModel, EntryEditorModel item)
+        {
+            viewModel.EntryEditorModel = item;
+        }
+
+        protected override object GetViewModelKey(EntryListViewModel viewModel)
+        {
+            return viewModel.EntryEditorModel.Id;
+        }
+
+        protected override object GetItemKey(EntryEditorModel item)
+        {
+            return item.Id;
+        }
     }
 }
