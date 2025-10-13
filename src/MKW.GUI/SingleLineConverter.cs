@@ -25,7 +25,7 @@ namespace MKW.GUI
             return null;
         }
 
-        private static string CompactText(string text)
+        public static string CompactText(string text)
         {
             StringBuilder sb = new StringBuilder();
 
