@@ -20,8 +20,8 @@ namespace MKW.GUI.Database
             Columns = new ObservableCollection<EntryListColumn>()
             {
                 new EntryListColumn("Title", 175, "mkw:title"),
-                new EntryListColumn("User Name", 175,  "mkw:username"),
-                new EntryListColumn("Password", 150,  "mkw:password")
+                new EntryListColumn("User Name", 175, "mkw:username"),
+                new EntryListColumn("Password", 150, "mkw:password")
                 {
                     HideValue = true,
                 },
