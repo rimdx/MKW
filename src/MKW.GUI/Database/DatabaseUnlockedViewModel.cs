@@ -17,8 +17,8 @@ namespace MKW.GUI.Database
         {
             this.database = database;
 
-            Columns = new ObservableCollection<EntryListColumn>()
-            {
+            Columns =
+            [
                 new EntryListColumn("Title", 175, "mkw:title"),
                 new EntryListColumn("User Name", 175, "mkw:username"),
                 new EntryListColumn("Password", 150, "mkw:password")
@@ -27,7 +27,7 @@ namespace MKW.GUI.Database
                 },
                 new EntryListColumn("URL", 150, "mkw:url"),
                 new EntryListColumn("Notes", 225, "mkw:notes"),
-            };
+            ];
 
             Entries = new DatabaseEntryCollectionViewModel(database);
             Users = new DatabaseUserCollectionViewModel(database.Database);
