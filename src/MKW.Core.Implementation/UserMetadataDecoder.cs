@@ -1,6 +1,6 @@
 ﻿using MKW.Core.Exceptions;
 using MKW.Core.Serialization;
-using MKW.Core.Storage;
+using MKW.Storage;
 using MKW.Cryptography;
 
 namespace MKW.Core.Implementation

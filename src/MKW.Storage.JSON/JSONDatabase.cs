@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MKW.Core.Storage.JSON
+namespace MKW.Storage.JSON
 {
     internal sealed class JSONDatabase
     {

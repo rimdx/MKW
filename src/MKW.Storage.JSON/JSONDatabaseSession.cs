@@ -1,7 +1,7 @@
 ﻿using MKW.Common;
 using System.Text.Json;
 
-namespace MKW.Core.Storage.JSON
+namespace MKW.Storage.JSON
 {
     public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase
     {

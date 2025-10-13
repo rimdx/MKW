@@ -1,5 +1,5 @@
 ﻿using MKW.Core.Implementation;
-using MKW.Core.Storage;
+using MKW.Storage;
 using MKW.Cryptography;
 
 namespace MKW.Core.Client

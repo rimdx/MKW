@@ -1,6 +1,6 @@
 ﻿using MKW.Core;
-using MKW.Core.Storage;
-using MKW.Core.Storage.JSON;
+using MKW.Storage;
+using MKW.Storage.JSON;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 using System.Diagnostics;
