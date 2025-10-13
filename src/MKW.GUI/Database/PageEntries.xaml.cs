@@ -17,6 +17,7 @@ namespace MKW.GUI.Database
             DataContext = model;
             InitializeComponent();
 
+            // TODO: Factor-out into a separate object.
             foreach (EntryListColumn column in model.Columns)
             {
                 GridViewColumn gridViewColumn = new GridViewColumn();
