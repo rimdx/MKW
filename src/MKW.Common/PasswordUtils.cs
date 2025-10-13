@@ -4,7 +4,7 @@ namespace MKW.Common
 {
     public class PasswordUtils
     {
-        private static readonly string[] categories = 
+        private static readonly string[] categories =
             [
                 "0123456789",
                 "abcdefghijklmnopqrstuvwxyz",

@@ -13,7 +13,7 @@ namespace MKW.Tests
         public void SimpleTest()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using IDatabase db = sbox.OpenDatabase(); 
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession client = sbox.OpenSession(db);
 
             UserAccessRequest req1 = client.CreateUserAccessRequest("abc");

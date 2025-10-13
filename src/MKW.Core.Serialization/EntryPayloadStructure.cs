@@ -16,7 +16,7 @@ namespace MKW.Core.Serialization
 
         public EntryPayloadStructure(Asn1Sequence sequence)
         {
-            using var reader = new Asn1SequenceReader(sequence);
+            using Asn1SequenceReader reader = new Asn1SequenceReader(sequence);
 
             version.ConsumeVersion(reader.Next());
 

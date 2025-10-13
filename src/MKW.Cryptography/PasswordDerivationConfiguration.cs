@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace MKW.Cryptography
+﻿namespace MKW.Cryptography
 {
     public sealed record class PasswordDerivationConfiguration
     {
