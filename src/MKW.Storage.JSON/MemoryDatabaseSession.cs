@@ -1,4 +1,6 @@
-﻿namespace MKW.Core.Storage.JSON
+﻿using MKW.Core;
+
+namespace MKW.Storage.JSON
 {
     public class MemoryDatabaseSession : IDatabase, IDisposable
     {

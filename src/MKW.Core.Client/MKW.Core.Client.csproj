@@ -6,7 +6,7 @@
     <ProjectReference Include="..\MKW.Core.Implementation\MKW.Core.Implementation.csproj" />
     <ProjectReference Include="..\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
     <ProjectReference Include="..\MKW.Cryptography\MKW.Cryptography.csproj" />
-    <ProjectReference Include="..\MKW.Core.Storage\MKW.Core.Storage.csproj" />
+    <ProjectReference Include="..\MKW.Storage\MKW.Storage.csproj" />
   </ItemGroup>
 
   <ItemGroup>

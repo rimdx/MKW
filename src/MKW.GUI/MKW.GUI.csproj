@@ -20,7 +20,7 @@
     <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
     <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
     <ProjectReference Include="..\MKW.GUI.Images\MKW.GUI.Images.csproj" />
-    <ProjectReference Include="..\MKW.Core.Storage.JSON\MKW.Core.Storage.JSON.csproj" />
+    <ProjectReference Include="..\MKW.Storage.JSON\MKW.Storage.JSON.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

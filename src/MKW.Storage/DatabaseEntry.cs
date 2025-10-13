@@ -1,4 +1,6 @@
-﻿namespace MKW.Core.Storage
+﻿using MKW.Core;
+
+namespace MKW.Storage
 {
     public record class DatabaseEntry
     {
