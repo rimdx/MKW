@@ -66,7 +66,7 @@ namespace MKW.GUI.Model
                     EntryPayload? payload = entry.OpenPayload();
 
                     yield return new EntryEditorModel(entry.Id, payload,
-                                                                 CommonPropertiesModel);
+                                                      CommonPropertiesModel);
                 }
             }
             else
