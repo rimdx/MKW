@@ -14,20 +14,20 @@
             this.propertyName = propertyName;
         }
 
-        public string Header 
-        { 
+        public string Header
+        {
             get => header;
             set => SetProperty(ref header, value);
         }
 
-        public double Width 
-        { 
+        public double Width
+        {
             get => width;
             set => SetProperty(ref width, value);
         }
 
-        public string PropertyName 
-        { 
+        public string PropertyName
+        {
             get => propertyName;
             set => SetProperty(ref propertyName, value);
         }
