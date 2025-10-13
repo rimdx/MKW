@@ -38,10 +38,8 @@ namespace MKW.GUI
                 {
                     try
                     {
-                        using (IDocumentLock document = appModel.OpenDatabase(file))
-                        {
-                            AddDatabaseTab(document);
-                        }
+                        using IDocumentLock document = appModel.OpenDatabase(file);
+                        AddDatabaseTab(document);
                     }
                     catch
                     {
@@ -76,28 +74,26 @@ namespace MKW.GUI
         {
             DatabaseTabItemViewModel? tabViewModel;
 
-            using (IDocumentLock document = appModel.OpenDatabase(databasePath))
+            using IDocumentLock document = appModel.OpenDatabase(databasePath);
+            tabViewModel = GetTabItemByDocument(document);
+            if (tabViewModel == null)
             {
-                tabViewModel = GetTabItemByDocument(document);
-                if (tabViewModel == null)
+                tabViewModel = AddDatabaseTab(document);
+
+                try
                 {
-                    tabViewModel = AddDatabaseTab(document);
-
-                    try
-                    {
-                        UpdateOpenFilesList();
-                    }
-                    catch
-                    {
-                    }
+                    UpdateOpenFilesList();
                 }
-
-                SelectedTab = tabViewModel;
-
-                recentFilesService.OnFileOpened(databasePath);
-
-                return tabViewModel;
+                catch
+                {
+                }
             }
+
+            SelectedTab = tabViewModel;
+
+            recentFilesService.OnFileOpened(databasePath);
+
+            return tabViewModel;
         }
 
         public void CreateDatabase(string databasePath, string password)
@@ -207,27 +203,25 @@ namespace MKW.GUI
             {
                 try
                 {
-                    using (IDocumentLock document = appModel.OpenDatabase(path))
+                    using IDocumentLock document = appModel.OpenDatabase(path);
+                    DatabaseTabItemViewModel? tabItem = GetTabItemByDocument(document);
+                    if (tabItem != null)
                     {
-                        DatabaseTabItemViewModel? tabItem = GetTabItemByDocument(document);
-                        if (tabItem != null)
-                        {
-                            SelectedTab = tabItem;
-                        }
-                        else
-                        {
-                            AddDatabaseTab(document);
-                        }
-
                         SelectedTab = tabItem;
+                    }
+                    else
+                    {
+                        AddDatabaseTab(document);
+                    }
 
-                        try
-                        {
-                            UpdateOpenFilesList();
-                        }
-                        catch
-                        {
-                        }
+                    SelectedTab = tabItem;
+
+                    try
+                    {
+                        UpdateOpenFilesList();
+                    }
+                    catch
+                    {
                     }
                 }
                 catch

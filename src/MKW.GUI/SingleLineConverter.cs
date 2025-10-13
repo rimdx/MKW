@@ -30,7 +30,7 @@ namespace MKW.GUI
             StringBuilder sb = new StringBuilder();
 
             bool hasWhitespace = false;
-            foreach (var ch in text)
+            foreach (char ch in text)
             {
                 if (char.IsWhiteSpace(ch))
                 {
