@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MKW.Storage\MKW.Storage.csproj" />
+    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\MKW.Cryptography.BouncyCastle.NETFramework\MKW.Cryptography.BouncyCastle.NETFramework.projitems" Label="Shared" />
+
+</Project>
