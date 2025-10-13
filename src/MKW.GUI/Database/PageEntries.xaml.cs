@@ -21,8 +21,21 @@ namespace MKW.GUI.Database
             {
                 GridViewColumn gridViewColumn = new GridViewColumn();
 
-                BindingOperations.SetBinding(gridViewColumn, GridViewColumn.HeaderProperty, new Binding(nameof(column.Header)) { Source = column, Mode = BindingMode.OneWay });
-                BindingOperations.SetBinding(gridViewColumn, GridViewColumn.WidthProperty, new Binding(nameof(column.Width)) { Source = column, Mode = BindingMode.TwoWay });
+                BindingOperations.SetBinding(gridViewColumn,
+                                             GridViewColumn.HeaderProperty,
+                                             new Binding(nameof(column.Header))
+                                             {
+                                                 Source = column,
+                                                 Mode = BindingMode.OneWay
+                                             });
+
+                BindingOperations.SetBinding(gridViewColumn,
+                                             GridViewColumn.WidthProperty,
+                                             new Binding(nameof(column.Width))
+                                             {
+                                                 Source = column,
+                                                 Mode = BindingMode.TwoWay
+                                             });
 
                 gridViewColumn.CellTemplate = MakeCellTemplate(column);
 
