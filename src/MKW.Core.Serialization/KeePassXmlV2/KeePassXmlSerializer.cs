@@ -4,7 +4,7 @@ namespace MKW.Core.Serialization.KeePassXmlV2
 {
     internal static class KeePassXmlSerializer
     {
-        private static Lazy<XmlSerializer> serializer = new Lazy<XmlSerializer>(static () =>
+        private static readonly Lazy<XmlSerializer> serializer = new Lazy<XmlSerializer>(static () =>
         {
             return new XmlSerializer(typeof(KeePassFile));
         });

@@ -20,19 +20,17 @@ namespace MKW.Core.Serialization
         public static UserAccessRequest Deserialize(string data)
         {
             using StringReader text = new StringReader(data);
+            using PemReader pem = new PemReader(text, Type);
 
-            using (PemReader pem = new PemReader(text, Type))
+            try
             {
-                try
-                {
-                    Asn1Sequence sequence = Asn1Sequence.GetInstance(pem.ReadObject());
-                    UserAccessRequestStructure structure = new UserAccessRequestStructure(sequence);
-                    return structure.GetValue();
-                }
-                catch (Exception ex)
-                {
-                    throw new Exceptions.InvalidUserAccessRequestException(ex);
-                }
+                Asn1Sequence sequence = Asn1Sequence.GetInstance(pem.ReadObject());
+                UserAccessRequestStructure structure = new UserAccessRequestStructure(sequence);
+                return structure.GetValue();
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.InvalidUserAccessRequestException(ex);
             }
         }
     }

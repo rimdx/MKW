@@ -60,7 +60,7 @@ namespace MKW.Tests
         public void OpenAdminAsUser()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using IDatabase db = sbox.OpenDatabase(); 
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession client = sbox.OpenSession(db);
 
             using (IUserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
@@ -76,7 +76,7 @@ namespace MKW.Tests
         public void NewEntriesAreSharedWithAdminTest()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using IDatabase db = sbox.OpenDatabase(); 
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession client = sbox.OpenSession(db);
 
             EntryId entryId;
@@ -117,7 +117,7 @@ namespace MKW.Tests
         public void ShareAllEntriesWithNewUsers()
         {
             using ClientSandBox sbox = new ClientSandBox();
-            using IDatabase db = sbox.OpenDatabase(); 
+            using IDatabase db = sbox.OpenDatabase();
             using ClientSession client = sbox.OpenSession(db);
 
             using IAdminSession admin = sbox.OpenAdmin(client);

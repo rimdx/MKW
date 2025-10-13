@@ -24,7 +24,7 @@ namespace MKW.Core
         {
             Dictionary<EntryPayloadKey, string> dict = new Dictionary<EntryPayloadKey, string>(items.Count);
 
-            foreach (var item in items)
+            foreach (KeyValuePair<EntryPayloadKey, string> item in items)
             {
                 dict[item.Key] = item.Value;
             }

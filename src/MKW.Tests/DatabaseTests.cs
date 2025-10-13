@@ -113,7 +113,7 @@ namespace MKW.Tests
                 }
 
                 Assert.Fail("WaitForDatabaseChangesAsync must fail");
-            };
+            }
 
             Task task = WaitForChanges();
 

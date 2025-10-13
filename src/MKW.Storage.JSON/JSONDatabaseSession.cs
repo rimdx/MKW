@@ -53,7 +53,7 @@ namespace MKW.Storage.JSON
                         task.TrySetResult(true);
                     }
                 }
-            };
+            }
 
             try
             {

@@ -155,7 +155,7 @@ namespace MKW.Storage.JSON
         {
             if (Database.Entries.ContainsKey(id.GetGuid()))
             {
-                 return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetGuid()]);
+                return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetGuid()]);
             }
             else
             {

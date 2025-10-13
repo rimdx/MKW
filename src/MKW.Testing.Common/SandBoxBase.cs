@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-
-namespace MKW.Testing.Common
+﻿namespace MKW.Testing.Common
 {
     public class SandBoxBase : IDisposable
     {

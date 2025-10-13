@@ -25,7 +25,7 @@ namespace MKW.Core.Serialization.CSV
                 {
                     break;
                 }
-                else if(token is CSVTokenNewLine)
+                else if (token is CSVTokenNewLine)
                 {
                     break;
                 }
