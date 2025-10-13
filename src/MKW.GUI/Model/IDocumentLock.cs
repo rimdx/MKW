@@ -3,6 +3,7 @@
     public interface IDocumentLock : IDisposable
     {
         DatabaseModel Database { get; }
+
         IDocumentLock Clone();
     }
 }
