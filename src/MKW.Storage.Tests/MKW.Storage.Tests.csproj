@@ -11,7 +11,7 @@
     <ProjectReference Include="..\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
     <ProjectReference Include="..\MKW.Storage\MKW.Storage.csproj" />
     <ProjectReference Include="..\MKW.Storage.JSON\MKW.Storage.JSON.csproj" />
-    <ProjectReference Include="..\MKW.Storage.MKPG\MKW.Storage.MKPG.csproj" />
+    <ProjectReference Include="..\MKW.Storage.MKGP\MKW.Storage.MKGP.csproj" />
   </ItemGroup>
 
   <ItemGroup>
