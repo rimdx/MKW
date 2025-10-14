@@ -11,11 +11,9 @@
                                                                 ReadOnlySpan<byte> privateKey,
                                                                 AsymmetricAlgorithmConfiguration config);
 
-        ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config);
+        SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config);
 
-        ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key,
-                                                       ReadOnlySpan<byte> iv,
-                                                       SymmetricAlgorithmConfiguration config);
+        ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key);
 
         IUserCredentials CreateUserCredentials(string password,
                                                PasswordDerivationConfiguration config);

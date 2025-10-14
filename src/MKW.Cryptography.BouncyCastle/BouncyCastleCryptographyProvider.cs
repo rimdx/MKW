@@ -9,34 +9,28 @@ namespace MKW.Cryptography.BouncyCastle
         {
         }
 
-        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key,
-                                                              ReadOnlySpan<byte> iv,
-                                                              SymmetricAlgorithmConfiguration config)
+        public SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config)
         {
-            if (key.Length != config.KeySizeBits / 8)
-            {
-                throw new Exceptions.InvalidKeyException($"Symmetric key length expected to be {config.KeySizeBits} bits.");
-            }
+            IRandomGenerator random = CreateRandomGenerator();
 
-            if (iv.Length != config.IVSizeBits / 8)
-            {
-                throw new Exceptions.InvalidKeyException($"Symmetric IV length expected to be {config.IVSizeBits} bits.");
-            }
+            ReadOnlyMemory<byte> key = random.NextBytes(config.KeySizeBits / 8);
+            ReadOnlyMemory<byte> iv = random.NextBytes(config.IVSizeBits / 8);
 
-            return config.Engine switch
+            return new SymmetricKey
             {
-                SymmetricAlgorithmEngine.AesGcm => new AesGcmSymmetricTransformer(key, iv, config),
+                KeyBytes = key,
+                IVBytes = iv,
             };
+        }
+
+        public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
+        {
+            return new AesGcmSymmetricTransformer(key);
         }
 
         public ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config)
         {
-            IRandomGenerator random = CreateRandomGenerator();
-
-            byte[] key = random.NextBytes(config.KeySizeBits / 8);
-            byte[] iv = random.NextBytes(config.IVSizeBits / 8);
-
-            return OpenSymmetricTransformer(key, iv, config);
+            return OpenSymmetricTransformer(CreateSymmetricKey(config));
         }
 
         public ISymmetricTransformer CreateSymmetricTransformer()

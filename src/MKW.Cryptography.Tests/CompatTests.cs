@@ -42,13 +42,14 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void SymmetricTransformerTests()
         {
-            using ISymmetricTransformer key1 = crypto1.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey key = crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+
+            using ISymmetricTransformer key1 = crypto1.OpenSymmetricTransformer(key);
 
             byte[] data = [1, 2, 3];
             Memory<byte> encrypted = key1.Encrypt(data);
 
-            using ISymmetricTransformer key2 = crypto2.OpenSymmetricTransformer(
-                key1.ExportKey().Span, key1.ExportIV().Span, CommonCryptographyAlgorithms.Aes128Gcm);
+            using ISymmetricTransformer key2 = crypto2.OpenSymmetricTransformer(key);
 
             CollectionAssert.AreEqual(encrypted.ToArray(),
                                       key2.Encrypt(data).ToArray());
@@ -59,10 +60,11 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerTests()
         {
-            ISymmetricTransformer symkey = crypto1.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey symkey = crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+
             IAsymmetricPrivateTransformer key1 = crypto1.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
-            Memory<byte> data = symkey.ExportKey();
+            ReadOnlyMemory<byte> data = symkey.KeyBytes;
 
             IAsymmetricPrivateTransformer key2 = crypto2.OpenAsymmetricTransformer(key1.ExportPublicKey().Span,
                                                                                    key1.ExportPrivateKey().Span,
@@ -78,12 +80,12 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerPublicKeyEncodeTests()
         {
-            ISymmetricTransformer symkey = crypto1.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey symkey = crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
             IAsymmetricPrivateTransformer decoder = crypto1.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
             IAsymmetricPublicTransformer encoder = crypto2.OpenAsymmetricTransformer(decoder.ExportPublicKey().Span, CommonCryptographyAlgorithms.Rsa2048);
 
-            Memory<byte> data = symkey.ExportKey();
+            ReadOnlyMemory<byte> data = symkey.KeyBytes;
             Memory<byte> encrypted = encoder.Encrypt(data.Span);
 
             CollectionAssert.AreEqual(data.ToArray(),

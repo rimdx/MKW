@@ -12,24 +12,28 @@ namespace MKW.Cryptography.System
             this.aes = aes;
         }
 
-        public static ISymmetricTransformer Create()
+        public static SymmetricKey CreateKey()
         {
             Aes aes = Aes.Create();
 
             aes.GenerateKey();
             aes.GenerateIV();
 
-            return new SymmetricTransformer(aes /* move */);
+            return new SymmetricKey
+            {
+                KeyBytes = aes.Key,
+                IVBytes = aes.IV,
+            };
         }
 
-        public static ISymmetricTransformer Open(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
+        public static ISymmetricTransformer Open(SymmetricKey key)
         {
             Aes aes = Aes.Create();
 
             try
             {
-                aes.Key = key.ToArray(); /* copy */
-                aes.IV = iv.ToArray(); /* copy */
+                aes.Key = key.KeyBytes.ToArray(); /* copy */
+                aes.IV = key.IVBytes.ToArray(); /* copy */
             }
             catch (CryptographicException ex)
             {

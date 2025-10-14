@@ -19,11 +19,14 @@ namespace MKW.Core.Implementation
             // Generate asymmetric pair of public and private keys
             IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
+            SymmetricKey symkey = new SymmetricKey
+            {
+                KeyBytes = userCredentials.GetSecretKey(),
+                IVBytes = userCredentials.ExportSalt(),
+            };
+
             // Symmetric encoder for secret section.
-            using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(
-                userCredentials.GetSecretKey().Span,
-                userCredentials.ExportSalt().Span,
-                CommonCryptographyAlgorithms.Aes128Gcm);
+            using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(symkey);
 
             Memory<byte> privateKeyBytes = userKey.ExportPrivateKey();
             Memory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);
@@ -43,10 +46,14 @@ namespace MKW.Core.Implementation
         {
             // Symmetric decoder for secret section.
             // Uses user's secret key and public salt from the database.
-            using ISymmetricTransformer decoder =
-                crypto.OpenSymmetricTransformer(userCredentials.GetSecretKey().Span,
-                                                user.Salt.Span,
-                                                CommonCryptographyAlgorithms.Aes128Gcm);
+
+            SymmetricKey symkey = new SymmetricKey
+            {
+                KeyBytes = userCredentials.GetSecretKey(),
+                IVBytes = user.Salt,
+            };
+
+            using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(symkey);
 
             // The user's key-pair can be obtained by decrypting the private key
             // using the symmetric  decoder and public key publicly stored in the
