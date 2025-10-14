@@ -10,6 +10,14 @@
                 IVSizeBits = 128,
             };
 
+        public static readonly SymmetricAlgorithmConfiguration Aes128OpenPgpCfb =
+            new SymmetricAlgorithmConfiguration
+            {
+                Engine = SymmetricAlgorithmEngine.AesOpenPgpCfb,
+                KeySizeBits = 128,
+                IVSizeBits = 128,
+            };
+
         public static readonly AsymmetricAlgorithmConfiguration Rsa2048 =
             new AsymmetricAlgorithmConfiguration
             {

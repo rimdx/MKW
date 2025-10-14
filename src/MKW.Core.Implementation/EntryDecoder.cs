@@ -31,6 +31,7 @@ namespace MKW.Core.Implementation
 
             SymmetricKey symkey = new SymmetricKey
             {
+                Engine = SymmetricAlgorithmEngine.AesGcm,
                 KeyBytes = decryptedKey,
                 IVBytes = entry.Salt,
             };

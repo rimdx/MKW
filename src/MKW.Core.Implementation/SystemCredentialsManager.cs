@@ -22,6 +22,7 @@ namespace MKW.Core.Implementation
 
             SymmetricKey symkey = new SymmetricKey
             {
+                Engine = SymmetricAlgorithmEngine.AesGcm,
                 KeyBytes = userCredentials.GetSecretKey(),
                 IVBytes = userCredentials.ExportSalt(),
             };
@@ -50,6 +51,7 @@ namespace MKW.Core.Implementation
 
             SymmetricKey symkey = new SymmetricKey
             {
+                Engine = SymmetricAlgorithmEngine.AesGcm,
                 KeyBytes = userCredentials.GetSecretKey(),
                 IVBytes = user.Salt,
             };

@@ -21,6 +21,7 @@ namespace MKW.Cryptography.System
 
             return new SymmetricKey
             {
+                Engine = SymmetricAlgorithmEngine.AesGcm,
                 KeyBytes = aes.Key,
                 IVBytes = aes.IV,
             };
