@@ -26,16 +26,19 @@ namespace MKW.Core.Client
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
             IUserCredentials userCreds = crypto.CreateUserCredentials(password, CommonCryptographyAlgorithms.Pbkdf2);
-            using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
+            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
+
+            using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
 
             // TODO: prompt user?
-            Memory<byte> signature = systemCreds.Transformer.Sign(admin.PublicKey.Payload.Span);
+            Memory<byte> signature = transformer.Sign(admin.PublicKey.Payload.Span);
 
             return new UserAccessRequest
             {
                 Salt = systemCreds.Salt,
                 PublicKey = systemCreds.PublicKey,
-                EncryptedPrivateKey = systemCreds.PrivateKey,
+                EncryptedPrivateKey = systemCreds.EncryptedPrivateKey,
                 AdminSignature = signature,
             };
         }
@@ -60,7 +63,10 @@ namespace MKW.Core.Client
 
                 SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
 
-                return new UserSession(crypto, database, user, systemCreds.Transformer);
+                IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                    systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+
+                return new UserSession(crypto, database, user, transformer);
             }
         }
 
@@ -78,7 +84,10 @@ namespace MKW.Core.Client
 
                     SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
 
-                    return new UserSession(crypto, database, user, systemCreds.Transformer);
+                    IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                        systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+
+                    return new UserSession(crypto, database, user, transformer);
                 }
                 catch (Exceptions.InvalidPasswordException)
                 {

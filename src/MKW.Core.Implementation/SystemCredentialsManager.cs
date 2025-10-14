@@ -17,10 +17,8 @@ namespace MKW.Core.Implementation
         public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            AsymmetricPrivateKey userKey = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
-
-            IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                userKey, CommonCryptographyAlgorithms.Rsa2048);
+            AsymmetricPrivateKey privateKey = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
+            AsymmetricPublicKey publicKey = privateKey.GetPublicKey();
 
             SymmetricKey symkey = new SymmetricKey
             {
@@ -31,17 +29,17 @@ namespace MKW.Core.Implementation
             // Symmetric encoder for secret section.
             using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(symkey);
 
-            Memory<byte> privateKeyBytes = crypto.EncodePkcsPrivateKey(userKey);
+            Memory<byte> privateKeyBytes = crypto.EncodePkcsPrivateKey(privateKey);
             Memory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);
 
-            Memory<byte> publicKeyBytes = crypto.EncodePkcsPublicKey(userKey.GetPublicKey());
+            Memory<byte> publicKeyBytes = crypto.EncodePkcsPublicKey(publicKey);
 
             return new SystemCredentials
             {
-                PublicKey = publicKeyBytes,
-                PrivateKey = new SecretPayload(privateKeyEncrypted),
                 Salt = userCredentials.ExportSalt().ToArray(),
-                Transformer = transformer /* move */,
+                PublicKey = publicKeyBytes,
+                EncryptedPrivateKey = new SecretPayload(privateKeyEncrypted),
+                PrivateKey = privateKey,
             };
         }
 
@@ -77,6 +75,8 @@ namespace MKW.Core.Implementation
                 throw new InvalidPasswordException(ex);
             }
 
+            AsymmetricPrivateKey privateKey = crypto.DecodePkcsPrivateKey(privateKeyBytes.Span);
+
             ReadOnlyMemory<byte> publicKeyBytes = user.PublicKey.Payload;
 
             IAsymmetricPrivateTransformer userKey = crypto.OpenAsymmetricTransformer(
@@ -85,10 +85,10 @@ namespace MKW.Core.Implementation
 
             return new SystemCredentials
             {
+                Salt = userCredentials.ExportSalt().ToArray(),
                 PublicKey = publicKeyBytes,
-                PrivateKey = new SecretPayload(privateKeyEncrypted),
-                Salt = user.Salt,
-                Transformer = userKey,
+                EncryptedPrivateKey = new SecretPayload(privateKeyEncrypted),
+                PrivateKey = privateKey,
             };
         }
     }
