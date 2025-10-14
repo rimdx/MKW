@@ -34,9 +34,10 @@ namespace MKW.Core.Implementation
             {
                 DatabaseUser user = database.OpenUser(userId);
 
+                AsymmetricPublicKey key = crypto.DecodePkcsPublicKey(user.PublicKey.Payload.Span);
+
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
-                    user.PublicKey.Payload.Span,
-                    CommonCryptographyAlgorithms.Rsa2048);
+                    key, CommonCryptographyAlgorithms.Rsa2048);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 

@@ -1,9 +1,60 @@
-﻿namespace MKW.Cryptography.System
+﻿using System.Security.Cryptography;
+
+namespace MKW.Cryptography.System
 {
     public class CryptographyProvider : IDisposable, ICryptographyProvider
     {
         public CryptographyProvider()
         {
+        }
+
+        public AsymmetricPrivateKey CreateAsymmetricKey(AsymmetricAlgorithmConfiguration config)
+        {
+            return AsymmetricTransformer.CreateKey();
+        }
+
+        public AsymmetricPublicKey DecodePkcsPublicKey(ReadOnlySpan<byte> data)
+        {
+            // workaround
+            using RSA rsa = RSA.Create();
+            rsa.ImportSubjectPublicKeyInfo(data, out _);
+            return AsymmetricPublicKeyExtensions.FromParameter(rsa.ExportParameters(false));
+        }
+
+        public AsymmetricPrivateKey DecodePkcsPrivateKey(ReadOnlySpan<byte> data)
+        {
+            // workaround
+            using RSA rsa = RSA.Create();
+            rsa.ImportPkcs8PrivateKey(data, out _);
+            return AsymmetricPrivateKeyExtensions.FromParameter(rsa.ExportParameters(true));
+        }
+
+        public Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
+        {
+            // workaround
+            using RSA rsa = RSA.Create();
+            rsa.ImportParameters(key.GetParameter());
+            return rsa.ExportSubjectPublicKeyInfo();
+        }
+
+        public Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
+        {
+            // workaround
+            using RSA rsa = RSA.Create();
+            rsa.ImportParameters(key.GetParameter());
+            return rsa.ExportPkcs8PrivateKey();
+        }
+
+        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(AsymmetricPublicKey publicKey,
+                                                                      AsymmetricAlgorithmConfiguration config)
+        {
+            return AsymmetricTransformer.Open(publicKey);
+        }
+
+        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(AsymmetricPrivateKey privateKey,
+                                                                       AsymmetricAlgorithmConfiguration config)
+        {
+            return AsymmetricTransformer.Open(privateKey);
         }
 
         public SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config)
@@ -14,24 +65,6 @@
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
             return SymmetricTransformer.Open(key);
-        }
-
-        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer(AsymmetricAlgorithmConfiguration config)
-        {
-            return AsymmetricTransformer.Create();
-        }
-
-        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
-                                                                      AsymmetricAlgorithmConfiguration config)
-        {
-            return AsymmetricTransformer.Open(publicKey);
-        }
-
-        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
-                                                                       ReadOnlySpan<byte> privateKey,
-                                                                       AsymmetricAlgorithmConfiguration config)
-        {
-            return AsymmetricTransformer.Open(publicKey, privateKey);
         }
 
         public IUserCredentials CreateUserCredentials(string password,

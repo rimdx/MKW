@@ -17,7 +17,10 @@ namespace MKW.Core.Implementation
         public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            IAsymmetricPrivateTransformer userKey = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
+            AsymmetricPrivateKey userKey = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
+
+            IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                userKey, CommonCryptographyAlgorithms.Rsa2048);
 
             SymmetricKey symkey = new SymmetricKey
             {
@@ -28,17 +31,17 @@ namespace MKW.Core.Implementation
             // Symmetric encoder for secret section.
             using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(symkey);
 
-            Memory<byte> privateKeyBytes = userKey.ExportPrivateKey();
+            Memory<byte> privateKeyBytes = crypto.EncodePkcsPrivateKey(userKey);
             Memory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);
 
-            Memory<byte> publicKeyBytes = userKey.ExportPublicKey();
+            Memory<byte> publicKeyBytes = crypto.EncodePkcsPublicKey(userKey.GetPublicKey());
 
             return new SystemCredentials
             {
                 PublicKey = publicKeyBytes,
                 PrivateKey = new SecretPayload(privateKeyEncrypted),
                 Salt = userCredentials.ExportSalt().ToArray(),
-                Transformer = userKey /* move */,
+                Transformer = transformer /* move */,
             };
         }
 
@@ -77,8 +80,7 @@ namespace MKW.Core.Implementation
             ReadOnlyMemory<byte> publicKeyBytes = user.PublicKey.Payload;
 
             IAsymmetricPrivateTransformer userKey = crypto.OpenAsymmetricTransformer(
-                publicKeyBytes.Span,
-                privateKeyBytes.Span,
+                crypto.DecodePkcsPrivateKey(privateKeyBytes.Span),
                 CommonCryptographyAlgorithms.Rsa2048);
 
             return new SystemCredentials

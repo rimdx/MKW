@@ -2,13 +2,18 @@
 {
     public interface ICryptographyProvider
     {
-        IAsymmetricPrivateTransformer CreateAsymmetricTransformer(AsymmetricAlgorithmConfiguration config);
+        AsymmetricPrivateKey CreateAsymmetricKey(AsymmetricAlgorithmConfiguration config);
 
-        IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
+        AsymmetricPublicKey DecodePkcsPublicKey(ReadOnlySpan<byte> data);
+        AsymmetricPrivateKey DecodePkcsPrivateKey(ReadOnlySpan<byte> data);
+
+        Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key);
+        Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key);
+
+        IAsymmetricPublicTransformer OpenAsymmetricTransformer(AsymmetricPublicKey publicKey,
                                                                AsymmetricAlgorithmConfiguration config);
 
-        IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
-                                                                ReadOnlySpan<byte> privateKey,
+        IAsymmetricPrivateTransformer OpenAsymmetricTransformer(AsymmetricPrivateKey privateKey,
                                                                 AsymmetricAlgorithmConfiguration config);
 
         SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config);

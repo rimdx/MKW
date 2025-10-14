@@ -1,5 +1,9 @@
 ﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Generators;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.X509;
 
 namespace MKW.Cryptography.BouncyCastle
 {
@@ -38,39 +42,46 @@ namespace MKW.Cryptography.BouncyCastle
             return CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
         }
 
-        public IAsymmetricPrivateTransformer CreateAsymmetricTransformer(AsymmetricAlgorithmConfiguration config)
-        {
-            return config.Engine switch
-            {
-                AsymmetricAlgorithmEngine.Rsa => CreateRsaTransformer(config),
-            };
-        }
-
-        private RsaAsymmetricTransformer CreateRsaTransformer(AsymmetricAlgorithmConfiguration config)
+        public AsymmetricPrivateKey CreateAsymmetricKey(AsymmetricAlgorithmConfiguration config)
         {
             SecureRandom random = new SecureRandom();
 
-            IAsymmetricCipherKeyPairGenerator keyPairGen = GeneratorUtilities.GetKeyPairGenerator("RSA");
+            RsaKeyPairGenerator keyPairGen = new RsaKeyPairGenerator();
 
             keyPairGen.Init(new KeyGenerationParameters(random, config.StrengthBits));
 
             AsymmetricCipherKeyPair key = keyPairGen.GenerateKeyPair();
-
-            return new RsaAsymmetricTransformer(key.Public, key.Private, config);
+            return AsymmetricPrivateKeyExtensions.FromParameter((RsaPrivateCrtKeyParameters)key.Private);
         }
 
-        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
+        public AsymmetricPublicKey DecodePkcsPublicKey(ReadOnlySpan<byte> data)
+        {
+            AsymmetricKeyParameter decoded = PublicKeyFactory.CreateKey(data.ToArray());
+            return AsymmetricPublicKeyExtensions.FromParameter((RsaKeyParameters)decoded);
+        }
+
+        public AsymmetricPrivateKey DecodePkcsPrivateKey(ReadOnlySpan<byte> data)
+        {
+            AsymmetricKeyParameter decoded = PrivateKeyFactory.CreateKey(data.ToArray());
+            return AsymmetricPrivateKeyExtensions.FromParameter((RsaPrivateCrtKeyParameters)decoded);
+        }
+
+        public Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
+        {
+            return SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(key.GetParameter()).GetEncoded();
+        }
+
+        public Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
+        {
+            return PrivateKeyInfoFactory.CreatePrivateKeyInfo(key.GetParameter()).GetEncoded();
+        }
+
+        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(AsymmetricPublicKey publicKey,
                                                                       AsymmetricAlgorithmConfiguration config)
         {
             try
             {
-                return config.Engine switch
-                {
-                    AsymmetricAlgorithmEngine.Rsa => new RsaAsymmetricTransformer(
-                        PublicKeyFactory.CreateKey(publicKey.ToArray()),
-                        null,
-                        config),
-                };
+                return new RsaAsymmetricTransformer(publicKey, null, config);
             }
             catch (ArgumentException ex)
             {
@@ -78,34 +89,17 @@ namespace MKW.Cryptography.BouncyCastle
             }
         }
 
-        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey,
-                                                                       ReadOnlySpan<byte> privateKey,
+        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(AsymmetricPrivateKey privateKey,
                                                                        AsymmetricAlgorithmConfiguration config)
         {
             try
             {
-                return config.Engine switch
-                {
-                    AsymmetricAlgorithmEngine.Rsa => new RsaAsymmetricTransformer(
-                        PublicKeyFactory.CreateKey(publicKey.ToArray()),
-                        PrivateKeyFactory.CreateKey(privateKey.ToArray()),
-                        config),
-                };
+                return new RsaAsymmetricTransformer(privateKey.GetPublicKey(), privateKey, config);
             }
             catch (ArgumentException ex)
             {
                 throw new Exceptions.InvalidKeyException(ex);
             }
-        }
-
-        public IAsymmetricPrivateTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
-        {
-            return OpenAsymmetricTransformer(publicKey, privateKey, CommonCryptographyAlgorithms.Rsa2048);
-        }
-
-        public IAsymmetricPublicTransformer OpenAsymmetricTransformer(ReadOnlySpan<byte> publicKey)
-        {
-            return OpenAsymmetricTransformer(publicKey, CommonCryptographyAlgorithms.Rsa2048);
         }
 
         public IUserCredentials CreateUserCredentials(string password,

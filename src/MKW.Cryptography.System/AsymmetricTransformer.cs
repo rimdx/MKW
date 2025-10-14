@@ -12,19 +12,20 @@ namespace MKW.Cryptography.System
             this.rsa = rsa;
         }
 
-        public static IAsymmetricPrivateTransformer Create()
+        public static AsymmetricPrivateKey CreateKey()
         {
-            RSA rsa = RSA.Create();
-            return new AsymmetricTransformer(rsa);
+            using RSA rsa = RSA.Create();
+            RSAParameters parameters = rsa.ExportParameters(true);
+            return AsymmetricPrivateKeyExtensions.FromParameter(parameters);
         }
 
-        public static IAsymmetricPublicTransformer Open(ReadOnlySpan<byte> publicKey)
+        public static IAsymmetricPublicTransformer Open(AsymmetricPublicKey publicKey)
         {
             RSA rsa = RSA.Create();
 
             try
             {
-                rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
+                rsa.ImportParameters(publicKey.GetParameter());
             }
             catch (Exception ex)
             {
@@ -34,14 +35,13 @@ namespace MKW.Cryptography.System
             return new AsymmetricTransformer(rsa);
         }
 
-        public static IAsymmetricPrivateTransformer Open(ReadOnlySpan<byte> publicKey, ReadOnlySpan<byte> privateKey)
+        public static IAsymmetricPrivateTransformer Open(AsymmetricPrivateKey privateKey)
         {
             RSA rsa = RSA.Create();
 
             try
             {
-                rsa.ImportSubjectPublicKeyInfo(publicKey, out _);
-                rsa.ImportPkcs8PrivateKey(privateKey, out _);
+                rsa.ImportParameters(privateKey.GetParameter());
             }
             catch (CryptographicException ex)
             {

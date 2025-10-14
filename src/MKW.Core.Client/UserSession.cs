@@ -32,9 +32,10 @@ namespace MKW.Core.Client
 
             DatabaseUser admin = database.OpenUser(UserId.Admin());
 
+            AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.PublicKey.Payload.Span);
+
             adminPublicKey = crypto.OpenAsymmetricTransformer(
-                admin.PublicKey.Payload.Span,
-                CommonCryptographyAlgorithms.Rsa2048);
+                decodedKey, CommonCryptographyAlgorithms.Rsa2048);
 
             metadata = new UserMetadataDecoder(adminPublicKey);
             trustProvider = new UserTrustProvider(database, crypto, transformer, adminPublicKey);
