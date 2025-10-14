@@ -23,15 +23,18 @@ namespace MKW.Core.Client
             IUserCredentials userCreds = crypto.CreateUserCredentials(password,
                                                                       CommonCryptographyAlgorithms.Pbkdf2);
 
-            using SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
+            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
-            UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(systemCreds.Transformer);
+            using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+
+            UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(transformer);
 
             DatabaseUser admin = new DatabaseUser
             {
                 Id = UserId.Admin(),
                 PublicKey = new SignedPayload(systemCreds.PublicKey, null),
-                PrivateKey = systemCreds.PrivateKey,
+                PrivateKey = systemCreds.EncryptedPrivateKey,
                 Salt = systemCreds.Salt,
                 Metadata = metadataEncoder.EncodeMetadata(metadata),
                 AdminSignature = null, // TODO
@@ -54,7 +57,10 @@ namespace MKW.Core.Client
 
             SystemCredentials systemCreds = credManager.OpenCredentials(admin, creds);
 
-            return new AdminSession(crypto, database, admin, systemCreds.Transformer);
+            IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+
+            return new AdminSession(crypto, database, admin, transformer);
         }
 
         public UserInfo GetAdminInfo()
