@@ -50,18 +50,16 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void SymmetricTransformerTests()
         {
-            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey key = crypto.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+            using ISymmetricTransformer t1 = crypto.OpenSymmetricTransformer(key);
 
             byte[] data = [1, 2, 3];
-            Memory<byte> encrypted = key1.Encrypt(data);
+            ReadOnlyMemory<byte> encrypted = t1.Encrypt(data);
 
-            ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(
-                key1.ExportKey().Span,
-                key1.ExportIV().Span,
-                CommonCryptographyAlgorithms.Aes128Gcm);
+            using ISymmetricTransformer t2 = crypto.OpenSymmetricTransformer(key);
 
-            CollectionAssert.AreEqual(data, key1.Decrypt(encrypted.Span).ToArray());
-            CollectionAssert.AreEqual(data, key2.Decrypt(encrypted.Span).ToArray());
+            CollectionAssert.AreEqual(data, t1.Decrypt(encrypted.Span).ToArray());
+            CollectionAssert.AreEqual(data, t2.Decrypt(encrypted.Span).ToArray());
         }
 
         [Test]
@@ -78,7 +76,8 @@ namespace MKW.Cryptography.Tests
         [TestCase(1024 * 1024, 2)] // 1 MB
         public void SymmetricTransformerRandomTests(int len, int extraTries)
         {
-            ISymmetricTransformer key1 = crypto.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey key = crypto.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+            using ISymmetricTransformer key1 = crypto.OpenSymmetricTransformer(key);
 
             byte[] data = new byte[len];
 
@@ -92,8 +91,7 @@ namespace MKW.Cryptography.Tests
 
             CollectionAssert.AreEqual(data, decrypted1.ToArray());
 
-            ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(
-                key1.ExportKey().Span, key1.ExportIV().Span, CommonCryptographyAlgorithms.Aes128Gcm);
+            using ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(key);
 
             Memory<byte> encrypted2 = key2.Encrypt(data);
             Memory<byte> decrypted2 = key2.Decrypt(encrypted1.Span);
@@ -103,10 +101,7 @@ namespace MKW.Cryptography.Tests
 
             for (int i = 0; i < extraTries; i++)
             {
-                ISymmetricTransformer key3 = crypto.OpenSymmetricTransformer(
-                    key1.ExportKey().Span,
-                    key1.ExportIV().Span,
-                    CommonCryptographyAlgorithms.Aes128Gcm);
+                using ISymmetricTransformer key3 = crypto.OpenSymmetricTransformer(key);
 
                 Memory<byte> encrypted3 = key3.Encrypt(data);
                 Memory<byte> decrypted3 = key3.Decrypt(encrypted3.Span);
@@ -119,10 +114,10 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerTests()
         {
-            ISymmetricTransformer symkey = crypto.CreateSymmetricTransformer(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey symkey = crypto.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
             IAsymmetricPrivateTransformer key = crypto.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
 
-            Memory<byte> data = symkey.ExportKey();
+            ReadOnlyMemory<byte> data = symkey.KeyBytes;
             Memory<byte> encrypted = key.Encrypt(data.Span);
 
             IAsymmetricPrivateTransformer decoder = crypto.OpenAsymmetricTransformer(

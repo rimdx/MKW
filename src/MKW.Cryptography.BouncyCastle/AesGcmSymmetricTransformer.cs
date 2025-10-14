@@ -10,6 +10,8 @@ namespace MKW.Cryptography.BouncyCastle
 {
     internal sealed class AesGcmSymmetricTransformer : ISymmetricTransformer, IDisposable
     {
+        private readonly SymmetricKey key;
+
         private readonly IBlockCipher blockCipher;
         private readonly IAeadBlockCipher blockCipherMode;
 
@@ -17,23 +19,17 @@ namespace MKW.Cryptography.BouncyCastle
 
         private readonly ICipherParameters parameters;
 
-        private readonly ReadOnlyMemory<byte> key;
-        private readonly ReadOnlyMemory<byte> iv;
-
-        public AesGcmSymmetricTransformer(ReadOnlySpan<byte> key,
-                                          ReadOnlySpan<byte> iv,
-                                          SymmetricAlgorithmConfiguration config)
+        public AesGcmSymmetricTransformer(SymmetricKey key)
         {
+            this.key = key;
+
             blockCipher = new AesEngine();
             blockCipherMode = new GcmBlockCipher(blockCipher);
 
             cipher = new BufferedAeadBlockCipher(blockCipherMode);
 
-            KeyParameter aesKey = new KeyParameter(key.ToArray());
-            parameters = new AeadParameters(aesKey, config.IVSizeBits, iv.ToArray());
-
-            this.key = key.ToArray();
-            this.iv = iv.ToArray();
+            KeyParameter aesKey = new KeyParameter(key.KeyBytes.ToArray());
+            parameters = new AeadParameters(aesKey, key.IVBytes.Length * 8, key.IVBytes.ToArray());
         }
 
         public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
@@ -82,12 +78,12 @@ namespace MKW.Cryptography.BouncyCastle
 
         public Memory<byte> ExportIV()
         {
-            return iv.ToArray();
+            return key.IVBytes.ToArray();
         }
 
         public Memory<byte> ExportKey()
         {
-            return key.ToArray();
+            return key.KeyBytes.ToArray();
         }
 
         public void Dispose()

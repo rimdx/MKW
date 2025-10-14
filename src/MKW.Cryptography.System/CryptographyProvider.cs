@@ -6,16 +6,14 @@
         {
         }
 
-        public ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config)
+        public SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config)
         {
-            return SymmetricTransformer.Create();
+            return SymmetricTransformer.CreateKey();
         }
 
-        public ISymmetricTransformer OpenSymmetricTransformer(ReadOnlySpan<byte> key,
-                                                              ReadOnlySpan<byte> iv,
-                                                              SymmetricAlgorithmConfiguration config)
+        public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            return SymmetricTransformer.Open(key, iv);
+            return SymmetricTransformer.Open(key);
         }
 
         public IAsymmetricPrivateTransformer CreateAsymmetricTransformer(AsymmetricAlgorithmConfiguration config)
