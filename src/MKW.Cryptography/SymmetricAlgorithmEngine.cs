@@ -3,5 +3,6 @@
     public enum SymmetricAlgorithmEngine
     {
         AesGcm,
+        AesOpenPgpCfb,
     }
 }

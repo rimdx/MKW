@@ -22,6 +22,7 @@ namespace MKW.Cryptography.BouncyCastle
 
             return new SymmetricKey
             {
+                Engine = config.Engine,
                 KeyBytes = key,
                 IVBytes = iv,
             };
@@ -29,7 +30,11 @@ namespace MKW.Cryptography.BouncyCastle
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            return new AesGcmSymmetricTransformer(key);
+            return key.Engine switch
+            {
+                SymmetricAlgorithmEngine.AesGcm => new AesGcmSymmetricTransformer(key),
+                SymmetricAlgorithmEngine.AesOpenPgpCfb => new AesOpenPgpTransformer(key),
+            };
         }
 
         public ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config)

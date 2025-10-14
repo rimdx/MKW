@@ -64,7 +64,11 @@ namespace MKW.Cryptography.System
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            return SymmetricTransformer.Open(key);
+            return key.Engine switch
+            {
+                SymmetricAlgorithmEngine.AesGcm => SymmetricTransformer.Open(key),
+                SymmetricAlgorithmEngine.AesOpenPgpCfb => throw new NotImplementedException()
+            };
         }
 
         public IUserCredentials CreateUserCredentials(string password,
