@@ -93,28 +93,28 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerSignTests()
         {
-            using IAsymmetricPrivateTransformer singer1 = crypto1.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
-            using IAsymmetricPrivateTransformer singer2 = crypto2.OpenAsymmetricTransformer(
-                singer1.ExportPublicKey().Span, singer1.ExportPrivateKey().Span, CommonCryptographyAlgorithms.Rsa2048);
+            using IAsymmetricPrivateTransformer signer1 = crypto1.CreateAsymmetricTransformer(CommonCryptographyAlgorithms.Rsa2048);
+            using IAsymmetricPrivateTransformer signer2 = crypto2.OpenAsymmetricTransformer(
+                signer1.ExportPublicKey().Span, signer1.ExportPrivateKey().Span, CommonCryptographyAlgorithms.Rsa2048);
 
-            using IAsymmetricPublicTransformer verifier1 = crypto1.OpenAsymmetricTransformer(singer1.ExportPublicKey().Span, CommonCryptographyAlgorithms.Rsa2048);
-            using IAsymmetricPublicTransformer verifier2 = crypto2.OpenAsymmetricTransformer(singer1.ExportPublicKey().Span, CommonCryptographyAlgorithms.Rsa2048);
+            using IAsymmetricPublicTransformer verifier1 = crypto1.OpenAsymmetricTransformer(signer1.ExportPublicKey().Span, CommonCryptographyAlgorithms.Rsa2048);
+            using IAsymmetricPublicTransformer verifier2 = crypto2.OpenAsymmetricTransformer(signer1.ExportPublicKey().Span, CommonCryptographyAlgorithms.Rsa2048);
 
             Memory<byte> data = EncodingConverter.GetBytes("data");
 
-            Memory<byte> sign1 = singer1.Sign(data.Span);
-            Memory<byte> sign2 = singer2.Sign(data.Span);
+            Memory<byte> sign1 = signer1.Sign(data.Span);
+            Memory<byte> sign2 = signer2.Sign(data.Span);
 
             CollectionAssert.AreEqual(sign1.ToArray(), sign2.ToArray());
 
-            ClassicAssert.IsTrue(singer1.Verify(data.Span, sign2.Span));
-            ClassicAssert.IsTrue(singer2.Verify(data.Span, sign1.Span));
+            ClassicAssert.IsTrue(signer1.Verify(data.Span, sign2.Span));
+            ClassicAssert.IsTrue(signer2.Verify(data.Span, sign1.Span));
             ClassicAssert.IsTrue(verifier1.Verify(data.Span, sign2.Span));
             ClassicAssert.IsTrue(verifier2.Verify(data.Span, sign1.Span));
 
             IRandomGenerator random = crypto1.CreateRandomGenerator();
-            ClassicAssert.IsFalse(singer1.Verify(data.Span, random.NextBytes(sign1.Length)));
-            ClassicAssert.IsFalse(singer1.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
+            ClassicAssert.IsFalse(signer1.Verify(data.Span, random.NextBytes(sign1.Length)));
+            ClassicAssert.IsFalse(signer1.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
             ClassicAssert.IsFalse(verifier1.Verify(data.Span, random.NextBytes(sign1.Length)));
             ClassicAssert.IsFalse(verifier1.Verify(data.Span, EncodingConverter.GetBytes("random123").Span));
         }
