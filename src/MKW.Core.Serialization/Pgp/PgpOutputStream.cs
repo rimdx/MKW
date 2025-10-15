@@ -57,7 +57,7 @@ namespace MKW.Core.Serialization.Pgp
 
             packet.Encode(writer);
 
-            WriteHeader(packet.Tag, writer.Length);
+            WriteHeader(packet.Tag, stream.Length);
 
             stream.CopyTo(this);
         }
