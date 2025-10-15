@@ -50,14 +50,14 @@ namespace MKW.Core.Serialization.Pgp
             proxy.Write(buffer, offset, count);
         }
 
-        public void WritePacket(PacketTag packetTag, PgpObject pgpObject)
+        public void WritePacket(PgpPacket packet)
         {
             using MemoryStream stream = new MemoryStream();
             using PgpOutputStream writer = new PgpOutputStream(stream);
 
-            pgpObject.Encode(writer);
+            packet.Encode(writer);
 
-            WriteHeader(packetTag, writer.Length);
+            WriteHeader(packet.Tag, writer.Length);
 
             stream.CopyTo(this);
         }
