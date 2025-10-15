@@ -120,7 +120,7 @@ namespace MKW.Core.Serialization.Pgp
             // - Bits 5-0 -- packet tag
 
             int tag = (int)packetTag;
-            int newFormat = 0;
+            int newFormat = 1;
 
             int header =
                 (0b1000_0000) |
