@@ -1,14 +1,16 @@
 ﻿using MKW.Common;
 using Org.BouncyCastle.Bcpg;
 
-namespace MKW.Storage.MKGP
+namespace MKW.Core.Serialization.Pgp.Packets
 {
-    internal class SymEncryptedProtectedData : BcpgObject
+    public sealed class SymEncryptedProtectedData : PgpPacket
     {
         private const byte version = 0x02;
 
         public ReadOnlyMemory<byte> Salt { get; }
         public ReadOnlyMemory<byte> Data { get; }
+
+        public override PacketTag Tag => PacketTag.SymmetricEncryptedIntegrityProtected;
 
         public SymEncryptedProtectedData(BcpgInputStream stream)
         {
@@ -30,7 +32,7 @@ namespace MKW.Storage.MKGP
             Salt = salt;
         }
 
-        public override void Encode(BcpgOutputStream stream)
+        public override void Encode(PgpOutputStream stream)
         {
             // - A 1-octet version number with value 2.
             // - A 1-octet cipher algorithm ID.
