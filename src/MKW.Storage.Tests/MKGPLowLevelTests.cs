@@ -1,4 +1,5 @@
 ﻿using MKW.Core;
+using MKW.Core.Serialization.Pgp;
 using MKW.Cryptography;
 using MKW.Storage.MKGP;
 using Org.BouncyCastle.Bcpg;
@@ -12,8 +13,9 @@ namespace MKW.Storage.Tests
         public void SimpleEntryEncode()
         {
             using MemoryStream stream = new MemoryStream();
+
             using ArmoredOutputStream armor = new ArmoredOutputStream(stream);
-            using BcpgOutputStream bcpg = new BcpgOutputStream(armor);
+            using PgpOutputStream pgp = new PgpOutputStream(armor);
 
             DatabaseEntry dbEntry = new DatabaseEntry
             {
@@ -25,7 +27,8 @@ namespace MKW.Storage.Tests
 
             EntryObject entry = new EntryObject(dbEntry);
 
-            entry.Encode(bcpg);
+            entry.Encode(pgp);
+            pgp.Close();
 
             Console.WriteLine(EncodingConverter.GetString(stream.ToArray()));
         }
