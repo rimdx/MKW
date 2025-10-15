@@ -1,20 +1,21 @@
 ﻿using MKW.Common;
+using MKW.Core.Serialization.Pgp.Primitives;
 using Org.BouncyCastle.Bcpg;
 
 namespace MKW.Core.Serialization.Pgp.Packets
 {
     public sealed class SymEncryptedProtectedData : PgpPacket
     {
-        private const byte version = 0x02;
+        private static readonly PgpVersion version = new PgpVersion(1);
 
         public ReadOnlyMemory<byte> Salt { get; }
         public ReadOnlyMemory<byte> Data { get; }
 
         public override PacketTag Tag => PacketTag.SymmetricEncryptedIntegrityProtected;
 
-        public SymEncryptedProtectedData(BcpgInputStream stream)
+        public SymEncryptedProtectedData(PgpInputStream stream)
         {
-            byte version = stream.RequireByte();
+            version.ConsumeVersion(stream);
             byte cipherAlgorithmId = stream.RequireByte();
             byte aeadAlgorithmIdentifier = stream.RequireByte();
             byte chunkSize = stream.RequireByte();
@@ -42,7 +43,7 @@ namespace MKW.Core.Serialization.Pgp.Packets
             // - Encrypted data; that is, the output of the selected symmetric key cipher operating in the given AEAD mode.
             // - A final summary authentication tag for the AEAD mode.
 
-            stream.WriteByte(0x01);
+            version.Encode(stream);
 
             //stream.WriteByte((byte)SymmetricKeyAlgorithmTag.Aes128);
             //stream.WriteByte((byte)AeadAlgorithmTag.Gcm);
