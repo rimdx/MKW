@@ -1,6 +1,6 @@
-﻿using Org.BouncyCastle.Crypto.Engines;
+﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
-using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto.Parameters;
 
 namespace MKW.Cryptography.BouncyCastle
@@ -16,8 +16,7 @@ namespace MKW.Cryptography.BouncyCastle
 
             AesEngine blockCipher = new AesEngine();
             OpenPgpCfbBlockCipher blockCipherMode = new OpenPgpCfbBlockCipher(blockCipher);
-
-            PaddedBufferedBlockCipher cipher = new PaddedBufferedBlockCipher(blockCipherMode);
+            BufferedBlockCipher cipher = new BufferedBlockCipher(blockCipherMode);
 
             KeyParameter aesKey = new KeyParameter(key.KeyBytes.ToArray());
             ParametersWithIV parameters = new ParametersWithIV(aesKey, key.IVBytes.ToArray());
