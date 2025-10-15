@@ -58,8 +58,8 @@ namespace MKW.Core.Serialization.Pgp
             packet.Encode(writer);
 
             WriteHeader(packet.Tag, stream.Length);
-
-            stream.CopyTo(this);
+            stream.Seek(0, SeekOrigin.Begin);
+            stream.CopyTo(proxy);
         }
 
         private void WriteHeader(PacketTag packetTag, long bodyLen)
