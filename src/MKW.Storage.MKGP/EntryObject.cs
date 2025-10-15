@@ -20,7 +20,7 @@ namespace MKW.Storage.MKGP
         {
             //AsymmetricKeyParameter pubkey = PublicKeyFactory.CreateKey(entry.Data);
 
-            stream.WritePacket(new SymEncryptedProtectedData(entry.Data, entry.Salt));
+            stream.WritePacket(new SymEncryptedProtectedDataV1(entry.Data));
         }
     }
 }
