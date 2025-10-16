@@ -10,7 +10,7 @@ namespace MKW.Storage.MKPG
 
         public MKPGDatabase()
         {
-            entries = new BlobStorageMemory();
+            entries = new BlobStorageSingleFile(new MemoryStream());
         }
 
         // Entry
@@ -44,7 +44,11 @@ namespace MKW.Storage.MKPG
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
-            throw new NotImplementedException();
+            foreach (BlobId id in entries.Enumerate())
+            {
+                // TODO: more efficient algorithm
+                yield return OpenEntry(EntryId.FromGuid(id.GetGuid()));
+            }
         }
 
         public bool HasEntry(EntryId id)
