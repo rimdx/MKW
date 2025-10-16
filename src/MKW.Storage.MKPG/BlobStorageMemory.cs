@@ -9,7 +9,7 @@
             entries = [];
         }
 
-        public BlobEntry Create(BlobId id, BlobEntry entry)
+        public void Create(BlobId id, BlobEntry entry)
         {
             return entries[id] = entry;
         }
