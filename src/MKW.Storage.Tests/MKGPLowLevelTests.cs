@@ -1,13 +1,13 @@
 ﻿using MKW.Core;
 using MKW.Core.Serialization.Pgp;
 using MKW.Cryptography;
-using MKW.Storage.MKGP;
+using MKW.Storage.MKPG;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using System.Buffers;
 
 namespace MKW.Storage.Tests
 {
-    public class MKGPLowLevelTests
+    public class MKPGLowLevelTests
     {
         [Test]
         public void SimpleEntryEncode()
