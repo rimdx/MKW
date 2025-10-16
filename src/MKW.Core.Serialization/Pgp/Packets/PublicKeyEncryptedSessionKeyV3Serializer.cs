@@ -35,6 +35,7 @@ namespace MKW.Core.Serialization.Pgp.Packets
     public static class PublicKeyEncryptedSessionKeyV3Serializer
     {
         private static readonly PgpVersion version = new PgpVersion(3);
+        private static readonly PacketTag tag = PacketTag.PublicKeyEncryptedSession;
 
         public static PublicKeyEncryptedSessionKeyV3 Deserialize(ArrayBufferReader reader)
         {
@@ -56,6 +57,18 @@ namespace MKW.Core.Serialization.Pgp.Packets
             writer.Write(obj.KeyId.Span.Slice(0, 8));
             writer.Write((byte)obj.Tag);
             writer.Write(obj.Data.Span);
+        }
+
+        public static void SerializePacket(IBufferWriter<byte> writer,
+                                           PublicKeyEncryptedSessionKeyV3 obj,
+                                           bool oldFormat)
+        {
+            ArrayBufferWriter<byte> packetWriter = new ArrayBufferWriter<byte>();
+
+            Serialize(packetWriter, obj);
+
+            PgpPacket packet = new PgpPacket(tag, packetWriter.WrittenMemory);
+            PgpPacketSerializer.Serialize(writer, packet, oldFormat);
         }
     }
 }
