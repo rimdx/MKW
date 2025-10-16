@@ -4,6 +4,8 @@
     {
         private ReadOnlyMemory<byte> Data;
 
+        public int RemainingBytes => Data.Length;
+
         public ArrayBufferReader(ReadOnlyMemory<byte> data)
         {
             Data = data;
