@@ -1,39 +1,36 @@
 ﻿using MKW.Common;
 using Org.BouncyCastle.Math;
+using System.Buffers;
 using System.Buffers.Binary;
+using System.IO;
 
 namespace MKW.Core.Serialization.Pgp.Primitives
 {
-    public sealed class MPInteger : PgpObject
+    public static class MPIntegerSerailizer
     {
-        public MPInteger(PgpInputStream stream)
+        public static BigInteger Deserialize(ArrayBufferReader reader)
         {
-            ushort lengthInBits = BinaryPrimitives.ReadUInt16BigEndian(stream.ReadExact(2).Span);
+            ushort lengthInBits = BinaryPrimitives.ReadUInt16BigEndian(reader.ReadBytes(2).Span);
             int lengthInBytes = (lengthInBits + 7) / 8;
 
-            ReadOnlyMemory<byte> bytes = stream.ReadExact(lengthInBytes);
-            Value = new BigInteger(1, bytes.ToArray());
+            ReadOnlyMemory<byte> bytes = reader.ReadBytes(lengthInBytes);
+
+            return new BigInteger(1, bytes.ToArray());
         }
 
-        public MPInteger(BigInteger value)
+        public static void Serialize(IBufferWriter<byte> writer,
+                                     BigInteger value)
         {
             if (value.SignValue < 0)
             {
                 throw new ArgumentException("Values must be positive", nameof(value));
             }
 
-            Value = value;
-        }
-
-        public BigInteger Value { get; }
-
-        public override void Encode(PgpOutputStream stream)
-        {
             Span<byte> buf = stackalloc byte[2];
-            BinaryPrimitives.WriteUInt16BigEndian(buf, (ushort)Value.BitLength);
-            stream.Write(buf);
+            BinaryPrimitives.WriteUInt16BigEndian(buf, (ushort)value.BitLength);
+            writer.Write(buf);
 
-            stream.Write(Value.ToByteArrayUnsigned());
+            writer.Write(value.ToByteArrayUnsigned());
         }
     }
 }

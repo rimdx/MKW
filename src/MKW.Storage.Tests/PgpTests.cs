@@ -14,21 +14,22 @@ namespace MKW.Storage.Tests
         {
             byte[] data = [140, 13, 4, 9, 3, 2, 193, 70, 156, 83, 104, 68, 56, 62, 255, 210, 113, 1, 85, 135, 252, 140, 252, 244, 190, 36, 250, 178, 173, 195, 190, 248, 244, 117, 34, 178, 3, 187, 119, 12, 214, 57, 32, 203, 146, 138, 218, 82, 172, 130, 159, 197, 57, 144, 77, 140, 153, 217, 24, 196, 96, 129, 30, 108, 112, 130, 227, 0, 170, 58, 38, 210, 162, 150, 108, 207, 87, 222, 243, 225, 75, 72, 176, 222, 23, 59, 164, 15, 91, 238, 146, 136, 226, 127, 27, 65, 23, 182, 27, 47, 15, 158, 255, 193, 16, 80, 10, 206, 224, 210, 91, 46, 131, 74, 157, 212, 52, 205, 115, 66, 148, 218, 177, 121, 253, 186, 216, 28, 183, 122];
 
-            using MemoryStream stream = new MemoryStream(data);
-            using PgpInputStream input = new PgpInputStream(stream);
+            ArrayBufferReader reader = new ArrayBufferReader(data);
 
             {
-                using PgpInputStream packet = input.ReadPacket(out PacketTag tag, out uint len);
-                ClassicAssert.AreEqual(PacketTag.SymmetricKeyEncryptedSessionKey, tag);
+                PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
+                ClassicAssert.AreEqual(PacketTag.SymmetricKeyEncryptedSessionKey, packet.Tag);
 
-                SymEncryptedSessionKeyV4 key = new SymEncryptedSessionKeyV4(packet);
+                ArrayBufferReader bodyReader = new ArrayBufferReader(packet.EncodedBody);
+                SymEncryptedSessionKeyV4 key = SymEncryptedSessionKeyV4Serializer.Deserialize(bodyReader);
             }
 
             {
-                using PgpInputStream packet = input.ReadPacket(out PacketTag tag, out uint len);
-                ClassicAssert.AreEqual(PacketTag.SymmetricEncryptedIntegrityProtected, tag);
+                PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
+                ClassicAssert.AreEqual(PacketTag.SymmetricEncryptedIntegrityProtected, packet.Tag);
 
-                SymEncryptedProtectedDataV1 encdata = new SymEncryptedProtectedDataV1(packet);
+                ArrayBufferReader bodyReader = new ArrayBufferReader(packet.EncodedBody);
+                SymEncryptedProtectedDataV1 key = SymEncryptedProtectedDataV1Serializer.Deserialize(bodyReader);
             }
         }
 

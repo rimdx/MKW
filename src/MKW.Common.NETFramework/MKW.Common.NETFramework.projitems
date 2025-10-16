@@ -9,6 +9,7 @@
     <Import_RootNamespace>MKW.Common.NETFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArrayBufferWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilerFeatureRequiredAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IsExternalInit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RequiredMemberAttribute.cs" />
