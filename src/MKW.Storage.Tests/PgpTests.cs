@@ -1,4 +1,5 @@
 ﻿using MKW.Core.Serialization.Pgp;
+using MKW.Core.Serialization.Pgp.Packets;
 using MKW.Cryptography;
 using MKW.Cryptography.Loader;
 using NUnit.Framework.Legacy;
@@ -20,14 +21,14 @@ namespace MKW.Storage.Tests
                 using PgpInputStream packet = input.ReadPacket(out PacketTag tag, out uint len);
                 ClassicAssert.AreEqual(PacketTag.SymmetricKeyEncryptedSessionKey, tag);
 
-                ReadOnlyMemory<byte> body = packet.ReadAll();
+                SymEncryptedSessionKeyV4 key = new SymEncryptedSessionKeyV4(packet);
             }
 
             {
                 using PgpInputStream packet = input.ReadPacket(out PacketTag tag, out uint len);
                 ClassicAssert.AreEqual(PacketTag.SymmetricEncryptedIntegrityProtected, tag);
 
-                ReadOnlyMemory<byte> body = packet.ReadAll();
+                SymEncryptedProtectedDataV1 encdata = new SymEncryptedProtectedDataV1(packet);
             }
         }
 
