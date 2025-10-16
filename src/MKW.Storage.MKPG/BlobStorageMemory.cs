@@ -1,6 +1,6 @@
 ﻿namespace MKW.Storage.MKPG
 {
-    internal sealed class BlobStorageMemory
+    internal sealed class BlobStorageMemory : IBlobStorage
     {
         private readonly Dictionary<BlobId, BlobEntry> entries;
 
