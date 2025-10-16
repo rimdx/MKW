@@ -18,10 +18,7 @@ namespace MKW.Core.Serialization.Pgp.Packets
                                      SymEncryptedProtectedDataV1 obj)
         {
             version.Serialize(writer);
-
-            Span<byte> buffer = writer.GetSpan(obj.Data.Length);
-            obj.Data.Span.CopyTo(buffer);
-            writer.Advance(buffer.Length);
+            writer.Write(obj.Data.Span);
         }
 
         public static void SerializePacket(IBufferWriter<byte> writer,
