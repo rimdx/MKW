@@ -18,7 +18,8 @@ namespace MKW.Storage.Tests
 
             DatabaseEntry dbEntry = new DatabaseEntry
             {
-                Id = EntryId.FromGuid(new Guid("{00000000-0000-0000-A2E4-51CAEA3D7ABD}")),
+                // Id = EntryId.FromGuid(new Guid("{00000000-0000-0000-A2E4-51CAEA3D7ABD}")),
+                Id = EntryId.Create(),
                 Data = data,
                 Salt = null,
                 Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
@@ -31,6 +32,14 @@ namespace MKW.Storage.Tests
             ClassicAssert.AreEqual(dbEntry.Id, read.Id);
             CollectionAssert.AreEqual(dbEntry.Data.ToArray(), read.Data.ToArray());
             CollectionAssert.AreEqual(dbEntry.Keys, read.Keys);
+
+            database.CreateEntry(EntryId.Create(), dbEntry);
+            database.CreateEntry(EntryId.Create(), dbEntry);
+            database.CreateEntry(EntryId.Create(), dbEntry);
+
+            DatabaseEntry[] entries = database.EnumerateEntries().ToArray();
+
+            ClassicAssert.AreEqual(4, entries.Length);
         }
     }
 }
