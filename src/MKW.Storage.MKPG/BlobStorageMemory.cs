@@ -11,7 +11,7 @@
 
         public void Create(BlobId id, BlobEntry entry)
         {
-            return entries[id] = entry;
+            entries[id] = entry;
         }
 
         public BlobEntry Open(BlobId id)
