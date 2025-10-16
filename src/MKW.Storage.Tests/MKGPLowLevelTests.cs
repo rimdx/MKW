@@ -1,8 +1,8 @@
 ﻿using MKW.Core;
 using MKW.Core.Serialization.Pgp;
-using MKW.Cryptography;
+using MKW.Common;
 using MKW.Storage.MKPG;
-using Org.BouncyCastle.Bcpg.OpenPgp;
+using Org.BouncyCastle.Bcpg;
 using System.Buffers;
 
 namespace MKW.Storage.Tests
@@ -24,7 +24,10 @@ namespace MKW.Storage.Tests
 
             EntrySerializer.Serialize(writer, dbEntry);
 
-            Console.WriteLine(Convert.ToBase64String(writer.WrittenSpan.ToArray()));
+            using Stream stdout = Console.OpenStandardOutput();
+            using ArmoredOutputStream armour = new ArmoredOutputStream(stdout);
+
+            armour.Write(writer.WrittenSpan);
         }
 
         [Test]
