@@ -69,7 +69,7 @@ namespace MKW.Storage.MKPG
                     Data = user.Value,
                 };
 
-                PublicKeyEncryptedSessionKeyV3Serializer.SerializePacket(writer, sessionKey, true);
+                PublicKeyEncryptedSessionKeyV3Serializer.SerializePacket(writer, sessionKey, false);
             }
 
             SymEncryptedProtectedDataV1 packet = new SymEncryptedProtectedDataV1
@@ -77,7 +77,7 @@ namespace MKW.Storage.MKPG
                 Data = obj.Data,
             };
 
-            SymEncryptedProtectedDataV1Serializer.SerializePacket(writer, packet, true);
+            SymEncryptedProtectedDataV1Serializer.SerializePacket(writer, packet, false);
         }
     }
 }
