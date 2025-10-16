@@ -1,17 +1,24 @@
 ﻿using MKW.Core;
+using MKW.Core.Serialization.Pgp;
+using System.Buffers;
 
 namespace MKW.Storage.MKPG
 {
     public sealed class MKPGDatabase : IDatabase, IDisposable
     {
+        private readonly BlobStorageMemory entries;
+
         public MKPGDatabase()
         {
+            entries = new BlobStorageMemory();
         }
 
         // Entry
         public void CreateEntry(EntryId id, DatabaseEntry entry)
         {
-            throw new NotImplementedException();
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            EntrySerializer.Serialize(writer, entry);
+            entries.Create(BlobId.From(id), new BlobEntry(writer.WrittenMemory));
         }
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
@@ -21,7 +28,13 @@ namespace MKW.Storage.MKPG
 
         public DatabaseEntry OpenEntry(EntryId id)
         {
-            throw new NotImplementedException();
+            BlobEntry blob = entries.Open(BlobId.From(id));
+            DatabaseEntry entry = EntrySerializer.Deserialize(new ArrayBufferReader(blob.Data));
+
+            return entry with
+            {
+                Id = id,
+            };
         }
 
         public bool DeleteEntry(EntryId id)
