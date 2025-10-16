@@ -1,6 +1,8 @@
-﻿namespace MKW.Core.Serialization.Pgp.Primitives
+﻿using System.Buffers;
+
+namespace MKW.Core.Serialization.Pgp.Primitives
 {
-    internal sealed class PgpVersion : PgpObject
+    internal sealed class PgpVersion
     {
         private readonly int expectedVersion;
 
@@ -9,9 +11,9 @@
             this.expectedVersion = expectedVersion;
         }
 
-        public void ConsumeVersion(PgpInputStream stream)
+        public void ConsumeVersion(ArrayBufferReader reader)
         {
-            int version = stream.RequireByte();
+            int version = reader.ReadByte();
 
             if (version != expectedVersion)
             {
@@ -23,9 +25,9 @@
             }
         }
 
-        public override void Encode(PgpOutputStream stream)
+        public void Serialize(IBufferWriter<byte> writer)
         {
-            stream.WriteByte((byte)expectedVersion);
+            writer.Write((byte)expectedVersion);
         }
     }
 }
