@@ -34,7 +34,7 @@ namespace MKW.Core.Serialization.Pgp.Packets
     //   dependent on the public-key algorithm used.
     public static class PublicKeyEncryptedSessionKeyV3Serializer
     {
-        private static PgpVersion version = new PgpVersion(3);
+        private static readonly PgpVersion version = new PgpVersion(3);
 
         public static PublicKeyEncryptedSessionKeyV3 Deserialize(ArrayBufferReader reader)
         {
