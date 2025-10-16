@@ -102,20 +102,15 @@
             "-----END PGP MESSAGE-----\n";
 
         // passphrase: 123
+        // string-to-key iterations: 1024
+        // gpg --symmetric --armor --s2k-count 1024 test.txt
         public static readonly string SymmetricallyEncryptedMessage =
             "-----BEGIN PGP MESSAGE-----\n" +
             "\n" +
-            "hQEMA5ULd/u5gOShAQgAwHH6nDtY7nsRu/Do3BLDvptv7QczZvplrZnJWTItL+Aa\n" +
-            "i59EAn2Srm04dVhraN5tu72Ger43RTCPjTHWc5P4HyznValyppzT70E5BdRvm5Ve\n" +
-            "ZlfVXyhbNW3zlbN7J1KboTktIvuBtZBzfiKaYhZzlF/lQjBLFhpNNBZT/5dAGTuO\n" +
-            "6GmWADtIeZ08fceOrNy3HKR19V338jEiZ+UHYOJ4fuyex2CiLjMjGw9b7eizW6yF\n" +
-            "bCZ/iwJjLndqF3Irfu6VeEWNOeh5kcgg+ieW3LW00ctvHU66nfwuGlEFwWAZC/Qt\n" +
-            "LDiRGs2QjqHNVAwU+Bm7Wibx+NBes1RdfCQO0mJSGowuBAkDAmZA5L4OHMy1/ybq\n" +
-            "QHaZo//um20clWmexHVOHsQMYUpIAG4512xXV8k5j9J5AUA46xMxhLMKkT72El1E\n" +
-            "v3H3OscCpc0AUD4pEQl34PuE2jC9+Jn+578P9NV9Lr3XjOEsCXmQuDn19+cijWn+\n" +
-            "PqTUHQaLinE5pK78C6F0dXHYNh2J7U06Rgxj/C2TvG+sCCEMLYamR/IpIoIPXT/M\n" +
-            "Ts3wT4gnZkv2fg==\n" +
-            "=itNI\n" +
+            "jA0ECQMC0V4B4tm8eOv/0nMBOjcOX9A5lnnQqbKjU3XLdd2inCXVQDl4mZQAvxOY\n" +
+            "19BN6KueKQE3PWF1BxSRW8j5ZTIP4+8z3dh/vFb4jKk2pFTpc/IkgV7XczIePtgm\n" +
+            "GBsdLUbQ8/GRRNwGu5jDU6sGlJ95/ltjHoa+bWV2Ta/EkzfP\n" +
+            "=9aJU\n" +
             "-----END PGP MESSAGE-----\n";
     }
 }
