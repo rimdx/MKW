@@ -4,7 +4,7 @@ using MKW.Core.Serialization.Pgp.Packets;
 using Org.BouncyCastle.Bcpg;
 using System.Buffers;
 
-namespace MKW.Storage.MKGP
+namespace MKW.Storage.MKPG
 {
     public static class EntrySerializer
     {
