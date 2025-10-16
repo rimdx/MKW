@@ -6,7 +6,7 @@ namespace MKW.Storage.MKPG
 {
     public sealed class MKPGDatabase : IDatabase, IDisposable
     {
-        private readonly BlobStorageMemory entries;
+        private readonly IBlobStorage entries;
 
         public MKPGDatabase()
         {
