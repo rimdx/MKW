@@ -147,12 +147,12 @@ namespace MKW.Core.Serialization.Pgp
             {
                 Span<byte> data =
                 [
-                    b0,
+                    (byte)(b0 - 192),
                     reader.ReadByte(),
                 ];
 
                 partial = false;
-                return BinaryPrimitives.ReadUInt16BigEndian(data);
+                return BinaryPrimitives.ReadUInt16BigEndian(data) + 192U;
             }
             else if (b0 == 255)
             {
