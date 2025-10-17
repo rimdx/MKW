@@ -21,6 +21,7 @@ namespace MKW.Core.Serialization.Pgp
             {
                 if (str[i] == ':')
                 {
+                    i++;
                     break;
                 }
                 else
