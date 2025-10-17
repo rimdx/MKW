@@ -22,6 +22,23 @@
 
         public readonly static ReadOnlyMemory<byte> DecodingTable = CreateDecodingTable();
 
+        public static byte DecodeChar(byte encoded)
+        {
+            if (encoded > DecodingTable.Length)
+            {
+                throw new Exception("Invalid Radix64 character.");
+            }
+
+            byte result = DecodingTable.Span[encoded];
+
+            if (result > 0x3F)
+            {
+                throw new Exception("Invalid Radix64 character.");
+            }
+
+            return result;
+        }
+
         private static ReadOnlyMemory<byte> CreateDecodingTable()
         {
             byte[] result = new byte[128];
