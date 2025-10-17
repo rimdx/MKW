@@ -67,11 +67,11 @@ namespace MKW.Core.Serialization.Pgp
         }
 
         private static void WriteHeaders(TextWriter writer,
-                                         IEnumerable<string> headers)
+                                         IEnumerable<PgpArmourHeader> headers)
         {
-            foreach (string header in headers)
+            foreach (PgpArmourHeader header in headers)
             {
-                writer.WriteLine(header);
+                writer.WriteLine(PgpArmourHeaderSerializer.Serialize(header));
             }
 
             writer.WriteLine();
@@ -120,7 +120,7 @@ namespace MKW.Core.Serialization.Pgp
                 return null;
             }
 
-            string[] headers = ReadHeaders(reader).ToArray();
+            var headers = ReadHeaders(reader).ToArray();
 
             using MemoryStream output = new MemoryStream();
 
@@ -190,7 +190,7 @@ namespace MKW.Core.Serialization.Pgp
             }
         }
 
-        private static IEnumerable<string> ReadHeaders(TextReader reader)
+        private static IEnumerable<PgpArmourHeader> ReadHeaders(TextReader reader)
         {
             while (true)
             {
@@ -209,7 +209,7 @@ namespace MKW.Core.Serialization.Pgp
                 }
                 else
                 {
-                    yield return trimmed;
+                    yield return PgpArmourHeaderSerializer.Deserialize(trimmed);
                 }
             }
         }
