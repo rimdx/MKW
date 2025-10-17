@@ -1,34 +1,10 @@
-﻿using System.Collections;
-
-namespace MKW.Core.Serialization.Pgp
+﻿namespace MKW.Core.Serialization.Pgp
 {
     // 6-bit -> 8-bit
     // lcm(6, 8) = 24 bit = 3 byte (of input)
     // 3 * 8 / 6          = 4 byte (of output)
     internal static class Radix64BitConvert
     {
-        private const int numberWidth = 6;
-        private const int byteWidth = 8;
-
-        public static void BufferFromBits(BitArray input, Span<byte> output)
-        {
-            for (int i = 0; i < input.Length / 8; i++)
-            {
-                int octet = 0;
-
-                for (int j = 0; j < byteWidth; j++)
-                {
-                    if (input[(i * byteWidth) + j])
-                    {
-                        int mask = 1 << (byteWidth - 1 - j);
-                        octet += mask;
-                    }
-                }
-
-                output[i] = (byte)octet;
-            }
-        }
-
         // bytes.count = 3
         // encoded.count = 4
         public static void EncodeFullBlock(ReadOnlySpan<byte> bytes, Span<byte> encoded)
@@ -67,23 +43,43 @@ namespace MKW.Core.Serialization.Pgp
             }
         }
 
-        public static int DecodeChunk(BitArray bits, ReadOnlySpan<byte> inputSpan)
+        // encoded.count = 4
+        // bytes.count = 3
+        public static int DecodeBlock(ReadOnlySpan<byte> encoded, Span<byte> bytes)
         {
-            int i = 0;
-
-            for (; i < inputSpan.Length; i++)
+            if (encoded[1] == Radix64Charset.Padding)
             {
-                byte value = Radix64Charset.DecodingTable.Span[inputSpan[i]];
+                int b0 = Radix64Charset.DecodeChar(encoded[0]);
+                int b1 = Radix64Charset.DecodeChar(encoded[1]);
 
-                for (int j = 0; j < numberWidth; j++)
-                {
-                    int mask = 1 << (numberWidth - 1 - j);
-                    bool bit = (value & mask) > 0;
-                    bits[i * numberWidth + j] = bit;
-                }
+                bytes[0] = (byte)((b0 << 2) | (b1 >> 4));
+
+                return 1;
             }
+            else if (encoded[2] == Radix64Charset.Padding)
+            {
+                int b0 = Radix64Charset.DecodeChar(encoded[0]);
+                int b1 = Radix64Charset.DecodeChar(encoded[1]);
+                int b2 = Radix64Charset.DecodeChar(encoded[2]);
 
-            return i;
+                bytes[0] = (byte)((b0 << 2) | (b1 >> 4));
+                bytes[2] = (byte)((b1 << 4) | (b2 >> 2));
+
+                return 2;
+            }
+            else
+            {
+                int b0 = Radix64Charset.DecodeChar(encoded[0]);
+                int b1 = Radix64Charset.DecodeChar(encoded[1]);
+                int b2 = Radix64Charset.DecodeChar(encoded[2]);
+                int b3 = Radix64Charset.DecodeChar(encoded[3]);
+
+                bytes[0] = (byte)((b0 << 2) | (b1 >> 4));
+                bytes[1] = (byte)((b1 << 4) | (b2 >> 2));
+                bytes[2] = (byte)((b2 << 6) | (b3 >> 0));
+
+                return 3;
+            }
         }
     }
 }

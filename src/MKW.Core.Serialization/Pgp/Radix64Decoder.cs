@@ -1,5 +1,4 @@
 ﻿using Org.BouncyCastle.Bcpg;
-using System.Buffers.Binary;
 using System.Collections;
 using System.Security.Cryptography;
 
@@ -31,13 +30,7 @@ namespace MKW.Core.Serialization.Pgp
             ReadOnlySpan<byte> inputSpan = new ReadOnlySpan<byte>(inputBuffer, inputOffset, inputCount);
             Span<byte> outputSpan = new Span<byte>(outputBuffer, outputOffset, OutputBlockSize);
 
-            Radix64BitConvert.DecodeChunk(bits, inputSpan);
-            Radix64BitConvert.BufferFromBits(bits, outputSpan);
-
-            crc.Update3(outputBuffer, outputOffset);
-
-
-            return outputBuffer.Length;
+            return Radix64BitConvert.DecodeBlock(inputSpan, outputSpan);
         }
 
         public byte[] TransformFinalBlock(byte[] inputBuffer,
