@@ -29,11 +29,19 @@ namespace MKW.Core.Serialization.Pgp
                                           int inputCount)
         {
             ReadOnlySpan<byte> inputSpan = new ReadOnlySpan<byte>(inputBuffer, inputOffset, inputCount);
-            byte[] outputBuffer = new byte[4];
 
-            Radix64BitConvert.EncodeFinalBlock(inputSpan, outputBuffer);
+            if (inputSpan.Length == 0)
+            {
+                return [];
+            }
+            else
+            {
+                byte[] outputBuffer = new byte[4];
 
-            return outputBuffer;
+                Radix64BitConvert.EncodeFinalBlock(inputSpan, outputBuffer);
+
+                return outputBuffer;
+            }
         }
 
         public void Dispose()
