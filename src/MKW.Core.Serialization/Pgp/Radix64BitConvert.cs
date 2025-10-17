@@ -28,6 +28,34 @@ namespace MKW.Core.Serialization.Pgp
             (byte)'+', (byte)'/'
         ];
 
+        private readonly static ReadOnlyMemory<byte> decodingTable = CreateDecodingTable();
+
+        private static ReadOnlyMemory<byte> CreateDecodingTable()
+        {
+            byte[] result = new byte[128];
+            result.AsSpan().Fill(0xFF);
+
+            for (int i = 'A'; i <= 'Z'; i++)
+            {
+                result[i] = (byte)(i - 'A');
+            }
+
+            for (int i = 'a'; i <= 'z'; i++)
+            {
+                result[i] = (byte)(i - 'a' + 26);
+            }
+
+            for (int i = '0'; i <= '9'; i++)
+            {
+                result[i] = (byte)(i - '0' + 52);
+            }
+
+            result['+'] = 62;
+            result['/'] = 63;
+
+            return result;
+        }
+
         public static void BufferToBits(ReadOnlySpan<byte> input, BitArray output)
         {
             int i = 0;
@@ -47,6 +75,25 @@ namespace MKW.Core.Serialization.Pgp
             for (int bit = i * byteWidth; bit < output.Length; bit++)
             {
                 output[bit] = false;
+            }
+        }
+
+        public static void BufferFromBits(BitArray input, Span<byte> output)
+        {
+            for (int i = 0; i < input.Length / 8; i++)
+            {
+                int octet = 0;
+
+                for (int j = 0; j < byteWidth; j++)
+                {
+                    if (input[(i * byteWidth) + j])
+                    {
+                        int mask = 1 << (byteWidth - 1 - j);
+                        octet += mask;
+                    }
+                }
+
+                output[i] = (byte)octet;
             }
         }
 
@@ -78,6 +125,25 @@ namespace MKW.Core.Serialization.Pgp
             {
                 output[i] = padding;
             }
+        }
+
+        public static int DecodeChunk(BitArray bits, ReadOnlySpan<byte> inputSpan)
+        {
+            int i = 0;
+
+            for (; i < inputSpan.Length; i++)
+            {
+                byte value = decodingTable.Span[inputSpan[i]];
+
+                for (int j = 0; j < numberWidth; j++)
+                {
+                    int mask = 1 << (numberWidth - 1 - j);
+                    bool bit = (value & mask) > 0;
+                    bits[i * numberWidth + j] = bit;
+                }
+            }
+
+            return i;
         }
     }
 }
