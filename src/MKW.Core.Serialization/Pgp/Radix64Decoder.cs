@@ -44,26 +44,7 @@ namespace MKW.Core.Serialization.Pgp
                                           int inputOffset,
                                           int inputCount)
         {
-            ReadOnlySpan<byte> inputSpan = new ReadOnlySpan<byte>(inputBuffer, inputOffset, inputCount);
-
             byte[] outputBuffer = new byte[OutputBlockSize * 2 + 1];
-            Span<byte> outputSpan = new Span<byte>(outputBuffer);
-
-            Radix64BitConvert.BufferToBits(inputSpan, bits);
-            int count = Radix64BitConvert.EncodeChunk(bits, inputSpan.Length * 8, outputSpan);
-
-            Radix64BitConvert.WritePadding(outputSpan.Slice(count));
-
-            foreach (byte b in inputSpan)
-            {
-                crc.Update(b);
-            }
-
-            Span<byte> crcBytes = stackalloc byte[4];
-            BinaryPrimitives.WriteUInt32BigEndian(crcBytes, (uint)crc.Value);
-            Radix64BitConvert.BufferToBits(crcBytes.Slice(1, 3), bits);
-            Radix64BitConvert.EncodeChunk(bits, inputSpan.Length * 8, outputSpan.Slice(OutputBlockSize + 1));
-
             return outputBuffer;
         }
 
