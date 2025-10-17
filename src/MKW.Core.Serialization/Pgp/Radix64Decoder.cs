@@ -26,8 +26,7 @@ namespace MKW.Core.Serialization.Pgp
                                           int inputOffset,
                                           int inputCount)
         {
-            byte[] outputBuffer = new byte[OutputBlockSize * 2 + 1];
-            return outputBuffer;
+            return [];
         }
 
         public void Dispose()
