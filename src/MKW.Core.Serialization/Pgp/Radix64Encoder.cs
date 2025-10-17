@@ -1,6 +1,4 @@
-﻿using Org.BouncyCastle.Bcpg;
-using System.Buffers.Binary;
-using System.Collections;
+﻿using System.Collections;
 using System.Security.Cryptography;
 
 namespace MKW.Core.Serialization.Pgp
@@ -13,12 +11,10 @@ namespace MKW.Core.Serialization.Pgp
         public int InputBlockSize => 3;
         public int OutputBlockSize => 4;
 
-        private readonly Crc24 crc;
         private readonly BitArray bits;
 
         public Radix64Encoder()
         {
-            crc = new Crc24();
             bits = new BitArray(24);
         }
 
@@ -30,8 +26,6 @@ namespace MKW.Core.Serialization.Pgp
         {
             ReadOnlySpan<byte> inputSpan = new ReadOnlySpan<byte>(inputBuffer, inputOffset, inputCount);
             Span<byte> outputSpan = new Span<byte>(outputBuffer, outputOffset, OutputBlockSize);
-
-            crc.Update3(outputBuffer, outputOffset);
 
             Radix64BitConvert.BufferToBits(inputSpan, bits);
             Radix64BitConvert.EncodeChunk(bits, inputSpan.Length * 8, outputSpan);
@@ -52,16 +46,6 @@ namespace MKW.Core.Serialization.Pgp
             int count = Radix64BitConvert.EncodeChunk(bits, inputSpan.Length * 8, outputSpan);
 
             Radix64BitConvert.WritePadding(outputSpan.Slice(count));
-
-            foreach (byte b in inputSpan)
-            {
-                crc.Update(b);
-            }
-
-            Span<byte> crcBytes = stackalloc byte[4];
-            BinaryPrimitives.WriteUInt32BigEndian(crcBytes, (uint)crc.Value);
-            Radix64BitConvert.BufferToBits(crcBytes.Slice(1, 3), bits);
-            Radix64BitConvert.EncodeChunk(bits, inputSpan.Length * 8, outputSpan.Slice(OutputBlockSize + 1));
 
             return outputBuffer;
         }
