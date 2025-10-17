@@ -1,6 +1,4 @@
-﻿using Org.BouncyCastle.Bcpg;
-using System.Collections;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace MKW.Core.Serialization.Pgp
 {
@@ -11,15 +9,6 @@ namespace MKW.Core.Serialization.Pgp
 
         public int InputBlockSize => 4;
         public int OutputBlockSize => 3;
-
-        private readonly Crc24 crc;
-        private readonly BitArray bits;
-
-        public Radix64Decoder()
-        {
-            crc = new Crc24();
-            bits = new BitArray(24);
-        }
 
         public int TransformBlock(byte[] inputBuffer,
                                   int inputOffset,
