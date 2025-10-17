@@ -15,7 +15,7 @@ namespace MKW.Storage.Tests
                 MessageTypeHeader = "PGP MESSAGE",
                 Data = new byte[] { 1, 2, 3, 4 },
                 Headers = [
-                    "Version: 0.42.0"
+                    new PgpArmourHeader("Version", "0.42.0"),
                 ],
             };
 

@@ -4,7 +4,7 @@
     {
         public required string MessageTypeHeader { get; init; }
 
-        public required IReadOnlyCollection<string> Headers { get; init; }
+        public required IReadOnlyCollection<PgpArmourHeader> Headers { get; init; }
 
         public required ReadOnlyMemory<byte> Data { get; init; }
     }
