@@ -1,0 +1,297 @@
+﻿using MKW.Common;
+using Org.BouncyCastle.Bcpg;
+using System.Buffers.Binary;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace MKW.Core.Serialization.Pgp
+{
+    // When OpenPGP encodes data into ASCII Armor, it puts specific headers
+    // around the Radix-64 encoded data, so OpenPGP can reconstruct the data
+    // later.  An OpenPGP implementation MAY use ASCII armor to protect raw
+    // binary data.  OpenPGP informs the user what kind of data is encoded
+    // in the ASCII armor through the use of the headers.
+    //
+    // Concatenating the following data creates ASCII Armor:
+    //   - An Armor Header Line, appropriate for the type of data
+    //   - Armor Headers
+    //   - A blank (zero-length, or containing only whitespace) line
+    //   - The ASCII-Armored data
+    //   - An Armor Checksum
+    //   - The Armor Tail, which depends on the Armor Header Line
+    //
+    // An Armor Header Line consists of the appropriate header line text
+    // surrounded by five (5) dashes ('-', 0x2D) on either side of the
+    // header line text.  The header line text is chosen based upon the type
+    // of data that is being encoded in Armor, and how it is being encoded.
+    // Header line texts include the following strings:
+    //
+    // [...strip...]
+    public static class PgpArmourSerializer
+    {
+        private static readonly string dashes = new string('-', 5);
+        private static readonly string beginPrefix = "BEGIN ";
+        private static readonly string endPrefix = "END ";
+        private static readonly string checksumPrefix = "=";
+
+        public static void Serialize(TextWriter writer,
+                                     PgpArmouredMessage obj)
+        {
+            writer.WriteLine($"{dashes}{beginPrefix}{obj.MessageTypeHeader}{dashes}");
+
+            WriteHeaders(writer, obj.Headers);
+
+            using MemoryStream output = new MemoryStream();
+
+            {
+                using LineBreakTransform lineBreakTransform = new LineBreakTransform(64);
+                using CryptoStream lineBreakStream = new CryptoStream(new StreamDisown(output),
+                                                                      lineBreakTransform,
+                                                                      CryptoStreamMode.Write);
+
+                using Radix64Encoder radixTransform = new Radix64Encoder();
+                using CryptoStream radixStream = new CryptoStream(lineBreakStream,
+                                                                  radixTransform,
+                                                                  CryptoStreamMode.Write);
+
+                radixStream.Write(obj.Data.Span);
+
+            }
+
+            string str = Encoding.ASCII.GetString(output.GetBuffer(), 0, (int)output.Length);
+
+            writer.Write(str);
+            WriteChecksum(writer, obj.Data.Span);
+
+            writer.WriteLine($"{dashes}{endPrefix}{obj.MessageTypeHeader}{dashes}");
+        }
+
+        private static void WriteHeaders(TextWriter writer,
+                                         IEnumerable<string> headers)
+        {
+            foreach (string header in headers)
+            {
+                writer.WriteLine(header);
+            }
+
+            writer.WriteLine();
+        }
+
+        private static void WriteChecksum(TextWriter writer,
+                                          ReadOnlySpan<byte> data)
+        {
+            byte[] buf = new byte[3];
+            byte[] encoded = new byte[4];
+
+            Crc24 crc = new Crc24();
+
+            int i = 0;
+            for (; i + 3 < data.Length; i += 3)
+            {
+                buf[0] = data[i + 0];
+                buf[1] = data[i + 1];
+                buf[2] = data[i + 2];
+                crc.Update3(buf, 0);
+            }
+
+            for (; i < data.Length; i++)
+            {
+                crc.Update(data[i]);
+            }
+
+            int value = crc.Value;
+            buf[0] = (byte)(0xFF & (value >> 16));
+            buf[1] = (byte)(0xFF & (value >> 8));
+            buf[2] = (byte)(0xFF & (value >> 0));
+
+            Radix64BitConvert.EncodeFullBlock(buf, encoded);
+
+            writer.Write(checksumPrefix);
+            writer.Write(Encoding.ASCII.GetString(encoded));
+            writer.WriteLine();
+        }
+
+        public static PgpArmouredMessage? Deserialize(TextReader reader)
+        {
+            string? type = ReadBeginHeader(reader);
+
+            if (type == null)
+            {
+                return null;
+            }
+
+            string[] headers = ReadHeaders(reader).ToArray();
+
+            using MemoryStream output = new MemoryStream();
+
+            {
+                using Radix64Decoder radixTransform = new Radix64Decoder();
+                using CryptoStream radixStream = new CryptoStream(output,
+                                                                  radixTransform,
+                                                                  CryptoStreamMode.Write);
+
+                int checksum = ReadBody(reader, radixStream);
+            }
+
+            string endType = ReadEndHeader(reader);
+
+            return new PgpArmouredMessage
+            {
+                MessageTypeHeader = type,
+                Headers = headers,
+                Data = output.ToArray(),
+            };
+        }
+
+        private static int ReadBody(TextReader reader, Stream ostream)
+        {
+            Span<byte> checksumBytes = stackalloc byte[3];
+
+            while (true)
+            {
+                string? line = reader.ReadLine();
+
+                if (line == null)
+                {
+                    throw new EndOfStreamException();
+                }
+
+                if (line.StartsWith(checksumPrefix))
+                {
+                    string sliced = line.Substring(checksumPrefix.Length);
+
+                    if (sliced.Length != 4)
+                    {
+                        throw new Exception("malformed checksum format");
+                    }
+
+                    ReadOnlyMemory<byte> encoded = Encoding.ASCII.GetBytes(sliced);
+
+                    Radix64BitConvert.DecodeBlock(encoded.Span, checksumBytes);
+
+                    return checksumBytes[0] << 16 + checksumBytes[1] << 8 + checksumBytes[2];
+                }
+                else
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (char ch in line)
+                    {
+                        if (!char.IsWhiteSpace(ch))
+                        {
+                            sb.Append(ch);
+                        }
+                    }
+
+                    ReadOnlyMemory<byte> bytes = Encoding.ASCII.GetBytes(sb.ToString());
+
+                    ostream.Write(bytes.Span);
+                }
+            }
+        }
+
+        private static IEnumerable<string> ReadHeaders(TextReader reader)
+        {
+            while (true)
+            {
+                string? line = reader.ReadLine();
+
+                if (line == null)
+                {
+                    throw new EndOfStreamException();
+                }
+
+                string trimmed = line.Trim();
+
+                if (trimmed == string.Empty)
+                {
+                    yield break;
+                }
+                else
+                {
+                    yield return trimmed;
+                }
+            }
+        }
+
+        private static string? ReadBeginHeader(TextReader reader)
+        {
+            while (true)
+            {
+                string? line = reader.ReadLine();
+
+                if (line == null)
+                {
+                    return null;
+                }
+
+                if (line.StartsWith(dashes))
+                {
+                    if (!line.EndsWith(dashes))
+                    {
+                        throw new Exception("malformed armour header");
+                    }
+
+                    if (line.Length < dashes.Length * 2)
+                    {
+                        throw new Exception("malformed armour header");
+                    }
+
+                    // -----BEGIN PGP MESSAGE  -----
+                    //      ^               ^
+                    string slice = line.Substring(dashes.Length, line.Length - dashes.Length * 2);
+                    string trimmed = slice.Trim();
+
+                    if (!trimmed.StartsWith(beginPrefix))
+                    {
+                        throw new Exception("malformed armour header");
+                    }
+
+                    string type = trimmed.Substring(beginPrefix.Length);
+
+                    return type;
+                }
+            }
+        }
+
+        private static string ReadEndHeader(TextReader reader)
+        {
+            while (true)
+            {
+                string? line = reader.ReadLine();
+
+                if (line == null)
+                {
+                    throw new EndOfStreamException();
+                }
+
+                if (line.StartsWith(dashes))
+                {
+                    if (!line.EndsWith(dashes))
+                    {
+                        throw new Exception("malformed armour footer");
+                    }
+
+                    if (line.Length < dashes.Length * 2)
+                    {
+                        throw new Exception("malformed armour footer");
+                    }
+
+                    // -----END PGP MESSAGE  -----
+                    //      ^             ^
+                    string slice = line.Substring(dashes.Length, line.Length - dashes.Length * 2);
+                    string trimmed = slice.Trim();
+
+                    if (!trimmed.StartsWith(endPrefix))
+                    {
+                        throw new Exception("malformed armour footer");
+                    }
+
+                    string type = trimmed.Substring(endPrefix.Length);
+
+                    return type;
+                }
+            }
+        }
+    }
+}
