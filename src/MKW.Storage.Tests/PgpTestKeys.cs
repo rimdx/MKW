@@ -7,7 +7,7 @@
         // export with: `gpg --export --armor`
         // for private keys: `gpg --export-secret-subkeys --armor`
 
-        public static readonly string TestPublicKey =
+        public const string TestPublicKey =
             "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
             "\n" +
             "mQENBGjxApEBCADNBaMuxtxHAxGXCr5wQYsJaQKJrnaD033TQzefmzjUK9XnIv4g\n" +
@@ -40,7 +40,7 @@
             "=pK7/\n" +
             "-----END PGP PUBLIC KEY BLOCK-----\n";
 
-        public static readonly string TestPrivateKey =
+        public const string TestPrivateKey =
             "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
             "\n" +
             "lQEVBGjxApEBCADNBaMuxtxHAxGXCr5wQYsJaQKJrnaD033TQzefmzjUK9XnIv4g\n" +
@@ -86,7 +86,7 @@
             "=PJs0\n" +
             "-----END PGP PRIVATE KEY BLOCK-----\n";
 
-        public static readonly string PublicKeyEncryptedMessage =
+        public const string PublicKeyEncryptedMessage =
             "-----BEGIN PGP MESSAGE-----\n" +
             "\n" +
             "hQEMA5ULd/u5gOShAQf+IhQ5xU/v8YFB0AbddOlakSJyRISkSD8wi+B1swbK5KZI\n" +
@@ -104,7 +104,7 @@
         // passphrase: 123
         // string-to-key iterations: 1024
         // gpg --symmetric --armor --s2k-count 1024 test.txt
-        public static readonly string SymmetricallyEncryptedMessage =
+        public const string SymmetricallyEncryptedMessage =
             "-----BEGIN PGP MESSAGE-----\n" +
             "\n" +
             "jA0ECQMC0V4B4tm8eOv/0nMBOjcOX9A5lnnQqbKjU3XLdd2inCXVQDl4mZQAvxOY\n" +
