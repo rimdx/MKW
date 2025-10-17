@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace MKW.Core.Serialization.Pgp
 {
