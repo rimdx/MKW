@@ -47,7 +47,7 @@
         // bytes.count = 3
         public static int DecodeBlock(ReadOnlySpan<byte> encoded, Span<byte> bytes)
         {
-            if (encoded[1] == Radix64Charset.Padding)
+            if (encoded[2] == Radix64Charset.Padding)
             {
                 int b0 = Radix64Charset.DecodeChar(encoded[0]);
                 int b1 = Radix64Charset.DecodeChar(encoded[1]);
@@ -56,14 +56,14 @@
 
                 return 1;
             }
-            else if (encoded[2] == Radix64Charset.Padding)
+            else if (encoded[3] == Radix64Charset.Padding)
             {
                 int b0 = Radix64Charset.DecodeChar(encoded[0]);
                 int b1 = Radix64Charset.DecodeChar(encoded[1]);
                 int b2 = Radix64Charset.DecodeChar(encoded[2]);
 
                 bytes[0] = (byte)((b0 << 2) | (b1 >> 4));
-                bytes[2] = (byte)((b1 << 4) | (b2 >> 2));
+                bytes[1] = (byte)((b1 << 4) | (b2 >> 2));
 
                 return 2;
             }
