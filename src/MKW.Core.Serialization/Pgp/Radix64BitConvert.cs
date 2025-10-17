@@ -56,28 +56,6 @@ namespace MKW.Core.Serialization.Pgp
             return result;
         }
 
-        public static void BufferToBits(ReadOnlySpan<byte> input, BitArray output)
-        {
-            int i = 0;
-
-            // copy data from input to output, expanding bytes to bits
-            for (; i < input.Length; i++)
-            {
-                for (int j = 0; j < byteWidth; j++)
-                {
-                    int mask = 1 << (byteWidth - 1 - j);
-                    bool bit = (input[i] & mask) > 0;
-                    output[(i * byteWidth) + j] = bit;
-                }
-            }
-
-            // fill the rest with zeros
-            for (int bit = i * byteWidth; bit < output.Length; bit++)
-            {
-                output[bit] = false;
-            }
-        }
-
         public static void BufferFromBits(BitArray input, Span<byte> output)
         {
             for (int i = 0; i < input.Length / 8; i++)
@@ -97,33 +75,41 @@ namespace MKW.Core.Serialization.Pgp
             }
         }
 
-        public static int EncodeChunk(BitArray bits, int bitCount, Span<byte> output)
+        // bytes.count = 3
+        // encoded.count = 4
+        public static void EncodeFullBlock(ReadOnlySpan<byte> bytes, Span<byte> encoded)
         {
-            int bitIndex = 0;
-            int i = 0;
-
-            for (; bitIndex < bitCount; i++)
-            {
-                int c = 0;
-
-                for (int j = 0; j < numberWidth; j++, bitIndex++)
-                {
-                    int mask = 1 << (numberWidth - 1 - j);
-                    int bit = bits[bitIndex] ? 1 : 0;
-                    c += bit * mask;
-                }
-
-                output[i] = encodingTable[c];
-            }
-
-            return i;
+            encoded[0] = encodingTable[0x3f & (bytes[0] >> 2)];
+            encoded[1] = encodingTable[0x3f & (bytes[0] << 4) | (bytes[1] >> 4)];
+            encoded[2] = encodingTable[0x3f & (bytes[1] << 2) | (bytes[2] >> 6)];
+            encoded[3] = encodingTable[0x3f & (bytes[2])];
         }
 
-        public static void WritePadding(Span<byte> output)
+        // bytes.count ~ (0, 3)
+        // encoded.count = 4
+        public static void EncodeFinalBlock(ReadOnlySpan<byte> bytes, Span<byte> encoded)
         {
-            for (int i = 0; i < output.Length; i++)
+            if (bytes.Length == 0)
             {
-                output[i] = padding;
+                // no work needed
+            }
+            else if (bytes.Length == 1)
+            {
+                encoded[0] = encodingTable[0x3f & (bytes[0] >> 2)];
+                encoded[1] = encodingTable[0x3f & (bytes[0] << 4)];
+                encoded[2] = padding;
+                encoded[3] = padding;
+            }
+            else if (bytes.Length == 2)
+            {
+                encoded[0] = encodingTable[0x3f & (bytes[0] >> 2)];
+                encoded[1] = encodingTable[0x3f & (bytes[0] << 4) | (bytes[1] >> 4)];
+                encoded[2] = encodingTable[0x3f & (bytes[1] << 2)];
+                encoded[3] = padding;
+            }
+            else if (encoded.Length == 3)
+            {
+                EncodeFullBlock(bytes, encoded);
             }
         }
 
