@@ -1,9 +1,7 @@
 ﻿using MKW.Core.Serialization.Pgp;
 using MKW.Common;
-using Org.BouncyCastle.Bcpg;
 using System.Security.Cryptography;
 using NUnit.Framework.Legacy;
-using Microsoft.VisualBasic;
 using System.Text;
 
 namespace MKW.Storage.Tests
@@ -33,6 +31,30 @@ namespace MKW.Storage.Tests
 
             CollectionAssert.AreEqual(expected.ToArray(), output.ToArray());
             Console.Write(Encoding.ASCII.GetString(output.ToArray()));
+        }
+
+        [Test]
+        public void DecodeTest()
+        {
+            using Radix64Decoder transformer = new Radix64Decoder();
+            using MemoryStream output = new MemoryStream();
+            using CryptoStream stream = new CryptoStream(output, transformer, CryptoStreamMode.Write);
+
+            Span<byte> encoded = [
+                (byte)'F',
+                (byte)'P',
+                (byte)'u',
+                (byte)'c',
+                (byte)'A',
+                (byte)'9',
+                (byte)'l',
+                (byte)'+',
+            ];
+
+            Span<byte> decoded = [0x14, 0xFB, 0x9C, 0x03, 0xD9, 0x7E];
+
+            stream.Write(encoded);
+            CollectionAssert.AreEqual(decoded.ToArray(), output.ToArray());
         }
     }
 }
