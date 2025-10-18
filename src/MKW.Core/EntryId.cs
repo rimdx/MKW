@@ -14,14 +14,24 @@
             return id.ToString();
         }
 
-        public Guid GetGuid()
+        public ReadOnlyMemory<byte> GetBytes()
         {
-            return id;
+            return id.ToByteArray();
         }
 
-        public static EntryId FromGuid(Guid id)
+        public string GetString()
         {
-            return new EntryId(id);
+            return id.ToString();
+        }
+
+        public static EntryId FromBytes(ReadOnlySpan<byte> id)
+        {
+            return new EntryId(new Guid(id.ToArray()));
+        }
+
+        public static EntryId FromString(string str)
+        {
+            return new EntryId(new Guid(str));
         }
 
         public static EntryId Create()

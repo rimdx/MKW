@@ -2,48 +2,71 @@
 
 namespace MKW.Storage.MKPG
 {
-    internal sealed record class BlobId : IComparable<BlobId>
+    internal sealed class BlobId : IComparable<BlobId>
     {
-        private readonly Guid id;
+        private readonly ReadOnlyMemory<byte> data;
 
-        private BlobId(Guid id)
+        private BlobId(ReadOnlyMemory<byte> data)
         {
-            this.id = id;
+            this.data = data;
         }
 
         public override string ToString()
         {
-            return id.ToString();
+            return data.ToString();
         }
 
-        public Guid GetGuid()
+        public ReadOnlyMemory<byte> GetBytes()
         {
-            return id;
+            return data;
         }
 
         public static BlobId From(Guid id)
         {
-            return new BlobId(id);
+            return new BlobId(id.ToByteArray());
+        }
+
+        public static BlobId From(ReadOnlyMemory<byte> data)
+        {
+            return new BlobId(data);
         }
 
         public static BlobId From(EntryId entryId)
         {
-            return new BlobId(entryId.GetGuid());
+            return new BlobId(entryId.GetBytes());
         }
 
         public static BlobId From(UserId userId)
         {
-            return new BlobId(userId.GetGuid());
+            return new BlobId(userId.GetGuid().ToByteArray());
         }
 
         public static BlobId Create()
         {
-            return new BlobId(Guid.NewGuid());
+            return new BlobId(Guid.NewGuid().ToByteArray());
         }
 
         public int CompareTo(BlobId? other)
         {
-            return id.CompareTo(other?.id);
+            if (other == null)
+            {
+                return -1;
+            }
+            else
+            {
+                return data.Span.SequenceCompareTo(other.data.Span);
+            }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is BlobId id &&
+                   data.Span.SequenceEqual(id.data.Span);
+        }
+
+        public override int GetHashCode()
+        {
+            return 42;
         }
     }
 }

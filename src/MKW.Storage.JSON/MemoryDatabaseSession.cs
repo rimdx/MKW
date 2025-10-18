@@ -125,13 +125,13 @@ namespace MKW.Storage.JSON
 
         public void CreateEntry(EntryId id, DatabaseEntry entry)
         {
-            if (Database.Entries.ContainsKey(id.GetGuid()))
+            if (Database.Entries.ContainsKey(id.GetString()))
             {
                 throw new Exception("Entry already exists.");
             }
             else
             {
-                Database.Entries[id.GetGuid()] = JSONDatabaseSecretEntry.Serialize(entry);
+                Database.Entries[id.GetString()] = JSONDatabaseSecretEntry.Serialize(entry);
             }
 
             Save();
@@ -139,9 +139,9 @@ namespace MKW.Storage.JSON
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
         {
-            if (Database.Entries.ContainsKey(id.GetGuid()))
+            if (Database.Entries.ContainsKey(id.GetString()))
             {
-                Database.Entries[id.GetGuid()] = JSONDatabaseSecretEntry.Serialize(entry);
+                Database.Entries[id.GetString()] = JSONDatabaseSecretEntry.Serialize(entry);
             }
             else
             {
@@ -153,9 +153,9 @@ namespace MKW.Storage.JSON
 
         public DatabaseEntry OpenEntry(EntryId id)
         {
-            if (Database.Entries.ContainsKey(id.GetGuid()))
+            if (Database.Entries.ContainsKey(id.GetString()))
             {
-                return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetGuid()]);
+                return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetString()]);
             }
             else
             {
@@ -165,21 +165,21 @@ namespace MKW.Storage.JSON
 
         public bool DeleteEntry(EntryId id)
         {
-            bool result = Database.Entries.Remove(id.GetGuid());
+            bool result = Database.Entries.Remove(id.GetString());
             Save();
             return result;
         }
 
         public bool HasEntry(EntryId id)
         {
-            return Database.Entries.ContainsKey(id.GetGuid());
+            return Database.Entries.ContainsKey(id.GetString());
         }
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
-            foreach (KeyValuePair<Guid, JSONDatabaseSecretEntry> item in Database.Entries)
+            foreach (KeyValuePair<string, JSONDatabaseSecretEntry> item in Database.Entries)
             {
-                yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromGuid(item.Key), item.Value);
+                yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromString(item.Key), item.Value);
             }
         }
 
