@@ -20,7 +20,7 @@ namespace MKW.Storage.MKPG
             while (reader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
-                ArrayBufferReader subreader = new ArrayBufferReader(packet.EncodedBody);
+                ArrayBufferReader subreader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.PublicKeyEncryptedSession)
                 {

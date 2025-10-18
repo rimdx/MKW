@@ -26,7 +26,7 @@ namespace MKW.Storage.Tests
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
                 ClassicAssert.AreEqual(PacketTag.SymmetricKeyEncryptedSessionKey, packet.Tag);
 
-                ArrayBufferReader bodyReader = new ArrayBufferReader(packet.EncodedBody);
+                ArrayBufferReader bodyReader = packet.CreateReader();
                 SymEncryptedSessionKeyV4 key = SymEncryptedSessionKeyV4Serializer.Deserialize(bodyReader);
             }
 
@@ -34,7 +34,7 @@ namespace MKW.Storage.Tests
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
                 ClassicAssert.AreEqual(PacketTag.SymmetricEncryptedIntegrityProtected, packet.Tag);
 
-                ArrayBufferReader bodyReader = new ArrayBufferReader(packet.EncodedBody);
+                ArrayBufferReader bodyReader = packet.CreateReader();
                 SymEncryptedProtectedDataV1 key = SymEncryptedProtectedDataV1Serializer.Deserialize(bodyReader);
             }
         }
@@ -126,12 +126,12 @@ namespace MKW.Storage.Tests
 
             ClassicAssert.NotNull(msg);
 
-            ArrayBufferReader messageReader = new ArrayBufferReader(msg.Data);
+            ArrayBufferReader messageReader = msg.CreateReader();
 
             while (messageReader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(messageReader);
-                ArrayBufferReader packetReader = new ArrayBufferReader(packet.EncodedBody);
+                ArrayBufferReader packetReader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.PublicKey)
                 {
@@ -152,12 +152,12 @@ namespace MKW.Storage.Tests
 
             ClassicAssert.NotNull(msg);
 
-            ArrayBufferReader messageReader = new ArrayBufferReader(msg.Data);
+            ArrayBufferReader messageReader = msg.CreateReader();
 
             while (messageReader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(messageReader);
-                ArrayBufferReader packetReader = new ArrayBufferReader(packet.EncodedBody);
+                ArrayBufferReader packetReader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.SecretKey)
                 {
