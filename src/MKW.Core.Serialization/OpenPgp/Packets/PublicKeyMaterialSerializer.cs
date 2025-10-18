@@ -24,7 +24,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
         }
 
-        public static PublicKeyMaterial Deserialize(ArrayBufferReader reader)
+        public static PublicKeyMaterial Deserialize(IBufferReader reader)
         {
             PublicKeyAlgorithmTag tag = (PublicKeyAlgorithmTag)reader.ReadByte();
 

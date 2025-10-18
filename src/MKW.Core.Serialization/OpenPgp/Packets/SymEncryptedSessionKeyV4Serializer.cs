@@ -23,7 +23,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     {
         private static readonly PgpVersion version = new PgpVersion(4);
 
-        public static SymEncryptedSessionKeyV4 Deserialize(ArrayBufferReader reader)
+        public static SymEncryptedSessionKeyV4 Deserialize(IBufferReader reader)
         {
             version.ConsumeVersion(reader);
 

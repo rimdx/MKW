@@ -12,7 +12,7 @@ namespace MKW.Storage.MKPG
 {
     public static class EntrySerializer
     {
-        public static DatabaseEntry Deserialize(ArrayBufferReader reader)
+        public static DatabaseEntry Deserialize(IBufferReader reader)
         {
             Dictionary<UserId, ReadOnlyMemory<byte>> users = [];
             ReadOnlyMemory<byte>? encryptedData = null;
@@ -20,7 +20,7 @@ namespace MKW.Storage.MKPG
             while (reader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
-                ArrayBufferReader subreader = packet.CreateReader();
+                IBufferReader subreader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.PublicKeyEncryptedSession)
                 {

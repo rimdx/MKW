@@ -3,7 +3,7 @@
 
 namespace MKW.Common
 {
-    public sealed class ArrayBufferReader
+    public sealed class ArrayBufferReader : IBufferReader
     {
         private ReadOnlyMemory<byte> Data;
 

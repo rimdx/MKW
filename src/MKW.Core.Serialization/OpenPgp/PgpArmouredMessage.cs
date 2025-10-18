@@ -13,7 +13,7 @@ namespace MKW.Core.Serialization.OpenPgp
 
         public required ReadOnlyMemory<byte> Data { get; init; }
 
-        public ArrayBufferReader CreateReader()
+        public IBufferReader CreateReader()
         {
             return new ArrayBufferReader(Data);
         }

@@ -46,7 +46,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             PublicKeyMaterialSerializer.Serialize(writer, obj.PublicKeyMaterial);
         }
 
-        public static PublicKeyPacketV4 Deserialize(ArrayBufferReader reader)
+        public static PublicKeyPacketV4 Deserialize(IBufferReader reader)
         {
             version.ConsumeVersion(reader);
 

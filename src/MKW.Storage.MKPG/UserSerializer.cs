@@ -17,7 +17,7 @@ namespace MKW.Storage.MKPG
 {
     public static class UserSerializer
     {
-        public static DatabaseUser Deserialize(ArrayBufferReader reader)
+        public static DatabaseUser Deserialize(IBufferReader reader)
         {
             ReadOnlyMemory<byte>? seckey = null;
             ReadOnlyMemory<byte>? pubkey = null;
@@ -26,7 +26,7 @@ namespace MKW.Storage.MKPG
             while (reader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
-                ArrayBufferReader subreader = packet.CreateReader();
+                IBufferReader subreader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.SecretKey)
                 {

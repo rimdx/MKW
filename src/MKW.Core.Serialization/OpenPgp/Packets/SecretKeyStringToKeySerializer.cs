@@ -58,7 +58,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
         }
 
-        public static SecretKeyStringToKey Deserialize(ArrayBufferReader reader)
+        public static SecretKeyStringToKey Deserialize(IBufferReader reader)
         {
             byte usage = reader.ReadByte();
 

@@ -41,7 +41,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         private static readonly PgpVersion version = new PgpVersion(3);
         private static readonly PacketTag tag = PacketTag.PublicKeyEncryptedSession;
 
-        public static PublicKeyEncryptedSessionKeyV3 Deserialize(ArrayBufferReader reader)
+        public static PublicKeyEncryptedSessionKeyV3 Deserialize(IBufferReader reader)
         {
             version.ConsumeVersion(reader);
 
