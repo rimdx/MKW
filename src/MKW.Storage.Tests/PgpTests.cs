@@ -136,6 +136,10 @@ namespace MKW.Storage.Tests
                 if (packet.Tag == PacketTag.PublicKey)
                 {
                     PublicKeyPacketV4 decoded = PublicKeyPacketV4Serializer.Deserialize(packetReader);
+
+                    ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+                    PublicKeyPacketV4Serializer.Serialize(writer, decoded);
+                    CollectionAssert.AreEqual(packet.EncodedBody.ToArray(), writer.WrittenSpan.ToArray());
                 }
             }
         }
