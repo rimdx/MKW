@@ -1,5 +1,4 @@
 ﻿using MKW.Common;
-using Org.BouncyCastle.Bcpg;
 
 namespace MKW.Storage.MKPG
 {
@@ -12,71 +11,40 @@ namespace MKW.Storage.MKPG
             this.file = file;
         }
 
-        private BlobEntry? Find(BlobId id)
+        public void Create(BlobEntry entry)
         {
             file.Seek(0, SeekOrigin.Begin);
+            using StreamReader reader = new StreamReader(new StreamDisown(file));
 
-            while (true)
-            {
-                using ArmoredInputStream armour = new ArmoredInputStream(new StreamDisown(file), true);
-                using MemoryStream buffer = new MemoryStream();
+            List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
 
-                string[] headers = armour.GetArmorHeaders();
-
-                armour.CopyTo(buffer);
-
-                if (buffer.Length <= 0)
-                {
-                    return null;
-                }
-
-                Guid currentId = new Guid(GetId(headers));
-
-                if (id.GetGuid() == currentId)
-                {
-                    return new BlobEntry(buffer.ToArray());
-                }
-            }
-        }
-
-        private static string GetId(string[] headers)
-        {
-            const string prefix = "Id: ";
-
-            foreach (string header in headers)
-            {
-                if (header.StartsWith(prefix))
-                {
-                    return header.Substring(prefix.Length);
-                }
-            }
-
-            throw new Exception("Missing 'Id' header.");
-        }
-
-        public void Create(BlobId id, BlobEntry entry)
-        {
-            if (Find(id) == null)
-            {
-                file.Seek(0, SeekOrigin.End);
-
-                using (ArmoredOutputStream armour = new ArmoredOutputStream(new StreamDisown(file)))
-                {
-                    armour.SetHeader("Id", id.ToString());
-                    armour.Write(entry.Data.Span);
-                }
-
-                file.WriteByte((byte)'\n');
-            }
-            else
+            if (blobs.FirstOrDefault(blob => blob.Id == entry.Id) != null)
             {
                 throw new Exception("Entry already exists.");
             }
+
+            blobs.Add(entry);
+
+            file.Seek(0, SeekOrigin.Begin);
+            using StreamWriter writer = new StreamWriter(new StreamDisown(file));
+
+            BlobStorageSerializer.WriteBlobs(writer, blobs);
         }
 
         public BlobEntry Open(BlobId id)
         {
-            return Find(id) ?? throw new Exception("Entry does not already exists.");
+            file.Seek(0, SeekOrigin.Begin);
+            using StreamReader reader = new StreamReader(new StreamDisown(file));
+
+            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            {
+                if (blob.Id == id)
+                {
+                    return blob;
+                }
+            }
+
+            throw new Exception("Entry already exists.");
         }
 
         public bool Delete(BlobId id)
@@ -89,28 +57,15 @@ namespace MKW.Storage.MKPG
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BlobId> Enumerate()
+        public IEnumerable<BlobEntry> Enumerate()
         {
             file.Seek(0, SeekOrigin.Begin);
 
-            while (true)
+            using StreamReader reader = new StreamReader(new StreamDisown(file));
+
+            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
-                using ArmoredInputStream armour = new ArmoredInputStream(new StreamDisown(file), true);
-                using MemoryStream buffer = new MemoryStream();
-
-                string[] headers = armour.GetArmorHeaders();
-
-                armour.CopyTo(buffer);
-
-                if (buffer.Length <= 0)
-                {
-                    //yield break;
-                }
-
-                Guid currentId = new Guid(GetId(headers));
-
-                // TODO: also return content
-                yield return BlobId.From(currentId);
+                yield return blob;
             }
         }
     }

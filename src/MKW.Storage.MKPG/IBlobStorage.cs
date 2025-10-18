@@ -3,13 +3,13 @@ namespace MKW.Storage.MKPG
 {
     internal interface IBlobStorage
     {
-        void Create(BlobId id, BlobEntry entry);
+        void Create(BlobEntry entry);
 
         BlobEntry Open(BlobId id);
 
         bool Delete(BlobId id);
 
-        IEnumerable<BlobId> Enumerate();
+        IEnumerable<BlobEntry> Enumerate();
 
         bool Exists(BlobId id);
     }
