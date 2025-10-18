@@ -5,6 +5,5 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 {
     public abstract record class StringToKey
     {
-        public required StringToKeyTag Tag { get; init; }
     }
 }
