@@ -42,7 +42,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         {
             version.Serialize(writer);
 
-            PgpDateTimeSerializer.Serialize(writer, new DateTime());
+            PgpDateTimeSerializer.Serialize(writer, obj.CreatedAt);
             PublicKeyMaterialSerializer.Serialize(writer, obj.PublicKeyMaterial);
         }
 
