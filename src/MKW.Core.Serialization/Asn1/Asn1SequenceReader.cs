@@ -3,7 +3,7 @@
 
 using Org.BouncyCastle.Asn1;
 
-namespace MKW.Core.Serialization
+namespace MKW.Core.Serialization.Asn1
 {
     internal sealed class Asn1SequenceReader
         : IDisposable

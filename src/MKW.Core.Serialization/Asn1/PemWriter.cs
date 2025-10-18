@@ -5,7 +5,7 @@ using MKW.Common;
 using Org.BouncyCastle.Asn1;
 using System.Security.Cryptography;
 
-namespace MKW.Core.Serialization
+namespace MKW.Core.Serialization.Asn1
 {
     internal sealed class PemWriter
         : IDisposable

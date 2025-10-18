@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core.Serialization.Asn1;
 using Org.BouncyCastle.Asn1;
 
 namespace MKW.Core.Serialization
