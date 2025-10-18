@@ -36,10 +36,5 @@ namespace MKW.Storage.MKPG
         {
             return new BlobId(userId.GetGuid().ToByteArray());
         }
-
-        public static BlobId Create()
-        {
-            return new BlobId(Guid.NewGuid().ToByteArray());
-        }
     }
 }
