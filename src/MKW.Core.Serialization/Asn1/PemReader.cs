@@ -4,7 +4,7 @@
 using Org.BouncyCastle.Asn1;
 using System.Text;
 
-namespace MKW.Core.Serialization
+namespace MKW.Core.Serialization.Asn1
 {
     internal sealed class PemReader
         : IDisposable
