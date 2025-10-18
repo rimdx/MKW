@@ -41,6 +41,8 @@ namespace MKW.Core.Serialization.Pgp
 
             WriteHeaders(writer, obj.Headers);
 
+            Crc24 crc = new Crc24();
+
             {
                 using ASCIIStream stream = new ASCIIStream(writer);
 
@@ -49,7 +51,7 @@ namespace MKW.Core.Serialization.Pgp
                                                                       lineBreakTransform,
                                                                       CryptoStreamMode.Write);
 
-                using Radix64Encoder radixTransform = new Radix64Encoder();
+                using Radix64Encoder radixTransform = new Radix64Encoder(crc);
                 using CryptoStream radixStream = new CryptoStream(lineBreakStream,
                                                                   radixTransform,
                                                                   CryptoStreamMode.Write);
@@ -57,7 +59,9 @@ namespace MKW.Core.Serialization.Pgp
                 radixStream.Write(obj.Data.Span);
             }
 
-            WriteChecksum(writer, obj.Data.Span);
+            writer.Write(checksumPrefix);
+            writer.Write(crc.Serialize());
+            writer.WriteLine();
 
             writer.WriteLine($"{dashes}{endPrefix}{obj.MessageTypeHeader}{dashes}");
         }
@@ -73,18 +77,6 @@ namespace MKW.Core.Serialization.Pgp
             writer.WriteLine();
         }
 
-        private static void WriteChecksum(TextWriter writer,
-                                          ReadOnlySpan<byte> data)
-        {
-            Crc24 crc = new Crc24();
-
-            crc.Update(data);
-
-            writer.Write(checksumPrefix);
-            writer.Write(crc.Serialize());
-            writer.WriteLine();
-        }
-
         public static PgpArmouredMessage? Deserialize(TextReader reader)
         {
             string? type = ReadBeginHeader(reader);
@@ -96,10 +88,11 @@ namespace MKW.Core.Serialization.Pgp
 
             var headers = ReadHeaders(reader).ToArray();
 
+            Crc24 crc = new Crc24();
             using MemoryStream output = new MemoryStream();
 
             {
-                using Radix64Decoder radixTransform = new Radix64Decoder();
+                using Radix64Decoder radixTransform = new Radix64Decoder(crc);
                 using CryptoStream radixStream = new CryptoStream(output,
                                                                   radixTransform,
                                                                   CryptoStreamMode.Write);
