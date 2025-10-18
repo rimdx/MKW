@@ -1,4 +1,7 @@
-﻿using MKW.Core.Serialization;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Core.Serialization;
 using MKW.Core.Serialization.KeePassXmlV1;
 using MKW.Core.Serialization.KeePassXmlV2;
 using NUnit.Framework.Legacy;

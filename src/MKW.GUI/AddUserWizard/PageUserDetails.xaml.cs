@@ -1,4 +1,7 @@
-﻿using MKW.GUI.Wizard;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.GUI.Wizard;
 using System.Windows;
 
 namespace MKW.GUI.AddUserWizard

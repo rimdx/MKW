@@ -1,4 +1,7 @@
-﻿namespace MKW.Core.Serialization.Pgp
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+namespace MKW.Core.Serialization.Pgp
 {
     public sealed class ArrayBufferReader
     {
@@ -32,7 +35,7 @@
 
         public byte ReadByte()
         {
-            var b = Data.Span[0];
+            byte b = Data.Span[0];
             Advance(1);
             return b;
         }

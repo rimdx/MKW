@@ -1,4 +1,7 @@
-﻿using MKW.Core.Serialization.CSV;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Core.Serialization.CSV;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Tests

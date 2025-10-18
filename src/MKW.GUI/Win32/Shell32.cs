@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace MKW.GUI.Win32

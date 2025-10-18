@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using System.Globalization;
 using System.Text;
 using System.Windows.Data;
 

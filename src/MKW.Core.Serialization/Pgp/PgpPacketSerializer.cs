@@ -1,4 +1,7 @@
-﻿using Org.BouncyCastle.Bcpg;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using Org.BouncyCastle.Bcpg;
 using System.Buffers;
 using System.Buffers.Binary;
 
@@ -229,7 +232,7 @@ namespace MKW.Core.Serialization.Pgp
                 throw new NotImplementedException();
             }
 
-            ReadOnlyMemory<byte> body = reader.ReadBytes((int)bodyLen);
+            ReadOnlyMemory<byte> body = reader.ReadBytes(bodyLen);
 
             return new PgpPacket(tag, body);
         }

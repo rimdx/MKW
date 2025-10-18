@@ -1,4 +1,7 @@
-﻿namespace MKW.Core.Serialization.Pgp
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+namespace MKW.Core.Serialization.Pgp
 {
     internal static class Radix64Charset
     {
@@ -20,7 +23,7 @@
             (byte)'+', (byte)'/'
         ];
 
-        public readonly static ReadOnlyMemory<byte> DecodingTable = CreateDecodingTable();
+        public static readonly ReadOnlyMemory<byte> DecodingTable = CreateDecodingTable();
 
         public static byte DecodeChar(byte encoded)
         {

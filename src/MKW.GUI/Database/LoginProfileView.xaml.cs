@@ -1,4 +1,7 @@
-﻿using MKW.GUI.RequestAccessWizard;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.GUI.RequestAccessWizard;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

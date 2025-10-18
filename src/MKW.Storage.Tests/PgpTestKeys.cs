@@ -1,4 +1,7 @@
-﻿namespace MKW.Storage.Tests
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+namespace MKW.Storage.Tests
 {
     public static class PgpTestKeys
     {

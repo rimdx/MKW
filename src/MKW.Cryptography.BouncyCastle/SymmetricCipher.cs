@@ -1,4 +1,7 @@
-﻿using MKW.Common;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Common;
 using MKW.Cryptography.Exceptions;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.IO;

@@ -1,4 +1,7 @@
-﻿using MKW.GUI.CreateDatabaseWizard;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.GUI.CreateDatabaseWizard;
 using MKW.GUI.Database;
 using MKW.GUI.Model;
 using MKW.GUI.Services;

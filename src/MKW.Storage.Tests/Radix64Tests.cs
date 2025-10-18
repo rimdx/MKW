@@ -1,9 +1,12 @@
-﻿using MKW.Core.Serialization.Pgp;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
 using MKW.Common;
-using System.Security.Cryptography;
+using MKW.Core.Serialization.Pgp;
 using NUnit.Framework.Legacy;
-using System.Text;
 using Org.BouncyCastle.Bcpg;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MKW.Storage.Tests
 {

@@ -1,4 +1,7 @@
-﻿using MKW.Cryptography.Loader;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Cryptography.Loader;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Cryptography.Tests

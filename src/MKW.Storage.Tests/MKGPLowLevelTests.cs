@@ -1,6 +1,9 @@
-﻿using MKW.Core;
-using MKW.Core.Serialization.Pgp;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
 using MKW.Common;
+using MKW.Core;
+using MKW.Core.Serialization.Pgp;
 using MKW.Storage.MKPG;
 using Org.BouncyCastle.Bcpg;
 using System.Buffers;

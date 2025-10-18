@@ -1,4 +1,7 @@
-﻿using MKW.Core.Serialization.Exceptions;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Core.Serialization.Exceptions;
 
 namespace MKW.Core.Serialization.CSV
 {

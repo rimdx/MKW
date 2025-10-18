@@ -1,4 +1,7 @@
-﻿using NUnit.Framework.Legacy;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using NUnit.Framework.Legacy;
 using System.Globalization;
 
 namespace MKW.Common.Tests
