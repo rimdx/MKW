@@ -126,7 +126,9 @@ namespace MKW.Core.Serialization.Pgp
                                                                   radixTransform,
                                                                   CryptoStreamMode.Write);
 
-                int checksum = ReadBody(reader, radixStream);
+                using StreamWriter bodyWriter = new StreamWriter(radixStream, Encoding.ASCII);
+
+                int checksum = ReadBody(reader, bodyWriter);
             }
 
             string endType = ReadEndHeader(reader);
@@ -139,7 +141,7 @@ namespace MKW.Core.Serialization.Pgp
             };
         }
 
-        private static int ReadBody(TextReader reader, Stream ostream)
+        private static int ReadBody(TextReader reader, TextWriter bodyWriter)
         {
             Span<byte> checksumBytes = stackalloc byte[3];
 
@@ -179,9 +181,7 @@ namespace MKW.Core.Serialization.Pgp
                         }
                     }
 
-                    ReadOnlyMemory<byte> bytes = Encoding.ASCII.GetBytes(sb.ToString());
-
-                    ostream.Write(bytes.Span);
+                    bodyWriter.Write(sb);
                 }
             }
         }
