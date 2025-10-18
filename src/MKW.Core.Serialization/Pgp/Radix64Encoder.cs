@@ -4,7 +4,7 @@ namespace MKW.Core.Serialization.Pgp
 {
     public sealed class Radix64Encoder : ICryptoTransform
     {
-        public bool CanReuseTransform => false;
+        public bool CanReuseTransform => true;
         public bool CanTransformMultipleBlocks => false;
 
         public int InputBlockSize => 3;
