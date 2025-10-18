@@ -115,5 +115,49 @@ namespace MKW.Storage.Tests
 
             Console.Write(EncodingConverter.GetString(decrypted.Span));
         }
+
+        [Test]
+        public void PublicKeyParseTest()
+        {
+            using StringReader armourReader = new StringReader(PgpTestKeys.TestPublicKey);
+            PgpArmouredMessage? msg = PgpArmouredMessageSerializer.Deserialize(armourReader);
+
+            ClassicAssert.NotNull(msg);
+
+            ArrayBufferReader messageReader = new ArrayBufferReader(msg.Data);
+
+            while (messageReader.RemainingBytes > 0)
+            {
+                PgpPacket packet = PgpPacketSerializer.ReadPacket(messageReader);
+                ArrayBufferReader packetReader = new ArrayBufferReader(packet.EncodedBody);
+
+                if (packet.Tag == PacketTag.PublicKey)
+                {
+                    PublicKeyPacketV4 decoded = PublicKeyPacketV4Serializer.Deserialize(packetReader);
+                }
+            }
+        }
+
+        [Test]
+        public void SecretKeyParseTest()
+        {
+            using StringReader armourReader = new StringReader(PgpTestKeys.TestPrivateKey);
+            PgpArmouredMessage? msg = PgpArmouredMessageSerializer.Deserialize(armourReader);
+
+            ClassicAssert.NotNull(msg);
+
+            ArrayBufferReader messageReader = new ArrayBufferReader(msg.Data);
+
+            while (messageReader.RemainingBytes > 0)
+            {
+                PgpPacket packet = PgpPacketSerializer.ReadPacket(messageReader);
+                ArrayBufferReader packetReader = new ArrayBufferReader(packet.EncodedBody);
+
+                if (packet.Tag == PacketTag.SecretKey)
+                {
+                    Core.Serialization.OpenPgp.Packets.SecretKeyPacket decoded = SecretKeyPacketSerializer.Deserialize(packetReader);
+                }
+            }
+        }
     }
 }

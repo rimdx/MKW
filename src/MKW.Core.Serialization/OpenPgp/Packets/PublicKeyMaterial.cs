@@ -3,11 +3,7 @@
 
 namespace MKW.Core.Serialization.OpenPgp.Packets
 {
-    public enum StringToKeyTag : byte
+    public abstract record class PublicKeyMaterial
     {
-        Simple = 0,
-        Salted = 1,
-        IteratedSalted = 3,
-        None = 42,
     }
 }
