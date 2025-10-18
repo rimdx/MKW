@@ -2,23 +2,16 @@
 
 namespace MKW.Storage.MKPG
 {
-    internal sealed class BlobId : IComparable<BlobId>
+    internal sealed class BlobId : IdBase
     {
-        private readonly ReadOnlyMemory<byte> data;
-
         private BlobId(ReadOnlyMemory<byte> data)
+            : base(data.ToArray(), data.Length)
         {
-            this.data = data;
         }
 
         public override string ToString()
         {
             return data.ToString();
-        }
-
-        public ReadOnlyMemory<byte> GetBytes()
-        {
-            return data;
         }
 
         public static BlobId From(Guid id)
@@ -44,29 +37,6 @@ namespace MKW.Storage.MKPG
         public static BlobId Create()
         {
             return new BlobId(Guid.NewGuid().ToByteArray());
-        }
-
-        public int CompareTo(BlobId? other)
-        {
-            if (other == null)
-            {
-                return -1;
-            }
-            else
-            {
-                return data.Span.SequenceCompareTo(other.data.Span);
-            }
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is BlobId id &&
-                   data.Span.SequenceEqual(id.data.Span);
-        }
-
-        public override int GetHashCode()
-        {
-            return 42;
         }
     }
 }

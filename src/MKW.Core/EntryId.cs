@@ -1,47 +1,32 @@
 ﻿namespace MKW.Core
 {
-    public record class EntryId : IComparable<EntryId>
+    public sealed class EntryId : IdBase
     {
-        private readonly Guid id;
+        public const int Size = 16;
 
-        private EntryId(Guid id)
+        private EntryId(byte[] data)
+            : base(data, Size)
         {
-            this.id = id;
-        }
-
-        public override string ToString()
-        {
-            return id.ToString();
-        }
-
-        public ReadOnlyMemory<byte> GetBytes()
-        {
-            return id.ToByteArray();
         }
 
         public string GetString()
         {
-            return id.ToString();
+            return new Guid(data.ToArray()).ToString();
         }
 
         public static EntryId FromBytes(ReadOnlySpan<byte> id)
         {
-            return new EntryId(new Guid(id.ToArray()));
+            return new EntryId(id.ToArray());
         }
 
         public static EntryId FromString(string str)
         {
-            return new EntryId(new Guid(str));
+            return new EntryId(new Guid(str).ToByteArray());
         }
 
         public static EntryId Create()
         {
-            return new EntryId(Guid.NewGuid());
-        }
-
-        public int CompareTo(EntryId? other)
-        {
-            return id.CompareTo(other?.id);
+            return new EntryId(Guid.NewGuid().ToByteArray());
         }
     }
 }
