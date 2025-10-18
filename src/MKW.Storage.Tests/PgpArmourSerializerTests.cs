@@ -19,13 +19,13 @@ namespace MKW.Storage.Tests
                 ],
             };
 
-            PgpArmourSerializer.Serialize(writer, msg);
+            PgpArmouredMessageSerializer.Serialize(writer, msg);
 
             Console.WriteLine(writer.ToString());
 
             using StringReader reader = new StringReader(writer.ToString());
 
-            PgpArmouredMessage? deserialized = PgpArmourSerializer.Deserialize(reader);
+            PgpArmouredMessage? deserialized = PgpArmouredMessageSerializer.Deserialize(reader);
 
             ClassicAssert.NotNull(deserialized);
             ClassicAssert.AreEqual(msg.MessageTypeHeader, deserialized.MessageTypeHeader);
@@ -41,13 +41,13 @@ namespace MKW.Storage.Tests
         {
             using StringReader reader = new StringReader(content);
 
-            PgpArmouredMessage? deserialized = PgpArmourSerializer.Deserialize(reader);
+            PgpArmouredMessage? deserialized = PgpArmouredMessageSerializer.Deserialize(reader);
             ClassicAssert.NotNull(deserialized);
 
             using StringWriter writer = new StringWriter();
             writer.NewLine = "\n";
 
-            PgpArmourSerializer.Serialize(writer, deserialized);
+            PgpArmouredMessageSerializer.Serialize(writer, deserialized);
 
             Console.WriteLine(writer.ToString());
 

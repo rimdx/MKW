@@ -10,7 +10,7 @@ namespace MKW.Storage.MKPG
         {
             while (true)
             {
-                PgpArmouredMessage? message = PgpArmourSerializer.Deserialize(reader);
+                PgpArmouredMessage? message = PgpArmouredMessageSerializer.Deserialize(reader);
 
                 if (message == null)
                 {
@@ -38,7 +38,7 @@ namespace MKW.Storage.MKPG
                     Data = blob.Data,
                 };
 
-                PgpArmourSerializer.Serialize(writer, msg);
+                PgpArmouredMessageSerializer.Serialize(writer, msg);
             }
         }
     }
