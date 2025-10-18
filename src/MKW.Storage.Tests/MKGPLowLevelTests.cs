@@ -53,7 +53,7 @@ namespace MKW.Storage.Tests
                 "+6mamRhDv9PcDRc/NH2V6M4ip/m7eqpTwxGVrSotn4fI/ouVGgcNO447UpbHaiav7D1CETP5vykm" +
                 "JoPWR/eBc2sju6nuENtcYFc+icy7");
 
-            ArrayBufferReader reader = new ArrayBufferReader(data);
+            IBufferReader reader = new ArrayBufferReader(data);
 
             DatabaseEntry entry = EntrySerializer.Deserialize(reader);
         }

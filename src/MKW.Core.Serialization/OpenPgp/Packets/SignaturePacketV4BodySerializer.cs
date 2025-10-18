@@ -17,7 +17,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
         }
 
-        public static SignaturePacketV4Body Deserialize(ArrayBufferReader reader)
+        public static SignaturePacketV4Body Deserialize(IBufferReader reader)
         {
             List<SignatureSubpacket> subpackets = [];
 

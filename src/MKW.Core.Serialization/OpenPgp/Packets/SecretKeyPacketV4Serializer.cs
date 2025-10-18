@@ -44,7 +44,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             writer.Write(obj.SecretKeyData.Span);
         }
 
-        public static SecretKeyPacketV4 Deserialize(ArrayBufferReader reader)
+        public static SecretKeyPacketV4 Deserialize(IBufferReader reader)
         {
             return new SecretKeyPacketV4
             {

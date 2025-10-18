@@ -30,7 +30,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             writer.Write(obj.Signature.Span);
         }
 
-        public static SignaturePacketV4 Deserialize(ArrayBufferReader reader)
+        public static SignaturePacketV4 Deserialize(IBufferReader reader)
         {
             version.ConsumeVersion(reader);
 

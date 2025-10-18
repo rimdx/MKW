@@ -10,7 +10,7 @@ namespace MKW.Core.Serialization.OpenPgp.Primitives
 {
     public static class MPIntegerSerailizer
     {
-        public static BigInteger Deserialize(ArrayBufferReader reader)
+        public static BigInteger Deserialize(IBufferReader reader)
         {
             ushort lengthInBits = BinaryPrimitives.ReadUInt16BigEndian(reader.ReadBytes(2).Span);
             int lengthInBytes = (lengthInBits + 7) / 8;

@@ -137,7 +137,7 @@ namespace MKW.Core.Serialization.OpenPgp
             }
         }
 
-        private static uint ReadBodyLength(ArrayBufferReader reader,
+        private static uint ReadBodyLength(IBufferReader reader,
                                            out bool partial)
         {
             byte b0 = reader.ReadByte();
@@ -178,7 +178,7 @@ namespace MKW.Core.Serialization.OpenPgp
             }
         }
 
-        public static PgpPacket ReadPacket(ArrayBufferReader reader)
+        public static PgpPacket ReadPacket(IBufferReader reader)
         {
             PacketTag tag;
             int bodyLen;

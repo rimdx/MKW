@@ -11,7 +11,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         public required SignatureSubpacketTag Type { get; init; }
         public required ReadOnlyMemory<byte> RawData { get; init; }
 
-        public ArrayBufferReader CreateReader()
+        public IBufferReader CreateReader()
         {
             return new ArrayBufferReader(RawData);
         }

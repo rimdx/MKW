@@ -20,13 +20,13 @@ namespace MKW.Storage.Tests
         {
             byte[] data = [140, 13, 4, 9, 3, 2, 193, 70, 156, 83, 104, 68, 56, 62, 255, 210, 113, 1, 85, 135, 252, 140, 252, 244, 190, 36, 250, 178, 173, 195, 190, 248, 244, 117, 34, 178, 3, 187, 119, 12, 214, 57, 32, 203, 146, 138, 218, 82, 172, 130, 159, 197, 57, 144, 77, 140, 153, 217, 24, 196, 96, 129, 30, 108, 112, 130, 227, 0, 170, 58, 38, 210, 162, 150, 108, 207, 87, 222, 243, 225, 75, 72, 176, 222, 23, 59, 164, 15, 91, 238, 146, 136, 226, 127, 27, 65, 23, 182, 27, 47, 15, 158, 255, 193, 16, 80, 10, 206, 224, 210, 91, 46, 131, 74, 157, 212, 52, 205, 115, 66, 148, 218, 177, 121, 253, 186, 216, 28, 183, 122];
 
-            ArrayBufferReader reader = new ArrayBufferReader(data);
+            IBufferReader reader = new ArrayBufferReader(data);
 
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
                 ClassicAssert.AreEqual(PacketTag.SymmetricKeyEncryptedSessionKey, packet.Tag);
 
-                ArrayBufferReader bodyReader = packet.CreateReader();
+                IBufferReader bodyReader = packet.CreateReader();
                 SymEncryptedSessionKeyV4 key = SymEncryptedSessionKeyV4Serializer.Deserialize(bodyReader);
             }
 
@@ -34,7 +34,7 @@ namespace MKW.Storage.Tests
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
                 ClassicAssert.AreEqual(PacketTag.SymmetricEncryptedIntegrityProtected, packet.Tag);
 
-                ArrayBufferReader bodyReader = packet.CreateReader();
+                IBufferReader bodyReader = packet.CreateReader();
                 SymEncryptedProtectedDataV1 key = SymEncryptedProtectedDataV1Serializer.Deserialize(bodyReader);
             }
         }
@@ -126,12 +126,12 @@ namespace MKW.Storage.Tests
 
             ClassicAssert.NotNull(msg);
 
-            ArrayBufferReader messageReader = msg.CreateReader();
+            IBufferReader messageReader = msg.CreateReader();
 
             while (messageReader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(messageReader);
-                ArrayBufferReader packetReader = packet.CreateReader();
+                IBufferReader packetReader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.PublicKey)
                 {
@@ -152,12 +152,12 @@ namespace MKW.Storage.Tests
 
             ClassicAssert.NotNull(msg);
 
-            ArrayBufferReader messageReader = msg.CreateReader();
+            IBufferReader messageReader = msg.CreateReader();
 
             while (messageReader.RemainingBytes > 0)
             {
                 PgpPacket packet = PgpPacketSerializer.ReadPacket(messageReader);
-                ArrayBufferReader packetReader = packet.CreateReader();
+                IBufferReader packetReader = packet.CreateReader();
 
                 if (packet.Tag == PacketTag.SecretKey)
                 {
