@@ -28,7 +28,7 @@ namespace MKW.Core.Serialization.Pgp
             Span<byte> outputSpan = new Span<byte>(outputBuffer, outputOffset, OutputBlockSize);
 
             int count = Radix64BitConvert.DecodeBlock(inputSpan, outputSpan);
-            crc.Update(inputSpan.Slice(0, count));
+            crc.Update(outputSpan.Slice(0, count));
 
             return count;
         }
