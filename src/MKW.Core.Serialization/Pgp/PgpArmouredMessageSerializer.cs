@@ -89,6 +89,8 @@ namespace MKW.Core.Serialization.Pgp
             var headers = ReadHeaders(reader).ToArray();
 
             Crc24 crc = new Crc24();
+            int checksum;
+
             using MemoryStream output = new MemoryStream();
 
             {
@@ -99,8 +101,10 @@ namespace MKW.Core.Serialization.Pgp
 
                 using StreamWriter bodyWriter = new StreamWriter(radixStream, Encoding.ASCII);
 
-                int checksum = ReadBody(reader, bodyWriter);
+                checksum = ReadBody(reader, bodyWriter);
             }
+
+            crc.Verify(checksum);
 
             string endType = ReadEndHeader(reader);
 
@@ -138,7 +142,9 @@ namespace MKW.Core.Serialization.Pgp
 
                     Radix64BitConvert.DecodeBlock(encoded.Span, checksumBytes);
 
-                    return checksumBytes[0] << 16 + checksumBytes[1] << 8 + checksumBytes[2];
+                    int checksum = (checksumBytes[0] << 16) + (checksumBytes[1] << 8) + (checksumBytes[2]);
+
+                    return checksum & 0xFFFFFF;
                 }
                 else
                 {
