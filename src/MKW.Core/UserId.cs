@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
+
 namespace MKW.Core
 {
     public sealed class UserId : IdBase
@@ -16,7 +18,7 @@ namespace MKW.Core
 
         public string GetString()
         {
-            return new Guid(data.ToArray()).ToString();
+            return Base16Convert.GetString(data);
         }
 
         public override string ToString()
@@ -31,7 +33,7 @@ namespace MKW.Core
 
         public static UserId FromString(string str)
         {
-            return new UserId(new Guid(str).ToByteArray());
+            return new UserId(Base16Convert.GetBytes(str));
         }
 
         public static UserId FromBytes(ReadOnlyMemory<byte> data)
