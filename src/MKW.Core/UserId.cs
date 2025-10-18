@@ -7,7 +7,7 @@ namespace MKW.Core
 {
     public sealed class UserId : IdBase
     {
-        public const int Size = 16;
+        public const int Size = 8;
 
         public bool IsAdmin => Equals(Admin());
 
