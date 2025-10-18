@@ -3,7 +3,7 @@
 
 using System.Buffers;
 
-namespace MKW.Core.Serialization.OpenPgp
+namespace MKW.Common
 {
     public static class BuffersExtensions
     {
