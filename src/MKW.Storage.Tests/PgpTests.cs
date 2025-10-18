@@ -8,6 +8,8 @@ using MKW.Cryptography;
 using MKW.Cryptography.Loader;
 using NUnit.Framework.Legacy;
 using Org.BouncyCastle.Bcpg;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+using System.Buffers;
 
 namespace MKW.Storage.Tests
 {
@@ -141,7 +143,7 @@ namespace MKW.Storage.Tests
         [Test]
         public void SecretKeyParseTest()
         {
-            using StringReader armourReader = new StringReader(PgpTestKeys.TestPrivateKey);
+            using StringReader armourReader = new StringReader(PgpTestKeys.TestPrivateKeyEncrypted);
             PgpArmouredMessage? msg = PgpArmouredMessageSerializer.Deserialize(armourReader);
 
             ClassicAssert.NotNull(msg);
@@ -156,6 +158,10 @@ namespace MKW.Storage.Tests
                 if (packet.Tag == PacketTag.SecretKey)
                 {
                     Core.Serialization.OpenPgp.Packets.SecretKeyPacket decoded = SecretKeyPacketSerializer.Deserialize(packetReader);
+
+                    ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+                    SecretKeyPacketSerializer.Serialize(writer, decoded);
+                    CollectionAssert.AreEqual(packet.EncodedBody.ToArray(), writer.WrittenSpan.ToArray());
                 }
             }
         }
