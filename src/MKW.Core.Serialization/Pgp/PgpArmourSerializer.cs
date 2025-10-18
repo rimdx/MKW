@@ -41,11 +41,11 @@ namespace MKW.Core.Serialization.Pgp
 
             WriteHeaders(writer, obj.Headers);
 
-            using MemoryStream output = new MemoryStream();
-
             {
+                using ASCIIStream stream = new ASCIIStream(writer);
+
                 using LineBreakTransform lineBreakTransform = new LineBreakTransform(64);
-                using CryptoStream lineBreakStream = new CryptoStream(new StreamDisown(output),
+                using CryptoStream lineBreakStream = new CryptoStream(new StreamDisown(stream),
                                                                       lineBreakTransform,
                                                                       CryptoStreamMode.Write);
 
@@ -55,12 +55,8 @@ namespace MKW.Core.Serialization.Pgp
                                                                   CryptoStreamMode.Write);
 
                 radixStream.Write(obj.Data.Span);
-
             }
 
-            string str = Encoding.ASCII.GetString(output.GetBuffer(), 0, (int)output.Length);
-
-            writer.Write(str);
             WriteChecksum(writer, obj.Data.Span);
 
             writer.WriteLine($"{dashes}{endPrefix}{obj.MessageTypeHeader}{dashes}");
