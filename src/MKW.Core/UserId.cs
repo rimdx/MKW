@@ -1,39 +1,39 @@
 ﻿namespace MKW.Core
 {
-    public record class UserId
+    public sealed class UserId : IdBase
     {
-        private readonly Guid id;
+        public const int Size = 16;
 
-        public bool IsAdmin => id == Guid.Empty;
+        public bool IsAdmin => Equals(Admin());
 
-        private UserId(Guid id)
+        private UserId(ReadOnlyMemory<byte> data)
+            : base(data.ToArray(), Size)
         {
-            this.id = id;
         }
 
         public override string ToString()
         {
-            return id.ToString();
+            return new Guid(data.ToArray()).ToString();
         }
 
         public Guid GetGuid()
         {
-            return id;
+            return new Guid(data.ToArray());
         }
 
         public static UserId Admin()
         {
-            return new UserId(Guid.Empty);
+            return new UserId(new byte[Size]);
         }
 
         public static UserId FromGuid(Guid id)
         {
-            return new UserId(id);
+            return new UserId(id.ToByteArray());
         }
 
         public static UserId Create()
         {
-            return new UserId(Guid.NewGuid());
+            return new UserId(Guid.NewGuid().ToByteArray());
         }
     }
 }
