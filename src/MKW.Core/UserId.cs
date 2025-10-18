@@ -16,16 +16,6 @@ namespace MKW.Core
         {
         }
 
-        public string GetString()
-        {
-            return Base16Convert.GetString(data);
-        }
-
-        public override string ToString()
-        {
-            return GetString();
-        }
-
         public static UserId Admin()
         {
             return new UserId(new byte[Size]);
