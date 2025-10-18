@@ -3,6 +3,7 @@ using MKW.Common;
 using System.Security.Cryptography;
 using NUnit.Framework.Legacy;
 using System.Text;
+using Org.BouncyCastle.Bcpg;
 
 namespace MKW.Storage.Tests
 {
@@ -11,7 +12,8 @@ namespace MKW.Storage.Tests
         [Test]
         public void EncodeTest()
         {
-            using Radix64Encoder transformer = new Radix64Encoder();
+            Crc24 crc = new Crc24();
+            using Radix64Encoder transformer = new Radix64Encoder(crc);
             using MemoryStream output = new MemoryStream();
             using CryptoStream stream = new CryptoStream(output, transformer, CryptoStreamMode.Write);
 
@@ -36,7 +38,8 @@ namespace MKW.Storage.Tests
         [Test]
         public void DecodeTest()
         {
-            using Radix64Decoder transformer = new Radix64Decoder();
+            Crc24 crc = new Crc24();
+            using Radix64Decoder transformer = new Radix64Decoder(crc);
             using MemoryStream output = new MemoryStream();
             using CryptoStream stream = new CryptoStream(output, transformer, CryptoStreamMode.Write);
 

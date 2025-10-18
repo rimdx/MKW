@@ -1,14 +1,22 @@
-﻿using System.Security.Cryptography;
+﻿using Org.BouncyCastle.Bcpg;
+using System.Security.Cryptography;
 
 namespace MKW.Core.Serialization.Pgp
 {
     public sealed class Radix64Encoder : ICryptoTransform
     {
-        public bool CanReuseTransform => true;
+        private readonly Crc24 crc;
+
+        public bool CanReuseTransform => false;
         public bool CanTransformMultipleBlocks => false;
 
         public int InputBlockSize => 3;
         public int OutputBlockSize => 4;
+
+        public Radix64Encoder(Crc24 crc)
+        {
+            this.crc = crc;
+        }
 
         public int TransformBlock(byte[] inputBuffer,
                                   int inputOffset,
@@ -20,6 +28,7 @@ namespace MKW.Core.Serialization.Pgp
             Span<byte> outputSpan = new Span<byte>(outputBuffer, outputOffset, OutputBlockSize);
 
             Radix64BitConvert.EncodeFullBlock(inputSpan, outputSpan);
+            crc.Update(inputSpan);
 
             return outputBuffer.Length;
         }
@@ -39,6 +48,7 @@ namespace MKW.Core.Serialization.Pgp
                 byte[] outputBuffer = new byte[4];
 
                 Radix64BitConvert.EncodeFinalBlock(inputSpan, outputBuffer);
+                crc.Update(inputSpan);
 
                 return outputBuffer;
             }
