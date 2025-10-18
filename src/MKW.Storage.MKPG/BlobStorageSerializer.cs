@@ -1,0 +1,45 @@
+﻿using MKW.Core.Serialization.Pgp;
+
+namespace MKW.Storage.MKPG
+{
+    internal static class BlobStorageSerializer
+    {
+        private const string idHeader = "MKWID";
+
+        public static IEnumerable<BlobEntry> ReadBlobs(TextReader reader)
+        {
+            while (true)
+            {
+                PgpArmouredMessage? message = PgpArmourSerializer.Deserialize(reader);
+
+                if (message == null)
+                {
+                    yield break;
+                }
+                else
+                {
+                    PgpArmourHeader id = message.Headers.First(header => header.Key == idHeader);
+
+                    yield return new BlobEntry(BlobId.From(new Guid(id.Value)), message.Data);
+                }
+            }
+        }
+
+        public static void WriteBlobs(TextWriter writer, IEnumerable<BlobEntry> blobs)
+        {
+            foreach (BlobEntry blob in blobs)
+            {
+                PgpArmouredMessage msg = new PgpArmouredMessage
+                {
+                    MessageTypeHeader = "MKW ENTRY",
+                    Headers = [
+                        new PgpArmourHeader(idHeader, blob.Id.ToString()),
+                    ],
+                    Data = blob.Data,
+                };
+
+                PgpArmourSerializer.Serialize(writer, msg);
+            }
+        }
+    }
+}
