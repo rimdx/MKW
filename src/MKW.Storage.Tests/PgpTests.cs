@@ -161,10 +161,10 @@ namespace MKW.Storage.Tests
 
                 if (packet.Tag == PacketTag.SecretKey)
                 {
-                    Core.Serialization.OpenPgp.Packets.SecretKeyPacket decoded = SecretKeyPacketSerializer.Deserialize(packetReader);
+                    Core.Serialization.OpenPgp.Packets.SecretKeyPacketV4 decoded = SecretKeyPacketV4Serializer.Deserialize(packetReader);
 
                     ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
-                    SecretKeyPacketSerializer.Serialize(writer, decoded);
+                    SecretKeyPacketV4Serializer.Serialize(writer, decoded);
                     CollectionAssert.AreEqual(packet.EncodedBody.ToArray(), writer.WrittenSpan.ToArray());
                 }
             }

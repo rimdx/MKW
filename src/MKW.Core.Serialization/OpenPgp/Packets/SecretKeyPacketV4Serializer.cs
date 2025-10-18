@@ -34,19 +34,19 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     // 
     // Algorithm-Specific Fields for Elgamal secret keys:
     // - MPI of Elgamal secret exponent x.
-    public static class SecretKeyPacketSerializer
+    public static class SecretKeyPacketV4Serializer
     {
         public static void Serialize(IBufferWriter<byte> writer,
-                                     SecretKeyPacket obj)
+                                     SecretKeyPacketV4 obj)
         {
             PublicKeyPacketV4Serializer.Serialize(writer, obj.PublicKey);
             SecretKeyStringToKeySerializer.Serialize(writer, obj.StringToKey);
             writer.Write(obj.SecretKeyData.Span);
         }
 
-        public static SecretKeyPacket Deserialize(ArrayBufferReader reader)
+        public static SecretKeyPacketV4 Deserialize(ArrayBufferReader reader)
         {
-            return new SecretKeyPacket
+            return new SecretKeyPacketV4
             {
                 PublicKey = PublicKeyPacketV4Serializer.Deserialize(reader),
                 StringToKey = SecretKeyStringToKeySerializer.Deserialize(reader),
