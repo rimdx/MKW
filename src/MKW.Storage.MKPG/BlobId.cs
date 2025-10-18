@@ -12,11 +12,6 @@ namespace MKW.Storage.MKPG
         {
         }
 
-        public override string ToString()
-        {
-            return data.ToString();
-        }
-
         public static BlobId From(Guid id)
         {
             return new BlobId(id.ToByteArray());
