@@ -3,7 +3,7 @@
 
 using MKW.Common;
 using MKW.Core;
-using MKW.Core.Serialization.Pgp;
+using MKW.Core.Serialization.OpenPgp;
 using MKW.Storage.MKPG;
 using Org.BouncyCastle.Bcpg;
 using System.Buffers;

@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
-using MKW.Core.Serialization.Pgp;
+using MKW.Core.Serialization.OpenPgp;
 using System.Buffers;
 
 namespace MKW.Storage.MKPG
