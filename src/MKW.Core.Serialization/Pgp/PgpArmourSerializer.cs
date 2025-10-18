@@ -81,19 +81,7 @@ namespace MKW.Core.Serialization.Pgp
 
             Crc24 crc = new Crc24();
 
-            int i = 0;
-            for (; i + 3 < data.Length; i += 3)
-            {
-                buf[0] = data[i + 0];
-                buf[1] = data[i + 1];
-                buf[2] = data[i + 2];
-                crc.Update3(buf, 0);
-            }
-
-            for (; i < data.Length; i++)
-            {
-                crc.Update(data[i]);
-            }
+            crc.Update(data);
 
             int value = crc.Value;
             buf[0] = (byte)(0xFF & (value >> 16));
