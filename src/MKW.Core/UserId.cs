@@ -14,14 +14,14 @@ namespace MKW.Core
         {
         }
 
-        public override string ToString()
+        public string GetString()
         {
             return new Guid(data.ToArray()).ToString();
         }
 
-        public Guid GetGuid()
+        public override string ToString()
         {
-            return new Guid(data.ToArray());
+            return new Guid(data.ToArray()).ToString();
         }
 
         public static UserId Admin()
@@ -29,9 +29,14 @@ namespace MKW.Core
             return new UserId(new byte[Size]);
         }
 
-        public static UserId FromGuid(Guid id)
+        public static UserId FromString(string str)
         {
-            return new UserId(id.ToByteArray());
+            return new UserId(new Guid(str).ToByteArray());
+        }
+
+        public static UserId FromBytes(ReadOnlyMemory<byte> data)
+        {
+            return new UserId(data);
         }
 
         public static UserId Create()

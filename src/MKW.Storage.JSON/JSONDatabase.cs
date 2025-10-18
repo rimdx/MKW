@@ -10,7 +10,7 @@ namespace MKW.Storage.JSON
         public JSONDatabaseUser? Admin { get; set; }
 
         [JsonRequired]
-        public IDictionary<Guid, JSONDatabaseUser> Users { get; init; }
+        public IDictionary<string, JSONDatabaseUser> Users { get; init; }
 
         // EntryId -> Entry
         [JsonRequired]
@@ -18,7 +18,7 @@ namespace MKW.Storage.JSON
 
         public JSONDatabase()
         {
-            Users = new Dictionary<Guid, JSONDatabaseUser>();
+            Users = new Dictionary<string, JSONDatabaseUser>();
             Entries = new Dictionary<string, JSONDatabaseSecretEntry>();
         }
     }
