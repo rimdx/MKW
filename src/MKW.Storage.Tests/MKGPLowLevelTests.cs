@@ -98,7 +98,7 @@ namespace MKW.Storage.Tests
             CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
 
             CollectionAssert.AreEqual(user.PublicKey.Payload.ToArray(), decoded.PublicKey.Payload.ToArray());
-            //CollectionAssert.AreEqual(user.PublicKey.Signature.ToArray(), decoded.PublicKey.Signature.ToArray());
+            CollectionAssert.AreEqual(user.PublicKey.Signature.ToArray(), decoded.PublicKey.Signature.ToArray());
 
             //CollectionAssert.AreEqual(user.AdminSignature.ToArray(), decoded.AdminSignature.ToArray());
 
