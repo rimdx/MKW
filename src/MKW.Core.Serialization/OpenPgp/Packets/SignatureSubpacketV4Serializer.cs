@@ -22,10 +22,10 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     // Partial Body Lengths.  That is:
     // 
     // [...strip...]
-    public static class SignatureSubpacketSerializer
+    public static class SignatureSubpacketV4Serializer
     {
         public static void Serialize(IBufferWriter<byte> writer,
-                                     SignatureSubpacket obj)
+                                     SignatureSubpacketV4 obj)
         {
             WriteBodyLength(writer, (uint)obj.RawData.Span.Length);
             writer.Write((byte)obj.Type);
@@ -87,13 +87,13 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
         }
 
-        public static SignatureSubpacket Deserialize(IBufferReader<byte> reader)
+        public static SignatureSubpacketV4 Deserialize(IBufferReader<byte> reader)
         {
             int len = (int)ReadBodyLength(reader);
             SignatureSubpacketTag type = (SignatureSubpacketTag)reader.ReadByte();
             ReadOnlyMemory<byte> data = reader.ReadBytes(len);
 
-            return new SignatureSubpacket
+            return new SignatureSubpacketV4
             {
                 Type = type,
                 RawData = data,

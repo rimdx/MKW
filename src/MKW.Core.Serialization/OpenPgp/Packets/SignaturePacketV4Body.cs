@@ -5,6 +5,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 {
     public sealed record class SignaturePacketV4Body
     {
-        public required IReadOnlyCollection<SignatureSubpacket> Subpackets { get; init; }
+        public required IReadOnlyCollection<SignatureSubpacketV4> Subpackets { get; init; }
     }
 }

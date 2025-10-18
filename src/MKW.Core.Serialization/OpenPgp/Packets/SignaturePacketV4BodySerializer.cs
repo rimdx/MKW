@@ -11,19 +11,19 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         public static void Serialize(IBufferWriter<byte> writer,
                                      SignaturePacketV4Body obj)
         {
-            foreach (SignatureSubpacket packet in obj.Subpackets)
+            foreach (SignatureSubpacketV4 packet in obj.Subpackets)
             {
-                SignatureSubpacketSerializer.Serialize(writer, packet);
+                SignatureSubpacketV4Serializer.Serialize(writer, packet);
             }
         }
 
         public static SignaturePacketV4Body Deserialize(IBufferReader<byte> reader)
         {
-            List<SignatureSubpacket> subpackets = [];
+            List<SignatureSubpacketV4> subpackets = [];
 
             while (reader.RemainingBytes > 0)
             {
-                subpackets.Add(SignatureSubpacketSerializer.Deserialize(reader));
+                subpackets.Add(SignatureSubpacketV4Serializer.Deserialize(reader));
             }
 
             return new SignaturePacketV4Body
