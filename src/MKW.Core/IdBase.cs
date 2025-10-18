@@ -7,7 +7,7 @@ namespace MKW.Core
 {
     public abstract class IdBase : IComparable<IdBase>
     {
-        private static Lazy<RandomNumberGenerator> rng = new Lazy<RandomNumberGenerator>(
+        private static readonly Lazy<RandomNumberGenerator> rng = new Lazy<RandomNumberGenerator>(
             () => RandomNumberGenerator.Create());
 
         protected byte[] data;
