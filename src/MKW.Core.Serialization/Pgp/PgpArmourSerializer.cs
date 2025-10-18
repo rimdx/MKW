@@ -76,22 +76,12 @@ namespace MKW.Core.Serialization.Pgp
         private static void WriteChecksum(TextWriter writer,
                                           ReadOnlySpan<byte> data)
         {
-            byte[] buf = new byte[3];
-            byte[] encoded = new byte[4];
-
             Crc24 crc = new Crc24();
 
             crc.Update(data);
 
-            int value = crc.Value;
-            buf[0] = (byte)(0xFF & (value >> 16));
-            buf[1] = (byte)(0xFF & (value >> 8));
-            buf[2] = (byte)(0xFF & (value >> 0));
-
-            Radix64BitConvert.EncodeFullBlock(buf, encoded);
-
             writer.Write(checksumPrefix);
-            writer.Write(Encoding.ASCII.GetString(encoded));
+            writer.Write(crc.Serialize());
             writer.WriteLine();
         }
 
