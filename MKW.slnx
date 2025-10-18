@@ -26,6 +26,7 @@
     <File Path=".editorconfig" />
     <File Path="Directory.build.props" />
     <File Path="Directory.build.targets" />
+    <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="Version.props" />
   </Folder>
