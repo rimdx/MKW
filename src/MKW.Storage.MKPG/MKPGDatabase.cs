@@ -32,7 +32,7 @@ namespace MKW.Storage.MKPG
         public DatabaseEntry OpenEntry(EntryId id)
         {
             BlobEntry blob = entries.Open(BlobId.From(id));
-            DatabaseEntry entry = EntrySerializer.Deserialize(new ArrayBufferReader(blob.Data));
+            DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader());
 
             return entry with
             {
@@ -49,7 +49,7 @@ namespace MKW.Storage.MKPG
         {
             foreach (BlobEntry blob in entries.Enumerate())
             {
-                DatabaseEntry entry = EntrySerializer.Deserialize(new ArrayBufferReader(blob.Data));
+                DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader());
 
                 yield return entry with
                 {
