@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
 using Org.BouncyCastle.Bcpg;
 
 namespace MKW.Core.Serialization.OpenPgp.Packets
@@ -16,5 +17,10 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         // - https://www.rfc-editor.org/rfc/rfc4880#section-5.2.4
         public required ReadOnlyMemory<byte> RawData { get; init; }
         public required ReadOnlyMemory<byte> Signature { get; init; }
+
+        public IBufferReader<byte> CreateReader()
+        {
+            return new ArrayBufferReader<byte>(RawData);
+        }
     }
 }
