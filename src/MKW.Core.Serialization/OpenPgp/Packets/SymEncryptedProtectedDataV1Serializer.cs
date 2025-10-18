@@ -37,7 +37,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             PgpPacketSerializer.Serialize(writer, packet, oldFormat);
         }
 
-        public static SymEncryptedProtectedDataV1 Deserialize(IBufferReader reader)
+        public static SymEncryptedProtectedDataV1 Deserialize(IBufferReader<byte> reader)
         {
             version.ConsumeVersion(reader);
 

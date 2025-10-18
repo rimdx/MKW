@@ -53,7 +53,7 @@ namespace MKW.Storage.Tests
                 "+6mamRhDv9PcDRc/NH2V6M4ip/m7eqpTwxGVrSotn4fI/ouVGgcNO447UpbHaiav7D1CETP5vykm" +
                 "JoPWR/eBc2sju6nuENtcYFc+icy7");
 
-            IBufferReader reader = new ArrayBufferReader(data);
+            IBufferReader<byte> reader = new ArrayBufferReader<byte>(data);
 
             DatabaseEntry entry = EntrySerializer.Deserialize(reader);
         }
@@ -90,7 +90,7 @@ namespace MKW.Storage.Tests
             });
             Console.WriteLine(writer.ToString());
 
-            ArrayBufferReader reader = new ArrayBufferReader(encoded.WrittenMemory);
+            ArrayBufferReader<byte> reader = new ArrayBufferReader<byte>(encoded.WrittenMemory);
             DatabaseUser decoded = UserSerializer.Deserialize(reader);
 
             CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());

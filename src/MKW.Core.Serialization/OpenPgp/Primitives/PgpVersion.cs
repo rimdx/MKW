@@ -15,7 +15,7 @@ namespace MKW.Core.Serialization.OpenPgp.Primitives
             this.expectedVersion = expectedVersion;
         }
 
-        public void ConsumeVersion(IBufferReader reader)
+        public void ConsumeVersion(IBufferReader<byte> reader)
         {
             int version = reader.ReadByte();
 

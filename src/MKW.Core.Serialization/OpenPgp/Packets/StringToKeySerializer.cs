@@ -9,7 +9,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 {
     public static class StringToKeySerializer
     {
-        public static StringToKey Deserialize(IBufferReader reader)
+        public static StringToKey Deserialize(IBufferReader<byte> reader)
         {
             StringToKeyTag tag = (StringToKeyTag)reader.ReadByte();
 

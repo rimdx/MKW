@@ -9,9 +9,9 @@ namespace MKW.Storage.MKPG
         BlobId Id,
         ReadOnlyMemory<byte> Data)
     {
-        public IBufferReader CreateReader()
+        public IBufferReader<byte> CreateReader()
         {
-            return new ArrayBufferReader(Data);
+            return new ArrayBufferReader<byte>(Data);
         }
     }
 }
