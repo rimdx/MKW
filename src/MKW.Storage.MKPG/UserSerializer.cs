@@ -21,6 +21,7 @@ namespace MKW.Storage.MKPG
         {
             ReadOnlyMemory<byte>? seckey = null;
             ReadOnlyMemory<byte>? pubkey = null;
+            ReadOnlyMemory<byte>? pubkeySignature = null;
             ReadOnlyMemory<byte>? salt = null;
 
             while (reader.RemainingBytes > 0)
@@ -43,6 +44,21 @@ namespace MKW.Storage.MKPG
                     pubkey = parameters.GetEncoded();
                     salt = s2k.Salt;
                 }
+                else if (packet.Tag == PacketTag.Signature)
+                {
+                    SignaturePacketV4 signaturePacket = SignaturePacketV4Serializer.Deserialize(subreader);
+
+                    if (signaturePacket.Type == SignatureTypeTag.PositiveCertificationPublicKeyPacket)
+                    {
+                        SignaturePacketV4Body body = SignaturePacketV4BodySerializer.Deserialize(signaturePacket.CreateReader());
+
+                        pubkeySignature = signaturePacket.Signature;
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                }
                 else
                 {
                     throw new NotSupportedException();
@@ -52,6 +68,11 @@ namespace MKW.Storage.MKPG
             if (pubkey == null)
             {
                 throw new Exception("Public key is missing.");
+            }
+
+            if (pubkeySignature == null)
+            {
+                throw new Exception("Public key signature is missing.");
             }
 
             if (seckey == null)
@@ -67,7 +88,7 @@ namespace MKW.Storage.MKPG
             return new DatabaseUser
             {
                 Id = null,
-                PublicKey = new SignedPayload(pubkey.Value, null),
+                PublicKey = new SignedPayload(pubkey.Value, pubkeySignature.Value),
                 PrivateKey = new SecretPayload(seckey.Value),
                 Salt = salt.Value,
                 AdminSignature = null,
@@ -81,7 +102,7 @@ namespace MKW.Storage.MKPG
             // TODO: workaround!
             RsaKeyParameters decoded = (RsaKeyParameters)PublicKeyFactory.CreateKey(obj.PublicKey.Payload.ToArray());
 
-            SecretKeyPacketV4 packet = new SecretKeyPacketV4
+            SecretKeyPacketV4 seckeyPacket = new SecretKeyPacketV4
             {
                 PublicKey = new PublicKeyPacketV4
                 {
@@ -105,10 +126,32 @@ namespace MKW.Storage.MKPG
                 SecretKeyData = obj.PrivateKey.EncryptedPayload,
             };
 
-            ArrayBufferWriter<byte> packetWriter = new ArrayBufferWriter<byte>();
-            SecretKeyPacketV4Serializer.Serialize(packetWriter, packet);
+            ArrayBufferWriter<byte> seckeyPacketWriter = new ArrayBufferWriter<byte>();
+            SecretKeyPacketV4Serializer.Serialize(seckeyPacketWriter, seckeyPacket);
             PgpPacketSerializer.Serialize(writer,
-                                          new PgpPacket(PacketTag.SecretKey, packetWriter.WrittenMemory),
+                                          new PgpPacket(PacketTag.SecretKey, seckeyPacketWriter.WrittenMemory),
+                                          false);
+
+            ArrayBufferWriter<byte> signatureBodyWriter = new ArrayBufferWriter<byte>();
+            SignaturePacketV4Body body = new SignaturePacketV4Body
+            {
+                Subpackets = [],
+            };
+            SignaturePacketV4BodySerializer.Serialize(signatureBodyWriter, body);
+
+            SignaturePacketV4 signaturePacket = new SignaturePacketV4
+            {
+                Type = SignatureTypeTag.PositiveCertificationPublicKeyPacket,
+                PublicKeyAlgorithm = PublicKeyAlgorithmTag.RsaGeneral,
+                HashAlgorithm = HashAlgorithmTag.Sha256,
+                RawData = signatureBodyWriter.WrittenMemory,
+                Signature = obj.PublicKey.Signature,
+            };
+            ArrayBufferWriter<byte> signaturePacketWriter = new ArrayBufferWriter<byte>();
+            SignaturePacketV4Serializer.Serialize(signaturePacketWriter, signaturePacket);
+
+            PgpPacketSerializer.Serialize(writer,
+                                          new PgpPacket(PacketTag.Signature, signaturePacketWriter.WrittenMemory),
                                           false);
         }
     }
