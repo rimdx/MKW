@@ -23,7 +23,7 @@ namespace MKW.Core
 
         public override string ToString()
         {
-            return new Guid(data.ToArray()).ToString();
+            return GetString();
         }
 
         public static UserId Admin()
