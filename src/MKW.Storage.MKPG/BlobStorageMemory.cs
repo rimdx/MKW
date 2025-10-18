@@ -9,9 +9,9 @@
             entries = [];
         }
 
-        public void Create(BlobId id, BlobEntry entry)
+        public void Create(BlobEntry entry)
         {
-            entries[id] = entry;
+            entries[entry.Id] = entry;
         }
 
         public BlobEntry Open(BlobId id)
@@ -29,9 +29,9 @@
             return entries.ContainsKey(id);
         }
 
-        public IEnumerable<BlobId> Enumerate()
+        public IEnumerable<BlobEntry> Enumerate()
         {
-            return entries.Keys;
+            return entries.Values;
         }
     }
 }
