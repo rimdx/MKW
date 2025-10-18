@@ -18,7 +18,7 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
-            entries.Create(BlobId.From(id), new BlobEntry(writer.WrittenMemory));
+            entries.Create(new BlobEntry(BlobId.From(id), writer.WrittenMemory));
         }
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
@@ -44,10 +44,14 @@ namespace MKW.Storage.MKPG
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
-            foreach (BlobId id in entries.Enumerate())
+            foreach (BlobEntry blob in entries.Enumerate())
             {
-                // TODO: more efficient algorithm
-                yield return OpenEntry(EntryId.FromGuid(id.GetGuid()));
+                DatabaseEntry entry = EntrySerializer.Deserialize(new ArrayBufferReader(blob.Data));
+
+                yield return entry with
+                {
+                    Id = EntryId.FromGuid(blob.Id.GetGuid()),
+                };
             }
         }
 
