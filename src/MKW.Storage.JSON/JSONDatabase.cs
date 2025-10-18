@@ -11,12 +11,12 @@ namespace MKW.Storage.JSON
 
         // EntryId -> Entry
         [JsonRequired]
-        public IDictionary<Guid, JSONDatabaseSecretEntry> Entries { get; init; }
+        public IDictionary<string, JSONDatabaseSecretEntry> Entries { get; init; }
 
         public JSONDatabase()
         {
             Users = new Dictionary<Guid, JSONDatabaseUser>();
-            Entries = new Dictionary<Guid, JSONDatabaseSecretEntry>();
+            Entries = new Dictionary<string, JSONDatabaseSecretEntry>();
         }
     }
 }

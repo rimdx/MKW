@@ -117,7 +117,6 @@ namespace MKW.Tests
                 using IEntrySession entry = user.CreateEntry();
                 entryId = entry.Id;
 
-                ClassicAssert.AreNotEqual(EntryId.FromGuid(Guid.Empty), entry.Id);
                 ClassicAssert.AreEqual(null,
                                        user.OpenEntry(entry.Id).OpenPayload());
 

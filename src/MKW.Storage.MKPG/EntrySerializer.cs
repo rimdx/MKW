@@ -48,7 +48,7 @@ namespace MKW.Storage.MKPG
 
             return new DatabaseEntry
             {
-                Id = EntryId.FromGuid(Guid.Empty),
+                Id = EntryId.FromBytes(new byte[16]),
                 Data = encryptedData.Value,
                 Salt = null,
                 Keys = users,

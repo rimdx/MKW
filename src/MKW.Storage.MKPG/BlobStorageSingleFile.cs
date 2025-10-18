@@ -18,7 +18,7 @@ namespace MKW.Storage.MKPG
 
             List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
 
-            if (blobs.FirstOrDefault(blob => blob.Id == entry.Id) != null)
+            if (blobs.FirstOrDefault(blob => blob.Id.Equals(entry.Id)) != null)
             {
                 throw new Exception("Entry already exists.");
             }
@@ -38,7 +38,7 @@ namespace MKW.Storage.MKPG
 
             foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
-                if (blob.Id == id)
+                if (blob.Id.Equals(id))
                 {
                     return blob;
                 }

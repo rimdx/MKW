@@ -33,7 +33,7 @@ namespace MKW.Storage.MKPG
                 {
                     MessageTypeHeader = "MKW ENTRY",
                     Headers = [
-                        new PgpArmourHeader(idHeader, blob.Id.ToString()),
+                        new PgpArmourHeader(idHeader, new Guid(blob.Id.GetBytes().ToArray()).ToString()),
                     ],
                     Data = blob.Data,
                 };

@@ -50,7 +50,7 @@ namespace MKW.Storage.MKPG
 
                 yield return entry with
                 {
-                    Id = EntryId.FromGuid(blob.Id.GetGuid()),
+                    Id = EntryId.FromBytes(blob.Id.GetBytes().Span),
                 };
             }
         }
