@@ -26,12 +26,7 @@ namespace MKW.Storage.MKPG
                 {
                     PublicKeyEncryptedSessionKeyV3 sessionKey = PublicKeyEncryptedSessionKeyV3Serializer.Deserialize(subreader);
 
-                    byte[] id = [
-                        ..new byte[8],
-                        ..sessionKey.KeyId.Span,
-                    ];
-
-                    users.Add(UserId.FromBytes(id), sessionKey.Data);
+                    users.Add(UserId.FromBytes(sessionKey.KeyId), sessionKey.Data);
                 }
                 else if (packet.Tag == PacketTag.SymmetricEncryptedIntegrityProtected)
                 {
