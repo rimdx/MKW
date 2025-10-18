@@ -20,7 +20,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
                 return new StringToKeySimple
                 {
-                    Tag = tag,
                     HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
                 };
             }
@@ -32,7 +31,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
                 return new StringToKeySalted
                 {
-                    Tag = tag,
                     HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
                     Salt = reader.ReadBytes(8),
                 };
@@ -46,7 +44,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
                 return new StringToKeySaltedIterated
                 {
-                    Tag = tag,
                     HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
                     Salt = reader.ReadBytes(8),
                     Count = reader.ReadByte(),
@@ -61,19 +58,20 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         public static void Serialize(IBufferWriter<byte> writer,
                                      StringToKey obj)
         {
-            writer.Write((byte)obj.Tag);
-
             if (obj is StringToKeySimple simple)
             {
+                writer.Write((byte)StringToKeyTag.Simple);
                 writer.Write((byte)simple.HashAlgorithmTag);
             }
             else if (obj is StringToKeySalted salted)
             {
+                writer.Write((byte)StringToKeyTag.Salted);
                 writer.Write((byte)salted.HashAlgorithmTag);
                 writer.Write(salted.Salt.Span.Slice(0, 8));
             }
             else if (obj is StringToKeySaltedIterated saltedIterated)
             {
+                writer.Write((byte)StringToKeyTag.IteratedSalted);
                 writer.Write((byte)saltedIterated.HashAlgorithmTag);
                 writer.Write(saltedIterated.Salt.Span.Slice(0, 8));
                 writer.Write(saltedIterated.Count);

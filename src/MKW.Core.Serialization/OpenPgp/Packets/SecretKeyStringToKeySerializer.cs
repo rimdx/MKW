@@ -75,7 +75,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
                     return new StringToKeySimple
                     {
-                        Tag = tag,
                         HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
                     };
                 }
@@ -87,7 +86,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
                     return new StringToKeySalted
                     {
-                        Tag = tag,
                         HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
                         Salt = reader.ReadBytes(8),
                     };
@@ -101,7 +99,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
                     return new StringToKeySaltedIterated
                     {
-                        Tag = tag,
                         HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
                         Salt = reader.ReadBytes(8),
                         Count = reader.ReadByte(),
@@ -109,18 +106,12 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
                 }
                 else
                 {
-                    return new StringToKeyNone
-                    {
-                        Tag = StringToKeyTag.None,
-                    };
+                    return new StringToKeyNone();
                 }
             }
             else if (usage == UsageNotEncrypted)
             {
-                return new StringToKeyNone
-                {
-                    Tag = StringToKeyTag.None,
-                };
+                return new StringToKeyNone();
             }
             else
             {
