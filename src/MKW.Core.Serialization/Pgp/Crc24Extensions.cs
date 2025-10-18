@@ -38,5 +38,13 @@ namespace MKW.Core.Serialization.Pgp
 
             return Encoding.ASCII.GetString(encoded);
         }
+
+        public static void Verify(this Crc24 crc, int expected)
+        {
+            if (crc.Value != expected)
+            {
+                throw new Crc24ChecksumMismatchException(expected, crc.Value);
+            }
+        }
     }
 }
