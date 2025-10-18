@@ -100,7 +100,7 @@ namespace MKW.Core.Serialization.OpenPgp
             {
                 writer.Write((byte)bodyLen);
             }
-            else if (bodyLen <= 8383)
+            else if (bodyLen <= ((223 - 192) << 8) + 0xFF + 192)
             {
                 bodyLen -= 192;
 
