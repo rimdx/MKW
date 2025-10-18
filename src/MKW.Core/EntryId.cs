@@ -12,11 +12,6 @@ namespace MKW.Core
         {
         }
 
-        public string GetString()
-        {
-            return new Guid(data.ToArray()).ToString();
-        }
-
         public static EntryId FromBytes(ReadOnlySpan<byte> id)
         {
             return new EntryId(id.ToArray());

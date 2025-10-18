@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
 using System.Security.Cryptography;
 
 namespace MKW.Core
@@ -32,6 +33,16 @@ namespace MKW.Core
         public ReadOnlyMemory<byte> GetBytes()
         {
             return data;
+        }
+
+        public string GetString()
+        {
+            return Base16Convert.GetString(data);
+        }
+
+        public override string ToString()
+        {
+            return GetString();
         }
 
         public int CompareTo(IdBase? other)
