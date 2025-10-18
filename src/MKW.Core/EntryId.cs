@@ -29,7 +29,7 @@ namespace MKW.Core
 
         public static EntryId Create()
         {
-            return new EntryId(Guid.NewGuid().ToByteArray());
+            return new EntryId(Create(Size));
         }
     }
 }

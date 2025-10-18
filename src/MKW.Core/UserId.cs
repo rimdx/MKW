@@ -36,7 +36,7 @@ namespace MKW.Core
 
         public static UserId Create()
         {
-            return new UserId(Guid.NewGuid().ToByteArray());
+            return new UserId(Create(Size));
         }
     }
 }

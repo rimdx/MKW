@@ -1,10 +1,15 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using System.Security.Cryptography;
+
 namespace MKW.Core
 {
     public abstract class IdBase : IComparable<IdBase>
     {
+        private static Lazy<RandomNumberGenerator> rng = new Lazy<RandomNumberGenerator>(
+            () => RandomNumberGenerator.Create());
+
         protected byte[] data;
 
         protected IdBase(byte[] data, int size)
@@ -15,6 +20,13 @@ namespace MKW.Core
             }
 
             this.data = data;
+        }
+
+        protected static byte[] Create(int size)
+        {
+            byte[] buf = new byte[size];
+            rng.Value.GetBytes(buf);
+            return buf;
         }
 
         public ReadOnlyMemory<byte> GetBytes()
