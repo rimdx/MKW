@@ -6,6 +6,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     public sealed record class SecretKeyPacket
     {
         public required PublicKeyPacketV4 PublicKey { get; init; }
-        public required StringToKey StringToKey { get; init; }
+        public required SecretKeyStringToKey StringToKey { get; init; }
     }
 }
