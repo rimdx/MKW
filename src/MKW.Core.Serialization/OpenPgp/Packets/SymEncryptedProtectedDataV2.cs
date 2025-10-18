@@ -1,0 +1,16 @@
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using Org.BouncyCastle.Bcpg;
+
+namespace MKW.Core.Serialization.OpenPgp.Packets
+{
+    public sealed record class SymEncryptedProtectedDataV2
+    {
+        public required SymmetricKeyAlgorithmTag CipherAlgorithmTag { get; init; }
+        public required AeadAlgorithmTag AlgorithmTag { get; init; }
+        public required byte ChunkSize { get; init; }
+        public required ReadOnlyMemory<byte> Data { get; init; }
+        public required ReadOnlyMemory<byte> Salt { get; init; }
+    }
+}

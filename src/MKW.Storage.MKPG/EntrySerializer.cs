@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
-using MKW.Core.Serialization.Pgp;
-using MKW.Core.Serialization.Pgp.Packets;
+using MKW.Core.Serialization.OpenPgp;
+using MKW.Core.Serialization.OpenPgp.Packets;
 using Org.BouncyCastle.Bcpg;
 using System.Buffers;
 

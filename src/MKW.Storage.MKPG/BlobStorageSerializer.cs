@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using MKW.Core.Serialization.Pgp;
+using MKW.Core.Serialization.OpenPgp;
 
 namespace MKW.Storage.MKPG
 {
