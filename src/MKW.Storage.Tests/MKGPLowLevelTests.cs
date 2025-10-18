@@ -4,7 +4,10 @@
 using MKW.Common;
 using MKW.Core;
 using MKW.Core.Serialization.OpenPgp;
+using MKW.Cryptography;
+using MKW.Cryptography.Loader;
 using MKW.Storage.MKPG;
+using NUnit.Framework.Legacy;
 using Org.BouncyCastle.Bcpg;
 using System.Buffers;
 
@@ -53,6 +56,54 @@ namespace MKW.Storage.Tests
             ArrayBufferReader reader = new ArrayBufferReader(data);
 
             DatabaseEntry entry = EntrySerializer.Deserialize(reader);
+        }
+
+        [Test]
+        public void EncodeDecodeUserTest()
+        {
+            ICryptographyProvider crypto = BouncyCastleLoader.GetProvider();
+            IRandomGenerator random = crypto.CreateRandomGenerator();
+
+            AsymmetricPrivateKey keypair = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
+            ReadOnlyMemory<byte> pubkey = crypto.EncodePkcsPublicKey(keypair.GetPublicKey());
+            ReadOnlyMemory<byte> fakeseckey = random.NextBytes(432);
+
+            DatabaseUser user = new DatabaseUser
+            {
+                Id = UserId.Create(),
+                Salt = random.NextBytes(8),
+                PrivateKey = new SecretPayload(fakeseckey),
+                PublicKey = new SignedPayload(pubkey, new byte[32]),
+                AdminSignature = null,
+                Metadata = null,
+            };
+
+            ArrayBufferWriter<byte> encoded = new ArrayBufferWriter<byte>();
+            UserSerializer.Serialize(encoded, user);
+
+            StringWriter writer = new StringWriter();
+            PgpArmouredMessageSerializer.Serialize(writer, new PgpArmouredMessage
+            {
+                MessageTypeHeader = "MKW USER",
+                Headers = [],
+                Data = encoded.WrittenMemory,
+            });
+            Console.WriteLine(writer.ToString());
+
+            ArrayBufferReader reader = new ArrayBufferReader(encoded.WrittenMemory);
+            DatabaseUser decoded = UserSerializer.Deserialize(reader);
+
+            CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());
+
+            CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
+
+            CollectionAssert.AreEqual(user.PublicKey.Payload.ToArray(), decoded.PublicKey.Payload.ToArray());
+            //CollectionAssert.AreEqual(user.PublicKey.Signature.ToArray(), decoded.PublicKey.Signature.ToArray());
+
+            //CollectionAssert.AreEqual(user.AdminSignature.ToArray(), decoded.AdminSignature.ToArray());
+
+            //CollectionAssert.AreEqual(user.Metadata.Payload.ToArray(), decoded.Metadata.Payload.ToArray());
+            //CollectionAssert.AreEqual(user.Metadata.Signature.ToArray(), decoded.Metadata.Signature.ToArray());
         }
     }
 }
