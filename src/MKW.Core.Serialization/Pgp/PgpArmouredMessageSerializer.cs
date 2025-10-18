@@ -1,6 +1,8 @@
-﻿using MKW.Common;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Common;
 using Org.BouncyCastle.Bcpg;
-using System.Buffers.Binary;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -86,7 +88,7 @@ namespace MKW.Core.Serialization.Pgp
                 return null;
             }
 
-            var headers = ReadHeaders(reader).ToArray();
+            PgpArmourHeader[] headers = ReadHeaders(reader).ToArray();
 
             Crc24 crc = new Crc24();
             int checksum;
@@ -142,7 +144,7 @@ namespace MKW.Core.Serialization.Pgp
 
                     Radix64BitConvert.DecodeBlock(encoded.Span, checksumBytes);
 
-                    int checksum = (checksumBytes[0] << 16) + (checksumBytes[1] << 8) + (checksumBytes[2]);
+                    int checksum = (checksumBytes[0] << 16) + (checksumBytes[1] << 8) + checksumBytes[2];
 
                     return checksum & 0xFFFFFF;
                 }
@@ -212,7 +214,7 @@ namespace MKW.Core.Serialization.Pgp
 
                     // -----BEGIN PGP MESSAGE  -----
                     //      ^               ^
-                    string slice = line.Substring(dashes.Length, line.Length - dashes.Length * 2);
+                    string slice = line.Substring(dashes.Length, line.Length - (dashes.Length * 2));
                     string trimmed = slice.Trim();
 
                     if (!trimmed.StartsWith(beginPrefix))
@@ -252,7 +254,7 @@ namespace MKW.Core.Serialization.Pgp
 
                     // -----END PGP MESSAGE  -----
                     //      ^             ^
-                    string slice = line.Substring(dashes.Length, line.Length - dashes.Length * 2);
+                    string slice = line.Substring(dashes.Length, line.Length - (dashes.Length * 2));
                     string trimmed = slice.Trim();
 
                     if (!trimmed.StartsWith(endPrefix))

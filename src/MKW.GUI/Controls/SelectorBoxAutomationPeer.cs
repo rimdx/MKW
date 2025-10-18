@@ -1,4 +1,7 @@
-﻿using System.Windows.Automation.Peers;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using System.Windows.Automation.Peers;
 
 namespace MKW.GUI.Controls
 {

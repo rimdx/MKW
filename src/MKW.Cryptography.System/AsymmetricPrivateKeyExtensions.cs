@@ -1,4 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using System.Security.Cryptography;
 
 namespace MKW.Cryptography.System
 {
@@ -11,7 +14,7 @@ namespace MKW.Cryptography.System
                 Modulus = key.Modulus.ToArray(),
                 Exponent = key.PublicExponent.ToArray(),
                 D = key.PrivateExponent.ToArray(),
-                P  = key.Prime1.ToArray(),
+                P = key.Prime1.ToArray(),
                 Q = key.Prime2.ToArray(),
                 DP = key.Exponent1.ToArray(),
                 DQ = key.Exponent2.ToArray(),

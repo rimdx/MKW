@@ -1,4 +1,7 @@
-﻿using MKW.GUI.EntryEditor;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.GUI.EntryEditor;
 using MKW.GUI.ExportWizard;
 using MKW.GUI.ImportWizard;
 using System.Windows;

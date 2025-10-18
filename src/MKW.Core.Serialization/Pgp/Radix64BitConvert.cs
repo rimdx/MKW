@@ -1,4 +1,7 @@
-﻿namespace MKW.Core.Serialization.Pgp
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+namespace MKW.Core.Serialization.Pgp
 {
     // 6-bit -> 8-bit
     // lcm(6, 8) = 24 bit = 3 byte (of input)
@@ -10,8 +13,8 @@
         public static void EncodeFullBlock(ReadOnlySpan<byte> bytes, Span<byte> encoded)
         {
             encoded[0] = Radix64Charset.EncodingTable[0x3f & (bytes[0] >> 2)];
-            encoded[1] = Radix64Charset.EncodingTable[0x3f & (bytes[0] << 4) | (bytes[1] >> 4)];
-            encoded[2] = Radix64Charset.EncodingTable[0x3f & (bytes[1] << 2) | (bytes[2] >> 6)];
+            encoded[1] = Radix64Charset.EncodingTable[(0x3f & (bytes[0] << 4)) | (bytes[1] >> 4)];
+            encoded[2] = Radix64Charset.EncodingTable[(0x3f & (bytes[1] << 2)) | (bytes[2] >> 6)];
             encoded[3] = Radix64Charset.EncodingTable[0x3f & (bytes[2])];
         }
 
@@ -33,7 +36,7 @@
             else if (bytes.Length == 2)
             {
                 encoded[0] = Radix64Charset.EncodingTable[0x3f & (bytes[0] >> 2)];
-                encoded[1] = Radix64Charset.EncodingTable[0x3f & (bytes[0] << 4) | (bytes[1] >> 4)];
+                encoded[1] = Radix64Charset.EncodingTable[(0x3f & (bytes[0] << 4)) | (bytes[1] >> 4)];
                 encoded[2] = Radix64Charset.EncodingTable[0x3f & (bytes[1] << 2)];
                 encoded[3] = Radix64Charset.Padding;
             }

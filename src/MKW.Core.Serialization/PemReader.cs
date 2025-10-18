@@ -1,4 +1,7 @@
-﻿using Org.BouncyCastle.Asn1;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using Org.BouncyCastle.Asn1;
 using System.Text;
 
 namespace MKW.Core.Serialization

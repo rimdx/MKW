@@ -1,4 +1,7 @@
-﻿using MKW.Core.Serialization.Pgp;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Core.Serialization.Pgp;
 using MKW.Core.Serialization.Pgp.Packets;
 using MKW.Cryptography;
 using MKW.Cryptography.Loader;
@@ -87,7 +90,7 @@ namespace MKW.Storage.Tests
 
             ReadOnlyMemory<byte> salt = sessionKeyPacket.Slice(5, 8);
 
-            var s2kConfig = new PasswordDerivationConfiguration
+            PasswordDerivationConfiguration s2kConfig = new PasswordDerivationConfiguration
             {
                 Engine = PasswordDerivationEngine.Pbkdf2,
                 HashEngine = HashAlgorithmEngine.Sha256,

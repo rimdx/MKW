@@ -1,4 +1,7 @@
-﻿using MKW.GUI.Database;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.GUI.Database;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using System.ComponentModel;

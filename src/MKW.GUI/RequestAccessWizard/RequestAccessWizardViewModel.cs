@@ -1,4 +1,7 @@
-﻿using MKW.Core;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Core;
 using MKW.Core.Serialization;
 using MKW.GUI.Images;
 using MKW.GUI.Model;

@@ -1,4 +1,7 @@
-﻿using System.Xml.Serialization;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using System.Xml.Serialization;
 
 namespace MKW.Core.Serialization.KeePassXmlV2
 {

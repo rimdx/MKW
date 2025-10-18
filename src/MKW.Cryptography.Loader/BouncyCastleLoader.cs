@@ -1,4 +1,7 @@
-﻿using MKW.Cryptography.BouncyCastle;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Cryptography.BouncyCastle;
 
 namespace MKW.Cryptography.Loader
 {

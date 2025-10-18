@@ -1,4 +1,7 @@
-﻿using MKW.GUI.Win32;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.GUI.Win32;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;

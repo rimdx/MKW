@@ -1,4 +1,7 @@
-﻿namespace System.Runtime.CompilerServices
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+namespace System.Runtime.CompilerServices
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
     public sealed class CompilerFeatureRequiredAttribute : Attribute

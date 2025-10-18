@@ -1,4 +1,7 @@
-﻿using MKW.Common;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Common;
 using MKW.Core.Serialization.Pgp.Primitives;
 using Org.BouncyCastle.Bcpg;
 using System.Buffers;
@@ -37,7 +40,7 @@ namespace MKW.Core.Serialization.Pgp.Packets
 
             writer.Write((byte)obj.CipherAlgorithmTag);
             writer.Write((byte)obj.AlgorithmTag);
-            writer.Write((byte)obj.ChunkSize);
+            writer.Write(obj.ChunkSize);
 
             if (obj.Salt.Length != 32)
             {

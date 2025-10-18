@@ -1,8 +1,10 @@
-﻿using MKW.Common;
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+using MKW.Common;
 using Org.BouncyCastle.Math;
 using System.Buffers;
 using System.Buffers.Binary;
-using System.IO;
 
 namespace MKW.Core.Serialization.Pgp.Primitives
 {

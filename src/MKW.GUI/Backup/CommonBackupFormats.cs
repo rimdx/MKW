@@ -1,4 +1,7 @@
-﻿namespace MKW.GUI.Backup
+﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
+// Licensed under the Apache License, Version 2.0.
+
+namespace MKW.GUI.Backup
 {
     public static class CommonBackupFormats
     {
