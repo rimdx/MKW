@@ -30,7 +30,7 @@ namespace MKW.Core.Serialization.OpenPgp.Primitives
             writer.Advance(4);
         }
 
-        public static DateTime Deserialize(IBufferReader reader)
+        public static DateTime Deserialize(IBufferReader<byte> reader)
         {
             uint unixTime = BinaryPrimitives.ReadUInt32BigEndian(reader.ReadBytes(4).Span);
             return origin.AddSeconds(unixTime);

@@ -55,7 +55,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
         }
 
-        private static uint ReadBodyLength(IBufferReader reader)
+        private static uint ReadBodyLength(IBufferReader<byte> reader)
         {
             byte b0 = reader.ReadByte();
 
@@ -87,7 +87,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
         }
 
-        public static SignatureSubpacket Deserialize(IBufferReader reader)
+        public static SignatureSubpacket Deserialize(IBufferReader<byte> reader)
         {
             int len = (int)ReadBodyLength(reader);
             SignatureSubpacketTag type = (SignatureSubpacketTag)reader.ReadByte();

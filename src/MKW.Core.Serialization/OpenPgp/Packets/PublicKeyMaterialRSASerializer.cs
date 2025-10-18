@@ -24,7 +24,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             MPIntegerSerailizer.Serialize(writer, obj.PublicExponent);
         }
 
-        public static PublicKeyMaterialRSA Deserialize(IBufferReader reader)
+        public static PublicKeyMaterialRSA Deserialize(IBufferReader<byte> reader)
         {
             return new PublicKeyMaterialRSA
             {

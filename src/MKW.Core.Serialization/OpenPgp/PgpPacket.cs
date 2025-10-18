@@ -10,9 +10,9 @@ namespace MKW.Core.Serialization.OpenPgp
         PacketTag Tag,
         ReadOnlyMemory<byte> EncodedBody)
     {
-        public IBufferReader CreateReader()
+        public IBufferReader<byte> CreateReader()
         {
-            return new ArrayBufferReader(EncodedBody);
+            return new ArrayBufferReader<byte>(EncodedBody);
         }
     }
 }

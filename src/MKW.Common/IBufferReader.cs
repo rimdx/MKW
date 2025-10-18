@@ -3,13 +3,13 @@
 
 namespace MKW.Common
 {
-    public interface IBufferReader
+    public interface IBufferReader<T>
     {
         int RemainingBytes { get; }
 
-        byte ReadByte();
+        T ReadByte();
 
-        ReadOnlyMemory<byte> ReadBytes(int count);
-        ReadOnlyMemory<byte> ReadAll();
+        ReadOnlyMemory<T> ReadBytes(int count);
+        ReadOnlyMemory<T> ReadAll();
     }
 }

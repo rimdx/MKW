@@ -3,13 +3,13 @@
 
 namespace MKW.Common
 {
-    public sealed class ArrayBufferReader : IBufferReader
+    public sealed class ArrayBufferReader<T> : IBufferReader<T>
     {
-        private ReadOnlyMemory<byte> Data;
+        private ReadOnlyMemory<T> Data;
 
         public int RemainingBytes => Data.Length;
 
-        public ArrayBufferReader(ReadOnlyMemory<byte> data)
+        public ArrayBufferReader(ReadOnlyMemory<T> data)
         {
             Data = data;
         }
@@ -19,23 +19,23 @@ namespace MKW.Common
             Data = Data.Slice(count);
         }
 
-        public ReadOnlyMemory<byte> ReadBytes(int count)
+        public ReadOnlyMemory<T> ReadBytes(int count)
         {
-            ReadOnlyMemory<byte> slice = Data.Slice(0, count);
+            ReadOnlyMemory<T> slice = Data.Slice(0, count);
             Advance(count);
             return slice;
         }
 
-        public ReadOnlyMemory<byte> ReadAll()
+        public ReadOnlyMemory<T> ReadAll()
         {
-            ReadOnlyMemory<byte> slice = Data;
+            ReadOnlyMemory<T> slice = Data;
             Advance(slice.Length);
             return slice;
         }
 
-        public byte ReadByte()
+        public T ReadByte()
         {
-            byte b = Data.Span[0];
+            T b = Data.Span[0];
             Advance(1);
             return b;
         }

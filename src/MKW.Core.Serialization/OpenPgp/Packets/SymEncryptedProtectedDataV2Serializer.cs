@@ -19,7 +19,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     {
         private static readonly PgpVersion version = new PgpVersion(2);
 
-        public static SymEncryptedProtectedDataV2 Deserialize(IBufferReader reader)
+        public static SymEncryptedProtectedDataV2 Deserialize(IBufferReader<byte> reader)
         {
             version.ConsumeVersion(reader);
 
