@@ -27,7 +27,7 @@ namespace MKW.Core.Serialization.Pgp
     // Header line texts include the following strings:
     //
     // [...strip...]
-    public static class PgpArmourSerializer
+    public static class PgpArmouredMessageSerializer
     {
         private static readonly string dashes = new string('-', 5);
         private static readonly string beginPrefix = "BEGIN ";
