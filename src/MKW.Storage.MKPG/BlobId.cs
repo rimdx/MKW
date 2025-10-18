@@ -27,14 +27,9 @@ namespace MKW.Storage.MKPG
             return new BlobId(data);
         }
 
-        public static BlobId From(EntryId entryId)
+        public static BlobId From(IdBase id)
         {
-            return new BlobId(entryId.GetBytes());
-        }
-
-        public static BlobId From(UserId userId)
-        {
-            return new BlobId(userId.GetGuid().ToByteArray());
+            return new BlobId(id.GetBytes());
         }
     }
 }
