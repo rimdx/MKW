@@ -27,6 +27,7 @@ namespace MKW.Core.Serialization.OpenPgp.Primitives
             uint unixTime = ((uint)difference.TotalSeconds) & 0xFFFF_FFFF;
 
             BinaryPrimitives.WriteUInt32BigEndian(writer.GetSpan(4), unixTime);
+            writer.Advance(4);
         }
 
         public static DateTime Deserialize(ArrayBufferReader reader)
