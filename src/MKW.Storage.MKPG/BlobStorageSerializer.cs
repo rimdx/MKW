@@ -22,8 +22,9 @@ namespace MKW.Storage.MKPG
                 else
                 {
                     PgpArmourHeader id = message.Headers.First(header => header.Key == idHeader);
+                    BlobId blobId = BlobIdSerializer.Deserialize(id.Value);
 
-                    yield return new BlobEntry(BlobId.From(new Guid(id.Value)), message.Data);
+                    yield return new BlobEntry(blobId, message.Data);
                 }
             }
         }
@@ -36,7 +37,7 @@ namespace MKW.Storage.MKPG
                 {
                     MessageTypeHeader = "MKW ENTRY",
                     Headers = [
-                        new PgpArmourHeader(idHeader, new Guid(blob.Id.GetBytes().ToArray()).ToString()),
+                        new PgpArmourHeader(idHeader, BlobIdSerializer.Serialize(blob.Id)),
                     ],
                     Data = blob.Data,
                 };
