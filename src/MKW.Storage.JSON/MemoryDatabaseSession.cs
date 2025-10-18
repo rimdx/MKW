@@ -34,7 +34,7 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                if (Database.Users.TryGetValue(id.GetGuid(), out JSONDatabaseUser? user))
+                if (Database.Users.TryGetValue(id.GetString(), out JSONDatabaseUser? user))
                 {
                     return JSONDatabaseUser.Deserialize(id, user);
                 }
@@ -60,9 +60,9 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                if (!Database.Users.ContainsKey(id.GetGuid()))
+                if (!Database.Users.ContainsKey(id.GetString()))
                 {
-                    Database.Users.Add(id.GetGuid(), JSONDatabaseUser.Serialize(user));
+                    Database.Users.Add(id.GetString(), JSONDatabaseUser.Serialize(user));
                 }
                 else
                 {
@@ -88,9 +88,9 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                if (Database.Users.ContainsKey(id.GetGuid()))
+                if (Database.Users.ContainsKey(id.GetString()))
                 {
-                    Database.Users[id.GetGuid()] = JSONDatabaseUser.Serialize(user);
+                    Database.Users[id.GetString()] = JSONDatabaseUser.Serialize(user);
                 }
                 else
                 {
@@ -103,23 +103,23 @@ namespace MKW.Storage.JSON
 
         public bool DeleteUser(UserId id)
         {
-            bool result = Database.Users.Remove(id.GetGuid());
+            bool result = Database.Users.Remove(id.GetString());
             Save();
             return result;
         }
 
         public bool HasUser(UserId id)
         {
-            return Database.Users.ContainsKey(id.GetGuid());
+            return Database.Users.ContainsKey(id.GetString());
         }
 
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
             yield return OpenUser(UserId.Admin());
 
-            foreach (KeyValuePair<Guid, JSONDatabaseUser> item in Database.Users)
+            foreach (KeyValuePair<string, JSONDatabaseUser> item in Database.Users)
             {
-                yield return JSONDatabaseUser.Deserialize(UserId.FromGuid(item.Key),
+                yield return JSONDatabaseUser.Deserialize(UserId.FromString(item.Key),
                                                           item.Value);
             }
         }

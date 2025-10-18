@@ -7,7 +7,7 @@ namespace MKW.Storage.JSON
 {
     internal sealed record class JSONDatabaseSecretEntry
     {
-        public required IDictionary<Guid, ReadOnlyMemory<byte>> Keys { get; init; }
+        public required IDictionary<string, ReadOnlyMemory<byte>> Keys { get; init; }
 
         public required ReadOnlyMemory<byte> Salt { get; init; }
 
@@ -15,10 +15,10 @@ namespace MKW.Storage.JSON
 
         public static JSONDatabaseSecretEntry Serialize(DatabaseEntry entry)
         {
-            Dictionary<Guid, ReadOnlyMemory<byte>> keys = [];
+            Dictionary<string, ReadOnlyMemory<byte>> keys = [];
             foreach (KeyValuePair<UserId, ReadOnlyMemory<byte>> pair in entry.Keys)
             {
-                keys.Add(pair.Key.GetGuid(), pair.Value);
+                keys.Add(pair.Key.GetString(), pair.Value);
             }
 
             return new JSONDatabaseSecretEntry
@@ -32,9 +32,9 @@ namespace MKW.Storage.JSON
         public static DatabaseEntry Deserialize(EntryId id, JSONDatabaseSecretEntry entry)
         {
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
-            foreach (KeyValuePair<Guid, ReadOnlyMemory<byte>> pair in entry.Keys)
+            foreach (KeyValuePair<string, ReadOnlyMemory<byte>> pair in entry.Keys)
             {
-                keys.Add(UserId.FromGuid(pair.Key), pair.Value);
+                keys.Add(UserId.FromString(pair.Key), pair.Value);
             }
 
             return new DatabaseEntry
