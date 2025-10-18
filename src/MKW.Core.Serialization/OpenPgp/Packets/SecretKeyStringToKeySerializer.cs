@@ -44,21 +44,21 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         private const byte UsageStringToKeyWithSimpleChecksum = 255;
 
         public static void Serialize(IBufferWriter<byte> writer,
-                                     StringToKey obj)
+                                     SecretKeyStringToKey obj)
         {
-            if (obj is StringToKeyNone)
+            if (obj.StringToKey is StringToKeyNone)
             {
                 writer.Write(UsageNotEncrypted);
             }
             else
             {
-                // TODO:
                 writer.Write(UsageStringToKeyWithCryptoChecksum);
-                StringToKeySerializer.Serialize(writer, obj);
+                writer.Write((byte)obj.SymmetricAlgorithm);
+                StringToKeySerializer.Serialize(writer, obj.StringToKey);
             }
         }
 
-        public static StringToKey Deserialize(ArrayBufferReader reader)
+        public static SecretKeyStringToKey Deserialize(ArrayBufferReader reader)
         {
             byte usage = reader.ReadByte();
 
@@ -66,52 +66,20 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
                 usage == UsageStringToKeyWithSimpleChecksum)
             {
                 SymmetricKeyAlgorithmTag symmetricAlgorithm = (SymmetricKeyAlgorithmTag)reader.ReadByte();
-                StringToKeyTag tag = (StringToKeyTag)reader.ReadByte();
 
-                if (tag == StringToKeyTag.Simple)
+                return new SecretKeyStringToKey
                 {
-                    // Octet 0:        0x00
-                    // Octet 1:        hash algorithm
-
-                    return new StringToKeySimple
-                    {
-                        HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
-                    };
-                }
-                else if (tag == StringToKeyTag.Salted)
-                {
-                    // Octet 0:        0x01
-                    // Octet 1:        hash algorithm
-                    // Octets 2-9:     8-octet salt value
-
-                    return new StringToKeySalted
-                    {
-                        HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
-                        Salt = reader.ReadBytes(8),
-                    };
-                }
-                else if (tag == StringToKeyTag.IteratedSalted)
-                {
-                    // Octet  0:        0x03
-                    // Octet  1:        hash algorithm
-                    // Octets 2-9:      8-octet salt value
-                    // Octet  10:       count, a one-octet, coded value
-
-                    return new StringToKeySaltedIterated
-                    {
-                        HashAlgorithmTag = (HashAlgorithmTag)reader.ReadByte(),
-                        Salt = reader.ReadBytes(8),
-                        Count = reader.ReadByte(),
-                    };
-                }
-                else
-                {
-                    return new StringToKeyNone();
-                }
+                    SymmetricAlgorithm = symmetricAlgorithm,
+                    StringToKey = StringToKeySerializer.Deserialize(reader),
+                };
             }
             else if (usage == UsageNotEncrypted)
             {
-                return new StringToKeyNone();
+                return new SecretKeyStringToKey
+                {
+                    SymmetricAlgorithm = SymmetricKeyAlgorithmTag.Null,
+                    StringToKey = StringToKeySerializer.Deserialize(reader),
+                };
             }
             else
             {
