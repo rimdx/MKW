@@ -51,7 +51,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             }
             else
             {
-                throw new Exception($"Unknown S2K algorithm: {tag}");
+                return new StringToKeyNone();
             }
         }
 
