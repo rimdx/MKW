@@ -41,6 +41,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         {
             PublicKeyPacketV4Serializer.Serialize(writer, obj.PublicKey);
             SecretKeyStringToKeySerializer.Serialize(writer, obj.StringToKey);
+            writer.Write(obj.SecretKeyData.Span);
         }
 
         public static SecretKeyPacket Deserialize(ArrayBufferReader reader)
@@ -49,6 +50,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             {
                 PublicKey = PublicKeyPacketV4Serializer.Deserialize(reader),
                 StringToKey = SecretKeyStringToKeySerializer.Deserialize(reader),
+                SecretKeyData = reader.ReadAll(),
             };
         }
     }

@@ -7,5 +7,6 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     {
         public required PublicKeyPacketV4 PublicKey { get; init; }
         public required SecretKeyStringToKey StringToKey { get; init; }
+        public required ReadOnlyMemory<byte> SecretKeyData { get; init; }
     }
 }
