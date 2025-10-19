@@ -3,6 +3,7 @@
 
 using MKW.Common;
 using MKW.Storage.Exceptions;
+using MKW.Storage.MKPG.FileSystem;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
