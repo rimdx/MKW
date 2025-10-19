@@ -102,7 +102,17 @@ namespace MKW.Storage.MKPG
 
         public bool Exists(BlobId id)
         {
-            throw new NotImplementedException();
+            using StreamReader reader = new StreamReader(editor.CreateReader());
+
+            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            {
+                if (blob.Id.Equals(id))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public IEnumerable<BlobEntry> Enumerate()
