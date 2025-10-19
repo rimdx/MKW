@@ -55,7 +55,7 @@ namespace MKW.Storage.Tests
 
             IBufferReader<byte> reader = new ArrayBufferReader<byte>(data);
 
-            DatabaseEntry entry = EntrySerializer.Deserialize(reader);
+            DatabaseEntry entry = EntrySerializer.Deserialize(reader, EntryId.Create());
         }
 
         [Test]

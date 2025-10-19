@@ -34,12 +34,8 @@ namespace MKW.Storage.MKPG
         public DatabaseEntry OpenEntry(EntryId id)
         {
             BlobEntry blob = entries.Open(BlobId.From(id));
-            DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader());
-
-            return entry with
-            {
-                Id = id,
-            };
+            DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader(), id);
+            return entry;
         }
 
         public bool DeleteEntry(EntryId id)
@@ -51,12 +47,9 @@ namespace MKW.Storage.MKPG
         {
             foreach (BlobEntry blob in entries.Enumerate())
             {
-                DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader());
-
-                yield return entry with
-                {
-                    Id = EntryId.FromBytes(blob.Id.GetBytes().Span),
-                };
+                EntryId id = EntryId.FromBytes(blob.Id.GetBytes().Span);
+                DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader(), id);
+                yield return entry;
             }
         }
 

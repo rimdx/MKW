@@ -12,7 +12,7 @@ namespace MKW.Storage.MKPG
 {
     public static class EntrySerializer
     {
-        public static DatabaseEntry Deserialize(IBufferReader<byte> reader)
+        public static DatabaseEntry Deserialize(IBufferReader<byte> reader, EntryId entryId)
         {
             Dictionary<UserId, ReadOnlyMemory<byte>> users = [];
             ReadOnlyMemory<byte>? encryptedData = null;
@@ -47,7 +47,7 @@ namespace MKW.Storage.MKPG
 
             return new DatabaseEntry
             {
-                Id = EntryId.FromBytes(new byte[16]),
+                Id = entryId,
                 Data = encryptedData.Value,
                 Salt = null,
                 Keys = users,
