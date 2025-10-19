@@ -9,7 +9,7 @@ namespace MKW.Storage.MKPG
     {
         private sealed class Transaction : IFileEditorTransaction
         {
-            private TempFile file;
+            private readonly TempFile file;
 
             public Stream Stream => file;
 
