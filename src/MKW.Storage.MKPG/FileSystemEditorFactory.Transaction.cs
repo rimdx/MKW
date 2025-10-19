@@ -7,7 +7,7 @@ namespace MKW.Storage.MKPG
 {
     internal sealed partial class FileSystemEditorFactory
     {
-        private sealed class Transaction : IFileEditorTransaction
+        private sealed class Transaction : IFileEditorFactory.ITransaction
         {
             private readonly Stream oldFile;
             private readonly TempFile newFile;

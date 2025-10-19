@@ -17,13 +17,13 @@ namespace MKW.Storage.MKPG
 
         public void Create(BlobEntry entry)
         {
-            using IFileEditorTransaction transaction = editor.CreateTransaction();
+            using IFileEditorFactory.ITransaction transaction = editor.CreateTransaction();
 
             CreateInternal(transaction, entry);
             transaction.Commit();
         }
 
-        private static void CreateInternal(IFileEditorTransaction transaction, BlobEntry entry)
+        private static void CreateInternal(IFileEditorFactory.ITransaction transaction, BlobEntry entry)
         {
             using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(transaction.Writer);
@@ -45,13 +45,13 @@ namespace MKW.Storage.MKPG
 
         public void Update(BlobEntry entry)
         {
-            using IFileEditorTransaction transaction = editor.CreateTransaction();
+            using IFileEditorFactory.ITransaction transaction = editor.CreateTransaction();
 
             UpdateInternal(transaction, entry);
             transaction.Commit();
         }
 
-        private static void UpdateInternal(IFileEditorTransaction transaction, BlobEntry entry)
+        private static void UpdateInternal(IFileEditorFactory.ITransaction transaction, BlobEntry entry)
         {
             using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Writer));
