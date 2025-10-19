@@ -7,8 +7,6 @@ namespace MKW.Storage.MKPG
 {
     internal static class BlobStorageSerializer
     {
-        private const string idHeader = "MKWID";
-
         public static IEnumerable<BlobEntry> ReadBlobs(TextReader reader)
         {
             while (true)
@@ -21,7 +19,7 @@ namespace MKW.Storage.MKPG
                 }
                 else
                 {
-                    PgpArmourHeader id = message.Headers.First(header => header.Key == idHeader);
+                    PgpArmourHeader id = message.Headers.First(header => header.Key == MKPGConstants.ArmourHeaderNames.Id);
                     BlobId blobId = BlobIdSerializer.Deserialize(id.Value);
 
                     yield return new BlobEntry(blobId, message.Data);
@@ -35,9 +33,9 @@ namespace MKW.Storage.MKPG
             {
                 PgpArmouredMessage msg = new PgpArmouredMessage
                 {
-                    MessageTypeHeader = "MKW ENTRY",
+                    MessageTypeHeader = MKPGConstants.ArmourTypeHeaders.Entry,
                     Headers = [
-                        new PgpArmourHeader(idHeader, BlobIdSerializer.Serialize(blob.Id)),
+                        new PgpArmourHeader(MKPGConstants.ArmourHeaderNames.Id, BlobIdSerializer.Serialize(blob.Id)),
                     ],
                     Data = blob.Data,
                 };
