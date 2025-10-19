@@ -31,17 +31,22 @@ namespace MKW.Storage.MKPG
         {
             foreach (BlobEntry blob in blobs)
             {
-                PgpArmouredMessage msg = new PgpArmouredMessage
-                {
-                    MessageTypeHeader = blob.Type,
-                    Headers = [
-                        new PgpArmourHeader(MKPGConstants.ArmourHeaderNames.Id, BlobIdSerializer.Serialize(blob.Id)),
-                    ],
-                    Data = blob.Data,
-                };
-
-                PgpArmouredMessageSerializer.Serialize(writer, msg);
+                WriteBlob(writer, blob);
             }
+        }
+
+        public static void WriteBlob(TextWriter writer, BlobEntry blob)
+        {
+            PgpArmouredMessage msg = new PgpArmouredMessage
+            {
+                MessageTypeHeader = blob.Type,
+                Headers = [
+                    new PgpArmourHeader(MKPGConstants.ArmourHeaderNames.Id, BlobIdSerializer.Serialize(blob.Id)),
+                ],
+                Data = blob.Data,
+            };
+
+            PgpArmouredMessageSerializer.Serialize(writer, msg);
         }
     }
 }
