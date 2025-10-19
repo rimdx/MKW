@@ -9,13 +9,15 @@ namespace MKW.Storage.MKPG
 {
     public sealed class MKPGDatabase : IDatabase, IDisposable
     {
+        private readonly IBlobStorage database;
         private readonly IBlobStorage entries;
         private readonly IBlobStorage users;
 
         public MKPGDatabase()
         {
-            entries = new BlobStorageSingleFile(new MemoryStream());
-            users = new BlobStorageSingleFile(new MemoryStream());
+            database = new BlobStorageSingleFile(new MemoryStream());
+            entries = new BlobStorageFiltered(database, MKPGConstants.ArmourTypeHeaders.Entry);
+            users = new BlobStorageFiltered(database, MKPGConstants.ArmourTypeHeaders.User);
         }
 
         // Entry
