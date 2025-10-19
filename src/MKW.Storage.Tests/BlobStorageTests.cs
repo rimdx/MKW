@@ -119,7 +119,8 @@ namespace MKW.Storage.Tests
             entries.Create(new BlobEntry(id2, MKPGConstants.ArmourTypeHeaders.Entry, data2));
             backend.Create(new BlobEntry(id3, "PGP JUNK", data3));
 
-            //Assert.Throws<Exception>(() => users.Create(new BlobEntry(id3, MKPGConstants.ArmourTypeHeaders.User, data1)));
+            Assert.Throws<EntryAlreadyExistsException>(
+                () => users.Create(new BlobEntry(id3, MKPGConstants.ArmourTypeHeaders.User, data1)));
 
             ClassicAssert.AreEqual(1, users.Enumerate().Count());
             ClassicAssert.AreEqual(1, entries.Enumerate().Count());
