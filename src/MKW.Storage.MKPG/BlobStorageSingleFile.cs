@@ -52,7 +52,7 @@ namespace MKW.Storage.MKPG
 
         private void UpdateInternal(IFileEditorTransaction transaction, BlobEntry entry)
         {
-            using StreamReader reader = new StreamReader(editor.CreateReader());
+            using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Writer));
 
             int updated = 0;
