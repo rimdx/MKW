@@ -117,6 +117,22 @@ namespace MKW.Storage.MKPG
             return users.Exists(BlobId.From(id));
         }
 
+        // Trust Signatures
+        public void AddTrustSignature(DatabaseTrustSignature signature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteTrustSignature(DatabaseTrustSignature signature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<DatabaseTrustSignature> EnumerateTrustSignatures()
+        {
+            throw new NotImplementedException();
+        }
+
         // Misc
 
         public void ReloadDatabaseFile()
