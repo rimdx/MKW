@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
+using MKW.Cryptography;
 using MKW.Storage.MKPG.BlobStore;
 using MKW.Storage.MKPG.FileSystem;
 using System.Buffers;
@@ -158,6 +159,15 @@ namespace MKW.Storage.MKPG
         }
 
         // Misc
+        public DatabaseConfiguration GetConfiguration()
+        {
+            return new DatabaseConfiguration
+            {
+                PreferredSymmetricAlgorithm = CommonCryptographyAlgorithms.Aes128OpenPgpCfb,
+                PreferredPublicKeyAlgorithm = CommonCryptographyAlgorithms.Rsa2048,
+                PreferredStringToKeyAlgorithm = CommonCryptographyAlgorithms.OpenPgpStringToKey,
+            };
+        }
 
         public void ReloadDatabaseFile()
         {

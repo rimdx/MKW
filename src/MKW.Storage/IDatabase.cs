@@ -32,6 +32,8 @@ namespace MKW.Storage
         void DeleteTrustSignature(DatabaseTrustSignature signature);
         IEnumerable<DatabaseTrustSignature> EnumerateTrustSignatures();
 
+        DatabaseConfiguration GetConfiguration();
+
         Task<bool> WaitForDatabaseChangesAsync(CancellationToken cancellationToken);
         void ReloadDatabaseFile();
     }
