@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\MKW.Storage.MKPG\MKW.Storage.MKPG.csproj" />
     <ProjectReference Include="..\MKW.Testing.Common\MKW.Testing.Common.csproj" />
     <ProjectReference Include="..\MKW.Core.Client\MKW.Core.Client.csproj" />
     <ProjectReference Include="..\MKW.Cryptography.Loader\MKW.Cryptography.Loader.csproj" />
