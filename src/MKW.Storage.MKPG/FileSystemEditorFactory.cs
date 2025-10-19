@@ -17,7 +17,7 @@ namespace MKW.Storage.MKPG
             return File.OpenRead(Path);
         }
 
-        public IFileEditorTransaction CreateTransaction()
+        public IFileEditorFactory.ITransaction CreateTransaction()
         {
             return new Transaction(this, CreateReader());
         }
