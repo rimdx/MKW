@@ -14,6 +14,11 @@ namespace MKW.Storage.MKPG
 
         public void Create(BlobEntry entry)
         {
+            if (entries.ContainsKey(entry.Id))
+            {
+                throw new Exception("Entry already exists.");
+            }
+
             entries[entry.Id] = entry;
         }
 
