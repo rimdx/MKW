@@ -15,7 +15,5 @@ namespace MKW.Storage
         public required SecretPayload PrivateKey { get; init; }
 
         public required SignedPayload Metadata { get; init; }
-
-        public required DatabaseTrustSignature AdminSignature { get; init; }
     }
 }
