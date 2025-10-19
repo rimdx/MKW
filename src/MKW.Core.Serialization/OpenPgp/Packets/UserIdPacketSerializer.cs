@@ -7,6 +7,7 @@ using System.Buffers;
 
 namespace MKW.Core.Serialization.OpenPgp.Packets
 {
+    // https://www.rfc-editor.org/rfc/rfc4880#section-5.11
     public static class UserIdPacketSerializer
     {
         public const PacketTag Tag = PacketTag.UserId;
