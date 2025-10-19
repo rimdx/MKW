@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Storage.Exceptions;
+
 namespace MKW.Storage.MKPG
 {
     internal sealed class BlobStorageMemory : IBlobStorage
@@ -16,7 +18,7 @@ namespace MKW.Storage.MKPG
         {
             if (entries.ContainsKey(entry.Id))
             {
-                throw new Exception("Entry already exists.");
+                throw new EntryAlreadyExistsException();
             }
 
             entries[entry.Id] = entry;

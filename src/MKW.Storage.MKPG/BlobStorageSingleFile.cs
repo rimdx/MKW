@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Common;
+using MKW.Storage.Exceptions;
 
 namespace MKW.Storage.MKPG
 {
@@ -31,7 +32,7 @@ namespace MKW.Storage.MKPG
             {
                 if (blob.Id.Equals(entry.Id))
                 {
-                    throw new Exception("Entry already exists.");
+                    throw new EntryAlreadyExistsException();
                 }
                 else
                 {
@@ -71,12 +72,12 @@ namespace MKW.Storage.MKPG
 
             if (updated == 0)
             {
-                throw new Exception("Entry does not exist.");
+                throw new EntryDoesNotExistException();
             }
 
             if (updated > 1)
             {
-                throw new Exception("Database corrupted.");
+                throw new DatabaseCorruptedException();
             }
         }
 
@@ -92,7 +93,7 @@ namespace MKW.Storage.MKPG
                 }
             }
 
-            throw new Exception("Entry already exists.");
+            throw new EntryAlreadyExistsException();
         }
 
         public bool Delete(BlobId id)

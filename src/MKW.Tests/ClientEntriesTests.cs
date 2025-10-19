@@ -4,6 +4,7 @@
 using MKW.Core;
 using MKW.Core.Client;
 using MKW.Storage;
+using MKW.Storage.Exceptions;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
@@ -136,7 +137,7 @@ namespace MKW.Tests
                                        user.OpenEntry(entry.Id).OpenPayload());
 
                 // create with same id
-                Assert.Throws<Exception>(() => user.CreateEntry(entry.Id));
+                Assert.Throws<EntryAlreadyExistsException>(() => user.CreateEntry(entry.Id));
             }
 
             // blank session
@@ -150,9 +151,9 @@ namespace MKW.Tests
 
                 // delete
                 user.DeleteEntry(entry.Id);
-                Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+                Assert.Throws<EntryDoesNotExistException>(() => user.OpenEntry(entry.Id));
                 user.DeleteEntry(entry.Id);
-                Assert.Throws<Exception>(() => user.OpenEntry(entry.Id));
+                Assert.Throws<EntryDoesNotExistException>(() => user.OpenEntry(entry.Id));
             }
         }
     }

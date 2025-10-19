@@ -5,6 +5,7 @@ using MKW.Core;
 using MKW.Core.Client;
 using MKW.Core.Exceptions;
 using MKW.Storage;
+using MKW.Storage.Exceptions;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
 
@@ -39,7 +40,7 @@ namespace MKW.Tests
 
             using IUserSession userSession = client.OpenUser(user.Id, "awesomesecretno1willeverguess");
 
-            Assert.Throws<Exception>(
+            Assert.Throws<UserDoesNotExistException>(
                 () => client.OpenUser(UserId.Create(),
                                       "awesomesecretno1willeverguess")
             );

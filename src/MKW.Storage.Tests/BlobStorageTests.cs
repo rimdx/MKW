@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
+using MKW.Storage.Exceptions;
 using MKW.Storage.MKPG;
 using NUnit.Framework.Legacy;
 using System.Text;
@@ -84,7 +85,8 @@ namespace MKW.Storage.Tests
 
             ClassicAssert.AreEqual(2, backend.Enumerate().Count());
 
-            Assert.Throws<Exception>(() => backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
+            Assert.Throws<EntryAlreadyExistsException>(
+                () => backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
             //Assert.Throws<Exception>(() => storage.Delete(BlobId.From(UserId.Create())));
 
             ClassicAssert.AreEqual(true, backend.Exists(id1));
