@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
+
 namespace MKW.Storage.MKPG
 {
     internal sealed class BlobStorageSingleFile : IBlobStorage
@@ -14,8 +16,9 @@ namespace MKW.Storage.MKPG
 
         public void Create(BlobEntry entry)
         {
+            using IFileEditorTransaction transaction = editor.OpenTransaction();
             using StreamReader reader = new StreamReader(editor.CreateReader());
-            using StreamWriter writer = new StreamWriter(editor.CreateWriter());
+            using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Stream));
 
             foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
@@ -30,12 +33,15 @@ namespace MKW.Storage.MKPG
             }
 
             BlobStorageSerializer.WriteBlob(writer, entry);
+
+            transaction.Commit();
         }
 
         public void Update(BlobEntry entry)
         {
+            using IFileEditorTransaction transaction = editor.OpenTransaction();
             using StreamReader reader = new StreamReader(editor.CreateReader());
-            using StreamWriter writer = new StreamWriter(editor.CreateWriter());
+            using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Stream));
 
             int updated = 0;
             foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
@@ -60,6 +66,8 @@ namespace MKW.Storage.MKPG
             {
                 throw new Exception("Database corrupted.");
             }
+
+            transaction.Commit();
         }
 
         public BlobEntry Open(BlobId id)
