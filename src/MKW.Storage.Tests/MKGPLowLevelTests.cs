@@ -67,6 +67,7 @@ namespace MKW.Storage.Tests
             AsymmetricPrivateKey keypair = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
             ReadOnlyMemory<byte> pubkey = crypto.EncodePkcsPublicKey(keypair.GetPublicKey());
             ReadOnlyMemory<byte> fakeseckey = random.NextBytes(432);
+            ReadOnlyMemory<byte> metadata = random.NextBytes(34);
 
             DatabaseUser user = new DatabaseUser
             {
@@ -74,7 +75,7 @@ namespace MKW.Storage.Tests
                 Salt = random.NextBytes(8),
                 PrivateKey = new SecretPayload(fakeseckey),
                 PublicKey = new SignedPayload(pubkey, new byte[32]),
-                Metadata = null,
+                Metadata = new SignedPayload(metadata, new byte[32]),
             };
 
             ArrayBufferWriter<byte> encoded = new ArrayBufferWriter<byte>();
@@ -101,7 +102,7 @@ namespace MKW.Storage.Tests
 
             //CollectionAssert.AreEqual(user.AdminSignature.ToArray(), decoded.AdminSignature.ToArray());
 
-            //CollectionAssert.AreEqual(user.Metadata.Payload.ToArray(), decoded.Metadata.Payload.ToArray());
+            CollectionAssert.AreEqual(user.Metadata.Payload.ToArray(), decoded.Metadata.Payload.ToArray());
             //CollectionAssert.AreEqual(user.Metadata.Signature.ToArray(), decoded.Metadata.Signature.ToArray());
         }
     }

@@ -23,6 +23,7 @@ namespace MKW.Storage.MKPG
             ReadOnlyMemory<byte>? pubkey = null;
             ReadOnlyMemory<byte>? pubkeySignature = null;
             ReadOnlyMemory<byte>? salt = null;
+            ReadOnlyMemory<byte>? metadata = null;
 
             while (reader.RemainingBytes > 0)
             {
@@ -59,6 +60,11 @@ namespace MKW.Storage.MKPG
                         throw new NotSupportedException();
                     }
                 }
+                else if (packet.Tag == UserIdPacketSerializer.Tag)
+                {
+                    Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = UserIdPacketSerializer.Deserialize(subreader);
+                    metadata = userIdPacket.Content;
+                }
                 else
                 {
                     throw new NotSupportedException();
@@ -85,13 +91,18 @@ namespace MKW.Storage.MKPG
                 throw new Exception("Public salt is missing.");
             }
 
+            if (metadata == null)
+            {
+                throw new Exception("Metadata is missing.");
+            }
+
             return new DatabaseUser
             {
                 Id = userId,
                 PublicKey = new SignedPayload(pubkey.Value, pubkeySignature.Value),
                 PrivateKey = new SecretPayload(seckey.Value),
                 Salt = salt.Value,
-                Metadata = null,
+                Metadata = new SignedPayload(metadata.Value, pubkeySignature.Value),
             };
         }
 
@@ -151,6 +162,14 @@ namespace MKW.Storage.MKPG
 
             PgpPacketSerializer.Serialize(writer,
                                           new PgpPacket(PacketTag.Signature, signaturePacketWriter.WrittenMemory),
+                                          false);
+
+            ArrayBufferWriter<byte> userIdPacketWriter = new ArrayBufferWriter<byte>();
+            Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = new Core.Serialization.OpenPgp.Packets.UserIdPacket(obj.Metadata.Payload);
+            UserIdPacketSerializer.Serialize(userIdPacketWriter, userIdPacket);
+
+            PgpPacketSerializer.Serialize(writer,
+                                          new PgpPacket(UserIdPacketSerializer.Tag, userIdPacketWriter.WrittenMemory),
                                           false);
         }
     }
