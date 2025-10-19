@@ -32,7 +32,7 @@ namespace MKW.Storage.JSON
                 Metadata = user.Metadata.Payload,
                 MetadataAdminSignature = user.Metadata.Signature,
 
-                AdminSignature = user.AdminSignature,
+                AdminSignature = user.AdminSignature.SignatureBytes,
             };
         }
 
@@ -45,7 +45,11 @@ namespace MKW.Storage.JSON
                 PublicKey = new SignedPayload(user.PublicKey, user.AdminTrustSignature),
                 PrivateKey = new SecretPayload(user.PrivateKey),
                 Metadata = new SignedPayload(user.Metadata, user.MetadataAdminSignature),
-                AdminSignature = user.AdminSignature,
+                AdminSignature = new DatabaseTrustSignature
+                {
+                    Id = id,
+                    SignatureBytes = user.AdminSignature,
+                },
             };
         }
     }
