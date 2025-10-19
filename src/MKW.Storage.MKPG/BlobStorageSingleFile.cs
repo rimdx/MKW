@@ -18,21 +18,23 @@ namespace MKW.Storage.MKPG
         {
             using IFileEditorTransaction transaction = editor.OpenTransaction();
             using StreamReader reader = new StreamReader(editor.CreateReader());
-            using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Stream));
 
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            using (StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Stream)))
             {
-                if (blob.Id.Equals(entry.Id))
+                foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
                 {
-                    throw new Exception("Entry already exists.");
+                    if (blob.Id.Equals(entry.Id))
+                    {
+                        throw new Exception("Entry already exists.");
+                    }
+                    else
+                    {
+                        BlobStorageSerializer.WriteBlob(writer, blob);
+                    }
                 }
-                else
-                {
-                    BlobStorageSerializer.WriteBlob(writer, blob);
-                }
-            }
 
-            BlobStorageSerializer.WriteBlob(writer, entry);
+                BlobStorageSerializer.WriteBlob(writer, entry);
+            }
 
             transaction.Commit();
         }
@@ -41,30 +43,32 @@ namespace MKW.Storage.MKPG
         {
             using IFileEditorTransaction transaction = editor.OpenTransaction();
             using StreamReader reader = new StreamReader(editor.CreateReader());
-            using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Stream));
 
-            int updated = 0;
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            using (StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Stream)))
             {
-                if (blob.Id.Equals(entry.Id))
+                int updated = 0;
+                foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
                 {
-                    BlobStorageSerializer.WriteBlob(writer, entry);
-                    updated++;
+                    if (blob.Id.Equals(entry.Id))
+                    {
+                        BlobStorageSerializer.WriteBlob(writer, entry);
+                        updated++;
+                    }
+                    else
+                    {
+                        BlobStorageSerializer.WriteBlob(writer, blob);
+                    }
                 }
-                else
+
+                if (updated == 0)
                 {
-                    BlobStorageSerializer.WriteBlob(writer, blob);
+                    throw new Exception("Entry does not exist.");
                 }
-            }
 
-            if (updated == 0)
-            {
-                throw new Exception("Entry does not exist.");
-            }
-
-            if (updated > 1)
-            {
-                throw new Exception("Database corrupted.");
+                if (updated > 1)
+                {
+                    throw new Exception("Database corrupted.");
+                }
             }
 
             transaction.Commit();
