@@ -9,11 +9,11 @@ namespace MKW.Core.Implementation
 {
     public class EntryEncoder : IDisposable
     {
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
         private readonly IDatabase database;
         private readonly IUserSession user;
 
-        public EntryEncoder(ICryptographyProvider crypto,
+        public EntryEncoder(ClientCryptography crypto,
                             IDatabase database,
                             IUserSession user)
         {
@@ -24,7 +24,7 @@ namespace MKW.Core.Implementation
 
         public DatabaseEntry EncodeEntry(DatabaseEntry entry, EntryPayload payload)
         {
-            SymmetricKey sessionKey = crypto.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKey sessionKey = crypto.CreateSymmetricKey();
 
             using ISymmetricTransformer payloadEncoder = crypto.OpenSymmetricTransformer(sessionKey);
 
@@ -39,8 +39,7 @@ namespace MKW.Core.Implementation
 
                 AsymmetricPublicKey key = crypto.DecodePkcsPublicKey(user.PublicKey.Payload.Span);
 
-                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(
-                    key, CommonCryptographyAlgorithms.Rsa2048);
+                using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(key);
 
                 Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
 

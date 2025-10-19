@@ -10,11 +10,11 @@ namespace MKW.Core.Client
     internal sealed class UserController : IDisposable
     {
         private readonly ClientSession client;
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
         private readonly IDatabase database;
 
         public UserController(ClientSession client,
-                              ICryptographyProvider crypto,
+                              ClientCryptography crypto,
                               IDatabase database)
         {
             this.client = client;
@@ -28,11 +28,11 @@ namespace MKW.Core.Client
 
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-            IUserCredentials userCreds = crypto.CreateUserCredentials(password, CommonCryptographyAlgorithms.Pbkdf2);
+            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
             SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
 
             using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+                systemCreds.PrivateKey);
 
             // TODO: prompt user?
             Memory<byte> signature = transformer.Sign(admin.PublicKey.Payload.Span);
@@ -60,14 +60,12 @@ namespace MKW.Core.Client
                 DatabaseUser user = database.OpenUser(id);
 
                 // Credentials can be opened within the entered password and the public salt
-                IUserCredentials creds = crypto.OpenUserCredentials(password,
-                                                                    user.Salt,
-                                                                    CommonCryptographyAlgorithms.Pbkdf2);
+                IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
                 SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
 
                 IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                    systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+                    systemCreds.PrivateKey);
 
                 return new UserSession(crypto, database, user, transformer);
             }
@@ -81,14 +79,12 @@ namespace MKW.Core.Client
                 {
                     SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
 
-                    IUserCredentials creds = crypto.OpenUserCredentials(password,
-                                                                        user.Salt,
-                                                                        CommonCryptographyAlgorithms.Pbkdf2);
+                    IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
                     SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
 
                     IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                        systemCreds.PrivateKey, CommonCryptographyAlgorithms.Rsa2048);
+                        systemCreds.PrivateKey);
 
                     return new UserSession(crypto, database, user, transformer);
                 }
@@ -107,8 +103,7 @@ namespace MKW.Core.Client
 
             AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.PublicKey.Payload.Span);
 
-            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                decodedKey, CommonCryptographyAlgorithms.Rsa2048);
+            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(decodedKey);
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 
@@ -125,8 +120,7 @@ namespace MKW.Core.Client
 
             AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.PublicKey.Payload.Span);
 
-            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(
-                decodedKey, CommonCryptographyAlgorithms.Rsa2048);
+            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(decodedKey);
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
 

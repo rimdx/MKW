@@ -9,12 +9,12 @@ namespace MKW.Core.Implementation
     public class UserTrustProvider : IDisposable
     {
         protected readonly IDatabase database;
-        protected readonly ICryptographyProvider crypto;
+        protected readonly ClientCryptography crypto;
         private readonly IAsymmetricPublicTransformer meKey;
         private readonly IAsymmetricPublicTransformer adminKey;
 
         public UserTrustProvider(IDatabase database,
-                                 ICryptographyProvider crypto,
+                                 ClientCryptography crypto,
                                  IAsymmetricPublicTransformer meKey,
                                  IAsymmetricPublicTransformer adminKey)
         {

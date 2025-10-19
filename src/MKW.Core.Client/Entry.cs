@@ -21,7 +21,7 @@ namespace MKW.Core.Client
         public EntryId Id => entryId;
 
         private Entry(IDatabase database,
-                      ICryptographyProvider crypto,
+                      ClientCryptography crypto,
                       IUserSession user,
                       IAsymmetricPrivateTransformer privateKey,
                       EntryId entryId)
@@ -35,7 +35,7 @@ namespace MKW.Core.Client
         }
 
         public static Entry Create(IDatabase database,
-                                   ICryptographyProvider crypto,
+                                   ClientCryptography crypto,
                                    IUserSession user,
                                    IAsymmetricPrivateTransformer privateKey,
                                    EntryId entryId)
@@ -58,7 +58,7 @@ namespace MKW.Core.Client
         }
 
         public static Entry Open(IDatabase database,
-                                 ICryptographyProvider crypto,
+                                 ClientCryptography crypto,
                                  IUserSession user,
                                  IAsymmetricPrivateTransformer privateKey,
                                  EntryId entryId)
