@@ -11,7 +11,7 @@ namespace MKW.Storage.MKPG
         {
             private readonly TempFile file;
 
-            public Stream Stream => file;
+            public Stream Stream => new StreamDisown(file);
 
             public Transaction(FileSystemEditorFactory editor)
             {
