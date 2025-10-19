@@ -12,6 +12,8 @@ namespace MKW.Storage.Tests
     public class CompatTests
     {
         [Test]
+        [TestCase("test_json_database_v1.mkw")]
+        [TestCase("test_json_database_v1_formatted.mkw")]
         [TestCase("test_json_database_v2.mkw")]
         [TestCase("test_json_database_v2_formatted.mkw")]
         public void LoadLockedJsonDatabase(string path)
