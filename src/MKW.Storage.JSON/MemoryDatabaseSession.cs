@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
+using MKW.Cryptography;
 using MKW.Storage.Exceptions;
 
 namespace MKW.Storage.JSON
@@ -213,6 +214,17 @@ namespace MKW.Storage.JSON
                     SignatureBytes = user.Value.AdminSignature,
                 };
             }
+        }
+
+        // Misc
+        public DatabaseConfiguration GetConfiguration()
+        {
+            return new DatabaseConfiguration
+            {
+                PreferredSymmetricAlgorithm = CommonCryptographyAlgorithms.Aes128Gcm,
+                PreferredPublicKeyAlgorithm = CommonCryptographyAlgorithms.Rsa2048,
+                PreferredStringToKeyAlgorithm = CommonCryptographyAlgorithms.Pbkdf2,
+            };
         }
 
         public virtual void ReloadDatabaseFile()
