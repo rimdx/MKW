@@ -12,7 +12,7 @@ namespace MKW.Core.Client
         , IUserSession
         , IDisposable
     {
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
         private readonly IDatabase database;
         private readonly DatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
@@ -24,7 +24,7 @@ namespace MKW.Core.Client
 
         public UserId Id => admin.Id;
 
-        public AdminSession(ICryptographyProvider crypto,
+        public AdminSession(ClientCryptography crypto,
                             IDatabase database,
                             DatabaseUser admin,
                             IAsymmetricPrivateTransformer transformer)

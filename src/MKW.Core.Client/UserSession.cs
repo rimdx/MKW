@@ -11,7 +11,7 @@ namespace MKW.Core.Client
         : IUserSession
         , IDisposable
     {
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
         private readonly IDatabase database;
         private readonly IAsymmetricPrivateTransformer transformer;
 
@@ -23,7 +23,7 @@ namespace MKW.Core.Client
 
         public UserId Id => user.Id;
 
-        public UserSession(ICryptographyProvider crypto,
+        public UserSession(ClientCryptography crypto,
                            IDatabase database /* reference */,
                            DatabaseUser user /* reference */,
                            IAsymmetricPrivateTransformer transformer)
@@ -38,7 +38,7 @@ namespace MKW.Core.Client
             AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.PublicKey.Payload.Span);
 
             adminPublicKey = crypto.OpenAsymmetricTransformer(
-                decodedKey, CommonCryptographyAlgorithms.Rsa2048);
+                decodedKey);
 
             metadata = new UserMetadataDecoder(adminPublicKey);
             trustProvider = new UserTrustProvider(database, crypto, transformer, adminPublicKey);

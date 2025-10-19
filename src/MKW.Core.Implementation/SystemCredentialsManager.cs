@@ -10,9 +10,9 @@ namespace MKW.Core.Implementation
 {
     public class SystemCredentialsManager
     {
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
 
-        public SystemCredentialsManager(ICryptographyProvider crypto)
+        public SystemCredentialsManager(ClientCryptography crypto)
         {
             this.crypto = crypto;
         }
@@ -20,7 +20,7 @@ namespace MKW.Core.Implementation
         public SystemCredentials GenerateCredentials(IUserCredentials userCredentials)
         {
             // Generate asymmetric pair of public and private keys
-            AsymmetricPrivateKey privateKey = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
+            AsymmetricPrivateKey privateKey = crypto.CreateAsymmetricKey();
             AsymmetricPublicKey publicKey = privateKey.GetPublicKey();
 
             SymmetricKey symkey = new SymmetricKey
@@ -85,8 +85,7 @@ namespace MKW.Core.Implementation
             ReadOnlyMemory<byte> publicKeyBytes = user.PublicKey.Payload;
 
             IAsymmetricPrivateTransformer userKey = crypto.OpenAsymmetricTransformer(
-                crypto.DecodePkcsPrivateKey(privateKeyBytes.Span),
-                CommonCryptographyAlgorithms.Rsa2048);
+                crypto.DecodePkcsPrivateKey(privateKeyBytes.Span));
 
             return new SystemCredentials
             {

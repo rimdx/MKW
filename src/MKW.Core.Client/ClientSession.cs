@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core.Implementation;
 using MKW.Cryptography;
 using MKW.Storage;
 
@@ -10,7 +11,7 @@ namespace MKW.Core.Client
     {
         public IDatabase Database { get; }
 
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
         private readonly UserController userController;
         private readonly AdminController adminController;
 
@@ -18,9 +19,10 @@ namespace MKW.Core.Client
         {
             Database = db;
 
-            this.crypto = crypto;
-            userController = new UserController(this, crypto, Database);
-            adminController = new AdminController(crypto, Database);
+            this.crypto = new ClientCryptography(crypto, db.GetConfiguration());
+
+            userController = new UserController(this, this.crypto, Database);
+            adminController = new AdminController(this.crypto, Database);
         }
 
         public static ClientSession Open(IDatabase db, ICryptographyProvider crypto)

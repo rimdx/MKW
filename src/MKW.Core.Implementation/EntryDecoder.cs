@@ -9,11 +9,11 @@ namespace MKW.Core.Implementation
 {
     public class EntryDecoder : IDisposable
     {
-        private readonly ICryptographyProvider crypto;
+        private readonly ClientCryptography crypto;
         private readonly IUserSession user;
         private readonly IAsymmetricPrivateTransformer transformer;
 
-        public EntryDecoder(ICryptographyProvider crypto,
+        public EntryDecoder(ClientCryptography crypto,
                             IUserSession user,
                             IAsymmetricPrivateTransformer transformer)
         {
