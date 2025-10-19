@@ -91,7 +91,6 @@ namespace MKW.Storage.MKPG
                 PublicKey = new SignedPayload(pubkey.Value, pubkeySignature.Value),
                 PrivateKey = new SecretPayload(seckey.Value),
                 Salt = salt.Value,
-                AdminSignature = null,
                 Metadata = null,
             };
         }
