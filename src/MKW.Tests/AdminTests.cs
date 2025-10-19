@@ -4,6 +4,7 @@
 using MKW.Core;
 using MKW.Core.Client;
 using MKW.Storage;
+using MKW.Storage.Exceptions;
 using MKW.Storage.JSON;
 using MKW.Testing.Client;
 using NUnit.Framework.Legacy;
@@ -106,7 +107,7 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox(false);
             using JSONDatabaseSession db = JSONDatabaseSession.Create(sbox.DatabasePath);
 
-            Assert.Throws<Exception>(() => ClientSession.Open(db, sbox.Crypto));
+            Assert.Throws<AdminDoesNotExistException>(() => ClientSession.Open(db, sbox.Crypto));
 
             // todo: maybe do this somehow?
 

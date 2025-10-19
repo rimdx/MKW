@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
+using MKW.Storage.Exceptions;
 
 namespace MKW.Storage.JSON
 {
@@ -29,7 +30,7 @@ namespace MKW.Storage.JSON
                 }
                 else
                 {
-                    throw new Exception("Admin user does not exist.");
+                    throw new AdminDoesNotExistException();
                 }
             }
             else
@@ -40,7 +41,7 @@ namespace MKW.Storage.JSON
                 }
                 else
                 {
-                    throw new Exception("User doesn't exist.");
+                    throw new UserDoesNotExistException();
                 }
             }
         }
@@ -55,7 +56,7 @@ namespace MKW.Storage.JSON
                 }
                 else
                 {
-                    throw new Exception("Admin user already exists.");
+                    throw new AdminAlreadyExistsException();
                 }
             }
             else
@@ -66,7 +67,7 @@ namespace MKW.Storage.JSON
                 }
                 else
                 {
-                    throw new Exception("User already exists.");
+                    throw new UserAlreadyExistsException();
                 }
             }
 
@@ -83,7 +84,7 @@ namespace MKW.Storage.JSON
                 }
                 else
                 {
-                    throw new Exception("Admin user does not exist.");
+                    throw new AdminDoesNotExistException();
                 }
             }
             else
@@ -94,7 +95,7 @@ namespace MKW.Storage.JSON
                 }
                 else
                 {
-                    throw new Exception("User does not exist.");
+                    throw new UserDoesNotExistException();
                 }
             }
 
@@ -130,7 +131,7 @@ namespace MKW.Storage.JSON
         {
             if (Database.Entries.ContainsKey(id.GetStringLegacy()))
             {
-                throw new Exception("Entry already exists.");
+                throw new EntryAlreadyExistsException();
             }
             else
             {
@@ -148,7 +149,7 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                throw new Exception("Entry does not exist.");
+                throw new EntryDoesNotExistException();
             }
 
             Save();
@@ -162,7 +163,7 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                throw new Exception("Entry does not exist.");
+                throw new EntryDoesNotExistException();
             }
         }
 
