@@ -5,12 +5,10 @@ using MKW.Core;
 
 namespace MKW.Storage
 {
-    // Represents detached instance of trust signature, in which admin confirms
-    // user's identity.
+    // Represents detached instance of trust signature, in which users confirm
+    // admins's identity.
     //
-    // Signature is performed using admin's private key over one's public key.
-    //
-    // Future versions may also concatenate User ID (metadata) as well.
+    // Signature is performed using one's private key over admin's public key.
     public sealed record class DatabaseTrustSignature
     {
         public required UserId Id { get; init; }
