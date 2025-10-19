@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\MKW.Core\MKW.Core.csproj" />
     <ProjectReference Include="..\MKW.Storage\MKW.Storage.csproj" />
     <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
   </ItemGroup>
