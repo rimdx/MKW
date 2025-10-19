@@ -3,7 +3,7 @@
 
 using MKW.Storage.Exceptions;
 
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.BlobStore
 {
     internal sealed class BlobStorageMemory : IBlobStorage
     {

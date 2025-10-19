@@ -3,7 +3,7 @@
 
 using MKW.Core;
 
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.BlobStore
 {
     internal sealed class BlobId : IdBase
     {

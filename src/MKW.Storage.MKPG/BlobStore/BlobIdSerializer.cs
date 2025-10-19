@@ -3,7 +3,7 @@
 
 using MKW.Common;
 
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.BlobStore
 {
     internal static class BlobIdSerializer
     {
