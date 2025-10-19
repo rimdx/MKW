@@ -19,7 +19,7 @@ namespace MKW.Storage.MKPG
             return stream;
         }
 
-        public IFileEditorTransaction OpenTransaction()
+        public IFileEditorTransaction CreateTransaction()
         {
             return new MemoryEditorTransaction(this, CreateReader());
         }
