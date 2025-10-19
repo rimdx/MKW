@@ -5,6 +5,7 @@ using MKW.Core;
 using MKW.Storage.Exceptions;
 using MKW.Storage.MKPG;
 using MKW.Storage.MKPG.BlobStore;
+using MKW.Storage.MKPG.FileSystem;
 using NUnit.Framework.Legacy;
 using System.Text;
 

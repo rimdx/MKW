@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.FileSystem
 {
     internal sealed partial class MemoryEditorFactory : IFileEditorFactory, IDisposable
     {

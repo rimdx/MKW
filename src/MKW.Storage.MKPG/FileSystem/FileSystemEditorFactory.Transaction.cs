@@ -3,7 +3,7 @@
 
 using MKW.Common;
 
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.FileSystem
 {
     internal sealed partial class FileSystemEditorFactory
     {
