@@ -84,7 +84,7 @@ namespace MKW.Storage.Tests
 
             ClassicAssert.AreEqual(2, backend.Enumerate().Count());
 
-            //Assert.Throws<Exception>(() => storage.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
+            Assert.Throws<Exception>(() => backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
             //Assert.Throws<Exception>(() => storage.Delete(BlobId.From(UserId.Create())));
 
             //ClassicAssert.AreEqual(true, backend.Exists(id1));
