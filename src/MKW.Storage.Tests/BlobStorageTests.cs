@@ -10,12 +10,14 @@ namespace MKW.Storage.Tests
 {
     [TestFixture(BackendType.Memory)]
     [TestFixture(BackendType.MemoryStreamSingleFile)]
+    [TestFixture(BackendType.FileStreamSingleFile)]
     public class BlobStorageTests(BlobStorageTests.BackendType type)
     {
         public enum BackendType
         {
             Memory,
             MemoryStreamSingleFile,
+            FileStreamSingleFile,
         }
 
         private IFileEditorFactory? editor;
@@ -34,6 +36,11 @@ namespace MKW.Storage.Tests
                 editor = new MemoryEditorFactory();
                 backend = new BlobStorageSingleFile(editor);
             }
+            else if (type == BackendType.FileStreamSingleFile)
+            {
+                editor = new FileSystemEditorFactory(Path.GetTempFileName());
+                backend = new BlobStorageSingleFile(editor);
+            }
         }
 
         [TearDown]
@@ -42,6 +49,11 @@ namespace MKW.Storage.Tests
             if (editor is MemoryEditorFactory memory)
             {
                 Console.WriteLine(Encoding.ASCII.GetString(memory.ToArray()));
+            }
+            else if (editor is FileSystemEditorFactory fileSystem)
+            {
+                Console.WriteLine($"Path: {fileSystem.Path}");
+                Console.WriteLine(File.ReadAllText(fileSystem.Path));
             }
 
             editor?.Dispose();
