@@ -11,6 +11,19 @@ namespace MKW.Core.Serialization.OpenPgp
 
         public required IReadOnlyCollection<PgpArmourHeader> Headers { get; init; }
 
+        public PgpArmourHeader GetHeader(string name)
+        {
+            foreach (PgpArmourHeader header in Headers)
+            {
+                if (header.Key == name)
+                {
+                    return header;
+                }
+            }
+
+            throw new Exception($"Header {name} does not exist.");
+        }
+
         public required ReadOnlyMemory<byte> Data { get; init; }
 
         public IBufferReader<byte> CreateReader()

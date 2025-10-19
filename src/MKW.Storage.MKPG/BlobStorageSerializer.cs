@@ -19,7 +19,7 @@ namespace MKW.Storage.MKPG
                 }
                 else
                 {
-                    PgpArmourHeader id = message.Headers.First(header => header.Key == MKPGConstants.ArmourHeaderNames.Id);
+                    PgpArmourHeader id = message.GetHeader(MKPGConstants.ArmourHeaderNames.Id);
                     BlobId blobId = BlobIdSerializer.Deserialize(id.Value);
 
                     yield return new BlobEntry(blobId, message.Data);
