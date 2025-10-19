@@ -187,6 +187,34 @@ namespace MKW.Storage.JSON
             }
         }
 
+        // Trust Signatures
+        public void AddTrustSignature(DatabaseTrustSignature signature)
+        {
+            string id = signature.Id.GetStringLegacy();
+
+            Database.Users[id] = Database.Users[id] with
+            {
+                AdminSignature = signature.SignatureBytes,
+            };
+        }
+
+        public void DeleteTrustSignature(DatabaseTrustSignature signature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<DatabaseTrustSignature> EnumerateTrustSignatures()
+        {
+            foreach (KeyValuePair<string, JSONDatabaseUser> user in Database.Users)
+            {
+                yield return new DatabaseTrustSignature
+                {
+                    Id = UserId.FromStringLegacy(user.Key),
+                    SignatureBytes = user.Value.AdminSignature,
+                };
+            }
+        }
+
         public virtual void ReloadDatabaseFile()
         {
         }
