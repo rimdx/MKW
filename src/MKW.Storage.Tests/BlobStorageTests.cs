@@ -87,11 +87,15 @@ namespace MKW.Storage.Tests
 
             Assert.Throws<EntryAlreadyExistsException>(
                 () => backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
-            //Assert.Throws<Exception>(() => storage.Delete(BlobId.From(UserId.Create())));
+
+            ClassicAssert.AreEqual(false, backend.Delete(BlobId.From(UserId.Create())));
 
             ClassicAssert.AreEqual(true, backend.Exists(id1));
             ClassicAssert.AreEqual(true, backend.Exists(id2));
             ClassicAssert.AreEqual(false, backend.Exists(BlobId.From(UserId.Create())));
+
+            ClassicAssert.AreEqual(true, backend.Delete(id2));
+            ClassicAssert.AreEqual(false, backend.Exists(id2));
         }
 
         [Test]
@@ -125,6 +129,16 @@ namespace MKW.Storage.Tests
             ClassicAssert.AreEqual(1, users.Enumerate().Count());
             ClassicAssert.AreEqual(1, entries.Enumerate().Count());
             ClassicAssert.AreEqual(3, backend.Enumerate().Count());
+
+            ClassicAssert.AreEqual(false, users.Delete(BlobId.From(UserId.Create())));
+            ClassicAssert.AreEqual(true, users.Exists(id1));
+            ClassicAssert.AreEqual(3, backend.Enumerate().Count());
+
+            ClassicAssert.AreEqual(true, users.Delete(id1));
+            ClassicAssert.AreEqual(false, users.Exists(id1));
+            ClassicAssert.AreEqual(0, users.Enumerate().Count());
+            ClassicAssert.AreEqual(1, entries.Enumerate().Count());
+            ClassicAssert.AreEqual(2, backend.Enumerate().Count());
         }
     }
 }

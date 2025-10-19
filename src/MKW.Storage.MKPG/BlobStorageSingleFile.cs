@@ -98,7 +98,44 @@ namespace MKW.Storage.MKPG
 
         public bool Delete(BlobId id)
         {
-            throw new NotImplementedException();
+            using IFileEditorFactory.ITransaction transaction = editor.CreateTransaction();
+
+            bool result = DeleteInternal(transaction, id);
+            transaction.Commit();
+
+            return result;
+        }
+
+        private static bool DeleteInternal(IFileEditorFactory.ITransaction transaction, BlobId id)
+        {
+            using StreamReader reader = new StreamReader(transaction.Reader);
+            using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Writer));
+
+            int updated = 0;
+            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            {
+                if (blob.Id.Equals(id))
+                {
+                    updated++;
+                }
+                else
+                {
+                    BlobStorageSerializer.WriteBlob(writer, blob);
+                }
+            }
+
+            if (updated == 0)
+            {
+                return false;
+            }
+            else if (updated == 1)
+            {
+                return true;
+            }
+            else
+            {
+                throw new DatabaseCorruptedException();
+            }
         }
 
         public bool Exists(BlobId id)
