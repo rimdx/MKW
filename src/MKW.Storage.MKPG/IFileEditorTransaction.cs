@@ -3,9 +3,10 @@
 
 namespace MKW.Storage.MKPG
 {
-    internal interface IFileEditorFactory
+    internal interface IFileEditorTransaction : IDisposable
     {
-        Stream CreateReader();
-        IFileEditorTransaction OpenTransaction();
+        Stream Stream { get; }
+
+        public void Commit();
     }
 }

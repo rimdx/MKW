@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using MKW.Common;
-
 namespace MKW.Storage.MKPG
 {
-    internal sealed class MemoryEditorFactory : IFileEditorFactory, IDisposable
+    internal sealed partial class MemoryEditorFactory : IFileEditorFactory, IDisposable
     {
-        public MemoryStream Buffer { get; }
+        public MemoryStream Buffer { get; private set; }
 
         public MemoryEditorFactory()
         {
@@ -21,10 +19,9 @@ namespace MKW.Storage.MKPG
             return stream;
         }
 
-        public Stream CreateWriter()
+        public IFileEditorTransaction OpenTransaction()
         {
-            Buffer.Seek(0, SeekOrigin.Begin);
-            return new StreamDisown(Buffer);
+            return new MemoryEditorTransaction(this);
         }
 
         public byte[] ToArray()
