@@ -13,10 +13,29 @@ namespace MKW.Storage.MKPG
         private readonly IBlobStorage users;
 
         public MKPGDatabase()
+            : this(new BlobStorageSingleFile(new MemoryEditorFactory()))
         {
-            database = new BlobStorageSingleFile(new MemoryEditorFactory());
+        }
+
+        private MKPGDatabase(IBlobStorage database)
+        {
+            this.database = database;
+
             entries = new BlobStorageFiltered(database, MKPGConstants.ArmourTypeHeaders.Entry);
             users = new BlobStorageFiltered(database, MKPGConstants.ArmourTypeHeaders.User);
+        }
+
+        public static MKPGDatabase Open(string path)
+        {
+            FileSystemEditorFactory file = new FileSystemEditorFactory(path);
+            BlobStorageSingleFile store = new BlobStorageSingleFile(file);
+            return new MKPGDatabase(store);
+        }
+
+        public static MKPGDatabase Create(string path)
+        {
+            File.Create(path);
+            return Open(path);
         }
 
         // Entry
