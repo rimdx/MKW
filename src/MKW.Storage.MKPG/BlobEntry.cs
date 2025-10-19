@@ -7,6 +7,7 @@ namespace MKW.Storage.MKPG
 {
     internal sealed record class BlobEntry(
         BlobId Id,
+        string Type,
         ReadOnlyMemory<byte> Data)
     {
         public IBufferReader<byte> CreateReader()

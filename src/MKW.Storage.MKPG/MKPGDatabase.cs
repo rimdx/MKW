@@ -23,7 +23,11 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
-            entries.Create(new BlobEntry(BlobId.From(id), writer.WrittenMemory));
+            BlobEntry blob = new BlobEntry(BlobId.From(id),
+                                           MKPGConstants.ArmourTypeHeaders.Entry,
+                                           writer.WrittenMemory);
+
+            entries.Create(blob);
         }
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
@@ -63,7 +67,11 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             UserSerializer.Serialize(writer, user);
-            users.Create(new BlobEntry(BlobId.From(id), writer.WrittenMemory));
+            BlobEntry blob = new BlobEntry(BlobId.From(id),
+                                           MKPGConstants.ArmourTypeHeaders.User,
+                                           writer.WrittenMemory);
+
+            users.Create(blob);
         }
 
         public void UpdateUser(UserId id, DatabaseUser user)
