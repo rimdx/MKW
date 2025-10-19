@@ -21,7 +21,7 @@ namespace MKW.Storage.MKPG
 
         public IFileEditorTransaction OpenTransaction()
         {
-            return new MemoryEditorTransaction(this);
+            return new MemoryEditorTransaction(this, CreateReader());
         }
 
         public byte[] ToArray()
