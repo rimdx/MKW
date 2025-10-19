@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
+
 namespace MKW.Storage.MKPG
 {
     internal static class BlobIdSerializer
     {
         public static string Serialize(BlobId blobId)
         {
-            Guid guid = new Guid(blobId.GetBytes().ToArray());
-            return guid.ToString();
+            return Base16Convert.GetString(blobId.GetBytes().Span);
         }
 
         public static BlobId Deserialize(string str)
         {
-            Guid guid = new Guid(str);
-            return BlobId.From(guid);
+            return BlobId.From(Base16Convert.GetBytes(str));
         }
     }
 }
