@@ -7,6 +7,8 @@ namespace MKW.Storage.MKPG
     {
         void Create(BlobEntry entry);
 
+        void Update(BlobEntry entry);
+
         BlobEntry Open(BlobId id);
 
         bool Delete(BlobId id);

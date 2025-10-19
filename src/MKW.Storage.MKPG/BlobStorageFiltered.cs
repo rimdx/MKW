@@ -24,6 +24,16 @@ namespace MKW.Storage.MKPG
             proxy.Create(entry);
         }
 
+        public void Update(BlobEntry entry)
+        {
+            if (entry.Type != type)
+            {
+                throw new Exception("bad type");
+            }
+
+            proxy.Update(entry);
+        }
+
         public bool Delete(BlobId id)
         {
             // TODO: fix collision between different types with the same ids.

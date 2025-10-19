@@ -34,7 +34,13 @@ namespace MKW.Storage.MKPG
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
         {
-            throw new NotImplementedException();
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            EntrySerializer.Serialize(writer, entry);
+            BlobEntry blob = new BlobEntry(BlobId.From(id),
+                                           MKPGConstants.ArmourTypeHeaders.Entry,
+                                           writer.WrittenMemory);
+
+            entries.Update(blob);
         }
 
         public DatabaseEntry OpenEntry(EntryId id)
@@ -78,7 +84,13 @@ namespace MKW.Storage.MKPG
 
         public void UpdateUser(UserId id, DatabaseUser user)
         {
-            throw new NotImplementedException();
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            UserSerializer.Serialize(writer, user);
+            BlobEntry blob = new BlobEntry(BlobId.From(id),
+                                           MKPGConstants.ArmourTypeHeaders.User,
+                                           writer.WrittenMemory);
+
+            users.Update(blob);
         }
 
         public DatabaseUser OpenUser(UserId id)

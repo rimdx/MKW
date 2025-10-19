@@ -48,6 +48,44 @@ namespace MKW.Storage.Tests
         }
 
         [Test]
+        public void SimpleUpdateEntryTest()
+        {
+            Random random = new Random(42);
+
+            using MKPGDatabase database = new MKPGDatabase();
+
+            byte[] data = new byte[128];
+            random.NextBytes(data);
+
+            byte[] data2 = new byte[128];
+            random.NextBytes(data2);
+
+            DatabaseEntry dbEntry = new DatabaseEntry
+            {
+                Id = EntryId.Create(),
+                Data = data,
+                Salt = null,
+                Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+            };
+
+            EntryId theid = EntryId.Create();
+            EntryId someid = EntryId.Create();
+
+            database.CreateEntry(EntryId.Create(), dbEntry);
+            database.CreateEntry(someid, dbEntry);
+            database.CreateEntry(theid, dbEntry);
+            database.CreateEntry(EntryId.Create(), dbEntry);
+
+            database.UpdateEntry(theid, dbEntry with
+            {
+                Data = data2,
+            });
+
+            CollectionAssert.AreEqual(data2, database.OpenEntry(theid).Data.ToArray());
+            CollectionAssert.AreEqual(data, database.OpenEntry(someid).Data.ToArray());
+        }
+
+        [Test]
         public void SimpleUserTest()
         {
             ICryptographyProvider crypto = BouncyCastleLoader.GetProvider();

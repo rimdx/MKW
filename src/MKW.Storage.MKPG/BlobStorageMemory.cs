@@ -17,6 +17,11 @@ namespace MKW.Storage.MKPG
             entries[entry.Id] = entry;
         }
 
+        public void Update(BlobEntry entry)
+        {
+            entries[entry.Id] = entry;
+        }
+
         public BlobEntry Open(BlobId id)
         {
             return entries[id];
