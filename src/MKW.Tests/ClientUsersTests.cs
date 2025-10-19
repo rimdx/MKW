@@ -71,6 +71,52 @@ namespace MKW.Tests
         }
 
         [Test]
+        [Ignore("TODO")]
+        public void UntrustedUserTest()
+        {
+            using ClientSandBox sbox = new ClientSandBox();
+            using IDatabase database = sbox.OpenDatabase();
+            using ClientSession client = sbox.OpenSession(database);
+
+            UserInfo userInfo;
+            using (IUserSession user = sbox.CreateUser(client, "123", out userInfo))
+            {
+            }
+
+            database.AddTrustSignature(new DatabaseTrustSignature
+            {
+                Id = userInfo.Id,
+                SignatureBytes = new byte[42],
+            });
+
+            Assert.Throws<Exception>(() => client.OpenUser(userInfo.Id, "123"));
+        }
+
+        [Test]
+        [Ignore("TODO")]
+        public void UntrustedAdminTest()
+        {
+            using ClientSandBox sbox = new ClientSandBox();
+            using IDatabase database = sbox.OpenDatabase();
+            using ClientSession client = sbox.OpenSession(database);
+
+            UserInfo userInfo;
+            using (IUserSession user = sbox.CreateUser(client, "123", out userInfo))
+            {
+            }
+
+            DatabaseUser dbUser = database.OpenUser(userInfo.Id);
+
+            database.UpdateUser(userInfo.Id, dbUser with
+            {
+                PublicKey = new SignedPayload(new byte[42], dbUser.PublicKey.Signature),
+            });
+
+            Assert.Throws<Exception>(() => client.OpenUser(userInfo.Id, "123"));
+            Assert.Throws<Exception>(() => client.OpenAdmin(sbox.AdminSecret));
+        }
+
+        [Test]
         public void AccessRequestTests()
         {
             using ClientSandBox sbox = new ClientSandBox();
