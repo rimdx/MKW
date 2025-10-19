@@ -10,10 +10,12 @@ namespace MKW.Storage.MKPG
     public sealed class MKPGDatabase : IDatabase, IDisposable
     {
         private readonly IBlobStorage entries;
+        private readonly IBlobStorage users;
 
         public MKPGDatabase()
         {
             entries = new BlobStorageSingleFile(new MemoryStream());
+            users = new BlobStorageSingleFile(new MemoryStream());
         }
 
         // Entry
@@ -66,7 +68,9 @@ namespace MKW.Storage.MKPG
         // User
         public void CreateUser(UserId id, DatabaseUser user)
         {
-            throw new NotImplementedException();
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            UserSerializer.Serialize(writer, user);
+            users.Create(new BlobEntry(BlobId.From(id), writer.WrittenMemory));
         }
 
         public void UpdateUser(UserId id, DatabaseUser user)
@@ -76,22 +80,36 @@ namespace MKW.Storage.MKPG
 
         public DatabaseUser OpenUser(UserId id)
         {
-            throw new NotImplementedException();
+            BlobEntry blob = users.Open(BlobId.From(id));
+            DatabaseUser user = UserSerializer.Deserialize(blob.CreateReader());
+
+            return user with
+            {
+                Id = id,
+            };
         }
 
         public bool DeleteUser(UserId id)
         {
-            throw new NotImplementedException();
+            return users.Delete(BlobId.From(id));
         }
 
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
-            throw new NotImplementedException();
+            foreach (BlobEntry blob in users.Enumerate())
+            {
+                DatabaseUser user = UserSerializer.Deserialize(blob.CreateReader());
+
+                yield return user with
+                {
+                    Id = UserId.FromBytes(blob.Id.GetBytes()),
+                };
+            }
         }
 
         public bool HasUser(UserId id)
         {
-            throw new NotImplementedException();
+            return users.Exists(BlobId.From(id));
         }
 
         // Misc
