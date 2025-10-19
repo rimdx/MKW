@@ -15,39 +15,39 @@ namespace MKW.Storage.MKPG
         public void Create(BlobEntry entry)
         {
             using StreamReader reader = new StreamReader(editor.CreateReader());
-
-            List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
-
-            if (blobs.FirstOrDefault(blob => blob.Id.Equals(entry.Id)) != null)
-            {
-                throw new Exception("Entry already exists.");
-            }
-
-            blobs.Add(entry);
-
             using StreamWriter writer = new StreamWriter(editor.CreateWriter());
 
-            BlobStorageSerializer.WriteBlobs(writer, blobs);
+            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            {
+                if (blob.Id.Equals(entry.Id))
+                {
+                    throw new Exception("Entry already exists.");
+                }
+                else
+                {
+                    BlobStorageSerializer.WriteBlob(writer, blob);
+                }
+            }
+
+            BlobStorageSerializer.WriteBlob(writer, entry);
         }
 
         public void Update(BlobEntry entry)
         {
             using StreamReader reader = new StreamReader(editor.CreateReader());
+            using StreamWriter writer = new StreamWriter(editor.CreateWriter());
 
-            List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
-            List<BlobEntry> newBlobs = new List<BlobEntry>(blobs.Count);
             int updated = 0;
-
-            foreach (BlobEntry blob in blobs)
+            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 if (blob.Id.Equals(entry.Id))
                 {
-                    newBlobs.Add(entry);
+                    BlobStorageSerializer.WriteBlob(writer, entry);
                     updated++;
                 }
                 else
                 {
-                    newBlobs.Add(blob);
+                    BlobStorageSerializer.WriteBlob(writer, blob);
                 }
             }
 
@@ -60,10 +60,6 @@ namespace MKW.Storage.MKPG
             {
                 throw new Exception("Database corrupted.");
             }
-
-            using StreamWriter writer = new StreamWriter(editor.CreateWriter());
-
-            BlobStorageSerializer.WriteBlobs(writer, newBlobs);
         }
 
         public BlobEntry Open(BlobId id)
