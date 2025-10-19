@@ -58,7 +58,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         {
             version.Serialize(writer);
 
-            writer.Write(obj.KeyId.Span.Slice(0, 8));
+            writer.Write(obj.KeyId.Span.EnsureSize(8));
             writer.Write((byte)obj.Tag);
             writer.Write(obj.Data.Span);
         }

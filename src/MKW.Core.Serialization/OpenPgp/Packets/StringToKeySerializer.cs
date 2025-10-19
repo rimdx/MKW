@@ -67,13 +67,13 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             {
                 writer.Write((byte)StringToKeyTag.Salted);
                 writer.Write((byte)salted.HashAlgorithmTag);
-                writer.Write(salted.Salt.Span.Slice(0, 8));
+                writer.Write(salted.Salt.Span.EnsureSize(8));
             }
             else if (obj is StringToKeySaltedIterated saltedIterated)
             {
                 writer.Write((byte)StringToKeyTag.IteratedSalted);
                 writer.Write((byte)saltedIterated.HashAlgorithmTag);
-                writer.Write(saltedIterated.Salt.Span.Slice(0, 8));
+                writer.Write(saltedIterated.Salt.Span.EnsureSize(8));
                 writer.Write(saltedIterated.Count);
             }
             else
