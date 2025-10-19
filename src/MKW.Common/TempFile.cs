@@ -54,9 +54,9 @@ namespace MKW.Common
             proxy.SetLength(value);
         }
 
-        private static string GenerateTempFileName(string path)
+        private static string GenerateTempFileName(string path, bool forceNewFile)
         {
-            if (File.Exists(path))
+            if (File.Exists(path) || forceNewFile)
             {
                 // TODO: properly generate file name
                 return path + ".tmp";
@@ -67,9 +67,9 @@ namespace MKW.Common
             }
         }
 
-        public static TempFile Create(string path)
+        public static TempFile Create(string path, bool forceNewFile = false)
         {
-            string tempPath = GenerateTempFileName(path);
+            string tempPath = GenerateTempFileName(path, forceNewFile);
 
             FileStream file = new FileStream(tempPath,
                                              FileMode.CreateNew,

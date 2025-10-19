@@ -19,7 +19,7 @@ namespace MKW.Storage.MKPG
             public Transaction(FileSystemEditorFactory editor, Stream oldFile)
             {
                 this.oldFile = oldFile;
-                newFile = TempFile.Create(editor.Path);
+                newFile = TempFile.Create(editor.Path, true);
             }
 
             public void Commit()
