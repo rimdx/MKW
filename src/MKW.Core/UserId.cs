@@ -23,19 +23,17 @@ namespace MKW.Core
 
         public static UserId FromString(string str)
         {
-            try
-            {
-                return new UserId(Base16Convert.GetBytes(str));
-            }
-            catch (Exception)
-            {
-                // backward compat: just strips 8 least significant bytes and put them
-                // into the resulting id.
-                Guid guid = new Guid(str);
-                ReadOnlyMemory<byte> bytes = guid.ToByteArray();
-                ReadOnlyMemory<byte> sliced = bytes.Slice(bytes.Length - Size, Size);
-                return new UserId(sliced);
-            }
+            return new UserId(Base16Convert.GetBytes(str));
+        }
+
+        public static UserId FromStringLegacy(string str)
+        {
+            // backward compat: just strips 8 least significant bytes and put them
+            // into the resulting id.
+            Guid guid = new Guid(str);
+            ReadOnlyMemory<byte> bytes = guid.ToByteArray();
+            ReadOnlyMemory<byte> sliced = bytes.Slice(bytes.Length - Size, Size);
+            return new UserId(sliced);
         }
 
         public static UserId FromBytes(ReadOnlyMemory<byte> data)

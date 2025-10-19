@@ -119,7 +119,7 @@ namespace MKW.Storage.JSON
 
             foreach (KeyValuePair<string, JSONDatabaseUser> item in Database.Users)
             {
-                yield return JSONDatabaseUser.Deserialize(UserId.FromString(item.Key),
+                yield return JSONDatabaseUser.Deserialize(UserId.FromStringLegacy(item.Key),
                                                           item.Value);
             }
         }
@@ -182,7 +182,7 @@ namespace MKW.Storage.JSON
         {
             foreach (KeyValuePair<string, JSONDatabaseSecretEntry> item in Database.Entries)
             {
-                yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromString(item.Key), item.Value);
+                yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromStringLegacy(item.Key), item.Value);
             }
         }
 
