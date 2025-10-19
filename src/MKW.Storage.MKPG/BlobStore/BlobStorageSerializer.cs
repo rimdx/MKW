@@ -3,7 +3,7 @@
 
 using MKW.Core.Serialization.OpenPgp;
 
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.BlobStore
 {
     internal static class BlobStorageSerializer
     {
