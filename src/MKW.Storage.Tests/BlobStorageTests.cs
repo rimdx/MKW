@@ -49,8 +49,8 @@ namespace MKW.Storage.Tests
         {
             Random random = new Random(42);
 
-            MemoryStream stream = new MemoryStream();
-            BlobStorageSingleFile storage = new BlobStorageSingleFile(stream);
+            MemoryEditorFactory editor = new MemoryEditorFactory();
+            BlobStorageSingleFile storage = new BlobStorageSingleFile(editor);
             BlobId id1 = BlobId.From(UserId.Create());
             BlobId id2 = BlobId.From(UserId.Create());
 
@@ -78,7 +78,7 @@ namespace MKW.Storage.Tests
             // ClassicAssert.AreEqual(true, storage.Exists(id2));
             // ClassicAssert.AreEqual(false, storage.Exists(BlobId.From(UserId.Create())));
 
-            Console.WriteLine(Encoding.ASCII.GetString(stream.ToArray()));
+            Console.WriteLine(Encoding.ASCII.GetString(editor.ToArray()));
         }
 
         [Test]
@@ -86,8 +86,8 @@ namespace MKW.Storage.Tests
         {
             Random random = new Random(42);
 
-            MemoryStream stream = new MemoryStream();
-            BlobStorageSingleFile storage = new BlobStorageSingleFile(stream);
+            MemoryEditorFactory editor = new MemoryEditorFactory();
+            BlobStorageSingleFile storage = new BlobStorageSingleFile(editor);
 
             BlobStorageFiltered users = new BlobStorageFiltered(storage, MKPGConstants.ArmourTypeHeaders.User);
             BlobStorageFiltered entries = new BlobStorageFiltered(storage, MKPGConstants.ArmourTypeHeaders.Entry);
@@ -115,7 +115,7 @@ namespace MKW.Storage.Tests
             ClassicAssert.AreEqual(1, entries.Enumerate().Count());
             ClassicAssert.AreEqual(3, storage.Enumerate().Count());
 
-            Console.WriteLine(Encoding.ASCII.GetString(stream.ToArray()));
+            Console.WriteLine(Encoding.ASCII.GetString(editor.ToArray()));
         }
     }
 }
