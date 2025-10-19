@@ -19,7 +19,16 @@ namespace MKW.Core
 
         public static EntryId FromString(string str)
         {
-            return new EntryId(new Guid(str).ToByteArray());
+            try
+            {
+                return new EntryId(new Guid(str).ToByteArray());
+            }
+            catch (Exception)
+            {
+                // backward compat: parse id as a guid.
+                Guid guid = new Guid(str);
+                return new EntryId(guid.ToByteArray());
+            }
         }
 
         public static EntryId Create()

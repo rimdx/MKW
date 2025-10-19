@@ -18,7 +18,7 @@ namespace MKW.Storage.JSON
             Dictionary<string, ReadOnlyMemory<byte>> keys = [];
             foreach (KeyValuePair<UserId, ReadOnlyMemory<byte>> pair in entry.Keys)
             {
-                keys.Add(pair.Key.GetString(), pair.Value);
+                keys.Add(pair.Key.GetStringLegacy(), pair.Value);
             }
 
             return new JSONDatabaseSecretEntry
