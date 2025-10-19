@@ -87,9 +87,9 @@ namespace MKW.Storage.Tests
             Assert.Throws<Exception>(() => backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
             //Assert.Throws<Exception>(() => storage.Delete(BlobId.From(UserId.Create())));
 
-            //ClassicAssert.AreEqual(true, backend.Exists(id1));
-            //ClassicAssert.AreEqual(true, backend.Exists(id2));
-            //ClassicAssert.AreEqual(false, backend.Exists(BlobId.From(UserId.Create())));
+            ClassicAssert.AreEqual(true, backend.Exists(id1));
+            ClassicAssert.AreEqual(true, backend.Exists(id2));
+            ClassicAssert.AreEqual(false, backend.Exists(BlobId.From(UserId.Create())));
         }
 
         [Test]
