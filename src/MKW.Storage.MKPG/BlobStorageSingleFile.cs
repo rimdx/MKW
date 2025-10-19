@@ -17,7 +17,7 @@ namespace MKW.Storage.MKPG
 
         public void Create(BlobEntry entry)
         {
-            using IFileEditorTransaction transaction = editor.OpenTransaction();
+            using IFileEditorTransaction transaction = editor.CreateTransaction();
 
             CreateInternal(transaction, entry);
             transaction.Commit();
@@ -45,7 +45,7 @@ namespace MKW.Storage.MKPG
 
         public void Update(BlobEntry entry)
         {
-            using IFileEditorTransaction transaction = editor.OpenTransaction();
+            using IFileEditorTransaction transaction = editor.CreateTransaction();
 
             UpdateInternal(transaction, entry);
             transaction.Commit();
