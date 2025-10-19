@@ -17,7 +17,7 @@ namespace MKW.Storage.MKPG
 {
     public static class UserSerializer
     {
-        public static DatabaseUser Deserialize(IBufferReader<byte> reader)
+        public static DatabaseUser Deserialize(IBufferReader<byte> reader, UserId userId)
         {
             ReadOnlyMemory<byte>? seckey = null;
             ReadOnlyMemory<byte>? pubkey = null;
@@ -87,7 +87,7 @@ namespace MKW.Storage.MKPG
 
             return new DatabaseUser
             {
-                Id = null,
+                Id = userId,
                 PublicKey = new SignedPayload(pubkey.Value, pubkeySignature.Value),
                 PrivateKey = new SecretPayload(seckey.Value),
                 Salt = salt.Value,

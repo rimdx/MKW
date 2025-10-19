@@ -81,12 +81,7 @@ namespace MKW.Storage.MKPG
         public DatabaseUser OpenUser(UserId id)
         {
             BlobEntry blob = users.Open(BlobId.From(id));
-            DatabaseUser user = UserSerializer.Deserialize(blob.CreateReader());
-
-            return user with
-            {
-                Id = id,
-            };
+            return UserSerializer.Deserialize(blob.CreateReader(), id);
         }
 
         public bool DeleteUser(UserId id)
@@ -98,12 +93,8 @@ namespace MKW.Storage.MKPG
         {
             foreach (BlobEntry blob in users.Enumerate())
             {
-                DatabaseUser user = UserSerializer.Deserialize(blob.CreateReader());
-
-                yield return user with
-                {
-                    Id = UserId.FromBytes(blob.Id.GetBytes()),
-                };
+                UserId id = UserId.FromBytes(blob.Id.GetBytes());
+                yield return UserSerializer.Deserialize(blob.CreateReader(), id);
             }
         }
 

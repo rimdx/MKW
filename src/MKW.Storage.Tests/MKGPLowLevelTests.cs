@@ -91,7 +91,7 @@ namespace MKW.Storage.Tests
             Console.WriteLine(writer.ToString());
 
             ArrayBufferReader<byte> reader = new ArrayBufferReader<byte>(encoded.WrittenMemory);
-            DatabaseUser decoded = UserSerializer.Deserialize(reader);
+            DatabaseUser decoded = UserSerializer.Deserialize(reader, user.Id);
 
             CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());
 
