@@ -38,5 +38,15 @@ namespace MKW.Cryptography
                 KeySizeBits = 128,
                 SaltSizeBits = 128,
             };
+
+        public static readonly PasswordDerivationConfiguration OpenPgpStringToKey =
+            new PasswordDerivationConfiguration
+            {
+                Engine = PasswordDerivationEngine.Pbkdf2,
+                HashEngine = HashAlgorithmEngine.Sha256,
+                Iterations = 100_000,
+                KeySizeBits = 128,
+                SaltSizeBits = 64,
+            };
     }
 }
