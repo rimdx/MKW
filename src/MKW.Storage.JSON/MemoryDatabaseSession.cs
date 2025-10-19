@@ -34,7 +34,7 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                if (Database.Users.TryGetValue(id.GetString(), out JSONDatabaseUser? user))
+                if (Database.Users.TryGetValue(id.GetStringLegacy(), out JSONDatabaseUser? user))
                 {
                     return JSONDatabaseUser.Deserialize(id, user);
                 }
@@ -60,9 +60,9 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                if (!Database.Users.ContainsKey(id.GetString()))
+                if (!Database.Users.ContainsKey(id.GetStringLegacy()))
                 {
-                    Database.Users.Add(id.GetString(), JSONDatabaseUser.Serialize(user));
+                    Database.Users.Add(id.GetStringLegacy(), JSONDatabaseUser.Serialize(user));
                 }
                 else
                 {
@@ -88,9 +88,9 @@ namespace MKW.Storage.JSON
             }
             else
             {
-                if (Database.Users.ContainsKey(id.GetString()))
+                if (Database.Users.ContainsKey(id.GetStringLegacy()))
                 {
-                    Database.Users[id.GetString()] = JSONDatabaseUser.Serialize(user);
+                    Database.Users[id.GetStringLegacy()] = JSONDatabaseUser.Serialize(user);
                 }
                 else
                 {
@@ -103,14 +103,14 @@ namespace MKW.Storage.JSON
 
         public bool DeleteUser(UserId id)
         {
-            bool result = Database.Users.Remove(id.GetString());
+            bool result = Database.Users.Remove(id.GetStringLegacy());
             Save();
             return result;
         }
 
         public bool HasUser(UserId id)
         {
-            return Database.Users.ContainsKey(id.GetString());
+            return Database.Users.ContainsKey(id.GetStringLegacy());
         }
 
         public IEnumerable<DatabaseUser> EnumerateUsers()
@@ -128,13 +128,13 @@ namespace MKW.Storage.JSON
 
         public void CreateEntry(EntryId id, DatabaseEntry entry)
         {
-            if (Database.Entries.ContainsKey(id.GetString()))
+            if (Database.Entries.ContainsKey(id.GetStringLegacy()))
             {
                 throw new Exception("Entry already exists.");
             }
             else
             {
-                Database.Entries[id.GetString()] = JSONDatabaseSecretEntry.Serialize(entry);
+                Database.Entries[id.GetStringLegacy()] = JSONDatabaseSecretEntry.Serialize(entry);
             }
 
             Save();
@@ -142,9 +142,9 @@ namespace MKW.Storage.JSON
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
         {
-            if (Database.Entries.ContainsKey(id.GetString()))
+            if (Database.Entries.ContainsKey(id.GetStringLegacy()))
             {
-                Database.Entries[id.GetString()] = JSONDatabaseSecretEntry.Serialize(entry);
+                Database.Entries[id.GetStringLegacy()] = JSONDatabaseSecretEntry.Serialize(entry);
             }
             else
             {
@@ -156,9 +156,9 @@ namespace MKW.Storage.JSON
 
         public DatabaseEntry OpenEntry(EntryId id)
         {
-            if (Database.Entries.ContainsKey(id.GetString()))
+            if (Database.Entries.ContainsKey(id.GetStringLegacy()))
             {
-                return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetString()]);
+                return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetStringLegacy()]);
             }
             else
             {
@@ -168,14 +168,14 @@ namespace MKW.Storage.JSON
 
         public bool DeleteEntry(EntryId id)
         {
-            bool result = Database.Entries.Remove(id.GetString());
+            bool result = Database.Entries.Remove(id.GetStringLegacy());
             Save();
             return result;
         }
 
         public bool HasEntry(EntryId id)
         {
-            return Database.Entries.ContainsKey(id.GetString());
+            return Database.Entries.ContainsKey(id.GetStringLegacy());
         }
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()

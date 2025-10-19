@@ -40,6 +40,17 @@ namespace MKW.Core
             return Base16Convert.GetString(data);
         }
 
+        public string GetStringLegacy()
+        {
+            byte[] bytes = [
+                ..new byte[16 - data.Length],
+                ..data,
+            ];
+
+            Guid guid = new Guid(bytes);
+            return guid.ToString();
+        }
+
         public override string ToString()
         {
             return GetString();
