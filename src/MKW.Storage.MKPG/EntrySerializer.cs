@@ -63,7 +63,7 @@ namespace MKW.Storage.MKPG
             {
                 PublicKeyEncryptedSessionKeyV3 sessionKey = new PublicKeyEncryptedSessionKeyV3
                 {
-                    KeyId = user.Key.GetBytes().Slice(0, 8),
+                    KeyId = user.Key.GetBytes().EnsureSize(8),
                     Tag = PublicKeyAlgorithmTag.RsaGeneral,
                     Data = user.Value,
                 };
