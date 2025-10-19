@@ -34,7 +34,7 @@ namespace MKW.Storage.JSON
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
             foreach (KeyValuePair<string, ReadOnlyMemory<byte>> pair in entry.Keys)
             {
-                keys.Add(UserId.FromString(pair.Key), pair.Value);
+                keys.Add(UserId.FromStringLegacy(pair.Key), pair.Value);
             }
 
             return new DatabaseEntry
