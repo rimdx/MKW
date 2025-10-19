@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using MKW.Common;
 using MKW.Core;
 using System.Buffers;
 
@@ -15,7 +14,7 @@ namespace MKW.Storage.MKPG
 
         public MKPGDatabase()
         {
-            database = new BlobStorageSingleFile(new MemoryStream());
+            database = new BlobStorageSingleFile(new MemoryEditorFactory());
             entries = new BlobStorageFiltered(database, MKPGConstants.ArmourTypeHeaders.Entry);
             users = new BlobStorageFiltered(database, MKPGConstants.ArmourTypeHeaders.User);
         }

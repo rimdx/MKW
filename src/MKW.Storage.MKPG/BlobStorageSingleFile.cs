@@ -1,23 +1,20 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using MKW.Common;
-
 namespace MKW.Storage.MKPG
 {
     internal sealed class BlobStorageSingleFile : IBlobStorage
     {
-        private readonly Stream file;
+        private readonly IFileEditorFactory editor;
 
-        public BlobStorageSingleFile(Stream file)
+        public BlobStorageSingleFile(IFileEditorFactory editor)
         {
-            this.file = file;
+            this.editor = editor;
         }
 
         public void Create(BlobEntry entry)
         {
-            file.Seek(0, SeekOrigin.Begin);
-            using StreamReader reader = new StreamReader(new StreamDisown(file));
+            using StreamReader reader = new StreamReader(editor.CreateReader());
 
             List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
 
@@ -28,16 +25,14 @@ namespace MKW.Storage.MKPG
 
             blobs.Add(entry);
 
-            file.Seek(0, SeekOrigin.Begin);
-            using StreamWriter writer = new StreamWriter(new StreamDisown(file));
+            using StreamWriter writer = new StreamWriter(editor.CreateWriter());
 
             BlobStorageSerializer.WriteBlobs(writer, blobs);
         }
 
         public void Update(BlobEntry entry)
         {
-            file.Seek(0, SeekOrigin.Begin);
-            using StreamReader reader = new StreamReader(new StreamDisown(file));
+            using StreamReader reader = new StreamReader(editor.CreateReader());
 
             List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
             List<BlobEntry> newBlobs = new List<BlobEntry>(blobs.Count);
@@ -66,16 +61,14 @@ namespace MKW.Storage.MKPG
                 throw new Exception("Database corrupted.");
             }
 
-            file.Seek(0, SeekOrigin.Begin);
-            using StreamWriter writer = new StreamWriter(new StreamDisown(file));
+            using StreamWriter writer = new StreamWriter(editor.CreateWriter());
 
             BlobStorageSerializer.WriteBlobs(writer, newBlobs);
         }
 
         public BlobEntry Open(BlobId id)
         {
-            file.Seek(0, SeekOrigin.Begin);
-            using StreamReader reader = new StreamReader(new StreamDisown(file));
+            using StreamReader reader = new StreamReader(editor.CreateReader());
 
             foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
@@ -100,9 +93,7 @@ namespace MKW.Storage.MKPG
 
         public IEnumerable<BlobEntry> Enumerate()
         {
-            file.Seek(0, SeekOrigin.Begin);
-
-            using StreamReader reader = new StreamReader(new StreamDisown(file));
+            using StreamReader reader = new StreamReader(editor.CreateReader());
 
             foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
