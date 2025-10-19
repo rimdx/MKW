@@ -5,7 +5,7 @@ namespace MKW.Storage.MKPG
 {
     internal sealed partial class MemoryEditorFactory
     {
-        private sealed class MemoryEditorTransaction : IFileEditorFactory.ITransaction, IDisposable
+        private sealed class Transaction : IFileEditorFactory.ITransaction, IDisposable
         {
             private readonly MemoryEditorFactory editor;
             private readonly MemoryStream stream;
@@ -14,7 +14,7 @@ namespace MKW.Storage.MKPG
 
             public Stream Reader { get; }
 
-            public MemoryEditorTransaction(MemoryEditorFactory editor, Stream reader)
+            public Transaction(MemoryEditorFactory editor, Stream reader)
             {
                 this.editor = editor;
 
