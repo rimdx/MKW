@@ -34,6 +34,44 @@ namespace MKW.Storage.MKPG
             BlobStorageSerializer.WriteBlobs(writer, blobs);
         }
 
+        public void Update(BlobEntry entry)
+        {
+            file.Seek(0, SeekOrigin.Begin);
+            using StreamReader reader = new StreamReader(new StreamDisown(file));
+
+            List<BlobEntry> blobs = BlobStorageSerializer.ReadBlobs(reader).ToList();
+            List<BlobEntry> newBlobs = new List<BlobEntry>(blobs.Count);
+            int updated = 0;
+
+            foreach (BlobEntry blob in blobs)
+            {
+                if (blob.Id.Equals(entry.Id))
+                {
+                    newBlobs.Add(entry);
+                    updated++;
+                }
+                else
+                {
+                    newBlobs.Add(blob);
+                }
+            }
+
+            if (updated == 0)
+            {
+                throw new Exception("Entry does not exist.");
+            }
+
+            if (updated > 1)
+            {
+                throw new Exception("Database corrupted.");
+            }
+
+            file.Seek(0, SeekOrigin.Begin);
+            using StreamWriter writer = new StreamWriter(new StreamDisown(file));
+
+            BlobStorageSerializer.WriteBlobs(writer, newBlobs);
+        }
+
         public BlobEntry Open(BlobId id)
         {
             file.Seek(0, SeekOrigin.Begin);
