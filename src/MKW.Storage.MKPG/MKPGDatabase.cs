@@ -34,7 +34,10 @@ namespace MKW.Storage.MKPG
 
         public static MKPGDatabase Create(string path)
         {
-            File.Create(path);
+            using (FileStream file = File.Create(path))
+            {
+            }
+
             return Open(path);
         }
 
