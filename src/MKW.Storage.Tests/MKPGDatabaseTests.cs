@@ -101,7 +101,7 @@ namespace MKW.Storage.Tests
                 Salt = random.NextBytes(8),
                 PrivateKey = new SecretPayload(fakeseckey),
                 PublicKey = new SignedPayload(pubkey, new byte[32]),
-                Metadata = null,
+                Metadata = new SignedPayload(random.NextBytes(34), random.NextBytes(239)),
             };
 
             using MKPGDatabase database = new MKPGDatabase();
@@ -145,7 +145,7 @@ namespace MKW.Storage.Tests
                 Salt = random.NextBytes(8),
                 PrivateKey = new SecretPayload(fakeseckey),
                 PublicKey = new SignedPayload(pubkey, new byte[32]),
-                Metadata = null,
+                Metadata = new SignedPayload(random.NextBytes(34), random.NextBytes(239)),
             };
 
             using MKPGDatabase database = new MKPGDatabase();
