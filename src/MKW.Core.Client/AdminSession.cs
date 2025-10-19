@@ -51,7 +51,11 @@ namespace MKW.Core.Client
                 PublicKey = new SignedPayload(request.PublicKey, transformer.Sign(request.PublicKey.Span)),
                 PrivateKey = request.EncryptedPrivateKey,
                 Metadata = metadataEncoder.EncodeMetadata(metadata),
-                AdminSignature = request.AdminSignature,
+                AdminSignature = new DatabaseTrustSignature
+                {
+                    Id = admin.Id,
+                    SignatureBytes = request.AdminSignature
+                },
             };
 
             database.CreateUser(userId, user);

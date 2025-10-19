@@ -40,7 +40,11 @@ namespace MKW.Core.Client
                 PrivateKey = systemCreds.EncryptedPrivateKey,
                 Salt = systemCreds.Salt,
                 Metadata = metadataEncoder.EncodeMetadata(metadata),
-                AdminSignature = null, // TODO
+                AdminSignature = new DatabaseTrustSignature
+                {
+                    Id = UserId.Admin(),
+                    SignatureBytes = null,  // TODO
+                },
             };
 
             database.CreateUser(UserId.Admin(), admin);

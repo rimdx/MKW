@@ -16,7 +16,6 @@ namespace MKW.Storage
 
         public required SignedPayload Metadata { get; init; }
 
-        public required ReadOnlyMemory<byte> AdminSignature { get; init; }
+        public required DatabaseTrustSignature AdminSignature { get; init; }
     }
-
 }
