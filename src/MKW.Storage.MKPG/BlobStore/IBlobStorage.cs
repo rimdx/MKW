@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using MKW.Storage.MKPG.BlobStore;
-
-namespace MKW.Storage.MKPG
+namespace MKW.Storage.MKPG.BlobStore
 {
     internal interface IBlobStorage
     {
