@@ -22,7 +22,7 @@ namespace MKW.Storage.MKPG
             transaction.Commit();
         }
 
-        private void CreateInternal(IFileEditorTransaction transaction, BlobEntry entry)
+        private static void CreateInternal(IFileEditorTransaction transaction, BlobEntry entry)
         {
             using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(transaction.Writer);
@@ -50,7 +50,7 @@ namespace MKW.Storage.MKPG
             transaction.Commit();
         }
 
-        private void UpdateInternal(IFileEditorTransaction transaction, BlobEntry entry)
+        private static void UpdateInternal(IFileEditorTransaction transaction, BlobEntry entry)
         {
             using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Writer));
