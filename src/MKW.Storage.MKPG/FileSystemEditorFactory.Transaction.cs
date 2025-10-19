@@ -9,23 +9,29 @@ namespace MKW.Storage.MKPG
     {
         private sealed class Transaction : IFileEditorTransaction
         {
-            private readonly TempFile file;
+            private readonly Stream oldFile;
+            private readonly TempFile newFile;
 
-            public Stream Stream => new StreamDisown(file);
+            public Stream Writer => new StreamDisown(newFile);
 
-            public Transaction(FileSystemEditorFactory editor)
+            public Stream Reader => oldFile;
+
+            public Transaction(FileSystemEditorFactory editor, Stream oldFile)
             {
-                file = TempFile.Create(editor.Path);
+                this.oldFile = oldFile;
+                newFile = TempFile.Create(editor.Path);
             }
 
             public void Commit()
             {
-                file.Accept();
+                oldFile.Dispose();
+                newFile.Accept();
             }
 
             public void Dispose()
             {
-                file.Dispose();
+                oldFile.Dispose();
+                newFile.Dispose();
             }
         }
     }

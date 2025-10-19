@@ -19,7 +19,7 @@ namespace MKW.Storage.MKPG
 
         public IFileEditorTransaction OpenTransaction()
         {
-            return new Transaction(this);
+            return new Transaction(this, CreateReader());
         }
 
         public void Dispose()

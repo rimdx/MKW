@@ -10,11 +10,15 @@ namespace MKW.Storage.MKPG
             private readonly MemoryEditorFactory editor;
             private readonly MemoryStream stream;
 
-            public Stream Stream => stream;
+            public Stream Writer => stream;
 
-            public MemoryEditorTransaction(MemoryEditorFactory editor)
+            public Stream Reader { get; }
+
+            public MemoryEditorTransaction(MemoryEditorFactory editor, Stream reader)
             {
                 this.editor = editor;
+
+                Reader = reader;
                 stream = new MemoryStream();
             }
 
@@ -25,7 +29,7 @@ namespace MKW.Storage.MKPG
 
             public void Dispose()
             {
-                Stream.Dispose();
+                Writer.Dispose();
             }
         }
     }
