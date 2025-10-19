@@ -104,13 +104,13 @@ namespace MKW.Storage.Tests
             BlobId id2 = BlobId.From(EntryId.Create());
             BlobId id3 = BlobId.From(UserId.Create());
 
-            byte[] data1 = new byte[32];
+            byte[] data1 = new byte[622];
             random.NextBytes(data1);
 
-            byte[] data2 = new byte[42];
+            byte[] data2 = new byte[382];
             random.NextBytes(data2);
 
-            byte[] data3 = new byte[42];
+            byte[] data3 = new byte[2384];
             random.NextBytes(data3);
 
             users.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1));
