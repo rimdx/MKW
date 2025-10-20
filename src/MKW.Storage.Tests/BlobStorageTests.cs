@@ -76,8 +76,19 @@ namespace MKW.Storage.Tests
             byte[] data2 = new byte[512];
             random.NextBytes(data2);
 
-            backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1));
-            backend.Create(new BlobEntry(id2, MKPGConstants.ArmourTypeHeaders.User, data2));
+            backend.Create(new BlobEntry
+            {
+                Id = id1,
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+                Data = data1
+            });
+
+            backend.Create(new BlobEntry
+            {
+                Id = id2,
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+                Data = data2
+            });
 
             BlobEntry e1 = backend.Open(id1);
             BlobEntry e2 = backend.Open(id2);
@@ -88,7 +99,15 @@ namespace MKW.Storage.Tests
             ClassicAssert.AreEqual(2, backend.Enumerate().Count());
 
             Assert.Throws<EntryAlreadyExistsException>(
-                () => backend.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1)));
+                () =>
+                {
+                    backend.Create(new BlobEntry
+                    {
+                        Id = id1,
+                        Type = MKPGConstants.ArmourTypeHeaders.User,
+                        Data = data1
+                    });
+                });
 
             ClassicAssert.AreEqual(false, backend.Delete(BlobId.From(UserId.Create())));
 
@@ -121,12 +140,29 @@ namespace MKW.Storage.Tests
             byte[] data3 = new byte[2384];
             random.NextBytes(data3);
 
-            users.Create(new BlobEntry(id1, MKPGConstants.ArmourTypeHeaders.User, data1));
-            entries.Create(new BlobEntry(id2, MKPGConstants.ArmourTypeHeaders.Entry, data2));
-            backend.Create(new BlobEntry(id3, "PGP JUNK", data3));
+            users.Create(new BlobEntry
+            {
+                Id = id1,
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+                Data = data1
+            });
+
+            entries.Create(new BlobEntry
+            {
+                Id = id2,
+                Type = MKPGConstants.ArmourTypeHeaders.Entry,
+                Data = data2
+            });
+
+            backend.Create(new BlobEntry
+            {
+                Id = id3,
+                Type = "PGP JUNK",
+                Data = data3
+            });
 
             Assert.Throws<EntryAlreadyExistsException>(
-                () => users.Create(new BlobEntry(id3, MKPGConstants.ArmourTypeHeaders.User, data1)));
+                () => users.Create(new BlobEntry{ Id = id3, Type = MKPGConstants.ArmourTypeHeaders.User, Data = data1 }));
 
             ClassicAssert.AreEqual(1, users.Enumerate().Count());
             ClassicAssert.AreEqual(1, entries.Enumerate().Count());

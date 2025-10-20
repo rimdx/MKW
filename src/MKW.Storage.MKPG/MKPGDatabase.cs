@@ -49,9 +49,13 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
-            BlobEntry blob = new BlobEntry(BlobId.From(id),
-                                           MKPGConstants.ArmourTypeHeaders.Entry,
-                                           writer.WrittenMemory);
+
+            BlobEntry blob = new BlobEntry
+            {
+                Id = BlobId.From(id),
+                Type = MKPGConstants.ArmourTypeHeaders.Entry,
+                Data = writer.WrittenMemory,
+            };
 
             entries.Create(blob);
         }
@@ -60,9 +64,13 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
-            BlobEntry blob = new BlobEntry(BlobId.From(id),
-                                           MKPGConstants.ArmourTypeHeaders.Entry,
-                                           writer.WrittenMemory);
+
+            BlobEntry blob = new BlobEntry
+            {
+                Id = BlobId.From(id),
+                Type = MKPGConstants.ArmourTypeHeaders.Entry,
+                Data = writer.WrittenMemory,
+            };
 
             entries.Update(blob);
         }
@@ -99,9 +107,13 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             UserSerializer.Serialize(writer, user);
-            BlobEntry blob = new BlobEntry(BlobId.From(id),
-                                           MKPGConstants.ArmourTypeHeaders.User,
-                                           writer.WrittenMemory);
+
+            BlobEntry blob = new BlobEntry
+            {
+                Id = BlobId.From(id),
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+                Data = writer.WrittenMemory,
+            };
 
             users.Create(blob);
         }
@@ -110,9 +122,13 @@ namespace MKW.Storage.MKPG
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             UserSerializer.Serialize(writer, user);
-            BlobEntry blob = new BlobEntry(BlobId.From(id),
-                                           MKPGConstants.ArmourTypeHeaders.User,
-                                           writer.WrittenMemory);
+
+            BlobEntry blob = new BlobEntry
+            {
+                Id = BlobId.From(id),
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+                Data = writer.WrittenMemory,
+            };
 
             users.Update(blob);
         }
