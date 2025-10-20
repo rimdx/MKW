@@ -9,7 +9,7 @@ using System.Buffers;
 
 namespace MKW.Storage.MKPG
 {
-    public sealed class MKPGDatabase : IDatabase, IDisposable
+    public sealed partial class MKPGDatabase : IDatabase, IDatabase2, IDisposable
     {
         private readonly IBlobStorage database;
         private readonly IBlobStorage entries;
@@ -45,56 +45,61 @@ namespace MKW.Storage.MKPG
         }
 
         // Entry
-        public void CreateEntry(EntryId id, DatabaseEntry entry)
+        public BlobEntry OpenEntry2(BlobId id)
+        {
+            return entries.Open(BlobId.From(id));
+        }
+
+        public void CreateEntry2(BlobEntry entry)
+        {
+            entries.Create(new PgpBlobEntry
+            {
+                Id = entry.Id,
+                Data = entry.Data,
+                Type = MKPGConstants.ArmourTypeHeaders.Entry,
+            });
+        }
+
+        public void UpdateEntry2(BlobEntry entry)
+        {
+            entries.Update(new PgpBlobEntry
+            {
+                Id = entry.Id,
+                Data = entry.Data,
+                Type = MKPGConstants.ArmourTypeHeaders.Entry,
+            });
+        }
+
+        public IEnumerable<BlobEntry> EnumerateEntries2()
+        {
+            foreach (PgpBlobEntry blob in entries.Enumerate())
+            {
+                yield return blob;
+            }
+        }
+
+        public BlobEntry SerializeEntry(DatabaseEntry entry)
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
 
-            PgpBlobEntry blob = new PgpBlobEntry
+            return new PgpBlobEntry
             {
-                Id = BlobId.From(id),
+                Id = BlobId.From(entry.Id),
                 Type = MKPGConstants.ArmourTypeHeaders.Entry,
                 Data = writer.WrittenMemory,
             };
-
-            entries.Create(blob);
         }
 
-        public void UpdateEntry(EntryId id, DatabaseEntry entry)
+        public DatabaseEntry DeserializeEntry(BlobEntry blob)
         {
-            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
-            EntrySerializer.Serialize(writer, entry);
-
-            PgpBlobEntry blob = new PgpBlobEntry
-            {
-                Id = BlobId.From(id),
-                Type = MKPGConstants.ArmourTypeHeaders.Entry,
-                Data = writer.WrittenMemory,
-            };
-
-            entries.Update(blob);
-        }
-
-        public DatabaseEntry OpenEntry(EntryId id)
-        {
-            PgpBlobEntry blob = entries.Open(BlobId.From(id));
-            DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader(), id);
-            return entry;
+            return EntrySerializer.Deserialize(blob.CreateReader(),
+                                               EntryId.FromBytes(blob.Id.GetBytes().Span));
         }
 
         public bool DeleteEntry(EntryId id)
         {
             throw new NotImplementedException();
-        }
-
-        public IEnumerable<DatabaseEntry> EnumerateEntries()
-        {
-            foreach (PgpBlobEntry blob in entries.Enumerate())
-            {
-                EntryId id = EntryId.FromBytes(blob.Id.GetBytes().Span);
-                DatabaseEntry entry = EntrySerializer.Deserialize(blob.CreateReader(), id);
-                yield return entry;
-            }
         }
 
         public bool HasEntry(EntryId id)
@@ -103,40 +108,37 @@ namespace MKW.Storage.MKPG
         }
 
         // User
-        public void CreateUser(UserId id, DatabaseUser user)
+        public BlobEntry OpenUser2(BlobId id)
         {
-            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
-            UserSerializer.Serialize(writer, user);
-
-            PgpBlobEntry blob = new PgpBlobEntry
-            {
-                Id = BlobId.From(id),
-                Type = MKPGConstants.ArmourTypeHeaders.User,
-                Data = writer.WrittenMemory,
-            };
-
-            users.Create(blob);
+            return users.Open(BlobId.From(id));
         }
 
-        public void UpdateUser(UserId id, DatabaseUser user)
+        public void CreateUser2(BlobEntry blob)
         {
-            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
-            UserSerializer.Serialize(writer, user);
-
-            PgpBlobEntry blob = new PgpBlobEntry
+            users.Create(new PgpBlobEntry
             {
-                Id = BlobId.From(id),
+                Id = blob.Id,
+                Data = blob.Data,
                 Type = MKPGConstants.ArmourTypeHeaders.User,
-                Data = writer.WrittenMemory,
-            };
-
-            users.Update(blob);
+            });
         }
 
-        public DatabaseUser OpenUser(UserId id)
+        public void UpdateUser2(BlobEntry blob)
         {
-            PgpBlobEntry blob = users.Open(BlobId.From(id));
-            return UserSerializer.Deserialize(blob.CreateReader(), id);
+            users.Update(new PgpBlobEntry
+            {
+                Id = blob.Id,
+                Data = blob.Data,
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+            });
+        }
+
+        public IEnumerable<BlobEntry> EnumerateUsers2()
+        {
+            foreach (PgpBlobEntry blob in users.Enumerate())
+            {
+                yield return blob;
+            }
         }
 
         public bool DeleteUser(UserId id)
@@ -144,18 +146,28 @@ namespace MKW.Storage.MKPG
             return users.Delete(BlobId.From(id));
         }
 
-        public IEnumerable<DatabaseUser> EnumerateUsers()
-        {
-            foreach (PgpBlobEntry blob in users.Enumerate())
-            {
-                UserId id = UserId.FromBytes(blob.Id.GetBytes());
-                yield return UserSerializer.Deserialize(blob.CreateReader(), id);
-            }
-        }
-
         public bool HasUser(UserId id)
         {
             return users.Exists(BlobId.From(id));
+        }
+
+        // User serialize/deserialize
+        public BlobEntry SerializeUser(DatabaseUser user)
+        {
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            UserSerializer.Serialize(writer, user);
+
+            return new PgpBlobEntry
+            {
+                Id = BlobId.From(user.Id),
+                Type = MKPGConstants.ArmourTypeHeaders.User,
+                Data = writer.WrittenMemory,
+            };
+        }
+
+        public DatabaseUser DeserializeUser(BlobEntry blob)
+        {
+            return UserSerializer.Deserialize(blob.CreateReader(), UserId.FromBytes(blob.Id.GetBytes()));
         }
 
         // Trust Signatures
