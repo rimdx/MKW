@@ -11,8 +11,8 @@ namespace MKW.Storage
         void UpdateUser2(BlobEntry user);
         IEnumerable<BlobEntry> EnumerateUsers2();
 
-        BlobEntry SerializeUser(DatabaseUser user);
-        DatabaseUser DeserializeUser(BlobEntry blob);
+        BlobEntry SerializeUser2(DatabaseUser user);
+        DatabaseUser DeserializeUser2(BlobEntry blob);
 
         // Entry Management
         BlobEntry OpenEntry2(BlobId id);
@@ -20,7 +20,7 @@ namespace MKW.Storage
         void UpdateEntry2(BlobEntry entry);
         IEnumerable<BlobEntry> EnumerateEntries2();
 
-        BlobEntry SerializeEntry(DatabaseEntry entry);
-        DatabaseEntry DeserializeEntry(BlobEntry blob);
+        BlobEntry SerializeEntry2(DatabaseEntry entry);
+        DatabaseEntry DeserializeEntry2(BlobEntry blob);
     }
 }
