@@ -3,9 +3,9 @@
 
 using MKW.Core;
 
-namespace MKW.Storage.MKPG.BlobStore
+namespace MKW.Storage
 {
-    internal sealed class BlobId : IdBase
+    public sealed class BlobId : IdBase
     {
         private BlobId(ReadOnlyMemory<byte> data)
             : base(data.ToArray(), data.Length)

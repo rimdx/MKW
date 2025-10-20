@@ -3,12 +3,11 @@
 
 using MKW.Common;
 
-namespace MKW.Storage.MKPG.BlobStore
+namespace MKW.Storage
 {
-    internal sealed record class BlobEntry
+    public abstract record class BlobEntry
     {
         public required BlobId Id { get; init; }
-        public required string Type { get; init; }
         public required ReadOnlyMemory<byte> Data { get; init; }
 
         public IBufferReader<byte> CreateReader()

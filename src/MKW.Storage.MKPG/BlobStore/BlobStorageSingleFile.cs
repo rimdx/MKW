@@ -16,7 +16,7 @@ namespace MKW.Storage.MKPG.BlobStore
             this.editor = editor;
         }
 
-        public void Create(BlobEntry entry)
+        public void Create(PgpBlobEntry entry)
         {
             using IFileEditorFactory.ITransaction transaction = editor.CreateTransaction();
 
@@ -24,12 +24,12 @@ namespace MKW.Storage.MKPG.BlobStore
             transaction.Commit();
         }
 
-        private static void CreateInternal(IFileEditorFactory.ITransaction transaction, BlobEntry entry)
+        private static void CreateInternal(IFileEditorFactory.ITransaction transaction, PgpBlobEntry entry)
         {
             using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(transaction.Writer);
 
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            foreach (PgpBlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 if (blob.Id.Equals(entry.Id))
                 {
@@ -44,7 +44,7 @@ namespace MKW.Storage.MKPG.BlobStore
             BlobStorageSerializer.WriteBlob(writer, entry);
         }
 
-        public void Update(BlobEntry entry)
+        public void Update(PgpBlobEntry entry)
         {
             using IFileEditorFactory.ITransaction transaction = editor.CreateTransaction();
 
@@ -52,13 +52,13 @@ namespace MKW.Storage.MKPG.BlobStore
             transaction.Commit();
         }
 
-        private static void UpdateInternal(IFileEditorFactory.ITransaction transaction, BlobEntry entry)
+        private static void UpdateInternal(IFileEditorFactory.ITransaction transaction, PgpBlobEntry entry)
         {
             using StreamReader reader = new StreamReader(transaction.Reader);
             using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Writer));
 
             int updated = 0;
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            foreach (PgpBlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 if (blob.Id.Equals(entry.Id))
                 {
@@ -82,11 +82,11 @@ namespace MKW.Storage.MKPG.BlobStore
             }
         }
 
-        public BlobEntry Open(BlobId id)
+        public PgpBlobEntry Open(BlobId id)
         {
             using StreamReader reader = new StreamReader(editor.CreateReader());
 
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            foreach (PgpBlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 if (blob.Id.Equals(id))
                 {
@@ -113,7 +113,7 @@ namespace MKW.Storage.MKPG.BlobStore
             using StreamWriter writer = new StreamWriter(new StreamDisown(transaction.Writer));
 
             int updated = 0;
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            foreach (PgpBlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 if (blob.Id.Equals(id))
                 {
@@ -143,7 +143,7 @@ namespace MKW.Storage.MKPG.BlobStore
         {
             using StreamReader reader = new StreamReader(editor.CreateReader());
 
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            foreach (PgpBlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 if (blob.Id.Equals(id))
                 {
@@ -154,11 +154,11 @@ namespace MKW.Storage.MKPG.BlobStore
             return false;
         }
 
-        public IEnumerable<BlobEntry> Enumerate()
+        public IEnumerable<PgpBlobEntry> Enumerate()
         {
             using StreamReader reader = new StreamReader(editor.CreateReader());
 
-            foreach (BlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
+            foreach (PgpBlobEntry blob in BlobStorageSerializer.ReadBlobs(reader))
             {
                 yield return blob;
             }

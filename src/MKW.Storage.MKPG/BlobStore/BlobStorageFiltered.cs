@@ -14,7 +14,7 @@ namespace MKW.Storage.MKPG.BlobStore
             this.type = type;
         }
 
-        public void Create(BlobEntry entry)
+        public void Create(PgpBlobEntry entry)
         {
             if (entry.Type != type)
             {
@@ -24,7 +24,7 @@ namespace MKW.Storage.MKPG.BlobStore
             proxy.Create(entry);
         }
 
-        public void Update(BlobEntry entry)
+        public void Update(PgpBlobEntry entry)
         {
             if (entry.Type != type)
             {
@@ -40,9 +40,9 @@ namespace MKW.Storage.MKPG.BlobStore
             return proxy.Delete(id);
         }
 
-        public IEnumerable<BlobEntry> Enumerate()
+        public IEnumerable<PgpBlobEntry> Enumerate()
         {
-            foreach (BlobEntry entry in proxy.Enumerate())
+            foreach (PgpBlobEntry entry in proxy.Enumerate())
             {
                 if (entry.Type == type)
                 {
@@ -57,7 +57,7 @@ namespace MKW.Storage.MKPG.BlobStore
             return proxy.Exists(id);
         }
 
-        public BlobEntry Open(BlobId id)
+        public PgpBlobEntry Open(BlobId id)
         {
             // TODO: fix collision between different types with the same ids.
             return proxy.Open(id);
