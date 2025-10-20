@@ -5,15 +5,15 @@ namespace MKW.Storage.MKPG.BlobStore
 {
     internal interface IBlobStorage
     {
-        void Create(BlobEntry entry);
+        void Create(PgpBlobEntry entry);
 
-        void Update(BlobEntry entry);
+        void Update(PgpBlobEntry entry);
 
-        BlobEntry Open(BlobId id);
+        PgpBlobEntry Open(BlobId id);
 
         bool Delete(BlobId id);
 
-        IEnumerable<BlobEntry> Enumerate();
+        IEnumerable<PgpBlobEntry> Enumerate();
 
         bool Exists(BlobId id);
     }

@@ -76,22 +76,22 @@ namespace MKW.Storage.Tests
             byte[] data2 = new byte[512];
             random.NextBytes(data2);
 
-            backend.Create(new BlobEntry
+            backend.Create(new PgpBlobEntry
             {
                 Id = id1,
                 Type = MKPGConstants.ArmourTypeHeaders.User,
                 Data = data1
             });
 
-            backend.Create(new BlobEntry
+            backend.Create(new PgpBlobEntry
             {
                 Id = id2,
                 Type = MKPGConstants.ArmourTypeHeaders.User,
                 Data = data2
             });
 
-            BlobEntry e1 = backend.Open(id1);
-            BlobEntry e2 = backend.Open(id2);
+            PgpBlobEntry e1 = backend.Open(id1);
+            PgpBlobEntry e2 = backend.Open(id2);
 
             CollectionAssert.AreEqual(data1, e1.Data.ToArray());
             CollectionAssert.AreEqual(data2, e2.Data.ToArray());
@@ -101,7 +101,7 @@ namespace MKW.Storage.Tests
             Assert.Throws<EntryAlreadyExistsException>(
                 () =>
                 {
-                    backend.Create(new BlobEntry
+                    backend.Create(new PgpBlobEntry
                     {
                         Id = id1,
                         Type = MKPGConstants.ArmourTypeHeaders.User,
@@ -140,21 +140,21 @@ namespace MKW.Storage.Tests
             byte[] data3 = new byte[2384];
             random.NextBytes(data3);
 
-            users.Create(new BlobEntry
+            users.Create(new PgpBlobEntry
             {
                 Id = id1,
                 Type = MKPGConstants.ArmourTypeHeaders.User,
                 Data = data1
             });
 
-            entries.Create(new BlobEntry
+            entries.Create(new PgpBlobEntry
             {
                 Id = id2,
                 Type = MKPGConstants.ArmourTypeHeaders.Entry,
                 Data = data2
             });
 
-            backend.Create(new BlobEntry
+            backend.Create(new PgpBlobEntry
             {
                 Id = id3,
                 Type = "PGP JUNK",
@@ -162,7 +162,7 @@ namespace MKW.Storage.Tests
             });
 
             Assert.Throws<EntryAlreadyExistsException>(
-                () => users.Create(new BlobEntry{ Id = id3, Type = MKPGConstants.ArmourTypeHeaders.User, Data = data1 }));
+                () => users.Create(new PgpBlobEntry{ Id = id3, Type = MKPGConstants.ArmourTypeHeaders.User, Data = data1 }));
 
             ClassicAssert.AreEqual(1, users.Enumerate().Count());
             ClassicAssert.AreEqual(1, entries.Enumerate().Count());

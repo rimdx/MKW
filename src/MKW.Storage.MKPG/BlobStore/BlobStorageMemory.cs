@@ -7,14 +7,14 @@ namespace MKW.Storage.MKPG.BlobStore
 {
     internal sealed class BlobStorageMemory : IBlobStorage
     {
-        private readonly Dictionary<BlobId, BlobEntry> entries;
+        private readonly Dictionary<BlobId, PgpBlobEntry> entries;
 
         public BlobStorageMemory()
         {
             entries = [];
         }
 
-        public void Create(BlobEntry entry)
+        public void Create(PgpBlobEntry entry)
         {
             if (entries.ContainsKey(entry.Id))
             {
@@ -24,12 +24,12 @@ namespace MKW.Storage.MKPG.BlobStore
             entries[entry.Id] = entry;
         }
 
-        public void Update(BlobEntry entry)
+        public void Update(PgpBlobEntry entry)
         {
             entries[entry.Id] = entry;
         }
 
-        public BlobEntry Open(BlobId id)
+        public PgpBlobEntry Open(BlobId id)
         {
             return entries[id];
         }
@@ -44,7 +44,7 @@ namespace MKW.Storage.MKPG.BlobStore
             return entries.ContainsKey(id);
         }
 
-        public IEnumerable<BlobEntry> Enumerate()
+        public IEnumerable<PgpBlobEntry> Enumerate()
         {
             return entries.Values;
         }

@@ -7,7 +7,7 @@ namespace MKW.Storage.MKPG.BlobStore
 {
     internal static class BlobStorageSerializer
     {
-        public static IEnumerable<BlobEntry> ReadBlobs(TextReader reader)
+        public static IEnumerable<PgpBlobEntry> ReadBlobs(TextReader reader)
         {
             while (true)
             {
@@ -22,7 +22,7 @@ namespace MKW.Storage.MKPG.BlobStore
                     PgpArmourHeader id = message.GetHeader(MKPGConstants.ArmourHeaderNames.Id);
                     BlobId blobId = BlobIdSerializer.Deserialize(id.Value);
 
-                    yield return new BlobEntry
+                    yield return new PgpBlobEntry
                     {
                         Id = blobId,
                         Type = message.MessageTypeHeader,
@@ -32,15 +32,15 @@ namespace MKW.Storage.MKPG.BlobStore
             }
         }
 
-        public static void WriteBlobs(TextWriter writer, IEnumerable<BlobEntry> blobs)
+        public static void WriteBlobs(TextWriter writer, IEnumerable<PgpBlobEntry> blobs)
         {
-            foreach (BlobEntry blob in blobs)
+            foreach (PgpBlobEntry blob in blobs)
             {
                 WriteBlob(writer, blob);
             }
         }
 
-        public static void WriteBlob(TextWriter writer, BlobEntry blob)
+        public static void WriteBlob(TextWriter writer, PgpBlobEntry blob)
         {
             PgpArmouredMessage msg = new PgpArmouredMessage
             {
