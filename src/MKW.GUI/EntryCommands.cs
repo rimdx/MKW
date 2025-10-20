@@ -10,5 +10,6 @@ namespace MKW.GUI
         public static RoutedUICommand AddEntry { get; } = new RoutedUICommand();
         public static RoutedUICommand DeleteEntry { get; } = new RoutedUICommand();
         public static RoutedUICommand EditEntry { get; } = new RoutedUICommand();
+        public static RoutedUICommand CopyProperty { get; } = new RoutedUICommand();
     }
 }

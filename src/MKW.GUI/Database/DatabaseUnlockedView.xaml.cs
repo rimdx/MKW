@@ -4,6 +4,7 @@
 using MKW.GUI.EntryEditor;
 using MKW.GUI.ExportWizard;
 using MKW.GUI.ImportWizard;
+using MKW.GUI.Model;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -117,6 +118,48 @@ namespace MKW.GUI.Database
             {
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
+        }
+
+        private static bool CanCopyProperty(EntryListViewModel? entry, PropertyInfo property)
+        {
+            if (entry == null)
+            {
+                return false;
+            }
+
+            EntryValueModel entryValue = entry.EntryEditorModel.Properties[property.Key];
+            if (entryValue.Value == "")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static void CopyProperty(EntryListViewModel? entry, PropertyInfo property)
+        {
+            if (entry == null)
+            {
+                return;
+            }
+
+            EntryValueModel entryValue = entry.EntryEditorModel.Properties[property.Key];
+
+            Clipboard.SetText(entryValue.Value);
+        }
+
+        private void CopyPropertyCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            PropertyInfo property = (PropertyInfo)e.Parameter;
+
+            e.CanExecute = CanCopyProperty(model.SelectedEntry, property);
+        }
+
+        private void CopyPropertyCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            PropertyInfo property = (PropertyInfo)e.Parameter;
+
+            CopyProperty(model.SelectedEntry, property);
         }
     }
 }

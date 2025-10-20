@@ -22,6 +22,10 @@
                     Executed="DeleteEntryCommand_Executed"
                     CanExecute="DeleteEntryCommand_CanExecute"/>
 
+    <CommandBinding Command="{x:Static gui:EntryCommands.CopyProperty}"
+                    Executed="CopyPropertyCommand_Executed"
+                    CanExecute="CopyPropertyCommand_CanExecute" />
+
     <CommandBinding Command="{x:Static gui:AppCommands.DataImport}"
                     Executed="Import_Executed" />
 

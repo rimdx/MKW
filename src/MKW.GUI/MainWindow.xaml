@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MKW.GUI"
-        xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
+        xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images" xmlns:model="clr-namespace:MKW.GUI.Model"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="{Binding Title}"
@@ -107,6 +107,18 @@
       </MenuItem>
 
       <MenuItem Header="_Entry">
+        <MenuItem Header="Copy _User Name"
+                  Command="{x:Static local:EntryCommands.CopyProperty}"
+                  CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}"
+                  CommandParameter="{x:Static model:CommonEntryPropertiesModel.Username}" />
+
+        <MenuItem Header="Copy _Password"
+                  Command="{x:Static local:EntryCommands.CopyProperty}"
+                  CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}"
+                  CommandParameter="{x:Static model:CommonEntryPropertiesModel.Password}" />
+
+        <Separator />
+
         <MenuItem Header="Add Entry..."
                   Command="{x:Static local:EntryCommands.AddEntry}"
                   CommandTarget="{Binding Path=SelectedTab.DatabaseViewModel.ContentView}">
