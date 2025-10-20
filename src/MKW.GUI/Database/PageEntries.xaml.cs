@@ -71,11 +71,9 @@ namespace MKW.GUI.Database
 
         private DataTemplate MakeCellTemplate(EntryListColumn column)
         {
-            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
+            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(EntryCellView));
 
             factory.SetBinding(TextBlock.TextProperty, MakeDisplayMemberBinding(column));
-            factory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.NoWrap);
-            factory.SetValue(TextBlock.TextTrimmingProperty, TextTrimming.CharacterEllipsis);
 
             return new DataTemplate()
             {
