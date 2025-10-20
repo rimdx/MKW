@@ -30,7 +30,7 @@ namespace MKW.Storage.Tests
                 Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
             };
 
-            database.CreateEntry(dbEntry.Id, dbEntry);
+            database.CreateEntry(null, dbEntry);
 
             DatabaseEntry read = database.OpenEntry(dbEntry.Id);
 
@@ -38,9 +38,9 @@ namespace MKW.Storage.Tests
             CollectionAssert.AreEqual(dbEntry.Data.ToArray(), read.Data.ToArray());
             CollectionAssert.AreEqual(dbEntry.Keys, read.Keys);
 
-            database.CreateEntry(EntryId.Create(), dbEntry);
-            database.CreateEntry(EntryId.Create(), dbEntry);
-            database.CreateEntry(EntryId.Create(), dbEntry);
+            database.CreateEntry(null, dbEntry with { Id = EntryId.Create() });
+            database.CreateEntry(null, dbEntry with { Id = EntryId.Create() });
+            database.CreateEntry(null, dbEntry with { Id = EntryId.Create() });
 
             DatabaseEntry[] entries = database.EnumerateEntries().ToArray();
 
@@ -71,13 +71,14 @@ namespace MKW.Storage.Tests
             EntryId theid = EntryId.Create();
             EntryId someid = EntryId.Create();
 
-            database.CreateEntry(EntryId.Create(), dbEntry);
-            database.CreateEntry(someid, dbEntry);
-            database.CreateEntry(theid, dbEntry);
-            database.CreateEntry(EntryId.Create(), dbEntry);
+            database.CreateEntry(null, dbEntry with { Id = EntryId.Create() });
+            database.CreateEntry(null, dbEntry with { Id = someid });
+            database.CreateEntry(null, dbEntry with { Id = theid });
+            database.CreateEntry(null, dbEntry with { Id = EntryId.Create() });
 
-            database.UpdateEntry(theid, dbEntry with
+            database.UpdateEntry(null, dbEntry with
             {
+                Id = theid,
                 Data = data2,
             });
 
@@ -106,7 +107,7 @@ namespace MKW.Storage.Tests
 
             using MKPGDatabase database = new MKPGDatabase();
 
-            database.CreateUser(user.Id, user);
+            database.CreateUser(null, user);
             DatabaseUser decoded = database.OpenUser(user.Id);
 
             CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());
@@ -114,8 +115,8 @@ namespace MKW.Storage.Tests
             CollectionAssert.AreEqual(user.PublicKey.Payload.ToArray(), decoded.PublicKey.Payload.ToArray());
             CollectionAssert.AreEqual(user.PublicKey.Signature.ToArray(), decoded.PublicKey.Signature.ToArray());
 
-            database.CreateUser(UserId.Create(), user);
-            database.CreateUser(UserId.Create(), user);
+            database.CreateUser(null, user with { Id = UserId.Create() });
+            database.CreateUser(null, user with { Id = UserId.Create() });
 
             DatabaseUser[] users = database.EnumerateUsers().ToArray();
             ClassicAssert.AreEqual(3, users.Length);
@@ -150,17 +151,17 @@ namespace MKW.Storage.Tests
 
             using MKPGDatabase database = new MKPGDatabase();
 
-            database.CreateEntry(EntryId.Create(), entry);
-            database.CreateUser(UserId.Create(), user);
+            database.CreateEntry(null, entry with { Id = EntryId.Create() });
+            database.CreateUser(null, user with { Id = UserId.Create() });
 
             ClassicAssert.AreEqual(1, database.EnumerateEntries().Count());
             ClassicAssert.AreEqual(1, database.EnumerateUsers().Count());
 
-            database.CreateEntry(EntryId.Create(), entry);
-            database.CreateEntry(EntryId.Create(), entry);
-            database.CreateEntry(EntryId.Create(), entry);
-            database.CreateUser(UserId.Create(), user);
-            database.CreateUser(UserId.Create(), user);
+            database.CreateEntry(null, entry with { Id = EntryId.Create() });
+            database.CreateEntry(null, entry with { Id = EntryId.Create() });
+            database.CreateEntry(null, entry with { Id = EntryId.Create() });
+            database.CreateUser(null, user with { Id = UserId.Create() });
+            database.CreateUser(null, user with { Id = UserId.Create() });
 
             ClassicAssert.AreEqual(4, database.EnumerateEntries().Count());
             ClassicAssert.AreEqual(3, database.EnumerateUsers().Count());
