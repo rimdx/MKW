@@ -22,7 +22,12 @@ namespace MKW.Storage.MKPG.BlobStore
                     PgpArmourHeader id = message.GetHeader(MKPGConstants.ArmourHeaderNames.Id);
                     BlobId blobId = BlobIdSerializer.Deserialize(id.Value);
 
-                    yield return new BlobEntry(blobId, message.MessageTypeHeader, message.Data);
+                    yield return new BlobEntry
+                    {
+                        Id = blobId,
+                        Type = message.MessageTypeHeader,
+                        Data = message.Data
+                    };
                 }
             }
         }
