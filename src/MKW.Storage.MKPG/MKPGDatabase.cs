@@ -78,7 +78,7 @@ namespace MKW.Storage.MKPG
             }
         }
 
-        public BlobEntry SerializeEntry(DatabaseEntry entry)
+        public BlobEntry SerializeEntry2(DatabaseEntry entry)
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
@@ -91,7 +91,7 @@ namespace MKW.Storage.MKPG
             };
         }
 
-        public DatabaseEntry DeserializeEntry(BlobEntry blob)
+        public DatabaseEntry DeserializeEntry2(BlobEntry blob)
         {
             return EntrySerializer.Deserialize(blob.CreateReader(),
                                                EntryId.FromBytes(blob.Id.GetBytes().Span));
@@ -152,7 +152,7 @@ namespace MKW.Storage.MKPG
         }
 
         // User serialize/deserialize
-        public BlobEntry SerializeUser(DatabaseUser user)
+        public BlobEntry SerializeUser2(DatabaseUser user)
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             UserSerializer.Serialize(writer, user);
@@ -165,7 +165,7 @@ namespace MKW.Storage.MKPG
             };
         }
 
-        public DatabaseUser DeserializeUser(BlobEntry blob)
+        public DatabaseUser DeserializeUser2(BlobEntry blob)
         {
             return UserSerializer.Deserialize(blob.CreateReader(), UserId.FromBytes(blob.Id.GetBytes()));
         }
