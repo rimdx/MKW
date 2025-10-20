@@ -7,6 +7,7 @@
              xmlns:gui="clr-namespace:MKW.GUI"
              xmlns:images="clr-namespace:MKW.GUI.Images;assembly=MKW.GUI.Images"
              xmlns:controls="clr-namespace:MKW.GUI.Controls"
+             xmlns:model="clr-namespace:MKW.GUI.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=local:DatabaseUnlockedViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -25,6 +26,18 @@
 
       <ListView.ContextMenu>
         <ContextMenu>
+          <MenuItem Header="Copy _User Name"
+                    Command="{x:Static gui:EntryCommands.CopyProperty}"
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}"
+                    CommandParameter="{x:Static model:CommonEntryPropertiesModel.Username}" />
+
+          <MenuItem Header="Copy _Password"
+                    Command="{x:Static gui:EntryCommands.CopyProperty}"
+                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}"
+                    CommandParameter="{x:Static model:CommonEntryPropertiesModel.Password}" />
+
+          <Separator />
+
           <MenuItem Header="_Add Entry..."
                     Command="{x:Static gui:EntryCommands.AddEntry}"
                     CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
