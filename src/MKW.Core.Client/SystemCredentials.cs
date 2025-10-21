@@ -3,7 +3,7 @@
 
 using MKW.Cryptography;
 
-namespace MKW.Core.Implementation
+namespace MKW.Core.Client
 {
     public record class SystemCredentials
     {
