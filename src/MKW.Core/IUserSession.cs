@@ -7,14 +7,15 @@ namespace MKW.Core
     {
         UserId Id { get; }
 
-        IEntrySession CreateEntry();
-        IEntrySession CreateEntry(EntryId id);
+        EntryId CreateEntry(EntryPayload payload);
+        void CreateEntry(EntryId id, EntryPayload payload);
+        void UpdateEntry(EntryId id, EntryPayload newPayload);
 
         void DeleteEntry(EntryId id);
 
-        IEntrySession OpenEntry(EntryId id);
+        EntryPayload? OpenEntry(EntryId id);
 
-        IEnumerable<IEntrySession> EnumerateEntries();
+        IEnumerable<KeyValuePair<EntryId, EntryPayload?>> EnumerateEntries();
 
         IEnumerable<UserId> EnumerateTrustedUsers();
 

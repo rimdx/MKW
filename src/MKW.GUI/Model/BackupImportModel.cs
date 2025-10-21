@@ -65,8 +65,7 @@ namespace MKW.GUI.Model
             {
                 if (entry.IsSelected)
                 {
-                    using IEntrySession newEntry = user.CreateEntry();
-                    newEntry.UpdatePayload(entry.Payload);
+                    user.CreateEntry(entry.Payload);
                 }
             }
 

@@ -100,8 +100,7 @@ namespace MKW.GUI.Tests
                 EntryPayload payload = new EntryPayload();
                 payload.SetProperty(CommonEntryPropertiesModel.Title.Key, $"entry{i}");
 
-                using IEntrySession entry = unlocked.UserUnsafe.CreateEntry();
-                entry.UpdatePayload(payload);
+                unlocked.UserUnsafe.CreateEntry(payload);
             }
             unlocked.RefreshEntries();
 
