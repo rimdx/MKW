@@ -70,7 +70,8 @@ namespace MKW.Core.Client
 
                 if (payload != null)
                 {
-                    database.UpdateEntry(entry.Id, encoder.EncodeEntry(entry, payload));
+                    DatabaseEntry encoded = encoder.EncodeEntry(entry.Id, payload);
+                    database.UpdateEntry(entry.Id, encoded);
                 }
                 else
                 {

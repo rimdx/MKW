@@ -22,7 +22,7 @@ namespace MKW.Core.Client
             this.user = user;
         }
 
-        public DatabaseEntry EncodeEntry(DatabaseEntry entry, EntryPayload payload)
+        public DatabaseEntry EncodeEntry(EntryId entryId, EntryPayload payload)
         {
             SymmetricKey sessionKey = crypto.CreateSymmetricKey();
 
@@ -46,8 +46,9 @@ namespace MKW.Core.Client
                 keys.Add(user.Id, encyptedKey);
             }
 
-            return entry with
+            return new DatabaseEntry
             {
+                Id = entryId,
                 Keys = keys,
                 Data = data,
                 Salt = payloadEncoder.ExportIV(),
