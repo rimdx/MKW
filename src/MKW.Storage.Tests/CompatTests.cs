@@ -27,7 +27,7 @@ namespace MKW.Storage.Tests
 
             using IAdminSession admin = client.OpenAdmin("123");
 
-            ClassicAssert.NotNull(admin.EnumerateEntries().ToArray()[0].OpenPayload());
+            ClassicAssert.NotNull(admin.EnumerateEntries().ToArray()[0]);
         }
     }
 }

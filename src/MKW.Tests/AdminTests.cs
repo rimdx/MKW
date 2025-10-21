@@ -87,17 +87,14 @@ namespace MKW.Tests
 
             {
                 using IUserSession user = sbox.CreateUser(client, "user1", out _);
-                using IEntrySession entry = user.CreateEntry();
-                entry.UpdatePayload(sbox.CreatePayload("data"));
-                entryId = entry.Id;
+                entryId = user.CreateEntry(sbox.CreatePayload("data"));
             }
 
             {
                 using IAdminSession admin = sbox.OpenAdmin(client);
-                using IEntrySession entry = admin.OpenEntry(entryId);
 
                 ClassicAssert.AreEqual(sbox.CreatePayload("data"),
-                                       entry.OpenPayload());
+                                       admin.OpenEntry(entryId));
             }
         }
 
@@ -126,25 +123,20 @@ namespace MKW.Tests
 
             using IAdminSession admin = sbox.OpenAdmin(client);
 
-            using IEntrySession entry1 = admin.CreateEntry();
-            entry1.UpdatePayload(sbox.CreatePayload("data1"));
-
-            using IEntrySession entry2 = admin.CreateEntry();
-            entry2.UpdatePayload(sbox.CreatePayload("data2"));
-
-            using IEntrySession entry3 = admin.CreateEntry();
-            entry3.UpdatePayload(sbox.CreatePayload("data3"));
+            EntryId entry1 = admin.CreateEntry(sbox.CreatePayload("data1"));
+            EntryId entry2 = admin.CreateEntry(sbox.CreatePayload("data2"));
+            EntryId entry3 = admin.CreateEntry(sbox.CreatePayload("data3"));
 
             using IUserSession user = sbox.CreateUser(client, "user1", out _);
 
             CollectionAssert.AreEquivalent(
-                new[]
+                new Dictionary<EntryId, EntryPayload?>
                 {
-                    sbox.CreatePayload("data1"),
-                    sbox.CreatePayload("data2"),
-                    sbox.CreatePayload("data3"),
+                     { entry1, sbox.CreatePayload("data1") },
+                     { entry2, sbox.CreatePayload("data2") },
+                     { entry3, sbox.CreatePayload("data3") },
                 },
-                user.EnumerateEntries().Select(value => value.OpenPayload()));
+                user.EnumerateEntries());
         }
     }
 }

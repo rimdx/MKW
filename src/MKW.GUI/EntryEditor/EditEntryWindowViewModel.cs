@@ -9,22 +9,22 @@ namespace MKW.GUI.EntryEditor
     public class EditEntryWindowViewModel : EntryEditorViewModelBase, IDisposable
     {
         private readonly DatabaseUnlockedModel database;
-        private readonly IEntrySession entry;
+        private readonly EntryId entryId;
 
-        public EditEntryWindowViewModel(DatabaseUnlockedModel database, IEntrySession entry)
-            : base(GetEditor(database, entry), database.CommonPropertiesModel)
+        public EditEntryWindowViewModel(DatabaseUnlockedModel database, EntryId entryId)
+            : base(GetEditor(database, entryId), database.CommonPropertiesModel)
         {
             this.database = database;
-            this.entry = entry;
+            this.entryId = entryId;
         }
 
-        private static EntryEditorModel GetEditor(DatabaseUnlockedModel database, IEntrySession entry)
+        private static EntryEditorModel GetEditor(DatabaseUnlockedModel database, EntryId entryId)
         {
-            EntryPayload? payload = entry.OpenPayload();
+            EntryPayload? payload = database.OpenEntry(entryId);
 
             if (payload != null)
             {
-                return new EntryEditorModel(entry.Id, payload, database.CommonPropertiesModel);
+                return new EntryEditorModel(entryId, payload, database.CommonPropertiesModel);
             }
             else
             {
@@ -34,12 +34,11 @@ namespace MKW.GUI.EntryEditor
 
         protected override void SaveEntry(EntryPayload payload)
         {
-            database.UpdateEntry(entry, payload);
+            database.UpdateEntry(entryId, payload);
         }
 
         public void Dispose()
         {
-            entry.Dispose();
         }
     }
 }

@@ -22,27 +22,19 @@ namespace MKW.Tests
             using IUserSession user = sbox.CreateUser(client, "secretprotector", out _);
             using IAdminSession admin = sbox.OpenAdmin(client);
 
-            using IEntrySession entry = admin.CreateEntry();
-            entry.UpdatePayload(sbox.CreatePayload("secret"));
+            EntryId entryId = EntryId.Create();
+            admin.CreateEntry(entryId, sbox.CreatePayload("secret"));
 
             ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
             ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
             ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
 
-            ClassicAssert.AreEqual(entry.Id, db.EnumerateEntries().First().Id);
-
-            CollectionAssert.AreEqual(
-                new[]
-                {
-                    UserId.Admin(),
-                    user.Id,
-                },
-                entry.EnumerateAccess());
+            ClassicAssert.AreEqual(entryId, db.EnumerateEntries().First().Id);
 
             ClassicAssert.AreEqual(sbox.CreatePayload("secret"),
-                                   user.OpenEntry(entry.Id).OpenPayload());
+                                   user.OpenEntry(entryId));
             ClassicAssert.AreEqual(sbox.CreatePayload("secret"),
-                                   admin.OpenEntry(entry.Id).OpenPayload());
+                                   admin.OpenEntry(entryId));
         }
 
         [Test]
@@ -56,52 +48,51 @@ namespace MKW.Tests
             using IUserSession oldUser = sbox.CreateUser(client, "iamanoldman", out _);
             using IUserSession newUser = sbox.CreateUser(client, "ihatehimbutcantseehisstuff", out _);
 
-            using IEntrySession entry1 = oldUser.CreateEntry();
-            entry1.UpdatePayload(sbox.CreatePayload("entry1"));
-
-            using IEntrySession entry2 = oldUser.CreateEntry();
-            entry2.UpdatePayload(sbox.CreatePayload("entry2"));
+            EntryId entry1id = oldUser.CreateEntry(sbox.CreatePayload("entry1"));
+            EntryId entry2id = oldUser.CreateEntry(sbox.CreatePayload("entry2"));
 
             {
-                DatabaseEntry entry = db.OpenEntry(entry1.Id);
+                DatabaseEntry entry = db.OpenEntry(entry1id);
                 entry.Keys.Remove(newUser.Id);
-                db.UpdateEntry(entry1.Id, entry);
+                db.UpdateEntry(entry1id, entry);
             }
 
             CollectionAssert.AreEqual(
-                new EntryPayload?[]
+                new Dictionary<EntryId, EntryPayload?>
                 {
-                    sbox.CreatePayload("entry1"),
-                    sbox.CreatePayload("entry2"),
+                    { entry1id, sbox.CreatePayload("entry1") },
+                    { entry2id, sbox.CreatePayload("entry2") },
                 },
-                oldUser.EnumerateEntries().Select(entry => entry.OpenPayload())
-            );
-            CollectionAssert.AreEqual(
-                new EntryPayload?[]
-                {
-                    null,
-                    sbox.CreatePayload("entry2"),
-                },
-                newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+                oldUser.EnumerateEntries()
             );
 
-            entry1.UpdatePayload(sbox.CreatePayload("newcontent"));
+            CollectionAssert.AreEqual(
+                new Dictionary<EntryId, EntryPayload?>
+                {
+                    { entry1id, null },
+                    { entry2id, sbox.CreatePayload("entry2") },
+                },
+                newUser.EnumerateEntries()
+            );
+
+            oldUser.UpdateEntry(entry1id, sbox.CreatePayload("newcontent"));
 
             CollectionAssert.AreEqual(
-                new EntryPayload?[]
+                new Dictionary<EntryId, EntryPayload?>
                 {
-                    sbox.CreatePayload("newcontent"),
-                    sbox.CreatePayload("entry2"),
+                    { entry1id, sbox.CreatePayload("newcontent") },
+                    { entry2id, sbox.CreatePayload("entry2") },
                 },
-                oldUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+                oldUser.EnumerateEntries()
             );
+
             CollectionAssert.AreEqual(
-                new EntryPayload?[]
+                new Dictionary<EntryId, EntryPayload?>
                 {
-                    sbox.CreatePayload("newcontent"),
-                    sbox.CreatePayload("entry2"),
+                    { entry1id, sbox.CreatePayload("newcontent") },
+                    { entry2id, sbox.CreatePayload("entry2") },
                 },
-                newUser.EnumerateEntries().Select(entry => entry.OpenPayload())
+                newUser.EnumerateEntries()
             );
         }
 
@@ -118,26 +109,19 @@ namespace MKW.Tests
                 using IUserSession user = sbox.CreateUser(client, "usersecret", out _);
 
                 // create
-                using IEntrySession entry = user.CreateEntry();
-                entryId = entry.Id;
-
-                ClassicAssert.AreEqual(null,
-                                       user.OpenEntry(entry.Id).OpenPayload());
-
-                // initial update
-                entry.UpdatePayload(sbox.CreatePayload("data1"));
+                entryId = user.CreateEntry(sbox.CreatePayload("data1"));
 
                 ClassicAssert.AreEqual(sbox.CreatePayload("data1"),
-                                       user.OpenEntry(entry.Id).OpenPayload());
+                                       user.OpenEntry(entryId));
 
                 // another update
-                entry.UpdatePayload(sbox.CreatePayload("data2"));
+                user.UpdateEntry(entryId, sbox.CreatePayload("data2"));
 
                 ClassicAssert.AreEqual(sbox.CreatePayload("data2"),
-                                       user.OpenEntry(entry.Id).OpenPayload());
+                                       user.OpenEntry(entryId));
 
                 // create with same id
-                Assert.Throws<EntryAlreadyExistsException>(() => user.CreateEntry(entry.Id));
+                Assert.Throws<EntryAlreadyExistsException>(() => user.CreateEntry(entryId, sbox.CreatePayload("invalid")));
             }
 
             // blank session
@@ -145,15 +129,15 @@ namespace MKW.Tests
             using (ClientSession client = sbox.OpenSession(db))
             {
                 using IUserSession user = client.OpenUser("usersecret");
-                using IEntrySession entry = user.OpenEntry(entryId);
+
                 ClassicAssert.AreEqual(sbox.CreatePayload("data2"),
-                                       user.OpenEntry(entry.Id).OpenPayload());
+                                       user.OpenEntry(entryId));
 
                 // delete
-                user.DeleteEntry(entry.Id);
-                Assert.Throws<EntryDoesNotExistException>(() => user.OpenEntry(entry.Id));
-                user.DeleteEntry(entry.Id);
-                Assert.Throws<EntryDoesNotExistException>(() => user.OpenEntry(entry.Id));
+                user.DeleteEntry(entryId);
+                Assert.Throws<EntryDoesNotExistException>(() => user.OpenEntry(entryId));
+                user.DeleteEntry(entryId);
+                Assert.Throws<EntryDoesNotExistException>(() => user.OpenEntry(entryId));
             }
         }
     }

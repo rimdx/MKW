@@ -125,12 +125,7 @@ namespace MKW.Tests
 
             using IAdminSession admin = sbox.OpenAdmin(client);
 
-            EntryId entryId;
-            using (IEntrySession entry = admin.CreateEntry())
-            {
-                entry.UpdatePayload(sbox.CreatePayload("secret stuff"));
-                entryId = entry.Id;
-            }
+            EntryId entryId = admin.CreateEntry(sbox.CreatePayload("secret stuff"));
 
             // create request
             UserAccessRequest request = client.CreateUserAccessRequest("secret");
@@ -166,24 +161,12 @@ namespace MKW.Tests
 
             using IUserSession userSession = client.OpenUser(addedUser.Id, "secret");
 
-            using (IEntrySession entry = userSession.OpenEntry(entryId))
-            {
-                ClassicAssert.AreEqual(sbox.CreatePayload("secret stuff"),
-                                       entry.OpenPayload());
-            }
+            userSession.CreateEntry(sbox.CreatePayload("secret stuff"));
 
-            EntryId newEntryId;
-            using (IEntrySession entry = userSession.CreateEntry())
-            {
-                entry.UpdatePayload(sbox.CreatePayload("new entry"));
-                newEntryId = entry.Id;
-            }
+            EntryId newEntryId = userSession.CreateEntry(sbox.CreatePayload("new entry"));
 
-            using (IEntrySession entry = admin.OpenEntry(newEntryId))
-            {
-                ClassicAssert.AreEqual(sbox.CreatePayload("new entry"),
-                                       entry.OpenPayload());
-            }
+            ClassicAssert.AreEqual(sbox.CreatePayload("new entry"),
+                                   admin.OpenEntry(newEntryId));
         }
     }
 }

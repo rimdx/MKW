@@ -17,6 +17,7 @@ namespace MKW.Core.Client
         private readonly IAsymmetricPrivateTransformer transformer;
 
         private readonly UserMetadataDecoder metadata;
+        private readonly EntryController entryController;
         private readonly UserTrustProvider trustProvider;
 
         private readonly UserMetadataEncoder metadataEncoder;
@@ -34,6 +35,7 @@ namespace MKW.Core.Client
             this.transformer = transformer;
 
             metadata = new UserMetadataDecoder(transformer);
+            entryController = new EntryController(database, crypto, this, transformer);
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
 
             metadataEncoder = new UserMetadataEncoder(transformer);
@@ -93,31 +95,39 @@ namespace MKW.Core.Client
             return metadata.OpenMetadata(admin);
         }
 
-        public IEntrySession OpenEntry(EntryId id)
+        public EntryPayload? OpenEntry(EntryId entryId)
         {
-            return Entry.Open(database, crypto, this, transformer, id);
+            return entryController.Open(entryId);
         }
 
-        public IEntrySession CreateEntry(EntryId id)
+        public void CreateEntry(EntryId entryId, EntryPayload payload)
         {
-            return Entry.Create(database, crypto, this, transformer, id);
+            entryController.Create(entryId, payload);
         }
 
-        public IEntrySession CreateEntry()
+        public EntryId CreateEntry(EntryPayload payload)
         {
-            return CreateEntry(EntryId.Create());
+            EntryId entryId = EntryId.Create();
+            entryController.Create(entryId, payload);
+            return entryId;
         }
 
-        public void DeleteEntry(EntryId id)
+        public void UpdateEntry(EntryId entryId, EntryPayload newPayload)
         {
-            database.DeleteEntry(id);
+            entryController.Update(entryId, newPayload);
         }
 
-        public IEnumerable<IEntrySession> EnumerateEntries()
+        public void DeleteEntry(EntryId entryId)
+        {
+            database.DeleteEntry(entryId);
+        }
+
+        public IEnumerable<KeyValuePair<EntryId, EntryPayload?>> EnumerateEntries()
         {
             foreach (DatabaseEntry entry in database.EnumerateEntries())
             {
-                yield return OpenEntry(entry.Id);
+                EntryPayload? payload = OpenEntry(entry.Id);
+                yield return new KeyValuePair<EntryId, EntryPayload?>(entry.Id, payload);
             }
         }
 

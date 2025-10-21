@@ -115,7 +115,7 @@ namespace MKW.GUI.Database
 
         public EditEntryWindowViewModel CreateEditEntryWindowViewModel(EntryId id)
         {
-            return new EditEntryWindowViewModel(database, database.OpenEntry(id));
+            return new EditEntryWindowViewModel(database, id);
         }
 
         public void DeleteEntry(EntryListViewModel entry)

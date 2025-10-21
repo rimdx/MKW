@@ -64,11 +64,9 @@ namespace MKW.GUI.Model
         {
             if (user != null)
             {
-                foreach (IEntrySession entry in user.EnumerateEntries())
+                foreach (KeyValuePair<EntryId, EntryPayload?> entry in user.EnumerateEntries())
                 {
-                    EntryPayload? payload = entry.OpenPayload();
-
-                    yield return new EntryEditorModel(entry.Id, payload,
+                    yield return new EntryEditorModel(entry.Key, entry.Value,
                                                       CommonPropertiesModel);
                 }
             }
@@ -85,17 +83,13 @@ namespace MKW.GUI.Model
 
         public void CreateEntry(EntryId id, EntryPayload payload)
         {
-            using IEntrySession entry = user.CreateEntry(id);
-
-            entry.UpdatePayload(payload);
-
+            user.CreateEntry(id, payload);
             RefreshEntries();
         }
 
-        public void UpdateEntry(IEntrySession entry, EntryPayload payload)
+        public void UpdateEntry(EntryId entryId, EntryPayload payload)
         {
-            entry.UpdatePayload(payload);
-
+            user.UpdateEntry(entryId, payload);
             RefreshEntries();
         }
 
@@ -129,7 +123,7 @@ namespace MKW.GUI.Model
             Database.RefreshUsers();
         }
 
-        public IEntrySession OpenEntry(EntryId entryId)
+        public EntryPayload OpenEntry(EntryId entryId)
         {
             return user.OpenEntry(entryId);
         }
