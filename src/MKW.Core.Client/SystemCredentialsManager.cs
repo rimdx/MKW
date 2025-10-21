@@ -6,7 +6,7 @@ using MKW.Cryptography;
 using MKW.Cryptography.Exceptions;
 using MKW.Storage;
 
-namespace MKW.Core.Implementation
+namespace MKW.Core.Client
 {
     public class SystemCredentialsManager
     {

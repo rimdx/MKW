@@ -5,7 +5,7 @@ using MKW.Core.Serialization;
 using MKW.Cryptography;
 using MKW.Storage;
 
-namespace MKW.Core.Implementation
+namespace MKW.Core.Client
 {
     public class EntryEncoder : IDisposable
     {

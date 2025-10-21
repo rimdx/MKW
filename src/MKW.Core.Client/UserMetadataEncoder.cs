@@ -4,7 +4,7 @@
 using MKW.Core.Serialization;
 using MKW.Cryptography;
 
-namespace MKW.Core.Implementation
+namespace MKW.Core.Client
 {
     public class UserMetadataEncoder
     {
