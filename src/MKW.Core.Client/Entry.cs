@@ -73,11 +73,9 @@ namespace MKW.Core.Client
 
         public void UpdatePayload(EntryPayload payload)
         {
-            DatabaseEntry entry = database.OpenEntry(entryId);
+            DatabaseEntry newEntry = encoder.EncodeEntry(entryId, payload);
 
-            DatabaseEntry newEntry = encoder.EncodeEntry(entry, payload);
-
-            database.UpdateEntry(Id, newEntry);
+            database.UpdateEntry(entryId, newEntry);
         }
 
         public EntryPayload? OpenPayload()
