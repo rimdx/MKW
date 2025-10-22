@@ -10,12 +10,15 @@ namespace MKW.Core.Client
     {
         private readonly ClientCryptography crypto;
         private readonly IDatabase database;
+        private readonly SystemCredentialsManager credManager;
 
         public UserController(ClientCryptography crypto,
                               IDatabase database)
         {
             this.crypto = crypto;
             this.database = database;
+
+            credManager = new SystemCredentialsManager(crypto);
         }
 
         public IUserSession OpenUser(UserId id, string password)
@@ -26,8 +29,6 @@ namespace MKW.Core.Client
             }
             else
             {
-                SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
-
                 DatabaseUser user = database.OpenUser(id);
 
                 // Credentials can be opened within the entered password and the public salt
@@ -48,8 +49,6 @@ namespace MKW.Core.Client
             {
                 try
                 {
-                    SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
-
                     IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
 
                     SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
@@ -70,8 +69,6 @@ namespace MKW.Core.Client
 
         public IAdminSession OpenAdmin(string password)
         {
-            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
-
             DatabaseUser admin = database.OpenUser(UserId.Admin());
 
             IUserCredentials creds = crypto.OpenUserCredentials(password,
