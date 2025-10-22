@@ -21,30 +21,6 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserAccessRequest CreateUserAccessRequest(string password)
-        {
-            DatabaseUser admin = database.OpenUser(UserId.Admin());
-
-            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
-
-            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
-            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
-
-            using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                systemCreds.PrivateKey);
-
-            // TODO: prompt user?
-            Memory<byte> signature = transformer.Sign(admin.PublicKey.Payload.Span);
-
-            return new UserAccessRequest
-            {
-                Salt = systemCreds.Salt,
-                PublicKey = systemCreds.PublicKey,
-                EncryptedPrivateKey = systemCreds.EncryptedPrivateKey,
-                AdminSignature = signature,
-            };
-        }
-
         public IUserSession OpenUser(UserId id, string password)
         {
             if (id.IsAdmin)
