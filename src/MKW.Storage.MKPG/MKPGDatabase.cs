@@ -187,6 +187,11 @@ namespace MKW.Storage.MKPG
         }
 
         // Misc
+        public ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj)
+        {
+            throw new NotImplementedException();
+        }
+
         public DatabaseConfiguration GetConfiguration()
         {
             return new DatabaseConfiguration

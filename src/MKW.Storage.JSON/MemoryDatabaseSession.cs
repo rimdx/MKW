@@ -4,6 +4,7 @@
 using MKW.Core;
 using MKW.Cryptography;
 using MKW.Storage.Exceptions;
+using System.Text.Json;
 
 namespace MKW.Storage.JSON
 {
@@ -225,6 +226,11 @@ namespace MKW.Storage.JSON
                 PreferredPublicKeyAlgorithm = CommonCryptographyAlgorithms.Rsa2048,
                 PreferredStringToKeyAlgorithm = CommonCryptographyAlgorithms.Pbkdf2,
             };
+        }
+
+        public ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj)
+        {
+            return JSONDatabaseUserProtectedData.Serialize(obj);
         }
 
         public virtual void ReloadDatabaseFile()

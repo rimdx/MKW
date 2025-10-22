@@ -46,13 +46,19 @@ namespace MKW.Core.Client
         {
             UserId userId = UserId.Create();
 
-            SignedPayload metadataBytes = metadataEncoder.EncodeMetadata(metadata);
+            DatabaseUserProtectedData protectedData = new DatabaseUserProtectedData
+            {
+                PublicKey = request.PublicKey,
+                Metadata = UserMetadataSerializer.Serialize(metadata),
+            };
+
+            ReadOnlyMemory<byte> protectedDataBytes = database.SerializeProtectedData(protectedData);
 
             DatabaseUserProtectedDataSigned protectedDataSigned = new DatabaseUserProtectedDataSigned
             {
-                PublicKey = request.PublicKey,
-                Metadata = metadataBytes.Payload,
-                Signature = transformer.Sign(request.PublicKey.Span),
+                PublicKey = protectedData.PublicKey,
+                Metadata = protectedData.Metadata,
+                Signature = transformer.Sign(protectedDataBytes.Span),
             };
 
             DatabaseUser user = new DatabaseUser
