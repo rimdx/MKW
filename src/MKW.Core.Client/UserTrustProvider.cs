@@ -26,6 +26,8 @@ namespace MKW.Core.Client
 
         private bool VerifyTrust(DatabaseUser user)
         {
+            ReadOnlyMemory<byte> bytes = database.SerializeProtectedData(user.ProtectedData);
+
             // trust ourselves
             if (user.ProtectedData.PublicKey.Span.SequenceEqual(meKey.ExportPublicKey().Span))
             {
@@ -40,7 +42,7 @@ namespace MKW.Core.Client
             }
 
             // otherwise verify admin trust to this user
-            if (adminKey.Verify(user.ProtectedData.PublicKey.Span, user.ProtectedData.Signature.Span))
+            if (adminKey.Verify(bytes.Span, user.ProtectedData.Signature.Span))
             {
                 return true;
             }

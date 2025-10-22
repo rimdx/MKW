@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core.Serialization;
 using MKW.Cryptography;
 using MKW.Storage;
+using Org.BouncyCastle.Asn1.Cms;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace MKW.Core.Client
 {
@@ -27,13 +30,19 @@ namespace MKW.Core.Client
 
             UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(transformer);
 
-            SignedPayload metadataBytes = metadataEncoder.EncodeMetadata(adminMetadata);
+            DatabaseUserProtectedData protectedData = new DatabaseUserProtectedData
+            {
+                PublicKey = systemCreds.PublicKey,
+                Metadata = UserMetadataSerializer.Serialize(adminMetadata),
+            };
+
+            ReadOnlyMemory<byte> protectedDataBytes = database.SerializeProtectedData(protectedData);
 
             DatabaseUserProtectedDataSigned protectedDataSigned = new DatabaseUserProtectedDataSigned
             {
-                PublicKey = systemCreds.PublicKey,
-                Metadata = metadataBytes.Payload,
-                Signature = transformer.Sign(systemCreds.PublicKey.Span),
+                PublicKey = protectedData.PublicKey,
+                Metadata = protectedData.Metadata,
+                Signature = transformer.Sign(protectedDataBytes.Span),
             };
 
             DatabaseUser admin = new DatabaseUser

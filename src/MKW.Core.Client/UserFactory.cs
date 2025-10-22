@@ -31,7 +31,8 @@ namespace MKW.Core.Client
                 systemCreds.PrivateKey);
 
             // TODO: prompt user?
-            ReadOnlyMemory<byte> signature = transformer.Sign(admin.ProtectedData.PublicKey.Span);
+            ReadOnlyMemory<byte> adminProtectedDataBytes = database.SerializeProtectedData(admin.ProtectedData);
+            ReadOnlyMemory<byte> signature = transformer.Sign(adminProtectedDataBytes.Span);
 
             return new UserAccessRequest
             {

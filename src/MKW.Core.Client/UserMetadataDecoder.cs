@@ -21,7 +21,8 @@ namespace MKW.Core.Client
 
         public bool VerifyMetadata(DatabaseUserProtectedDataSigned protectedData)
         {
-            return adminKey.Verify(protectedData.PublicKey.Span, protectedData.Signature.Span);
+            ReadOnlyMemory<byte> bytes = database.SerializeProtectedData(protectedData);
+            return adminKey.Verify(bytes.Span, protectedData.Signature.Span);
         }
 
         public UserMetadata OpenMetadata(DatabaseUser user)

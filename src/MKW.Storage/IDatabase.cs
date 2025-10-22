@@ -36,5 +36,7 @@ namespace MKW.Storage
 
         Task<bool> WaitForDatabaseChangesAsync(CancellationToken cancellationToken);
         void ReloadDatabaseFile();
+
+        ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj);
     }
 }
