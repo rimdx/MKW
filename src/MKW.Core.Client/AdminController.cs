@@ -18,36 +18,6 @@ namespace MKW.Core.Client
             this.database = database;
         }
 
-        public UserInfo CreateAdmin(string password, UserMetadata metadata)
-        {
-            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
-
-            IUserCredentials userCreds = crypto.CreateUserCredentials(password);
-
-            SystemCredentials systemCreds = credManager.GenerateCredentials(userCreds);
-
-            using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                systemCreds.PrivateKey);
-
-            UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(transformer);
-
-            DatabaseUser admin = new DatabaseUser
-            {
-                Id = UserId.Admin(),
-                PublicKey = new SignedPayload(systemCreds.PublicKey, null),
-                PrivateKey = systemCreds.EncryptedPrivateKey,
-                Salt = systemCreds.Salt,
-                Metadata = metadataEncoder.EncodeMetadata(metadata),
-            };
-
-            database.CreateUser(UserId.Admin(), admin);
-
-            // We are not gonna sign ourselves (as AddTrustSignature) for now
-            // TODO: ?
-
-            return CreateUserInfo(admin, metadata);
-        }
-
         public IAdminSession OpenAdmin(string password)
         {
             SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
