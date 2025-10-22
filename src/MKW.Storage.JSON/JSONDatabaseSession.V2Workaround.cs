@@ -9,25 +9,25 @@ namespace MKW.Storage.JSON
     public partial class JSONDatabaseSession
     {
         // User
-        public BlobEntry OpenUser2(BlobId id)
+        public Blob OpenUser2(BlobId id)
         {
             UserId userId = UserId.FromBytes(id.GetBytes());
             return SerializeUser2(OpenUser(userId));
         }
 
-        public void CreateUser2(BlobEntry user)
+        public void CreateUser2(Blob user)
         {
             UserId userId = UserId.FromBytes(user.Id.GetBytes());
             CreateUser(userId, DeserializeUser2(user));
         }
 
-        public void UpdateUser2(BlobEntry user)
+        public void UpdateUser2(Blob user)
         {
             UserId userId = UserId.FromBytes(user.Id.GetBytes());
             UpdateUser(userId, DeserializeUser2(user));
         }
 
-        public IEnumerable<BlobEntry> EnumerateUsers2()
+        public IEnumerable<Blob> EnumerateUsers2()
         {
             foreach (DatabaseUser user in EnumerateUsers())
             {
@@ -35,18 +35,18 @@ namespace MKW.Storage.JSON
             }
         }
 
-        public BlobEntry SerializeUser2(DatabaseUser user)
+        public Blob SerializeUser2(DatabaseUser user)
         {
             JSONDatabaseUser obj = JSONDatabaseUser.Serialize(user);
 
-            return new BlobEntry
+            return new BlobUser
             {
                 Id = BlobId.From(user.Id),
                 Data = JsonSerializer.SerializeToUtf8Bytes(obj),
             };
         }
 
-        public DatabaseUser DeserializeUser2(BlobEntry blob)
+        public DatabaseUser DeserializeUser2(Blob blob)
         {
             UserId userId = UserId.FromBytes(blob.Id.GetBytes());
             JSONDatabaseUser? obj = JsonSerializer.Deserialize<JSONDatabaseUser>(blob.Data.Span);
@@ -54,25 +54,25 @@ namespace MKW.Storage.JSON
         }
 
         // Entry
-        public BlobEntry OpenEntry2(BlobId id)
+        public Blob OpenEntry2(BlobId id)
         {
             EntryId entryId = EntryId.FromBytes(id.GetBytes().Span);
             return SerializeEntry2(OpenEntry(entryId));
         }
 
-        public void CreateEntry2(BlobEntry entry)
+        public void CreateEntry2(Blob entry)
         {
             EntryId entryId = EntryId.FromBytes(entry.Id.GetBytes().Span);
             CreateEntry(entryId, DeserializeEntry2(entry));
         }
 
-        public void UpdateEntry2(BlobEntry entry)
+        public void UpdateEntry2(Blob entry)
         {
             EntryId entryId = EntryId.FromBytes(entry.Id.GetBytes().Span);
             UpdateEntry(entryId, DeserializeEntry2(entry));
         }
 
-        public IEnumerable<BlobEntry> EnumerateEntries2()
+        public IEnumerable<Blob> EnumerateEntries2()
         {
             foreach (DatabaseEntry entry in EnumerateEntries())
             {
@@ -80,18 +80,18 @@ namespace MKW.Storage.JSON
             }
         }
 
-        public BlobEntry SerializeEntry2(DatabaseEntry entry)
+        public Blob SerializeEntry2(DatabaseEntry entry)
         {
             JSONDatabaseSecretEntry obj = JSONDatabaseSecretEntry.Serialize(entry);
 
-            return new BlobEntry
+            return new BlobSecretEntry
             {
                 Id = BlobId.From(entry.Id),
                 Data = JsonSerializer.SerializeToUtf8Bytes(obj),
             };
         }
 
-        public DatabaseEntry DeserializeEntry2(BlobEntry blob)
+        public DatabaseEntry DeserializeEntry2(Blob blob)
         {
             EntryId entryId = EntryId.FromBytes(blob.Id.GetBytes().Span);
             JSONDatabaseSecretEntry? obj = JsonSerializer.Deserialize<JSONDatabaseSecretEntry>(blob.Data.Span);

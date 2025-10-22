@@ -24,7 +24,7 @@ namespace MKW.Storage.MKPG
 
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
-            foreach (BlobEntry user in EnumerateUsers2())
+            foreach (Blob user in EnumerateUsers2())
             {
                 yield return DeserializeUser2(user);
             }
@@ -47,7 +47,7 @@ namespace MKW.Storage.MKPG
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
-            foreach (BlobEntry blob in EnumerateEntries2())
+            foreach (Blob blob in EnumerateEntries2())
             {
                 yield return DeserializeEntry2(blob);
             }
