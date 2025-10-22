@@ -28,8 +28,6 @@ namespace MKW.Core.Client
             using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
                 systemCreds.PrivateKey);
 
-            UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(transformer);
-
             DatabaseUserProtectedData protectedData = new DatabaseUserProtectedData
             {
                 PublicKey = systemCreds.PublicKey,
