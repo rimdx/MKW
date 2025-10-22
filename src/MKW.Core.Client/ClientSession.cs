@@ -14,6 +14,7 @@ namespace MKW.Core.Client
         private readonly UserController userController;
         private readonly UserFactory userFactory;
         private readonly AdminController adminController;
+        private readonly PublicUserSession publicUserSession;
 
         internal ClientSession(IDatabase db, ICryptographyProvider crypto)
         {
@@ -24,6 +25,7 @@ namespace MKW.Core.Client
             userController = new UserController(this, this.crypto, Database);
             userFactory = new UserFactory(this.crypto, db);
             adminController = new AdminController(this.crypto, Database);
+            publicUserSession = new PublicUserSession(this.crypto, db);
         }
 
         public static ClientSession Open(IDatabase db, ICryptographyProvider crypto)
@@ -54,7 +56,7 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
-            foreach (UserInfo user in userController.EnumerateUsers())
+            foreach (UserInfo user in publicUserSession.EnumerateUsers())
             {
                 yield return user;
             }
@@ -67,7 +69,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            return userController.GetUserInfo(id);
+            return publicUserSession.GetUserInfo(id);
         }
 
         public UserAccessRequest CreateUserAccessRequest(string password)
@@ -84,7 +86,7 @@ namespace MKW.Core.Client
 
         public UserInfo GetAdminInfo()
         {
-            return adminController.GetAdminInfo();
+            return publicUserSession.GetAdminInfo();
         }
 
         public void Dispose()

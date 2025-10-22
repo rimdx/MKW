@@ -34,32 +34,8 @@ namespace MKW.Core.Client
             return new AdminSession(crypto, database, admin, transformer);
         }
 
-        public UserInfo GetAdminInfo()
-        {
-            DatabaseUser admin = database.OpenUser(UserId.Admin());
-
-            AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.ProtectedData.PublicKey.Span);
-
-            using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(decodedKey);
-
-            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(database, adminKey);
-
-            return CreateUserInfo(admin, metadataDecoder.OpenMetadata(admin));
-        }
-
         public void Dispose()
         {
-        }
-
-        private static UserInfo CreateUserInfo(DatabaseUser user, UserMetadata metadata, Trust trust = Trust.Unknown)
-        {
-            return new UserInfo
-            {
-                Id = user.Id,
-                PublicKey = user.ProtectedData.PublicKey,
-                Trust = trust,
-                Metadata = metadata
-            };
         }
     }
 }
