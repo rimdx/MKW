@@ -45,12 +45,12 @@ namespace MKW.Storage.MKPG
         }
 
         // Entry
-        public BlobEntry OpenEntry2(BlobId id)
+        public Blob OpenEntry2(BlobId id)
         {
             return entries.Open(BlobId.From(id));
         }
 
-        public void CreateEntry2(BlobEntry entry)
+        public void CreateEntry2(Blob entry)
         {
             entries.Create(new PgpBlobEntry
             {
@@ -60,7 +60,7 @@ namespace MKW.Storage.MKPG
             });
         }
 
-        public void UpdateEntry2(BlobEntry entry)
+        public void UpdateEntry2(Blob entry)
         {
             entries.Update(new PgpBlobEntry
             {
@@ -70,7 +70,7 @@ namespace MKW.Storage.MKPG
             });
         }
 
-        public IEnumerable<BlobEntry> EnumerateEntries2()
+        public IEnumerable<Blob> EnumerateEntries2()
         {
             foreach (PgpBlobEntry blob in entries.Enumerate())
             {
@@ -78,7 +78,7 @@ namespace MKW.Storage.MKPG
             }
         }
 
-        public BlobEntry SerializeEntry2(DatabaseEntry entry)
+        public Blob SerializeEntry2(DatabaseEntry entry)
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
@@ -91,7 +91,7 @@ namespace MKW.Storage.MKPG
             };
         }
 
-        public DatabaseEntry DeserializeEntry2(BlobEntry blob)
+        public DatabaseEntry DeserializeEntry2(Blob blob)
         {
             return EntrySerializer.Deserialize(blob.CreateReader(),
                                                EntryId.FromBytes(blob.Id.GetBytes().Span));
@@ -108,12 +108,12 @@ namespace MKW.Storage.MKPG
         }
 
         // User
-        public BlobEntry OpenUser2(BlobId id)
+        public Blob OpenUser2(BlobId id)
         {
             return users.Open(BlobId.From(id));
         }
 
-        public void CreateUser2(BlobEntry blob)
+        public void CreateUser2(Blob blob)
         {
             users.Create(new PgpBlobEntry
             {
@@ -123,7 +123,7 @@ namespace MKW.Storage.MKPG
             });
         }
 
-        public void UpdateUser2(BlobEntry blob)
+        public void UpdateUser2(Blob blob)
         {
             users.Update(new PgpBlobEntry
             {
@@ -133,7 +133,7 @@ namespace MKW.Storage.MKPG
             });
         }
 
-        public IEnumerable<BlobEntry> EnumerateUsers2()
+        public IEnumerable<Blob> EnumerateUsers2()
         {
             foreach (PgpBlobEntry blob in users.Enumerate())
             {
@@ -152,7 +152,7 @@ namespace MKW.Storage.MKPG
         }
 
         // User serialize/deserialize
-        public BlobEntry SerializeUser2(DatabaseUser user)
+        public Blob SerializeUser2(DatabaseUser user)
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             UserSerializer.Serialize(writer, user);
@@ -165,7 +165,7 @@ namespace MKW.Storage.MKPG
             };
         }
 
-        public DatabaseUser DeserializeUser2(BlobEntry blob)
+        public DatabaseUser DeserializeUser2(Blob blob)
         {
             return UserSerializer.Deserialize(blob.CreateReader(), UserId.FromBytes(blob.Id.GetBytes()));
         }

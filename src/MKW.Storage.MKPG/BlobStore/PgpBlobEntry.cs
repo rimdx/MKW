@@ -3,7 +3,7 @@
 
 namespace MKW.Storage.MKPG.BlobStore
 {
-    internal sealed record class PgpBlobEntry : BlobEntry
+    internal sealed record class PgpBlobEntry : Blob
     {
         public required string Type { get; init; }
     }

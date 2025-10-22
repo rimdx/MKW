@@ -5,7 +5,7 @@ using MKW.Common;
 
 namespace MKW.Storage
 {
-    public record class BlobEntry
+    public abstract record class Blob
     {
         public required BlobId Id { get; init; }
         public required ReadOnlyMemory<byte> Data { get; init; }
