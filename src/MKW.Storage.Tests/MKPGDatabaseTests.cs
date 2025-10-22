@@ -101,8 +101,12 @@ namespace MKW.Storage.Tests
                 Id = UserId.Create(),
                 Salt = random.NextBytes(8),
                 PrivateKey = new SecretPayload(fakeseckey),
-                PublicKey = new SignedPayload(pubkey, new byte[32]),
-                Metadata = new SignedPayload(random.NextBytes(34), random.NextBytes(239)),
+                ProtectedData = new DatabaseUserProtectedDataSigned
+                {
+                    PublicKey = pubkey,
+                    Metadata = random.NextBytes(34),
+                    Signature = random.NextBytes(239),
+                },
             };
 
             using MKPGDatabase database = new MKPGDatabase();
@@ -112,8 +116,9 @@ namespace MKW.Storage.Tests
 
             CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());
             CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
-            CollectionAssert.AreEqual(user.PublicKey.Payload.ToArray(), decoded.PublicKey.Payload.ToArray());
-            CollectionAssert.AreEqual(user.PublicKey.Signature.ToArray(), decoded.PublicKey.Signature.ToArray());
+            CollectionAssert.AreEqual(user.ProtectedData.PublicKey.ToArray(), decoded.ProtectedData.PublicKey.ToArray());
+            CollectionAssert.AreEqual(user.ProtectedData.Signature.ToArray(), decoded.ProtectedData.Signature.ToArray());
+            CollectionAssert.AreEqual(user.ProtectedData.Metadata.ToArray(), decoded.ProtectedData.Metadata.ToArray());
 
             database.CreateUser(null, user with { Id = UserId.Create() });
             database.CreateUser(null, user with { Id = UserId.Create() });
@@ -145,8 +150,12 @@ namespace MKW.Storage.Tests
                 Id = UserId.Create(),
                 Salt = random.NextBytes(8),
                 PrivateKey = new SecretPayload(fakeseckey),
-                PublicKey = new SignedPayload(pubkey, new byte[32]),
-                Metadata = new SignedPayload(random.NextBytes(34), random.NextBytes(239)),
+                ProtectedData = new DatabaseUserProtectedDataSigned
+                {
+                    PublicKey = pubkey,
+                    Metadata = random.NextBytes(34),
+                    Signature = random.NextBytes(239),
+                },
             };
 
             using MKPGDatabase database = new MKPGDatabase();

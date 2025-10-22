@@ -74,8 +74,12 @@ namespace MKW.Storage.Tests
                 Id = UserId.Create(),
                 Salt = random.NextBytes(8),
                 PrivateKey = new SecretPayload(fakeseckey),
-                PublicKey = new SignedPayload(pubkey, new byte[32]),
-                Metadata = new SignedPayload(metadata, new byte[32]),
+                ProtectedData = new DatabaseUserProtectedDataSigned
+                {
+                    PublicKey = pubkey,
+                    Metadata = metadata,
+                    Signature = new byte[32],
+                },
             };
 
             ArrayBufferWriter<byte> encoded = new ArrayBufferWriter<byte>();
@@ -97,13 +101,11 @@ namespace MKW.Storage.Tests
 
             CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
 
-            CollectionAssert.AreEqual(user.PublicKey.Payload.ToArray(), decoded.PublicKey.Payload.ToArray());
-            CollectionAssert.AreEqual(user.PublicKey.Signature.ToArray(), decoded.PublicKey.Signature.ToArray());
+            CollectionAssert.AreEqual(user.ProtectedData.PublicKey.ToArray(), decoded.ProtectedData.PublicKey.ToArray());
+            CollectionAssert.AreEqual(user.ProtectedData.Signature.ToArray(), decoded.ProtectedData.Signature.ToArray());
+            CollectionAssert.AreEqual(user.ProtectedData.Metadata.ToArray(), decoded.ProtectedData.Metadata.ToArray());
 
             //CollectionAssert.AreEqual(user.AdminSignature.ToArray(), decoded.AdminSignature.ToArray());
-
-            CollectionAssert.AreEqual(user.Metadata.Payload.ToArray(), decoded.Metadata.Payload.ToArray());
-            //CollectionAssert.AreEqual(user.Metadata.Signature.ToArray(), decoded.Metadata.Signature.ToArray());
         }
     }
 }

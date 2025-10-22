@@ -26,7 +26,7 @@ namespace MKW.Tests
             ClassicAssert.AreEqual(2, users.Length);
 
             ClassicAssert.AreEqual(user.Id, users[1].Id);
-            ClassicAssert.AreEqual(user.PublicKey, users[1].PublicKey.Payload);
+            ClassicAssert.AreEqual(user.PublicKey, users[1].ProtectedData.PublicKey);
         }
 
         [Test]
@@ -109,7 +109,12 @@ namespace MKW.Tests
 
             database.UpdateUser(userInfo.Id, dbUser with
             {
-                PublicKey = new SignedPayload(new byte[42], dbUser.PublicKey.Signature),
+                ProtectedData = new DatabaseUserProtectedDataSigned
+                {
+                    PublicKey = new byte[42],
+                    Metadata = new byte[24],
+                    Signature = dbUser.ProtectedData.Signature,
+                },
             });
 
             Assert.Throws<Exception>(() => client.OpenUser(userInfo.Id, "123"));

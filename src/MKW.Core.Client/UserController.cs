@@ -76,11 +76,11 @@ namespace MKW.Core.Client
         {
             DatabaseUser admin = database.OpenUser(UserId.Admin());
 
-            AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.PublicKey.Payload.Span);
+            AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.ProtectedData.PublicKey.Span);
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(decodedKey);
 
-            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
+            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(database, adminKey);
 
             foreach (DatabaseUser user in database.EnumerateUsers())
             {
@@ -93,11 +93,11 @@ namespace MKW.Core.Client
             DatabaseUser admin = database.OpenUser(UserId.Admin());
             DatabaseUser user = database.OpenUser(id);
 
-            AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.PublicKey.Payload.Span);
+            AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.ProtectedData.PublicKey.Span);
 
             using IAsymmetricPublicTransformer adminKey = crypto.OpenAsymmetricTransformer(decodedKey);
 
-            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(adminKey);
+            UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(database, adminKey);
 
             return CreateUserInfo(user, metadataDecoder.OpenMetadata(user));
         }
@@ -112,7 +112,7 @@ namespace MKW.Core.Client
             return new UserInfo
             {
                 Id = user.Id,
-                PublicKey = user.PublicKey.Payload,
+                PublicKey = user.ProtectedData.PublicKey,
                 Trust = trust,
                 Metadata = metadata
             };

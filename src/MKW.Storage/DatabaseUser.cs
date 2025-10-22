@@ -11,9 +11,7 @@ namespace MKW.Storage
 
         public required ReadOnlyMemory<byte> Salt { get; init; }
 
-        public required SignedPayload PublicKey { get; init; }
+        public required DatabaseUserProtectedDataSigned ProtectedData { get; init; }
         public required SecretPayload PrivateKey { get; init; }
-
-        public required SignedPayload Metadata { get; init; }
     }
 }

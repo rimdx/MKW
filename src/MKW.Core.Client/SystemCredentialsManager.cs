@@ -82,15 +82,13 @@ namespace MKW.Core.Client
 
             AsymmetricPrivateKey privateKey = crypto.DecodePkcsPrivateKey(privateKeyBytes.Span);
 
-            ReadOnlyMemory<byte> publicKeyBytes = user.PublicKey.Payload;
-
             IAsymmetricPrivateTransformer userKey = crypto.OpenAsymmetricTransformer(
                 crypto.DecodePkcsPrivateKey(privateKeyBytes.Span));
 
             return new SystemCredentials
             {
                 Salt = userCredentials.ExportSalt().ToArray(),
-                PublicKey = publicKeyBytes,
+                PublicKey = user.ProtectedData.PublicKey,
                 EncryptedPrivateKey = new SecretPayload(privateKeyEncrypted),
                 PrivateKey = privateKey,
             };

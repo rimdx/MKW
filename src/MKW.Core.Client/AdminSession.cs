@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core.Serialization;
 using MKW.Cryptography;
 using MKW.Storage;
 
@@ -34,7 +35,7 @@ namespace MKW.Core.Client
             this.admin = admin;
             this.transformer = transformer;
 
-            metadata = new UserMetadataDecoder(transformer);
+            metadata = new UserMetadataDecoder(database, transformer);
             entryController = new EntryController(database, crypto, this, transformer);
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
 
@@ -45,13 +46,21 @@ namespace MKW.Core.Client
         {
             UserId userId = UserId.Create();
 
+            SignedPayload metadataBytes = metadataEncoder.EncodeMetadata(metadata);
+
+            DatabaseUserProtectedDataSigned protectedDataSigned = new DatabaseUserProtectedDataSigned
+            {
+                PublicKey = request.PublicKey,
+                Metadata = metadataBytes.Payload,
+                Signature = transformer.Sign(request.PublicKey.Span),
+            };
+
             DatabaseUser user = new DatabaseUser
             {
                 Id = userId,
                 Salt = request.Salt,
-                PublicKey = new SignedPayload(request.PublicKey, transformer.Sign(request.PublicKey.Span)),
+                ProtectedData = protectedDataSigned,
                 PrivateKey = request.EncryptedPrivateKey,
-                Metadata = metadataEncoder.EncodeMetadata(metadata),
             };
 
             database.CreateUser(userId, user);
@@ -84,7 +93,7 @@ namespace MKW.Core.Client
             return new UserInfo
             {
                 Id = user.Id,
-                PublicKey = user.PublicKey.Payload,
+                PublicKey = user.ProtectedData.PublicKey,
                 Trust = Trust.Unknown,
                 Metadata = metadata
             };

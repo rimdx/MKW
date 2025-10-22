@@ -10,23 +10,25 @@ namespace MKW.Core.Client
 {
     public class UserMetadataDecoder
     {
+        private readonly IDatabase database;
         private readonly IAsymmetricPublicTransformer adminKey;
 
-        public UserMetadataDecoder(IAsymmetricPublicTransformer adminKey)
+        public UserMetadataDecoder(IDatabase database, IAsymmetricPublicTransformer adminKey)
         {
+            this.database = database;
             this.adminKey = adminKey;
         }
 
-        public bool VerifyMetadata(SignedPayload metadata)
+        public bool VerifyMetadata(DatabaseUserProtectedDataSigned protectedData)
         {
-            return adminKey.Verify(metadata.Payload.Span, metadata.Signature.Span);
+            return adminKey.Verify(protectedData.PublicKey.Span, protectedData.Signature.Span);
         }
 
         public UserMetadata OpenMetadata(DatabaseUser user)
         {
-            if (VerifyMetadata(user.Metadata))
+            if (VerifyMetadata(user.ProtectedData))
             {
-                return UserMetadataSerializer.Deserialize(user.Metadata.Payload.Span);
+                return UserMetadataSerializer.Deserialize(user.ProtectedData.Metadata.Span);
             }
             else
             {
