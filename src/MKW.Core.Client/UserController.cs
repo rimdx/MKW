@@ -30,16 +30,7 @@ namespace MKW.Core.Client
             else
             {
                 DatabaseUser user = database.OpenUser(id);
-
-                // Credentials can be opened within the entered password and the public salt
-                IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
-
-                SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
-
-                IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                    systemCreds.PrivateKey);
-
-                return new UserSession(crypto, database, user, transformer);
+                return OpenUserInternal(user, password);
             }
         }
 
@@ -49,14 +40,7 @@ namespace MKW.Core.Client
             {
                 try
                 {
-                    IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
-
-                    SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
-
-                    IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
-                        systemCreds.PrivateKey);
-
-                    return new UserSession(crypto, database, user, transformer);
+                    return OpenUserInternal(user, password);
                 }
                 catch (Exceptions.InvalidPasswordException)
                 {
@@ -65,6 +49,18 @@ namespace MKW.Core.Client
             }
 
             throw new Exception("No valid user found with the provided password.");
+        }
+
+        private IUserSession OpenUserInternal(DatabaseUser user, string password)
+        {
+            IUserCredentials creds = crypto.OpenUserCredentials(password, user.Salt);
+
+            SystemCredentials systemCreds = credManager.OpenCredentials(user, creds);
+
+            IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
+                systemCreds.PrivateKey);
+
+            return new UserSession(crypto, database, user, transformer);
         }
 
         public IAdminSession OpenAdmin(string password)
