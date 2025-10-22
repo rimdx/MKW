@@ -12,6 +12,7 @@ namespace MKW.Core.Client
 
         private readonly ClientCryptography crypto;
         private readonly UserController userController;
+        private readonly UserFactory userFactory;
         private readonly AdminController adminController;
 
         internal ClientSession(IDatabase db, ICryptographyProvider crypto)
@@ -21,6 +22,7 @@ namespace MKW.Core.Client
             this.crypto = new ClientCryptography(crypto, db.GetConfiguration());
 
             userController = new UserController(this, this.crypto, Database);
+            userFactory = new UserFactory(this.crypto, db);
             adminController = new AdminController(this.crypto, Database);
         }
 
@@ -70,7 +72,7 @@ namespace MKW.Core.Client
 
         public UserAccessRequest CreateUserAccessRequest(string password)
         {
-            return userController.CreateUserAccessRequest(password);
+            return userFactory.CreateUserAccessRequest(password);
         }
 
         // IAdminController
