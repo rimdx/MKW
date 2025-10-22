@@ -6,7 +6,10 @@ using System.Text.Json;
 
 namespace MKW.Storage.JSON
 {
-    public class JSONDatabaseSession : MemoryDatabaseSession, IDatabase
+    public partial class JSONDatabaseSession
+        : MemoryDatabaseSession
+        , IDatabase
+        , IDatabase2
     {
         private readonly string path;
         private readonly FileSystemWatcher watcher;
