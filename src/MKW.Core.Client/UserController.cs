@@ -72,6 +72,22 @@ namespace MKW.Core.Client
             throw new Exception("No valid user found with the provided password.");
         }
 
+        public IAdminSession OpenAdmin(string password)
+        {
+            SystemCredentialsManager credManager = new SystemCredentialsManager(crypto);
+
+            DatabaseUser admin = database.OpenUser(UserId.Admin());
+
+            IUserCredentials creds = crypto.OpenUserCredentials(password,
+                                                                admin.Salt);
+
+            SystemCredentials systemCreds = credManager.OpenCredentials(admin, creds);
+
+            IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(systemCreds.PrivateKey);
+
+            return new AdminSession(crypto, database, admin, transformer);
+        }
+
         public void Dispose()
         {
             /* no-op */
