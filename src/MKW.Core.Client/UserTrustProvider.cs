@@ -27,20 +27,20 @@ namespace MKW.Core.Client
         private bool VerifyTrust(DatabaseUser user)
         {
             // trust ourselves
-            if (user.PublicKey.Payload.Span.SequenceEqual(meKey.ExportPublicKey().Span))
+            if (user.ProtectedData.PublicKey.Span.SequenceEqual(meKey.ExportPublicKey().Span))
             {
                 return true;
             }
 
             // trust admin
             // TODO: verify admin
-            if (user.PublicKey.Payload.Span.SequenceEqual(adminKey.ExportPublicKey().Span))
+            if (user.ProtectedData.PublicKey.Span.SequenceEqual(adminKey.ExportPublicKey().Span))
             {
                 return true;
             }
 
             // otherwise verify admin trust to this user
-            if (adminKey.Verify(user.PublicKey.Payload.Span, user.PublicKey.Signature.Span))
+            if (adminKey.Verify(user.ProtectedData.PublicKey.Span, user.ProtectedData.Signature.Span))
             {
                 return true;
             }

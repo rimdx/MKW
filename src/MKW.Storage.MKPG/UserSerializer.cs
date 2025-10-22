@@ -99,10 +99,14 @@ namespace MKW.Storage.MKPG
             return new DatabaseUser
             {
                 Id = userId,
-                PublicKey = new SignedPayload(pubkey.Value, pubkeySignature.Value),
+                ProtectedData = new DatabaseUserProtectedDataSigned
+                {
+                    PublicKey = pubkey.Value,
+                    Metadata = metadata.Value,
+                    Signature = pubkeySignature.Value,
+                },
                 PrivateKey = new SecretPayload(seckey.Value),
                 Salt = salt.Value,
-                Metadata = new SignedPayload(metadata.Value, pubkeySignature.Value),
             };
         }
 
@@ -110,7 +114,7 @@ namespace MKW.Storage.MKPG
                                      DatabaseUser obj)
         {
             // TODO: workaround!
-            RsaKeyParameters decoded = (RsaKeyParameters)PublicKeyFactory.CreateKey(obj.PublicKey.Payload.ToArray());
+            RsaKeyParameters decoded = (RsaKeyParameters)PublicKeyFactory.CreateKey(obj.ProtectedData.PublicKey.ToArray());
 
             SecretKeyPacketV4 seckeyPacket = new SecretKeyPacketV4
             {
@@ -155,7 +159,7 @@ namespace MKW.Storage.MKPG
                 PublicKeyAlgorithm = PublicKeyAlgorithmTag.RsaGeneral,
                 HashAlgorithm = HashAlgorithmTag.Sha256,
                 RawData = signatureBodyWriter.WrittenMemory,
-                Signature = obj.PublicKey.Signature,
+                Signature = obj.ProtectedData.Signature,
             };
             ArrayBufferWriter<byte> signaturePacketWriter = new ArrayBufferWriter<byte>();
             SignaturePacketV4Serializer.Serialize(signaturePacketWriter, signaturePacket);
@@ -165,7 +169,7 @@ namespace MKW.Storage.MKPG
                                           false);
 
             ArrayBufferWriter<byte> userIdPacketWriter = new ArrayBufferWriter<byte>();
-            Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = new Core.Serialization.OpenPgp.Packets.UserIdPacket(obj.Metadata.Payload);
+            Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = new Core.Serialization.OpenPgp.Packets.UserIdPacket(obj.ProtectedData.Metadata);
             UserIdPacketSerializer.Serialize(userIdPacketWriter, userIdPacket);
 
             PgpPacketSerializer.Serialize(writer,

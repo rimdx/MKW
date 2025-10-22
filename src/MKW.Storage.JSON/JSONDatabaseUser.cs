@@ -26,11 +26,11 @@ namespace MKW.Storage.JSON
                 Salt = user.Salt,
                 PrivateKey = user.PrivateKey.EncryptedPayload,
 
-                PublicKey = user.PublicKey.Payload,
-                AdminTrustSignature = user.PublicKey.Signature,
+                PublicKey = user.ProtectedData.PublicKey,
+                AdminTrustSignature = user.ProtectedData.Signature,
 
-                Metadata = user.Metadata.Payload,
-                MetadataAdminSignature = user.Metadata.Signature,
+                Metadata = user.ProtectedData.Metadata,
+                MetadataAdminSignature = null,
 
                 AdminSignature = null,
             };
@@ -42,9 +42,13 @@ namespace MKW.Storage.JSON
             {
                 Id = id,
                 Salt = user.Salt,
-                PublicKey = new SignedPayload(user.PublicKey, user.AdminTrustSignature),
+                ProtectedData = new DatabaseUserProtectedDataSigned
+                {
+                    PublicKey = user.PublicKey,
+                    Metadata = user.Metadata,
+                    Signature = user.AdminTrustSignature,
+                },
                 PrivateKey = new SecretPayload(user.PrivateKey),
-                Metadata = new SignedPayload(user.Metadata, user.MetadataAdminSignature),
             };
         }
     }

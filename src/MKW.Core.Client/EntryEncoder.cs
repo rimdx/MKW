@@ -37,7 +37,7 @@ namespace MKW.Core.Client
             {
                 DatabaseUser user = database.OpenUser(userId);
 
-                AsymmetricPublicKey key = crypto.DecodePkcsPublicKey(user.PublicKey.Payload.Span);
+                AsymmetricPublicKey key = crypto.DecodePkcsPublicKey(user.ProtectedData.PublicKey.Span);
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(key);
 

@@ -27,13 +27,21 @@ namespace MKW.Core.Client
 
             UserMetadataEncoder metadataEncoder = new UserMetadataEncoder(transformer);
 
+            SignedPayload metadataBytes = metadataEncoder.EncodeMetadata(adminMetadata);
+
+            DatabaseUserProtectedDataSigned protectedDataSigned = new DatabaseUserProtectedDataSigned
+            {
+                PublicKey = systemCreds.PublicKey,
+                Metadata = metadataBytes.Payload,
+                Signature = transformer.Sign(systemCreds.PublicKey.Span),
+            };
+
             DatabaseUser admin = new DatabaseUser
             {
                 Id = UserId.Admin(),
-                PublicKey = new SignedPayload(systemCreds.PublicKey, null),
+                ProtectedData = protectedDataSigned,
                 PrivateKey = systemCreds.EncryptedPrivateKey,
                 Salt = systemCreds.Salt,
-                Metadata = metadataEncoder.EncodeMetadata(adminMetadata),
             };
 
             database.CreateUser(UserId.Admin(), admin);
