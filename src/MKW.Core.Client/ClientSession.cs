@@ -21,7 +21,7 @@ namespace MKW.Core.Client
 
             this.crypto = new ClientCryptography(crypto, db.GetConfiguration());
 
-            userController = new UserController(this, this.crypto, Database);
+            userController = new UserController(this.crypto, Database);
             userFactory = new UserFactory(this.crypto, db);
             publicUserSession = new PublicUserSession(this.crypto, db);
         }

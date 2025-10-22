@@ -8,15 +8,12 @@ namespace MKW.Core.Client
 {
     internal sealed class UserController : IDisposable
     {
-        private readonly ClientSession client;
         private readonly ClientCryptography crypto;
         private readonly IDatabase database;
 
-        public UserController(ClientSession client,
-                              ClientCryptography crypto,
+        public UserController(ClientCryptography crypto,
                               IDatabase database)
         {
-            this.client = client;
             this.crypto = crypto;
             this.database = database;
         }
@@ -25,8 +22,7 @@ namespace MKW.Core.Client
         {
             if (id.IsAdmin)
             {
-                // todo:
-                return client.OpenAdmin(password);
+                return OpenAdmin(password);
             }
             else
             {
