@@ -14,7 +14,7 @@ namespace MKW.Core.Client
         private readonly UserController userController;
         private readonly AdminController adminController;
 
-        protected ClientSession(IDatabase db, ICryptographyProvider crypto)
+        internal ClientSession(IDatabase db, ICryptographyProvider crypto)
         {
             Database = db;
 
@@ -40,11 +40,7 @@ namespace MKW.Core.Client
                                            string adminPassword,
                                            UserMetadata adminMetadata)
         {
-            ClientSession client = new ClientSession(db, crypto);
-
-            client.CreateAdmin(adminPassword, adminMetadata);
-
-            return client;
+            return DatabaseFactory.InitializeDatabase(db, crypto, adminPassword, adminMetadata);
         }
 
         // IUserController
@@ -78,11 +74,6 @@ namespace MKW.Core.Client
         }
 
         // IAdminController
-
-        public UserInfo CreateAdmin(string password, UserMetadata metadata)
-        {
-            return adminController.CreateAdmin(password, metadata);
-        }
 
         public IAdminSession OpenAdmin(string password)
         {
