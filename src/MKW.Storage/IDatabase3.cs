@@ -9,6 +9,12 @@ namespace MKW.Storage
     {
         public interface ISerializer
         {
+            BlobSecretEntry SerializeEntry(DatabaseEntry entry);
+            DatabaseEntry DeserializeEntry(BlobSecretEntry blob);
+
+            BlobUser SerializeUser(DatabaseUser user);
+            DatabaseUser DeserializeUser(BlobUser blob);
+
             ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj);
         }
 
