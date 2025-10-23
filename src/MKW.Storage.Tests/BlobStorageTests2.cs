@@ -4,16 +4,21 @@
 using MKW.Core;
 using MKW.Storage.Exceptions;
 using MKW.Storage.MKPG.BlobStore;
+using MKW.Storage.MKPG.FileSystem;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Storage.Tests
 {
     [TestFixture(BackendType.Memory)]
+    [TestFixture(BackendType.MemoryStreamSingleFile)]
+    [TestFixture(BackendType.FileStreamSingleFile)]
     public class BlobStorageTests2(BlobStorageTests2.BackendType type)
     {
         public enum BackendType
         {
             Memory,
+            MemoryStreamSingleFile,
+            FileStreamSingleFile,
         }
 
         private IDatabaseBlobStore store = default!;
@@ -24,6 +29,14 @@ namespace MKW.Storage.Tests
             if (type == BackendType.Memory)
             {
                 store = new DatabaseBlobStorageMemory();
+            }
+            else if (type == BackendType.MemoryStreamSingleFile)
+            {
+                store = new DatabaseBlobStorageSingleFile(new MemoryEditorFactory());
+            }
+            else if (type == BackendType.FileStreamSingleFile)
+            {
+                store = new DatabaseBlobStorageSingleFile(new FileSystemEditorFactory(Path.GetTempFileName()));
             }
         }
 
