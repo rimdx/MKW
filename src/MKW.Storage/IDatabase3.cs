@@ -36,12 +36,12 @@ namespace MKW.Storage
             , ISerializer
             , IDisposable
         {
-            void CreateUser(UserId id, DatabaseUser user);
-            void UpdateUser(UserId id, DatabaseUser user);
+            void CreateUser(DatabaseUser user);
+            void UpdateUser(DatabaseUser user);
             bool DeleteUser(UserId id);
 
-            void CreateEntry(EntryId id, DatabaseEntry entry);
-            void UpdateEntry(EntryId id, DatabaseEntry entry);
+            void CreateEntry(DatabaseEntry entry);
+            void UpdateEntry(DatabaseEntry entry);
             bool DeleteEntry(EntryId id);
 
             void Commit();
