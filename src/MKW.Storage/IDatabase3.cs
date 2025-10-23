@@ -7,19 +7,8 @@ namespace MKW.Storage
 {
     public interface IDatabase3
     {
-        public interface ISerializer
-        {
-            BlobSecretEntry SerializeEntry(DatabaseEntry entry);
-            DatabaseEntry DeserializeEntry(BlobSecretEntry blob);
-
-            BlobUser SerializeUser(DatabaseUser user);
-            DatabaseUser DeserializeUser(BlobUser blob);
-
-            ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj);
-        }
-
         public interface ISnapshot
-            : ISerializer
+            : IDatabaseSerializer
             , IDisposable
         {
             DatabaseEntry OpenEntry();
@@ -33,7 +22,7 @@ namespace MKW.Storage
 
         public interface ITransaction
             : ISnapshot
-            , ISerializer
+            , IDatabaseSerializer
             , IDisposable
         {
             void CreateUser(DatabaseUser user);
