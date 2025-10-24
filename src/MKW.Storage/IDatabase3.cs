@@ -11,7 +11,7 @@ namespace MKW.Storage
             : IDatabaseSerializer
             , IDisposable
         {
-            DatabaseEntry OpenEntry();
+            DatabaseUser OpenUser(UserId userId);
             bool HasUser(UserId id);
             IEnumerable<DatabaseUser> EnumerateUsers();
 
