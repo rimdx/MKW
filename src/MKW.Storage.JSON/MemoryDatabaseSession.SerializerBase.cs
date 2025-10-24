@@ -25,7 +25,7 @@ namespace MKW.Storage.JSON
 
             public ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj)
             {
-                throw new NotImplementedException();
+                return JSONDatabaseUserProtectedData.Serialize(obj);
             }
 
             public BlobUser SerializeUser(DatabaseUser user)
