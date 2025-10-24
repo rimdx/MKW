@@ -4,6 +4,7 @@
 using MKW.Core;
 using MKW.Cryptography;
 using MKW.Cryptography.Loader;
+using MKW.Storage.JSON;
 using MKW.Storage.MKPG;
 using MKW.Storage.MKPG.BlobStore;
 using MKW.Storage.MKPG.FileSystem;
@@ -11,16 +12,61 @@ using NUnit.Framework.Legacy;
 
 namespace MKW.Storage.Tests
 {
-    public class Database3Tests
+    [TestFixture(BackendType.MKPGMemory)]
+    [TestFixture(BackendType.MKPGMemoryStreamSingleFile)]
+    [TestFixture(BackendType.MKPGFileStreamSingleFile)]
+    [TestFixture(BackendType.JsonMemory)]
+    [TestFixture(BackendType.JsonFile)]
+    public class Database3Tests(Database3Tests.BackendType type)
     {
+        public enum BackendType
+        {
+            MKPGMemory,
+            MKPGMemoryStreamSingleFile,
+            MKPGFileStreamSingleFile,
+            JsonMemory,
+            JsonFile,
+        }
+
+        private IDatabase3 database = default!;
+
+        [SetUp]
+        public void Setup()
+        {
+            if (type == BackendType.MKPGMemory)
+            {
+                database = new MDatabase(new MKPGSerializer(),
+                                         new DatabaseBlobStorageMemory());
+            }
+            else if (type == BackendType.MKPGMemoryStreamSingleFile)
+            {
+                database = new MDatabase(new MKPGSerializer(),
+                                         new DatabaseBlobStorageSingleFile(new MemoryEditorFactory()));
+            }
+            else if (type == BackendType.MKPGFileStreamSingleFile)
+            {
+                database = new MDatabase(new MKPGSerializer(),
+                                         new DatabaseBlobStorageSingleFile(new FileSystemEditorFactory(Path.GetTempFileName())));
+            }
+            else if (type == BackendType.JsonMemory)
+            {
+                database = new MemoryDatabaseSession();
+            }
+            else if (type == BackendType.JsonFile)
+            {
+                database = JSONDatabaseSession.Create(Path.GetTempFileName());
+            }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            database.Dispose();
+        }
+
         [Test]
         public void SimpleTest()
         {
-            MKPGSerializer serializer = new MKPGSerializer();
-            using MemoryEditorFactory editor = new MemoryEditorFactory();
-            using DatabaseBlobStorageSingleFile store = new DatabaseBlobStorageSingleFile(editor);
-            MDatabase database = new MDatabase(serializer, store);
-
             ICryptographyProvider crypto = BouncyCastleLoader.GetProvider();
             IRandomGenerator random = crypto.CreateRandomGenerator();
 

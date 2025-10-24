@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace MKW.Storage.JSON
 {
-    public class MemoryDatabaseSession : IDatabase, IDisposable
+    public partial class MemoryDatabaseSession : IDatabase, IDatabase3, IDisposable
     {
         internal JSONDatabase Database;
 
@@ -249,6 +249,17 @@ namespace MKW.Storage.JSON
 
         public virtual void Dispose()
         {
+        }
+
+        // IDatabase3
+        public IDatabase3.ITransaction BeginTransaction()
+        {
+            return new Transaction(this);
+        }
+
+        public IDatabase3.ISnapshot CreateSnapshot()
+        {
+            return new Snapshot(Database);
         }
     }
 }
