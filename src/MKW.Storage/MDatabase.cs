@@ -39,5 +39,9 @@ namespace MKW.Storage
         {
             throw new NotImplementedException();
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
