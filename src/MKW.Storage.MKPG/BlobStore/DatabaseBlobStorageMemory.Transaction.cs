@@ -17,7 +17,7 @@ namespace MKW.Storage.MKPG.BlobStore
             {
                 this.database = database;
 
-                this.blobs = [];
+                this.blobs = new Dictionary<BlobId, Blob>(blobs.Count);
                 foreach (Blob blob in blobs)
                 {
                     this.blobs[blob.Id] = blob;
