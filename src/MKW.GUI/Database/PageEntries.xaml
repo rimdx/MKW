@@ -20,9 +20,12 @@
               ItemContainerStyle="{StaticResource GridViewItemStyle}"
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
               BorderThickness="0"
-              MouseDoubleClick="EntryListView_MouseDoubleClick"
               SnapsToDevicePixels="True"
               controls:ListViewBehavior.DeselectOnClickAway="True">
+      <ListView.CommandBindings>
+        <CommandBinding Command="{x:Static gui:ListViewCommands.DefaultAction}"
+                        Executed="ListViewDefaultActionCommand_Executed" />
+      </ListView.CommandBindings>
 
       <ListView.ContextMenu>
         <ContextMenu>
