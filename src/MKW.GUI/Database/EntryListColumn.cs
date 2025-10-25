@@ -19,6 +19,7 @@ namespace MKW.GUI.Database
             this.width = width;
             Property = property;
             this.propertyKey = property.Key;
+            CopyOnDoubleClick = true;
         }
 
         public string Header
@@ -44,6 +45,8 @@ namespace MKW.GUI.Database
             get => hideValue;
             set => SetProperty(ref hideValue, value);
         }
+
+        public bool CopyOnDoubleClick { get; init; }
 
         public PropertyInfo Property { get; }
     }
