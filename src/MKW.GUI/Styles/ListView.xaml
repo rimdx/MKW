@@ -258,6 +258,9 @@
                   Background="{TemplateBinding Background}"
                   BorderThickness="1"
                   Padding="4,2">
+            <Border.InputBindings>
+              <MouseBinding MouseAction="LeftDoubleClick" Command="{x:Static local:ListViewCommands.DefaultAction}" />
+            </Border.InputBindings>
             <GridViewRowPresenter Margin="0" />
           </Border>
 

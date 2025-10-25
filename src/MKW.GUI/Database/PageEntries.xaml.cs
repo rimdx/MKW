@@ -49,7 +49,7 @@ namespace MKW.GUI.Database
 
         public string HiddenValueText => "********";
 
-        private void EntryListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListViewDefaultActionCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
@@ -65,6 +65,7 @@ namespace MKW.GUI.Database
                 ErrorReporter.HandleException(Window.GetWindow(this), ex);
             }
         }
+
         private void SelectAll_Click(object sender, RoutedEventArgs e)
         {
         }
