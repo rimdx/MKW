@@ -76,6 +76,7 @@ namespace MKW.GUI.Database
 
             factory.SetBinding(TextBlock.TextProperty, MakeDisplayMemberBinding(column));
             factory.SetValue(EntryCellView.PropertyInfoProperty, column.Property);
+            factory.SetValue(EntryCellView.BindDoubleClickProperty, true);
 
             return new DataTemplate()
             {

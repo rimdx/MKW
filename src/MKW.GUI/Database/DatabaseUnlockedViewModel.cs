@@ -22,7 +22,10 @@ namespace MKW.GUI.Database
 
             Columns =
             [
-                new EntryListColumn("Title", 175, CommonEntryPropertiesModel.Title),
+                new EntryListColumn("Title", 175, CommonEntryPropertiesModel.Title)
+                {
+                    CopyOnDoubleClick = false
+                },
                 new EntryListColumn("User Name", 175, CommonEntryPropertiesModel.Username),
                 new EntryListColumn("Password", 150, CommonEntryPropertiesModel.Password)
                 {
