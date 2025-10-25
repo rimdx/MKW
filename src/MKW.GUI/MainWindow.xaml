@@ -215,7 +215,9 @@
                 ItemsSource="{Binding TabItems}"
                 SelectedItem="{Binding SelectedTab}"
                 FocusManager.IsFocusScope="True"
-                Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                KeyboardNavigation.IsTabStop="False"
+                Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Style="{StaticResource DocumentTabControl}">
       <TabControl.CommandBindings>
         <!--<CommandBinding Command="{x:Static local:AppCommands.LockDatabase}" 
                         CanExecute="CommandBinding_CanExecute"

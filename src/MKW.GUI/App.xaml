@@ -7,6 +7,7 @@
       <local:TreeViewIndentConverter x:Key="TreeViewIndentConverter" IndentSize="16" />
 
       <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Styles/DocumentTabControl.xaml" />
         <ResourceDictionary Source="/Styles/ListView.xaml" />
         <ResourceDictionary Source="/Styles/TabControl.xaml" />
         <ResourceDictionary Source="/Styles/ToolBar.xaml" />
