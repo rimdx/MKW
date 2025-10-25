@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using Microsoft.Win32;
 using MKW.GUI.Wizard;
 using System.Windows;
 
@@ -22,7 +23,16 @@ namespace MKW.GUI.AddUserWizard
         {
             try
             {
-                throw new NotImplementedException();
+                OpenFileDialog dialog = new OpenFileDialog
+                {
+                    Filter = "MKW Access Request Files (*.mkwreq)|*.mkwreq|All files (*.*)|*",
+                    DefaultExt = ".mkwreq"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    viewModel.LoadFromFile(dialog.FileName);
+                }
             }
             catch (Exception ex)
             {

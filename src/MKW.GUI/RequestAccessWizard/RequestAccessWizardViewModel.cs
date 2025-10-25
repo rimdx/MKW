@@ -65,5 +65,10 @@ namespace MKW.GUI.RequestAccessWizard
                 throw new Exception("Password cannot be empty.");
             }
         }
+
+        public void SaveToFile(string fileName)
+        {
+            File.WriteAllText(fileName, RequestString);
+        }
     }
 }

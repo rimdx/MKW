@@ -6,6 +6,7 @@ using MKW.Core.Serialization;
 using MKW.GUI.Images;
 using MKW.GUI.Model;
 using MKW.GUI.Wizard;
+using System.IO;
 
 namespace MKW.GUI.AddUserWizard
 {
@@ -96,6 +97,13 @@ namespace MKW.GUI.AddUserWizard
             }
 
             model.AddUser(Request, MakeMetadata());
+        }
+
+        public void LoadFromFile(string fileName)
+        {
+            string requestString = File.ReadAllText(fileName);
+
+            RequestString = requestString;
         }
     }
 }
