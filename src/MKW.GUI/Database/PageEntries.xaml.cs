@@ -12,16 +12,16 @@ namespace MKW.GUI.Database
 {
     public partial class PageEntries : UserControl
     {
-        private readonly DatabaseUnlockedViewModel model;
+        private readonly DatabaseUnlockedViewModel viewModel;
 
-        public PageEntries(DatabaseUnlockedViewModel model)
+        public PageEntries(DatabaseUnlockedViewModel viewModel)
         {
-            this.model = model;
-            DataContext = model;
+            this.viewModel = viewModel;
+            DataContext = viewModel;
             InitializeComponent();
 
             // TODO: Factor-out into a separate object.
-            foreach (EntryListColumn column in model.Columns)
+            foreach (EntryListColumn column in viewModel.Columns)
             {
                 GridViewColumn gridViewColumn = new GridViewColumn();
 
@@ -53,10 +53,10 @@ namespace MKW.GUI.Database
         {
             try
             {
-                if (model.SelectedEntry != null)
+                if (viewModel.SelectedEntry != null)
                 {
-                    using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
-                    EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
+                    using EditEntryWindowViewModel editEntryViewModel = viewModel.CreateEditEntryWindowViewModel(viewModel.SelectedEntry.Id);
+                    EditEntryWindow window = new EditEntryWindow(editEntryViewModel, Window.GetWindow(this));
                     window.ShowDialog();
                 }
             }
