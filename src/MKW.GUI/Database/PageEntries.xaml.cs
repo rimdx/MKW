@@ -74,6 +74,7 @@ namespace MKW.GUI.Database
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(EntryCellView));
 
             factory.SetBinding(TextBlock.TextProperty, MakeDisplayMemberBinding(column));
+            factory.SetValue(EntryCellView.PropertyInfoProperty, column.Property);
 
             return new DataTemplate()
             {
@@ -94,7 +95,7 @@ namespace MKW.GUI.Database
             {
                 return new Binding()
                 {
-                    Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyName),
+                    Path = new PropertyPath($"{nameof(EntryListViewModel.EntryEditorModel)}.{nameof(EntryEditorModel.Properties)}[(0)].{nameof(EntryValueModel.DisplayValue)}", column.PropertyKey),
                     Converter = SingleLineConverter.Instance,
                 };
             }

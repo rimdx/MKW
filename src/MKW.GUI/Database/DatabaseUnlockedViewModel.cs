@@ -22,14 +22,14 @@ namespace MKW.GUI.Database
 
             Columns =
             [
-                new EntryListColumn("Title", 175, "mkw:title"),
-                new EntryListColumn("User Name", 175, "mkw:username"),
-                new EntryListColumn("Password", 150, "mkw:password")
+                new EntryListColumn("Title", 175, CommonEntryPropertiesModel.Title),
+                new EntryListColumn("User Name", 175, CommonEntryPropertiesModel.Username),
+                new EntryListColumn("Password", 150, CommonEntryPropertiesModel.Password)
                 {
                     HideValue = true,
                 },
-                new EntryListColumn("URL", 150, "mkw:url"),
-                new EntryListColumn("Notes", 225, "mkw:notes"),
+                new EntryListColumn("URL", 150, CommonEntryPropertiesModel.Url),
+                new EntryListColumn("Notes", 225, CommonEntryPropertiesModel.Notes),
             ];
 
             Entries = new DatabaseEntryCollectionViewModel(database);
