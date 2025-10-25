@@ -5,6 +5,7 @@ using MKW.Core;
 using MKW.GUI.AddUserWizard;
 using MKW.GUI.EntryEditor;
 using MKW.GUI.ExportWizard;
+using MKW.GUI.Images;
 using MKW.GUI.ImportWizard;
 using MKW.GUI.Model;
 using MKW.GUI.RequestAccessWizard;
@@ -15,6 +16,8 @@ namespace MKW.GUI.Database
     public class DatabaseUnlockedViewModel : ViewModelBase
     {
         private readonly DatabaseUnlockedModel database;
+        public IReadOnlyList<TreeItemViewModel> TreeViewItems { get; }
+        private TreeItemViewModel treeRootItem;
 
         public DatabaseUnlockedViewModel(DatabaseUnlockedModel database)
         {
@@ -37,43 +40,16 @@ namespace MKW.GUI.Database
 
             Entries = new DatabaseEntryCollectionViewModel(database);
             Users = new DatabaseUserCollectionViewModel(database.Database);
-        }
 
-        private enum PageType
-        {
-            Database,
-            Entries,
-            Users,
-        }
+            treeRootItem = new TreeItemViewModel("Database", ImageMoniker.Database, new PageInfo(this));
+            treeRootItem.Children.Add(
+                new TreeItemViewModel("Entries", ImageMoniker.AsymmetricKey, new PageEntries(this))
+                { 
+                    IsSelected = true
+                });
+            treeRootItem.Children.Add(new TreeItemViewModel("Users", ImageMoniker.Team, new PageUsers(this)));
 
-        private PageType selectedPage = PageType.Entries;
-        private void SetPage(bool value, PageType type)
-        {
-            if (value)
-            {
-                selectedPage = type;
-                OnPropertyChanged(nameof(IsPageDatabase));
-                OnPropertyChanged(nameof(IsPageEntries));
-                OnPropertyChanged(nameof(IsPageUsers));
-            }
-        }
-
-        public bool IsPageDatabase
-        {
-            get => selectedPage == PageType.Database;
-            set => SetPage(value, PageType.Database);
-        }
-
-        public bool IsPageEntries
-        {
-            get => selectedPage == PageType.Entries;
-            set => SetPage(value, PageType.Entries);
-        }
-
-        public bool IsPageUsers
-        {
-            get => selectedPage == PageType.Users;
-            set => SetPage(value, PageType.Users);
+            TreeViewItems = [treeRootItem];
         }
 
         public DatabaseEntryCollectionViewModel Entries { get; }
