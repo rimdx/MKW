@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using Microsoft.Win32;
 using MKW.GUI.Wizard;
 using System.Windows;
 
@@ -25,7 +26,24 @@ namespace MKW.GUI.RequestAccessWizard
 
         private void SaveToFile_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+                SaveFileDialog dialog = new SaveFileDialog
+                {
+                    Filter = "MKW Access Request Files (*.mkwreq)|*.mkwreq|All files (*.*)|*",
+                    OverwritePrompt = true,
+                    DefaultExt = ".mkwreq"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    viewModel.SaveToFile(dialog.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
         }
     }
 }
