@@ -1,20 +1,24 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core;
+using MKW.GUI.Model;
+
 namespace MKW.GUI.Database
 {
     public class EntryListColumn : ViewModelBase
     {
         private string header;
         private double width;
-        private string propertyName;
+        private EntryPayloadKey propertyKey;
         private bool hideValue;
 
-        public EntryListColumn(string header, int width, string propertyName)
+        public EntryListColumn(string header, int width, PropertyInfo property)
         {
             this.header = header;
             this.width = width;
-            this.propertyName = propertyName;
+            Property = property;
+            this.propertyKey = property.Key;
         }
 
         public string Header
@@ -29,10 +33,10 @@ namespace MKW.GUI.Database
             set => SetProperty(ref width, value);
         }
 
-        public string PropertyName
+        public EntryPayloadKey PropertyKey
         {
-            get => propertyName;
-            set => SetProperty(ref propertyName, value);
+            get => propertyKey;
+            set => SetProperty(ref propertyKey, value);
         }
 
         public bool HideValue
@@ -40,5 +44,7 @@ namespace MKW.GUI.Database
             get => hideValue;
             set => SetProperty(ref hideValue, value);
         }
+
+        public PropertyInfo Property { get; }
     }
 }
