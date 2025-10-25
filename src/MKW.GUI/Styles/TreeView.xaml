@@ -94,5 +94,7 @@
         </ControlTemplate>
       </Setter.Value>
     </Setter>
+    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
   </Style>
 </ResourceDictionary>

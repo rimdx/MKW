@@ -49,45 +49,23 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <TreeView Grid.Row="1" BorderThickness="0">
-      <TreeViewItem IsExpanded="True" IsSelected="{Binding IsPageDatabase, Mode=TwoWay}">
-        <TreeViewItem.Header>
+    <TreeView Grid.Row="1" 
+              BorderThickness="0"
+              x:Name="treeView"
+              ItemsSource="{Binding TreeViewItems}">
+      <TreeView.ItemTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type local:TreeItemViewModel}"
+                                  ItemsSource="{Binding Children}">
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="24" />
               <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <images:Database />
-            <TextBlock Grid.Column="1">Database</TextBlock>
+            <gui:CrispImage Moniker="{Binding Icon}" Height="16" />
+            <TextBlock Grid.Column="1" Text="{Binding Header}" />
           </Grid>
-        </TreeViewItem.Header>
-
-        <TreeViewItem IsSelected="{Binding IsPageEntries, Mode=TwoWay}">
-          <TreeViewItem.Header>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="24" />
-                <ColumnDefinition Width="auto" />
-              </Grid.ColumnDefinitions>
-              <images:AsymmetricKey />
-              <TextBlock Grid.Column="1">Entries</TextBlock>
-            </Grid>
-          </TreeViewItem.Header>
-        </TreeViewItem>
-
-        <TreeViewItem IsSelected="{Binding IsPageUsers, Mode=TwoWay}">
-          <TreeViewItem.Header>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="24" />
-                <ColumnDefinition Width="auto" />
-              </Grid.ColumnDefinitions>
-              <images:Team />
-              <TextBlock Grid.Column="1">Users</TextBlock>
-            </Grid>
-          </TreeViewItem.Header>
-        </TreeViewItem>
-      </TreeViewItem>
+        </HierarchicalDataTemplate>
+      </TreeView.ItemTemplate>
     </TreeView>
 
     <GridSplitter Grid.Row="1"
@@ -101,14 +79,7 @@
 
     <Grid Grid.Row="1"
           Grid.Column="2">
-      <ContentPresenter x:Name="InfoPage"
-                        Visibility="{Binding IsPageDatabase, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-      <ContentPresenter x:Name="EntriesPage"
-                        Visibility="{Binding IsPageEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-      <ContentPresenter x:Name="UsersPage"
-                        Visibility="{Binding IsPageUsers, Converter={StaticResource BooleanToVisibilityConverter}}" />
+      <ContentPresenter Content="{Binding ElementName=treeView, Path=SelectedItem.ResultView}" />
     </Grid>
   </Grid>
 </UserControl>
