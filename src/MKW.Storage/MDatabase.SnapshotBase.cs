@@ -24,20 +24,17 @@ namespace MKW.Storage
             // Entry
             public IEnumerable<DatabaseEntry> EnumerateEntries()
             {
-                foreach (Blob blob in ProxySnapshot.Enumerate())
+                foreach (BlobSecretEntry entry in EnumerateBlobEntry<BlobSecretEntry>())
                 {
-                    if (blob is BlobSecretEntry entry)
-                    {
-                        yield return serializer.DeserializeEntry(entry);
-                    }
+                    yield return serializer.DeserializeEntry(entry);
                 }
             }
 
             public DatabaseEntry OpenEntry(EntryId entryId)
             {
-                foreach (Blob blob in ProxySnapshot.Enumerate())
+                foreach (BlobSecretEntry entry in EnumerateBlobEntry<BlobSecretEntry>())
                 {
-                    if (blob is BlobSecretEntry entry && blob.Id.Equals(entryId))
+                    if (entry.Id.Equals(entryId))
                     {
                         return serializer.DeserializeEntry(entry);
                     }
@@ -48,9 +45,9 @@ namespace MKW.Storage
 
             public bool HasEntry(EntryId entryId)
             {
-                foreach (Blob blob in ProxySnapshot.Enumerate())
+                foreach (BlobSecretEntry entry in EnumerateBlobEntry<BlobSecretEntry>())
                 {
-                    if (blob is BlobSecretEntry && blob.Id.Equals(entryId))
+                    if (entry.Id.Equals(entryId))
                     {
                         return true;
                     }
@@ -62,20 +59,17 @@ namespace MKW.Storage
             // User
             public IEnumerable<DatabaseUser> EnumerateUsers()
             {
-                foreach (Blob blob in ProxySnapshot.Enumerate())
+                foreach (BlobUser user in EnumerateBlobEntry<BlobUser>())
                 {
-                    if (blob is BlobUser user)
-                    {
-                        yield return serializer.DeserializeUser(user);
-                    }
+                    yield return serializer.DeserializeUser(user);
                 }
             }
 
             public DatabaseUser OpenUser(UserId userId)
             {
-                foreach (Blob blob in ProxySnapshot.Enumerate())
+                foreach (BlobUser user in EnumerateBlobEntry<BlobUser>())
                 {
-                    if (blob is BlobUser user && blob.Id.Equals(userId))
+                    if (user.Id.Equals(userId))
                     {
                         return serializer.DeserializeUser(user);
                     }
@@ -86,9 +80,9 @@ namespace MKW.Storage
 
             public bool HasUser(UserId userId)
             {
-                foreach (Blob blob in ProxySnapshot.Enumerate())
+                foreach (BlobUser user in EnumerateBlobEntry<BlobUser>())
                 {
-                    if (blob is BlobUser && blob.Id.Equals(userId))
+                    if (user.Id.Equals(userId))
                     {
                         return true;
                     }
@@ -99,6 +93,17 @@ namespace MKW.Storage
 
             // Misc
             public abstract void Dispose();
+
+            private IEnumerable<T> EnumerateBlobEntry<T>() where T : Blob
+            {
+                foreach (Blob blob in ProxySnapshot.Enumerate())
+                {
+                    if (blob is T entry)
+                    {
+                        yield return entry;
+                    }
+                }
+            }
         }
     }
 }
