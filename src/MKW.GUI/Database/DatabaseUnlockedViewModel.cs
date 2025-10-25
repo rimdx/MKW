@@ -61,11 +61,8 @@ namespace MKW.GUI.Database
             set
             {
                 SetProperty(ref _selectedEntry, value);
-                OnPropertyChanged(nameof(IsEntrySelected));
             }
         }
-
-        public bool IsEntrySelected => _selectedEntry != null;
 
         public DatabaseUserCollectionViewModel Users { get; }
 
