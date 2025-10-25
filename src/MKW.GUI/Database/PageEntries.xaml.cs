@@ -55,7 +55,7 @@ namespace MKW.GUI.Database
             {
                 if (viewModel.SelectedEntry != null)
                 {
-                    using EditEntryWindowViewModel editEntryViewModel = viewModel.CreateEditEntryWindowViewModel(viewModel.SelectedEntry.Id);
+                    EditEntryWindowViewModel editEntryViewModel = viewModel.CreateEditEntryWindowViewModel(viewModel.SelectedEntry.Id);
                     EditEntryWindow window = new EditEntryWindow(editEntryViewModel, Window.GetWindow(this));
                     window.ShowDialog();
                 }

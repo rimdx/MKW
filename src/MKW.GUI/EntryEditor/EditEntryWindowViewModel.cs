@@ -6,7 +6,7 @@ using MKW.GUI.Model;
 
 namespace MKW.GUI.EntryEditor
 {
-    public class EditEntryWindowViewModel : EntryEditorViewModelBase, IDisposable
+    public class EditEntryWindowViewModel : EntryEditorViewModelBase
     {
         private readonly DatabaseUnlockedModel database;
         private readonly EntryId entryId;
@@ -35,10 +35,6 @@ namespace MKW.GUI.EntryEditor
         protected override void SaveEntry(EntryPayload payload)
         {
             database.UpdateEntry(entryId, payload);
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

@@ -53,7 +53,7 @@ namespace MKW.GUI.Database
             {
                 if (model.SelectedEntry != null)
                 {
-                    using EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
+                    EditEntryWindowViewModel viewModel = model.CreateEditEntryWindowViewModel(model.SelectedEntry.Id);
                     EditEntryWindow window = new EditEntryWindow(viewModel, Window.GetWindow(this));
                     window.ShowDialog();
                 }
