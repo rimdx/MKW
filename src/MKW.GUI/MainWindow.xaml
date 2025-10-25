@@ -41,14 +41,8 @@
                     Executed="FileNew_Executed" />
   </Window.CommandBindings>
 
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-
-    <Menu Grid.Column="0" Grid.Row="0"
+  <DockPanel LastChildFill="True">
+    <Menu DockPanel.Dock="Top"
           KeyboardNavigation.TabNavigation="None">
       <MenuItem Header="_File" >
         <MenuItem Header="_New" Command="ApplicationCommands.New">
@@ -168,7 +162,7 @@
       </MenuItem>
     </Menu>
 
-    <ToolBarTray Grid.Row="1"
+    <ToolBarTray DockPanel.Dock="Top"
                  Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
                  IsLocked="true"
                  KeyboardNavigation.TabNavigation="None">
@@ -202,69 +196,69 @@
       </ToolBar>
     </ToolBarTray>
 
-    <local:StartPage Grid.Row="2"
-                     Visibility="{Binding IsStartPageVisible,
+    <Grid>
+      <local:StartPage Visibility="{Binding IsStartPageVisible,
                                           Converter={StaticResource BooleanToVisibilityConverter}}"
-                     Background="White"
-                     KeyboardNavigation.DirectionalNavigation="Contained"
-                     KeyboardNavigation.TabNavigation="Contained"/>
+                       Background="White"
+                       KeyboardNavigation.DirectionalNavigation="Contained"
+                       KeyboardNavigation.TabNavigation="Contained"/>
 
-    <TabControl Grid.Row="2"
-                Margin="6"
-                x:Name="ctlTabControl"
-                ItemsSource="{Binding TabItems}"
-                SelectedItem="{Binding SelectedTab}"
-                FocusManager.IsFocusScope="True"
-                KeyboardNavigation.IsTabStop="False"
-                Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Style="{StaticResource DocumentTabControl}">
-      <TabControl.CommandBindings>
-        <!--<CommandBinding Command="{x:Static local:AppCommands.LockDatabase}" 
+      <TabControl Margin="6"
+                  x:Name="ctlTabControl"
+                  ItemsSource="{Binding TabItems}"
+                  SelectedItem="{Binding SelectedTab}"
+                  FocusManager.IsFocusScope="True"
+                  KeyboardNavigation.IsTabStop="False"
+                  Visibility="{Binding IsTabControlVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Style="{StaticResource DocumentTabControl}">
+        <TabControl.CommandBindings>
+          <!--<CommandBinding Command="{x:Static local:AppCommands.LockDatabase}" 
                         CanExecute="CommandBinding_CanExecute"
                         Executed="CommandBinding_Executed"/>-->
-      </TabControl.CommandBindings>
-      <TabControl.ItemTemplate>
-        <DataTemplate>
-          <Grid MinWidth="80" ToolTip="{Binding Tooltip}">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" />
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        </TabControl.CommandBindings>
+        <TabControl.ItemTemplate>
+          <DataTemplate>
+            <Grid MinWidth="80" ToolTip="{Binding Tooltip}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
 
-            <local:CrispImage Grid.Column="0"
-                              Moniker="{Binding Icon}"
-                              Margin="0,0,6,0"
-                              VerticalAlignment="Center" />
+              <local:CrispImage Grid.Column="0"
+                                Moniker="{Binding Icon}"
+                                Margin="0,0,6,0"
+                                VerticalAlignment="Center" />
 
-            <TextBlock Grid.Column="1"
-                       Text="{Binding Header}"
-                       Margin="0,0,6,0"
-                       VerticalAlignment="Center" />
+              <TextBlock Grid.Column="1"
+                         Text="{Binding Header}"
+                         Margin="0,0,6,0"
+                         VerticalAlignment="Center" />
 
-            <Button Grid.Column="2"
-                    Padding="1"
-                    Margin="0,0,0,0"
-                    Height="14"
-                    Background="Transparent"
-                    Foreground="Transparent"
-                    BorderThickness="0"
-                    Command="ApplicationCommands.Close"
-                    CommandParameter="{Binding}"
-                    VerticalAlignment="Center">
-              <local:CrispImage Moniker="Close" />
-            </Button>
-          </Grid>
-        </DataTemplate>
-      </TabControl.ItemTemplate>
-      <TabControl.ContentTemplate>
-        <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
-          <Border BorderThickness="1"
-                  BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-            <ContentPresenter Content="{Binding Content}" />
-          </Border>
-        </DataTemplate>
-      </TabControl.ContentTemplate>
-    </TabControl>
-  </Grid>
+              <Button Grid.Column="2"
+                      Padding="1"
+                      Margin="0,0,0,0"
+                      Height="14"
+                      Background="Transparent"
+                      Foreground="Transparent"
+                      BorderThickness="0"
+                      Command="ApplicationCommands.Close"
+                      CommandParameter="{Binding}"
+                      VerticalAlignment="Center">
+                <local:CrispImage Moniker="Close" />
+              </Button>
+            </Grid>
+          </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+          <DataTemplate DataType="{x:Type local:DatabaseTabItemViewModel}">
+            <Border BorderThickness="1"
+                    BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+              <ContentPresenter Content="{Binding Content}" />
+            </Border>
+          </DataTemplate>
+        </TabControl.ContentTemplate>
+      </TabControl>
+    </Grid>
+  </DockPanel>
 </Window>
