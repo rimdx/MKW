@@ -12,7 +12,6 @@ namespace MKW.Storage
             : SerializerBase
             , IDatabaseSerializer
             , IDatabaseNG.ISnapshot
-            , IDisposable
         {
             protected abstract IDatabaseBlobStore.ISnapshot BlobStoreSnapshot { get; }
 
@@ -90,9 +89,6 @@ namespace MKW.Storage
 
                 return false;
             }
-
-            // Misc
-            public abstract void Dispose();
         }
     }
 }

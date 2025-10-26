@@ -12,7 +12,6 @@ namespace MKW.Storage.JSON
             : SerializerBase
             , IDatabaseSerializer
             , IDatabaseNG.ISnapshot
-            , IDisposable
         {
             // readonly
             protected abstract JSONDatabase Database { get; }
@@ -98,8 +97,6 @@ namespace MKW.Storage.JSON
                     yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromStringLegacy(item.Key), item.Value);
                 }
             }
-
-            public abstract void Dispose();
         }
     }
 }

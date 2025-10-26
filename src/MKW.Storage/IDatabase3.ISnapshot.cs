@@ -9,7 +9,6 @@ namespace MKW.Storage
     {
         public interface ISnapshot
             : IDatabaseSerializer
-            , IDisposable
         {
             DatabaseUser OpenUser(UserId userId);
             bool HasUser(UserId id);

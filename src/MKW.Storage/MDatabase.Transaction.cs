@@ -63,7 +63,7 @@ namespace MKW.Storage
                 transaction.Commit();
             }
 
-            public override void Dispose()
+            public void Dispose()
             {
                 transaction.Dispose();
             }

@@ -119,7 +119,7 @@ namespace MKW.Storage.JSON
                 // todo:
             }
 
-            public override void Dispose()
+            public void Dispose()
             {
                 // todo:
                 // no-op
