@@ -113,5 +113,49 @@ namespace MKW.Storage.Tests
                 ClassicAssert.AreEqual(1, snapshot.Enumerate().Count());
             }
         }
+
+        [Test]
+        public void SnapshotImmutabilityTest()
+        {
+            Random random = new Random(42);
+
+            BlobId id1 = BlobId.From(UserId.Create());
+            BlobId id2 = BlobId.From(UserId.Create());
+
+            byte[] data1 = new byte[1024];
+            random.NextBytes(data1);
+
+            byte[] data2 = new byte[512];
+            random.NextBytes(data2);
+
+            using (IDatabaseBlobStore.ITransaction transaction = store.BeginTransaction())
+            {
+                IEnumerable<Blob> blobIter1 = transaction.Snapshot.Enumerate();
+
+                transaction.Create(new BlobUser
+                {
+                    Id = id1,
+                    Data = data1
+                });
+
+                CollectionAssert.IsEmpty(store.CreateSnapshot().Enumerate());
+                CollectionAssert.IsEmpty(blobIter1);
+
+                IEnumerable<Blob> blobIter2 = transaction.Snapshot.Enumerate();
+                transaction.Create(new BlobUser
+                {
+                    Id = id2,
+                    Data = data2
+                });
+
+                IEnumerable<Blob> blobIter3 = transaction.Snapshot.Enumerate();
+
+                CollectionAssert.IsEmpty(store.CreateSnapshot().Enumerate());
+                ClassicAssert.AreEqual(1, blobIter2.Count());
+                ClassicAssert.AreEqual(2, blobIter3.Count());
+
+                transaction.Commit();
+            }
+        }
     }
 }
