@@ -18,8 +18,6 @@ namespace MKW.Storage.MKPG.BlobStore
                     yield return blob.GetTypedBlob();
                 }
             }
-
-            public abstract void Dispose();
         }
     }
 }

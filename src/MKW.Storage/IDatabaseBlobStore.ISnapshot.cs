@@ -6,7 +6,6 @@ namespace MKW.Storage
     public partial interface IDatabaseBlobStore
     {
         public interface ISnapshot
-            : IDisposable
         {
             IEnumerable<Blob> Enumerate();
         }

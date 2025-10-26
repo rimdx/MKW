@@ -72,7 +72,7 @@ namespace MKW.Storage.MKPG.BlobStore
                 disposed = true;
             }
 
-            public override void Dispose()
+            public void Dispose()
             {
                 transaction.Dispose();
                 disposed = true;

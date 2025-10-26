@@ -22,7 +22,6 @@ namespace MKW.Storage
 
             public override void Dispose()
             {
-                BlobStoreSnapshot.Dispose();
             }
         }
     }

@@ -18,10 +18,6 @@ namespace MKW.Storage.MKPG.BlobStore
             {
                 return blobs;
             }
-
-            public void Dispose()
-            {
-            }
         }
     }
 }

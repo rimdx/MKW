@@ -16,10 +16,6 @@ namespace MKW.Storage.MKPG.BlobStore
                 using StreamReader reader = new StreamReader(steam);
                 Blobs = [.. BlobStorageSerializer.ReadBlobs(reader)];
             }
-
-            public override void Dispose()
-            {
-            }
         }
     }
 }
