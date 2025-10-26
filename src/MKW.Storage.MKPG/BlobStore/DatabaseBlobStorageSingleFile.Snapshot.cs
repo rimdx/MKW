@@ -11,12 +11,6 @@ namespace MKW.Storage.MKPG.BlobStore
         {
             protected override IEnumerable<PgpBlobEntry> Blobs { get; }
 
-            public Snapshot(Stream steam)
-            {
-                using StreamReader reader = new StreamReader(steam);
-                Blobs = [.. BlobStorageSerializer.ReadBlobs(reader)];
-            }
-
             public Snapshot(IEnumerable<PgpBlobEntry> blobs)
             {
                 Blobs = [.. blobs];

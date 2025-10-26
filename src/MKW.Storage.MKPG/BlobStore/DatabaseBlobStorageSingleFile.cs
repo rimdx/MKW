@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Storage.MKPG.FileSystem;
+using MKW.Storage.MKPG.PgpBlob;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
@@ -21,7 +22,9 @@ namespace MKW.Storage.MKPG.BlobStore
 
         public IDatabaseBlobStore.ISnapshot CreateSnapshot()
         {
-            return new Snapshot(editor.CreateReader());
+            using StreamReader reader = new StreamReader(editor.CreateReader());
+
+            return new Snapshot(BlobStorageSerializer.ReadBlobs(reader));
         }
 
         public void Dispose()
