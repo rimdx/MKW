@@ -77,8 +77,9 @@ namespace MKW.Storage.Tests
                 transaction.Commit();
             }
 
-            using (IDatabaseBlobStore.ISnapshot snapshot = store.CreateSnapshot())
             {
+                IDatabaseBlobStore.ISnapshot snapshot = store.CreateSnapshot();
+
                 Blob[] entries = [.. snapshot.Enumerate()];
 
                 ClassicAssert.AreEqual(2, entries.Length);
@@ -107,8 +108,8 @@ namespace MKW.Storage.Tests
                 transaction.Commit();
             }
 
-            using (IDatabaseBlobStore.ISnapshot snapshot = store.CreateSnapshot())
             {
+                IDatabaseBlobStore.ISnapshot snapshot = store.CreateSnapshot();
                 ClassicAssert.AreEqual(1, snapshot.Enumerate().Count());
             }
         }
