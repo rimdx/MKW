@@ -6,7 +6,7 @@ using MKW.Cryptography;
 
 namespace MKW.Storage.JSON
 {
-    public partial class MemoryDatabaseSession : IDatabase, IDatabase3, IDisposable
+    public partial class MemoryDatabaseSession : IDatabase, IDatabaseNG, IDisposable
     {
         internal JSONDatabase Database;
 
@@ -199,12 +199,12 @@ namespace MKW.Storage.JSON
         }
 
         // IDatabase3
-        public IDatabase3.ITransaction BeginTransaction()
+        public IDatabaseNG.ITransaction BeginTransaction()
         {
             return BeginTransactionInternal();
         }
 
-        public IDatabase3.ISnapshot CreateSnapshot()
+        public IDatabaseNG.ISnapshot CreateSnapshot()
         {
             return CreateSnapshotInternal();
         }

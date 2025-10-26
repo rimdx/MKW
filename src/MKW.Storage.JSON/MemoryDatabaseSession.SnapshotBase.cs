@@ -11,7 +11,7 @@ namespace MKW.Storage.JSON
         private abstract class SnapshotBase
             : SerializerBase
             , IDatabaseSerializer
-            , IDatabase3.ISnapshot
+            , IDatabaseNG.ISnapshot
             , IDisposable
         {
             // readonly

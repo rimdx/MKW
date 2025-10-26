@@ -8,7 +8,7 @@ namespace MKW.Storage
         private sealed class Snapshot
             : SnapshotBase
             , IDatabaseSerializer
-            , IDatabase3.ISnapshot
+            , IDatabaseNG.ISnapshot
             , IDisposable
         {
             protected override IDatabaseBlobStore.ISnapshot BlobStoreSnapshot { get; }

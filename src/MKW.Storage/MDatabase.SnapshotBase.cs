@@ -11,7 +11,7 @@ namespace MKW.Storage
         private abstract class SnapshotBase
             : SerializerBase
             , IDatabaseSerializer
-            , IDatabase3.ISnapshot
+            , IDatabaseNG.ISnapshot
             , IDisposable
         {
             protected abstract IDatabaseBlobStore.ISnapshot BlobStoreSnapshot { get; }
