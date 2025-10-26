@@ -11,18 +11,18 @@ namespace MKW.Storage
             , IDatabase3.ISnapshot
             , IDisposable
         {
-            protected override IDatabaseBlobStore.ISnapshot ProxySnapshot { get; }
+            protected override IDatabaseBlobStore.ISnapshot BlobStoreSnapshot { get; }
 
             public Snapshot(IDatabaseSerializer serializer,
-                            IDatabaseBlobStore.ISnapshot proxySnapshot)
+                            IDatabaseBlobStore.ISnapshot blobStoreSnapshot)
                 : base(serializer)
             {
-                ProxySnapshot = proxySnapshot;
+                BlobStoreSnapshot = blobStoreSnapshot;
             }
 
             public override void Dispose()
             {
-                ProxySnapshot.Dispose();
+                BlobStoreSnapshot.Dispose();
             }
         }
     }

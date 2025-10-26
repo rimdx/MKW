@@ -23,7 +23,7 @@ namespace MKW.Storage
                 this.transaction = transaction;
             }
 
-            protected override IDatabaseBlobStore.ISnapshot ProxySnapshot => transaction;
+            protected override IDatabaseBlobStore.ISnapshot BlobStoreSnapshot => transaction;
 
             // Entry
             public void CreateEntry(DatabaseEntry entry)
