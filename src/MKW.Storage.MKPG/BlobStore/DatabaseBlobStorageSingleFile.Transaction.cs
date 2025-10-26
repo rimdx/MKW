@@ -31,18 +31,7 @@ namespace MKW.Storage.MKPG.BlobStore
 
             private static string GetType(Blob blob)
             {
-                if (blob is BlobUser)
-                {
-                    return MKPGConstants.ArmourTypeHeaders.User;
-                }
-                else if (blob is BlobSecretEntry)
-                {
-                    return MKPGConstants.ArmourTypeHeaders.Entry;
-                }
-                else
-                {
-                    throw new InvalidCastException();
-                }
+                return blob.Visit(new GetBlobTypeVisitor());
             }
 
             public void Create(Blob blob)
