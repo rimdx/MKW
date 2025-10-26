@@ -15,8 +15,10 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     {
         public const SignatureSubpacketTag Tag = SignatureSubpacketTag.IssuerKeyId;
 
-        public static SignatureSubpacketIssuerKeyId Deserialize(IBufferReader<byte> reader)
+        public static SignatureSubpacketIssuerKeyId Deserialize(SignatureSubpacketV4 subpacket)
         {
+            IBufferReader<byte> reader = subpacket.CreateReader();
+
             return new SignatureSubpacketIssuerKeyId
             {
                 KeyId = reader.ReadBytes(8),
