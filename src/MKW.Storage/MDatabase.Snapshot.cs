@@ -9,7 +9,6 @@ namespace MKW.Storage
             : SnapshotBase
             , IDatabaseSerializer
             , IDatabaseNG.ISnapshot
-            , IDisposable
         {
             protected override IDatabaseBlobStore.ISnapshot BlobStoreSnapshot { get; }
 

@@ -100,14 +100,14 @@ namespace MKW.Storage.Tests
                 transaction.CreateEntry(entry);
                 transaction.CreateUser(user);
 
-                ClassicAssert.AreEqual(1, transaction.EnumerateEntries().Count());
-                ClassicAssert.AreEqual(1, transaction.EnumerateUsers().Count());
+                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateEntries().Count());
+                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateUsers().Count());
 
                 transaction.Commit();
             }
 
-            using (IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot())
             {
+                IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
                 ClassicAssert.AreEqual(1, snapshot.EnumerateEntries().Count());
                 ClassicAssert.AreEqual(1, snapshot.EnumerateUsers().Count());
             }
@@ -134,7 +134,7 @@ namespace MKW.Storage.Tests
             {
                 transaction.CreateEntry(dbEntry);
 
-                DatabaseEntry read = transaction.OpenEntry(dbEntry.Id);
+                DatabaseEntry read = transaction.Snapshot.OpenEntry(dbEntry.Id);
 
                 ClassicAssert.AreEqual(dbEntry.Id, read.Id);
                 CollectionAssert.AreEqual(dbEntry.Data.ToArray(), read.Data.ToArray());
@@ -220,7 +220,7 @@ namespace MKW.Storage.Tests
             using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateUser(user);
-                DatabaseUser decoded = transaction.OpenUser(user.Id);
+                DatabaseUser decoded = transaction.Snapshot.OpenUser(user.Id);
 
                 CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());
                 CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
@@ -273,8 +273,8 @@ namespace MKW.Storage.Tests
                 transaction.CreateEntry(entry with { Id = EntryId.Create() });
                 transaction.CreateUser(user with { Id = UserId.Create() });
 
-                ClassicAssert.AreEqual(1, transaction.EnumerateEntries().Count());
-                ClassicAssert.AreEqual(1, transaction.EnumerateUsers().Count());
+                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateEntries().Count());
+                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateUsers().Count());
 
                 transaction.CreateEntry(entry with { Id = EntryId.Create() });
                 transaction.CreateEntry(entry with { Id = EntryId.Create() });

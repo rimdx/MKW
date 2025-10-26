@@ -22,10 +22,7 @@ namespace MKW.Storage.JSON
 
         public DatabaseUser OpenUser(UserId id)
         {
-            using (Snapshot snapshot = CreateSnapshotInternal())
-            {
-                return snapshot.OpenUser(id);
-            }
+            return CreateSnapshotInternal().OpenUser(id);
         }
 
         public void CreateUser(UserId id, DatabaseUser user)
@@ -60,20 +57,18 @@ namespace MKW.Storage.JSON
 
         public bool HasUser(UserId id)
         {
-            using (Snapshot snapshot = CreateSnapshotInternal())
-            {
-                return snapshot.HasUser(id);
-            }
+            Snapshot snapshot = CreateSnapshotInternal();
+
+            return snapshot.HasUser(id);
         }
 
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
-            using (Snapshot snapshot = CreateSnapshotInternal())
+            Snapshot snapshot = CreateSnapshotInternal();
+
+            foreach (DatabaseUser user in snapshot.EnumerateUsers())
             {
-                foreach (DatabaseUser user in snapshot.EnumerateUsers())
-                {
-                    yield return user;
-                }
+                yield return user;
             }
         }
 
@@ -99,10 +94,9 @@ namespace MKW.Storage.JSON
 
         public DatabaseEntry OpenEntry(EntryId id)
         {
-            using (Snapshot snapshot = CreateSnapshotInternal())
-            {
-                return snapshot.OpenEntry(id);
-            }
+            Snapshot snapshot = CreateSnapshotInternal();
+
+            return snapshot.OpenEntry(id);
         }
 
         public bool DeleteEntry(EntryId id)
@@ -119,20 +113,18 @@ namespace MKW.Storage.JSON
 
         public bool HasEntry(EntryId id)
         {
-            using (Snapshot snapshot = CreateSnapshotInternal())
-            {
-                return snapshot.HasEntry(id);
-            }
+            Snapshot snapshot = CreateSnapshotInternal();
+
+            return snapshot.HasEntry(id);
         }
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
-            using (Snapshot snapshot = CreateSnapshotInternal())
+            Snapshot snapshot = CreateSnapshotInternal();
+
+            foreach (DatabaseEntry entry in snapshot.EnumerateEntries())
             {
-                foreach (DatabaseEntry entry in snapshot.EnumerateEntries())
-                {
-                    yield return entry;
-                }
+                yield return entry;
             }
         }
 

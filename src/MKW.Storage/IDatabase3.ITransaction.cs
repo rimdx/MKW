@@ -8,10 +8,11 @@ namespace MKW.Storage
     public partial interface IDatabaseNG
     {
         public interface ITransaction
-            : ISnapshot
-            , IDatabaseSerializer
+            : IDatabaseSerializer
             , IDisposable
         {
+            ISnapshot Snapshot { get; }
+
             void CreateUser(DatabaseUser user);
             void UpdateUser(DatabaseUser user);
             bool DeleteUser(UserId id);
