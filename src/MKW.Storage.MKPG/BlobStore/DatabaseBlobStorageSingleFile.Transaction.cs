@@ -36,22 +36,12 @@ namespace MKW.Storage.MKPG.BlobStore
                     throw new EntryAlreadyExistsException();
                 }
 
-                editedEntries[blob.Id] = new PgpBlobEntry
-                {
-                    Id = blob.Id,
-                    Data = blob.Data,
-                    Type = blob.Visit(new GetBlobTypeVisitor()),
-                };
+                editedEntries[blob.Id] = blob.GetPgpBlob();
             }
 
             public void Update(Blob blob)
             {
-                editedEntries[blob.Id] = new PgpBlobEntry
-                {
-                    Id = blob.Id,
-                    Data = blob.Data,
-                    Type = blob.Visit(new GetBlobTypeVisitor()),
-                };
+                editedEntries[blob.Id] = blob.GetPgpBlob();
             }
 
             public bool Delete(BlobId blobId)
