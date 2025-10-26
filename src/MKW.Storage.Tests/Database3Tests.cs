@@ -28,7 +28,7 @@ namespace MKW.Storage.Tests
             JsonFile,
         }
 
-        private IDatabase3 database = default!;
+        private IDatabaseNG database = default!;
 
         [SetUp]
         public void Setup()
@@ -95,7 +95,7 @@ namespace MKW.Storage.Tests
                 Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
             };
 
-            using (IDatabase3.ITransaction transaction = database.BeginTransaction())
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateEntry(entry);
                 transaction.CreateUser(user);
@@ -106,7 +106,7 @@ namespace MKW.Storage.Tests
                 transaction.Commit();
             }
 
-            using (IDatabase3.ISnapshot snapshot = database.CreateSnapshot())
+            using (IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot())
             {
                 ClassicAssert.AreEqual(1, snapshot.EnumerateEntries().Count());
                 ClassicAssert.AreEqual(1, snapshot.EnumerateUsers().Count());
@@ -130,7 +130,7 @@ namespace MKW.Storage.Tests
                 Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
             };
 
-            using (IDatabase3.ITransaction transaction = database.BeginTransaction())
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateEntry(dbEntry);
 
@@ -174,7 +174,7 @@ namespace MKW.Storage.Tests
             EntryId theid = EntryId.Create();
             EntryId someid = EntryId.Create();
 
-            using (IDatabase3.ITransaction transaction = database.BeginTransaction())
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateEntry(dbEntry with { Id = EntryId.Create() });
                 transaction.CreateEntry(dbEntry with { Id = someid });
@@ -217,7 +217,7 @@ namespace MKW.Storage.Tests
                 },
             };
 
-            using (IDatabase3.ITransaction transaction = database.BeginTransaction())
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateUser(user);
                 DatabaseUser decoded = transaction.OpenUser(user.Id);
@@ -268,7 +268,7 @@ namespace MKW.Storage.Tests
                 },
             };
 
-            using (IDatabase3.ITransaction transaction = database.BeginTransaction())
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateEntry(entry with { Id = EntryId.Create() });
                 transaction.CreateUser(user with { Id = UserId.Create() });

@@ -10,8 +10,8 @@ namespace MKW.Storage
         private sealed class Transaction
             : SnapshotBase
             , IDatabaseSerializer
-            , IDatabase3.ISnapshot
-            , IDatabase3.ITransaction
+            , IDatabaseNG.ISnapshot
+            , IDatabaseNG.ITransaction
             , IDisposable
         {
             private readonly IDatabaseBlobStore.ITransaction transaction;

@@ -3,7 +3,7 @@
 
 namespace MKW.Storage
 {
-    public partial interface IDatabase3 : IDisposable
+    public partial interface IDatabaseNG : IDisposable
     {
         ITransaction BeginTransaction();
 

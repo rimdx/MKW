@@ -10,8 +10,8 @@ namespace MKW.Storage.JSON
     {
         private sealed class Transaction
             : SnapshotBase
-            , IDatabase3.ISnapshot
-            , IDatabase3.ITransaction
+            , IDatabaseNG.ISnapshot
+            , IDatabaseNG.ITransaction
             , IDisposable
         {
             private readonly MemoryDatabaseSession database;

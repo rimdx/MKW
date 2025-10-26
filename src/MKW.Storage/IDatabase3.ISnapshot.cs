@@ -5,7 +5,7 @@ using MKW.Core;
 
 namespace MKW.Storage
 {
-    public partial interface IDatabase3
+    public partial interface IDatabaseNG
     {
         public interface ISnapshot
             : IDatabaseSerializer

@@ -4,7 +4,7 @@
 namespace MKW.Storage
 {
     public sealed partial class MDatabase
-        : IDatabase3
+        : IDatabaseNG
     {
         private readonly IDatabaseSerializer serializer;
         private readonly IDatabaseBlobStore store;
@@ -15,12 +15,12 @@ namespace MKW.Storage
             this.store = store;
         }
 
-        public IDatabase3.ITransaction BeginTransaction()
+        public IDatabaseNG.ITransaction BeginTransaction()
         {
             return new Transaction(serializer, store.BeginTransaction());
         }
 
-        public IDatabase3.ISnapshot CreateSnapshot()
+        public IDatabaseNG.ISnapshot CreateSnapshot()
         {
             return new Snapshot(serializer, store.CreateSnapshot());
         }
