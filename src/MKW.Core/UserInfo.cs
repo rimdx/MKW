@@ -10,6 +10,8 @@ namespace MKW.Core
 
         public required UserMetadata Metadata { get; init; }
 
+        public required bool IsAdmin { get; init; }
+
         public Trust Trust { get; set; } = Trust.Unknown;
 
         public UserInfo()

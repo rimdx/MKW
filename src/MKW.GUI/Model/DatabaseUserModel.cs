@@ -16,12 +16,12 @@ namespace MKW.GUI.Model
         }
 
         public UserId Id => user.Id;
-        public bool IsAdmin => Id.IsAdmin;
+        public bool IsAdmin => user.IsAdmin;
         public string Name
         {
             get
             {
-                if (Id.IsAdmin)
+                if (user.IsAdmin)
                 {
                     return "Admin";
                 }
@@ -36,7 +36,7 @@ namespace MKW.GUI.Model
         {
             get
             {
-                if (Id.IsAdmin)
+                if (user.IsAdmin)
                 {
                     return "Admin";
                 }
@@ -51,7 +51,7 @@ namespace MKW.GUI.Model
         {
             get
             {
-                if (Id.IsAdmin)
+                if (user.IsAdmin)
                 {
                     return "Admin";
                 }
@@ -62,6 +62,6 @@ namespace MKW.GUI.Model
             }
         }
 
-        public ImageMoniker Icon => IsAdmin ? ImageMoniker.Admin : ImageMoniker.User;
+        public ImageMoniker Icon => user.IsAdmin ? ImageMoniker.Admin : ImageMoniker.User;
     }
 }
