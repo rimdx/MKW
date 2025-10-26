@@ -143,13 +143,6 @@ namespace MKW.GUI.Database
             return new ExportWizardViewModel(database);
         }
 
-        private DatabaseUnlockedView unlockedViewNeededToBindTheCommand;
-        public DatabaseUnlockedView UnlockedViewNeededToBindTheCommand
-        {
-            get => unlockedViewNeededToBindTheCommand;
-            set => SetProperty(ref unlockedViewNeededToBindTheCommand, value);
-        }
-
         public void Dispose()
         {
             Entries.Dispose();

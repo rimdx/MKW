@@ -21,6 +21,7 @@
               SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
               BorderThickness="0"
               SnapsToDevicePixels="True"
+              x:Name="ctlListView"
               controls:ListViewBehavior.DeselectOnClickAway="True">
       <ListView.CommandBindings>
         <CommandBinding Command="{x:Static gui:ListViewCommands.DefaultAction}"
@@ -28,22 +29,22 @@
       </ListView.CommandBindings>
 
       <ListView.ContextMenu>
-        <ContextMenu>
+        <ContextMenu x:Name="contextMenu">
           <MenuItem Header="Copy _User Name"
                     Command="{x:Static gui:EntryCommands.CopyProperty}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}"
+                    CommandTarget="{Binding ElementName=ctlListView}"
                     CommandParameter="{x:Static model:CommonEntryPropertiesModel.Username}" />
 
           <MenuItem Header="Copy _Password"
                     Command="{x:Static gui:EntryCommands.CopyProperty}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}"
+                    CommandTarget="{Binding ElementName=ctlListView}"
                     CommandParameter="{x:Static model:CommonEntryPropertiesModel.Password}" />
 
           <Separator />
 
           <MenuItem Header="_Add Entry..."
                     Command="{x:Static gui:EntryCommands.AddEntry}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
+                    CommandTarget="{Binding ElementName=ctlListView}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="NewKey" />
             </MenuItem.Icon>
@@ -51,7 +52,7 @@
 
           <MenuItem Header="_Edit Entry"
                     Command="{x:Static gui:EntryCommands.EditEntry}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
+                    CommandTarget="{Binding ElementName=ctlListView}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="EditKey" />
             </MenuItem.Icon>
@@ -59,7 +60,7 @@
 
           <MenuItem Header="_Delete Entry"
                     Command="{x:Static gui:EntryCommands.DeleteEntry}"
-                    CommandTarget="{Binding UnlockedViewNeededToBindTheCommand}">
+                    CommandTarget="{Binding ElementName=ctlListView}">
             <MenuItem.Icon>
               <gui:CrispImage Moniker="DeleteKey" />
             </MenuItem.Icon>

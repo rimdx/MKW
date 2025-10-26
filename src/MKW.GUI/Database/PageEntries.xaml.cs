@@ -20,6 +20,8 @@ namespace MKW.GUI.Database
             DataContext = viewModel;
             InitializeComponent();
 
+            NameScope.SetNameScope(contextMenu, NameScope.GetNameScope(this));
+
             // TODO: Factor-out into a separate object.
             foreach (EntryListColumn column in viewModel.Columns)
             {
