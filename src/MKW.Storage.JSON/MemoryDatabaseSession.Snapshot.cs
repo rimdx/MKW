@@ -9,17 +9,12 @@ namespace MKW.Storage.JSON
             : SnapshotBase
             , IDatabaseSerializer
             , IDatabaseNG.ISnapshot
-            , IDisposable
         {
             protected override JSONDatabase Database { get; }
 
             public Snapshot(JSONDatabase database)
             {
                 Database = database;
-            }
-
-            public override void Dispose()
-            {
             }
         }
     }

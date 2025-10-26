@@ -19,10 +19,6 @@ namespace MKW.Storage
             {
                 BlobStoreSnapshot = blobStoreSnapshot;
             }
-
-            public override void Dispose()
-            {
-            }
         }
     }
 }
