@@ -3,6 +3,7 @@
 
 using MKW.Common;
 using Org.BouncyCastle.Bcpg;
+using System.Buffers;
 
 namespace MKW.Core.Serialization.OpenPgp.Packets
 {
@@ -22,6 +23,19 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             return new SignatureSubpacketIssuerKeyId
             {
                 KeyId = reader.ReadBytes(8),
+            };
+        }
+
+        public static SignatureSubpacketV4 Serialize(SignatureSubpacketIssuerKeyId obj)
+        {
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+
+            writer.Write(obj.KeyId.Span.EnsureSize(8));
+
+            return new SignatureSubpacketV4
+            {
+                Type = Tag,
+                RawData = writer.WrittenMemory,
             };
         }
     }
