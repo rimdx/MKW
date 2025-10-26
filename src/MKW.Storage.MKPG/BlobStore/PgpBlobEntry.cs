@@ -3,13 +3,10 @@
 
 namespace MKW.Storage.MKPG.BlobStore
 {
-    internal sealed record class PgpBlobEntry : Blob
+    internal sealed record class PgpBlobEntry
     {
+        public required BlobId Id { get; init; }
+        public required ReadOnlyMemory<byte> Data { get; init; }
         public required string Type { get; init; }
-
-        public override T Visit<T>(IVisitor<T> visitor)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
