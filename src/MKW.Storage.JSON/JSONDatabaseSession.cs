@@ -9,7 +9,6 @@ namespace MKW.Storage.JSON
     public partial class JSONDatabaseSession
         : MemoryDatabaseSession
         , IDatabase
-        , IDatabase2
     {
         private readonly string path;
         private readonly FileSystemWatcher watcher;
