@@ -29,11 +29,6 @@ namespace MKW.Storage.MKPG.BlobStore
 
             protected override IEnumerable<PgpBlobEntry> Blobs => editedEntries.Values;
 
-            private static string GetType(Blob blob)
-            {
-                return blob.Visit(new GetBlobTypeVisitor());
-            }
-
             public void Create(Blob blob)
             {
                 if (editedEntries.ContainsKey(blob.Id))
@@ -45,7 +40,7 @@ namespace MKW.Storage.MKPG.BlobStore
                 {
                     Id = blob.Id,
                     Data = blob.Data,
-                    Type = GetType(blob),
+                    Type = blob.Visit(new GetBlobTypeVisitor()),
                 };
             }
 
@@ -55,7 +50,7 @@ namespace MKW.Storage.MKPG.BlobStore
                 {
                     Id = blob.Id,
                     Data = blob.Data,
-                    Type = GetType(blob),
+                    Type = blob.Visit(new GetBlobTypeVisitor()),
                 };
             }
 
