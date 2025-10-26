@@ -6,5 +6,10 @@ namespace MKW.Storage.MKPG.BlobStore
     internal sealed record class PgpBlobEntry : Blob
     {
         public required string Type { get; init; }
+
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

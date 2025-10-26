@@ -5,10 +5,12 @@ using MKW.Common;
 
 namespace MKW.Storage
 {
-    public abstract record class Blob
+    public abstract partial record class Blob
     {
         public required BlobId Id { get; init; }
         public required ReadOnlyMemory<byte> Data { get; init; }
+
+        public abstract T Visit<T>(IVisitor<T> visitor);
 
         public IBufferReader<byte> CreateReader()
         {
