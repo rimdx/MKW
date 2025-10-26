@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Storage.Exceptions;
+using System.Collections.Immutable;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
@@ -10,14 +11,14 @@ namespace MKW.Storage.MKPG.BlobStore
         private sealed class Transaction : IDatabaseBlobStore.ITransaction
         {
             private readonly DatabaseBlobStorageMemory database;
-            private readonly Dictionary<BlobId, Blob> blobs;
+            private readonly ImmutableDictionary<BlobId, Blob>.Builder blobs;
 
             public Transaction(DatabaseBlobStorageMemory database,
-                               IReadOnlyCollection<Blob> blobs)
+                               IEnumerable<Blob> blobs)
             {
                 this.database = database;
 
-                this.blobs = new Dictionary<BlobId, Blob>(blobs.Count);
+                this.blobs = ImmutableDictionary.CreateBuilder<BlobId, Blob>();
                 foreach (Blob blob in blobs)
                 {
                     this.blobs[blob.Id] = blob;
@@ -28,7 +29,7 @@ namespace MKW.Storage.MKPG.BlobStore
             {
                 get
                 {
-                    return new Snapshot(blobs.Values);
+                    return new Snapshot(blobs.ToImmutable());
                 }
             }
 
@@ -59,7 +60,7 @@ namespace MKW.Storage.MKPG.BlobStore
 
             public void Commit()
             {
-                database.blobs = [.. blobs.Values];
+                database.blobs = blobs.ToImmutable();
             }
 
             public void Dispose()
