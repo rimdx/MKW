@@ -145,16 +145,30 @@ namespace MKW.GUI.Database
 
         private void CopyPropertyCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            PropertyInfo property = (PropertyInfo)e.Parameter;
+            try
+            {
+                PropertyInfo property = (PropertyInfo)e.Parameter;
 
-            e.CanExecute = CanCopyProperty(model.SelectedEntry, property);
+                e.CanExecute = CanCopyProperty(model.SelectedEntry, property);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
         }
 
         private void CopyPropertyCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            PropertyInfo property = (PropertyInfo)e.Parameter;
+            try
+            {
+                PropertyInfo property = (PropertyInfo)e.Parameter;
 
-            CopyProperty(model.SelectedEntry, property);
+                CopyProperty(model.SelectedEntry, property);
+            }
+            catch (Exception ex)
+            {
+                ErrorReporter.HandleException(Window.GetWindow(this), ex);
+            }
         }
     }
 }
