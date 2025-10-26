@@ -6,6 +6,7 @@ using MKW.Storage.Exceptions;
 using MKW.Storage.MKPG;
 using MKW.Storage.MKPG.BlobStore;
 using MKW.Storage.MKPG.FileSystem;
+using MKW.Storage.MKPG.PgpBlob;
 using NUnit.Framework.Legacy;
 using System.Text;
 

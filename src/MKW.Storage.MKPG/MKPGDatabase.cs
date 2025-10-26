@@ -5,6 +5,7 @@ using MKW.Core;
 using MKW.Cryptography;
 using MKW.Storage.MKPG.BlobStore;
 using MKW.Storage.MKPG.FileSystem;
+using MKW.Storage.MKPG.PgpBlob;
 using System.Buffers;
 
 namespace MKW.Storage.MKPG

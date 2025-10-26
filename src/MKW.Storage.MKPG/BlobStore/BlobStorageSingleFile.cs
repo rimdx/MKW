@@ -4,6 +4,7 @@
 using MKW.Common;
 using MKW.Storage.Exceptions;
 using MKW.Storage.MKPG.FileSystem;
+using MKW.Storage.MKPG.PgpBlob;
 
 namespace MKW.Storage.MKPG.BlobStore
 {

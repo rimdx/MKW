@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Storage.Exceptions;
+using MKW.Storage.MKPG.PgpBlob;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
