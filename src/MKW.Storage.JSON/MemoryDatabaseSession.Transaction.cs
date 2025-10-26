@@ -9,8 +9,7 @@ namespace MKW.Storage.JSON
     public partial class MemoryDatabaseSession
     {
         private sealed class Transaction
-            : SnapshotBase
-            , IDatabaseNG.ISnapshot
+            : SerializerBase
             , IDatabaseNG.ITransaction
             , IDisposable
         {
@@ -21,7 +20,9 @@ namespace MKW.Storage.JSON
                 this.database = database;
             }
 
-            protected override JSONDatabase Database => database.Database;
+            private JSONDatabase Database => database.Database;
+
+            public IDatabaseNG.ISnapshot Snapshot => new Snapshot(database.Database);
 
             // Entry
             public void CreateEntry(DatabaseEntry entry)

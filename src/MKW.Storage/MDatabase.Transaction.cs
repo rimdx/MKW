@@ -8,9 +8,8 @@ namespace MKW.Storage
     public sealed partial class MDatabase
     {
         private sealed class Transaction
-            : SnapshotBase
+            : SerializerBase
             , IDatabaseSerializer
-            , IDatabaseNG.ISnapshot
             , IDatabaseNG.ITransaction
             , IDisposable
         {
@@ -23,7 +22,7 @@ namespace MKW.Storage
                 this.transaction = transaction;
             }
 
-            protected override IDatabaseBlobStore.ISnapshot BlobStoreSnapshot => transaction.Snapshot;
+            public IDatabaseNG.ISnapshot Snapshot => new Snapshot(serializer, transaction.Snapshot);
 
             // Entry
             public void CreateEntry(DatabaseEntry entry)
