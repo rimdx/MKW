@@ -21,10 +21,6 @@ namespace MKW.GUI.Database
             DataContext = model;
 
             InitializeComponent();
-
-            //InfoPage.Content = new PageInfo(model);
-            //EntriesPage.Content = ;
-            //UsersPage.Content = ;
         }
 
         private void AddEntryCommand_Executed(object sender, ExecutedRoutedEventArgs e)
