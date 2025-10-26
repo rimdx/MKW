@@ -19,7 +19,7 @@ namespace MKW.Storage.MKPG.BlobStore
 
             public Snapshot(IEnumerable<PgpBlobEntry> blobs)
             {
-                Blobs = blobs;
+                Blobs = [.. blobs];
             }
         }
     }
