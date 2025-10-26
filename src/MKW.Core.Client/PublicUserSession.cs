@@ -66,6 +66,7 @@ namespace MKW.Core.Client
             return new UserInfo
             {
                 Id = user.Id,
+                IsAdmin = user.Id.IsAdmin,
                 PublicKey = user.ProtectedData.PublicKey,
                 Trust = trust,
                 Metadata = metadata
