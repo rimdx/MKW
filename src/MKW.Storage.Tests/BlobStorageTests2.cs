@@ -104,7 +104,7 @@ namespace MKW.Storage.Tests
             {
                 ClassicAssert.AreEqual(false, transaction.Delete(BlobId.From(UserId.Create())));
                 ClassicAssert.AreEqual(true, transaction.Delete(id2));
-                ClassicAssert.AreEqual(1, transaction.Enumerate().Count());
+                ClassicAssert.AreEqual(1, transaction.Snapshot.Enumerate().Count());
                 transaction.Commit();
             }
 

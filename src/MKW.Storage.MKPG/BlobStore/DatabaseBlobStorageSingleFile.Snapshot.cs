@@ -16,6 +16,11 @@ namespace MKW.Storage.MKPG.BlobStore
                 using StreamReader reader = new StreamReader(steam);
                 Blobs = [.. BlobStorageSerializer.ReadBlobs(reader)];
             }
+
+            public Snapshot(IEnumerable<PgpBlobEntry> blobs)
+            {
+                Blobs = blobs;
+            }
         }
     }
 }
