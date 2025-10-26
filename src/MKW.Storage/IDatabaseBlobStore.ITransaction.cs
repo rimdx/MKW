@@ -6,9 +6,10 @@ namespace MKW.Storage
     public partial interface IDatabaseBlobStore
     {
         public interface ITransaction
-            : ISnapshot
-            , IDisposable
+            : IDisposable
         {
+            ISnapshot Snapshot { get; }
+
             void Create(Blob blob);
             void Update(Blob blob);
             bool Delete(BlobId blobId);

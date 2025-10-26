@@ -24,6 +24,14 @@ namespace MKW.Storage.MKPG.BlobStore
                 }
             }
 
+            public IDatabaseBlobStore.ISnapshot Snapshot
+            {
+                get
+                {
+                    return new Snapshot(blobs.Values);
+                }
+            }
+
             public void Create(Blob blob)
             {
                 if (blobs.ContainsKey(blob.Id))

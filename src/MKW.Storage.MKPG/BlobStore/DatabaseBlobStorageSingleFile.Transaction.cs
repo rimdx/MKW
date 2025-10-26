@@ -9,7 +9,7 @@ namespace MKW.Storage.MKPG.BlobStore
 {
     internal sealed partial class DatabaseBlobStorageSingleFile
     {
-        private sealed class Transaction : SnapshotBase, IDatabaseBlobStore.ITransaction
+        private sealed class Transaction : IDatabaseBlobStore.ITransaction
         {
             private readonly Dictionary<BlobId, PgpBlobEntry> editedEntries;
             private readonly IFileEditorFactory.ITransaction transaction;
@@ -28,7 +28,13 @@ namespace MKW.Storage.MKPG.BlobStore
                 this.transaction = transaction;
             }
 
-            protected override IEnumerable<PgpBlobEntry> Blobs => editedEntries.Values;
+            public IDatabaseBlobStore.ISnapshot Snapshot
+            {
+                get
+                {
+                    return new Snapshot(editedEntries.Values);
+                }
+            }
 
             public void Create(Blob blob)
             {
