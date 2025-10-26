@@ -47,7 +47,7 @@ namespace MKW.Storage.MKPG
         // Entry
         public Blob OpenEntry2(BlobId id)
         {
-            return entries.Open(BlobId.From(id));
+            return entries.Open(BlobId.From(id)).GetTypedBlob();
         }
 
         public void CreateEntry2(Blob entry)
@@ -74,7 +74,7 @@ namespace MKW.Storage.MKPG
         {
             foreach (PgpBlobEntry blob in entries.Enumerate())
             {
-                yield return blob;
+                yield return blob.GetTypedBlob();
             }
         }
 
@@ -83,10 +83,9 @@ namespace MKW.Storage.MKPG
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             EntrySerializer.Serialize(writer, entry);
 
-            return new PgpBlobEntry
+            return new BlobSecretEntry
             {
                 Id = BlobId.From(entry.Id),
-                Type = MKPGConstants.ArmourTypeHeaders.Entry,
                 Data = writer.WrittenMemory,
             };
         }
@@ -110,7 +109,7 @@ namespace MKW.Storage.MKPG
         // User
         public Blob OpenUser2(BlobId id)
         {
-            return users.Open(BlobId.From(id));
+            return users.Open(BlobId.From(id)).GetTypedBlob();
         }
 
         public void CreateUser2(Blob blob)
@@ -137,7 +136,7 @@ namespace MKW.Storage.MKPG
         {
             foreach (PgpBlobEntry blob in users.Enumerate())
             {
-                yield return blob;
+                yield return blob.GetTypedBlob();
             }
         }
 
@@ -157,10 +156,9 @@ namespace MKW.Storage.MKPG
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
             UserSerializer.Serialize(writer, user);
 
-            return new PgpBlobEntry
+            return new BlobUser
             {
                 Id = BlobId.From(user.Id),
-                Type = MKPGConstants.ArmourTypeHeaders.User,
                 Data = writer.WrittenMemory,
             };
         }
