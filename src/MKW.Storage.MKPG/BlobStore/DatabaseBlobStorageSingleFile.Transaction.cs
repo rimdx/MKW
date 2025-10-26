@@ -42,6 +42,11 @@ namespace MKW.Storage.MKPG.BlobStore
 
             public void Update(Blob blob)
             {
+                if (!editedEntries.ContainsKey(blob.Id))
+                {
+                    throw new EntryDoesNotExistException();
+                }
+
                 editedEntries[blob.Id] = blob.GetPgpBlob();
             }
 
