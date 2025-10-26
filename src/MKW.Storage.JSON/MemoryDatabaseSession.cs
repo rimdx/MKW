@@ -3,8 +3,6 @@
 
 using MKW.Core;
 using MKW.Cryptography;
-using MKW.Storage.Exceptions;
-using System.Text.Json;
 
 namespace MKW.Storage.JSON
 {
@@ -24,106 +22,58 @@ namespace MKW.Storage.JSON
 
         public DatabaseUser OpenUser(UserId id)
         {
-            if (id.IsAdmin)
+            using (Snapshot snapshot = CreateSnapshotInternal())
             {
-                if (Database.Admin != null)
-                {
-                    return JSONDatabaseUser.Deserialize(id, Database.Admin);
-                }
-                else
-                {
-                    throw new AdminDoesNotExistException();
-                }
-            }
-            else
-            {
-                if (Database.Users.TryGetValue(id.GetStringLegacy(), out JSONDatabaseUser? user))
-                {
-                    return JSONDatabaseUser.Deserialize(id, user);
-                }
-                else
-                {
-                    throw new UserDoesNotExistException();
-                }
+                return snapshot.OpenUser(id);
             }
         }
 
         public void CreateUser(UserId id, DatabaseUser user)
         {
-            if (id.IsAdmin)
+            using (Transaction transaction = BeginTransactionInternal())
             {
-                if (Database.Admin == null)
-                {
-                    Database.Admin = JSONDatabaseUser.Serialize(user);
-                }
-                else
-                {
-                    throw new AdminAlreadyExistsException();
-                }
+                transaction.CreateUser(user);
+                transaction.Commit();
             }
-            else
-            {
-                if (!Database.Users.ContainsKey(id.GetStringLegacy()))
-                {
-                    Database.Users.Add(id.GetStringLegacy(), JSONDatabaseUser.Serialize(user));
-                }
-                else
-                {
-                    throw new UserAlreadyExistsException();
-                }
-            }
-
-            Save();
         }
 
         public void UpdateUser(UserId id, DatabaseUser user)
         {
-            if (id.IsAdmin)
+            using (Transaction transaction = BeginTransactionInternal())
             {
-                if (Database.Admin != null)
-                {
-                    Database.Admin = JSONDatabaseUser.Serialize(user);
-                }
-                else
-                {
-                    throw new AdminDoesNotExistException();
-                }
+                transaction.UpdateUser(user);
+                transaction.Commit();
             }
-            else
-            {
-                if (Database.Users.ContainsKey(id.GetStringLegacy()))
-                {
-                    Database.Users[id.GetStringLegacy()] = JSONDatabaseUser.Serialize(user);
-                }
-                else
-                {
-                    throw new UserDoesNotExistException();
-                }
-            }
-
-            Save();
         }
 
         public bool DeleteUser(UserId id)
         {
-            bool result = Database.Users.Remove(id.GetStringLegacy());
-            Save();
+            bool result;
+            using (Transaction transaction = BeginTransactionInternal())
+            {
+                result = transaction.DeleteUser(id);
+                transaction.Commit();
+            }
+
             return result;
         }
 
         public bool HasUser(UserId id)
         {
-            return Database.Users.ContainsKey(id.GetStringLegacy());
+            using (Snapshot snapshot = CreateSnapshotInternal())
+            {
+                return snapshot.HasUser(id);
+            }
         }
 
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
-            yield return OpenUser(UserId.Admin());
-
-            foreach (KeyValuePair<string, JSONDatabaseUser> item in Database.Users)
+            using (Snapshot snapshot = CreateSnapshotInternal())
             {
-                yield return JSONDatabaseUser.Deserialize(UserId.FromStringLegacy(item.Key),
-                                                          item.Value);
+                foreach (DatabaseUser user in snapshot.EnumerateUsers())
+                {
+                    yield return user;
+                }
             }
         }
 
@@ -131,61 +81,58 @@ namespace MKW.Storage.JSON
 
         public void CreateEntry(EntryId id, DatabaseEntry entry)
         {
-            if (Database.Entries.ContainsKey(id.GetStringLegacy()))
+            using (Transaction transaction = BeginTransactionInternal())
             {
-                throw new EntryAlreadyExistsException();
+                transaction.CreateEntry(entry);
+                transaction.Commit();
             }
-            else
-            {
-                Database.Entries[id.GetStringLegacy()] = JSONDatabaseSecretEntry.Serialize(entry);
-            }
-
-            Save();
         }
 
         public void UpdateEntry(EntryId id, DatabaseEntry entry)
         {
-            if (Database.Entries.ContainsKey(id.GetStringLegacy()))
+            using (Transaction transaction = BeginTransactionInternal())
             {
-                Database.Entries[id.GetStringLegacy()] = JSONDatabaseSecretEntry.Serialize(entry);
+                transaction.UpdateEntry(entry);
+                transaction.Commit();
             }
-            else
-            {
-                throw new EntryDoesNotExistException();
-            }
-
-            Save();
         }
 
         public DatabaseEntry OpenEntry(EntryId id)
         {
-            if (Database.Entries.ContainsKey(id.GetStringLegacy()))
+            using (Snapshot snapshot = CreateSnapshotInternal())
             {
-                return JSONDatabaseSecretEntry.Deserialize(id, Database.Entries[id.GetStringLegacy()]);
-            }
-            else
-            {
-                throw new EntryDoesNotExistException();
+                return snapshot.OpenEntry(id);
             }
         }
 
         public bool DeleteEntry(EntryId id)
         {
-            bool result = Database.Entries.Remove(id.GetStringLegacy());
-            Save();
+            bool result;
+            using (Transaction transaction = BeginTransactionInternal())
+            {
+                result = transaction.DeleteEntry(id);
+                transaction.Commit();
+            }
+
             return result;
         }
 
         public bool HasEntry(EntryId id)
         {
-            return Database.Entries.ContainsKey(id.GetStringLegacy());
+            using (Snapshot snapshot = CreateSnapshotInternal())
+            {
+                return snapshot.HasEntry(id);
+            }
         }
 
         public IEnumerable<DatabaseEntry> EnumerateEntries()
         {
-            foreach (KeyValuePair<string, JSONDatabaseSecretEntry> item in Database.Entries)
+            using (Snapshot snapshot = CreateSnapshotInternal())
             {
-                yield return JSONDatabaseSecretEntry.Deserialize(EntryId.FromStringLegacy(item.Key), item.Value);
+                foreach (DatabaseEntry entry in snapshot.EnumerateEntries())
+                {
+                    yield return entry;
+                }
             }
         }
 
@@ -254,10 +201,20 @@ namespace MKW.Storage.JSON
         // IDatabase3
         public IDatabase3.ITransaction BeginTransaction()
         {
-            return new Transaction(this);
+            return BeginTransactionInternal();
         }
 
         public IDatabase3.ISnapshot CreateSnapshot()
+        {
+            return CreateSnapshotInternal();
+        }
+
+        private Transaction BeginTransactionInternal()
+        {
+            return new Transaction(this);
+        }
+
+        private Snapshot CreateSnapshotInternal()
         {
             return new Snapshot(Database);
         }
