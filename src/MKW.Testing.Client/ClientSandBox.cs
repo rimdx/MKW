@@ -7,7 +7,6 @@ using MKW.Cryptography;
 using MKW.Cryptography.Loader;
 using MKW.Storage;
 using MKW.Storage.JSON;
-using MKW.Storage.MKPG;
 using MKW.Testing.Common;
 
 namespace MKW.Testing.Client
@@ -46,7 +45,7 @@ namespace MKW.Testing.Client
         {
             if (USE_MKPGDatabase)
             {
-                return MKPGDatabase.Create(DatabasePath);
+                throw new NotImplementedException();
             }
             else
             {
@@ -58,7 +57,7 @@ namespace MKW.Testing.Client
         {
             if (USE_MKPGDatabase)
             {
-                return MKPGDatabase.Open(DatabasePath);
+                throw new NotImplementedException();
             }
             else
             {
