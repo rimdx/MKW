@@ -5,5 +5,9 @@ namespace MKW.Storage
 {
     public sealed record class BlobSecretEntry : Blob
     {
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            return visitor.VisitSecretEntry(this);
+        }
     }
 }
