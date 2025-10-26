@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Storage.MKPG.PgpBlob;
+
 namespace MKW.Storage.MKPG.BlobStore
 {
     internal static class BlobExtensions
