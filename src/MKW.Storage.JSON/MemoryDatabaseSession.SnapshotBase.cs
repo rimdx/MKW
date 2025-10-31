@@ -23,7 +23,7 @@ namespace MKW.Storage.JSON
                 {
                     if (Database.Admin != null)
                     {
-                        return JSONDatabaseUser.Deserialize(id, Database.Admin);
+                        return JSONDatabaseUser.Deserialize(Database, id, Database.Admin);
                     }
                     else
                     {
@@ -34,7 +34,7 @@ namespace MKW.Storage.JSON
                 {
                     if (Database.Users.TryGetValue(id.GetStringLegacy(), out JSONDatabaseUser? user))
                     {
-                        return JSONDatabaseUser.Deserialize(id, user);
+                        return JSONDatabaseUser.Deserialize(Database, id, user);
                     }
                     else
                     {
@@ -67,7 +67,8 @@ namespace MKW.Storage.JSON
 
                 foreach (KeyValuePair<string, JSONDatabaseUser> item in Database.Users)
                 {
-                    yield return JSONDatabaseUser.Deserialize(UserId.FromStringLegacy(item.Key),
+                    yield return JSONDatabaseUser.Deserialize(Database,
+                                                              UserId.FromStringLegacy(item.Key),
                                                               item.Value);
                 }
             }

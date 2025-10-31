@@ -27,7 +27,7 @@ namespace MKW.Storage.JSON
                 PrivateKey = user.PrivateKey.EncryptedPayload,
 
                 PublicKey = user.ProtectedData.PublicKey,
-                AdminTrustSignature = user.ProtectedData.Signature,
+                AdminTrustSignature = user.ProtectedData.Signature.FirstOrDefault().SignatureBytes,
 
                 Metadata = user.ProtectedData.Metadata,
                 MetadataAdminSignature = null,
@@ -36,7 +36,47 @@ namespace MKW.Storage.JSON
             };
         }
 
-        public static DatabaseUser Deserialize(UserId id, JSONDatabaseUser user)
+        private static IEnumerable<DatabaseTrustSignature> GetAdminSignatures(JSONDatabase database)
+        {
+            yield return new DatabaseTrustSignature
+            {
+                Id = UserId.Admin(),
+                SignatureBytes = database.Admin.AdminSignature,
+            };
+
+            foreach (KeyValuePair<string, JSONDatabaseUser> user in database.Users)
+            {
+                yield return new DatabaseTrustSignature
+                {
+                    Id = UserId.FromStringLegacy(user.Key),
+                    SignatureBytes = user.Value.AdminSignature,
+                };
+            }
+        }
+
+        private static IReadOnlyCollection<DatabaseTrustSignature> GetSignatures(JSONDatabase database,
+                                                                                 UserId id,
+                                                                                 JSONDatabaseUser user)
+        {
+            if (id.IsAdmin)
+            {
+                return [.. GetAdminSignatures(database)];
+            }
+            else
+            {
+                DatabaseTrustSignature signature = new DatabaseTrustSignature
+                {
+                    Id = UserId.Admin(),
+                    SignatureBytes = user.AdminTrustSignature,
+                };
+
+                return [signature];
+            }
+        }
+
+        public static DatabaseUser Deserialize(JSONDatabase database,
+                                               UserId id,
+                                               JSONDatabaseUser user)
         {
             return new DatabaseUser
             {
@@ -46,7 +86,7 @@ namespace MKW.Storage.JSON
                 {
                     PublicKey = user.PublicKey,
                     Metadata = user.Metadata,
-                    Signature = user.AdminTrustSignature,
+                    Signature = GetSignatures(database, id, user),
                 },
                 PrivateKey = new SecretPayload(user.PrivateKey),
             };

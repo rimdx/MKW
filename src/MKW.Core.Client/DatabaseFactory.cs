@@ -34,11 +34,20 @@ namespace MKW.Core.Client
 
             ReadOnlyMemory<byte> protectedDataBytes = database.SerializeProtectedData(protectedData);
 
+            DatabaseTrustSignature selfSignature = new DatabaseTrustSignature
+            {
+                Id = UserId.Admin(),
+                SignatureBytes = transformer.Sign(protectedDataBytes.Span),
+            };
+
             DatabaseUserProtectedDataSigned protectedDataSigned = new DatabaseUserProtectedDataSigned
             {
                 PublicKey = protectedData.PublicKey,
                 Metadata = protectedData.Metadata,
-                Signature = transformer.Sign(protectedDataBytes.Span),
+                Signature =
+                [
+                    selfSignature
+                ],
             };
 
             DatabaseUser admin = new DatabaseUser
