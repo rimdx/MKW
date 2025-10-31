@@ -78,7 +78,14 @@ namespace MKW.Storage.Tests
                 {
                     PublicKey = pubkey,
                     Metadata = metadata,
-                    Signature = new byte[32],
+                    Signature =
+                    [
+                        new DatabaseTrustSignature
+                        {
+                            Id = UserId.Create(),
+                            SignatureBytes = new byte[32]
+                        },
+                    ],
                 },
             };
 
@@ -102,7 +109,14 @@ namespace MKW.Storage.Tests
             CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
 
             CollectionAssert.AreEqual(user.ProtectedData.PublicKey.ToArray(), decoded.ProtectedData.PublicKey.ToArray());
-            CollectionAssert.AreEqual(user.ProtectedData.Signature.ToArray(), decoded.ProtectedData.Signature.ToArray());
+
+            IReadOnlyList<DatabaseTrustSignature> actualSignatures = [.. decoded.ProtectedData.Signature];
+            IReadOnlyList<DatabaseTrustSignature> expectedSignatures = [.. user.ProtectedData.Signature];
+            ClassicAssert.AreEqual(1, actualSignatures.Count);
+            ClassicAssert.AreEqual(expectedSignatures[0].Id, actualSignatures[0].Id);
+            CollectionAssert.AreEqual(expectedSignatures[0].SignatureBytes.ToArray(),
+                                      actualSignatures[0].SignatureBytes.ToArray());
+
             CollectionAssert.AreEqual(user.ProtectedData.Metadata.ToArray(), decoded.ProtectedData.Metadata.ToArray());
 
             //CollectionAssert.AreEqual(user.AdminSignature.ToArray(), decoded.AdminSignature.ToArray());

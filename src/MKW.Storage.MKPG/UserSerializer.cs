@@ -6,6 +6,7 @@ using MKW.Core;
 using MKW.Core.Serialization.OpenPgp;
 using MKW.Core.Serialization.OpenPgp.Packets;
 using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Bcpg;
@@ -21,7 +22,7 @@ namespace MKW.Storage.MKPG
         {
             ReadOnlyMemory<byte>? seckey = null;
             ReadOnlyMemory<byte>? pubkey = null;
-            ReadOnlyMemory<byte>? pubkeySignature = null;
+            List<DatabaseTrustSignature> signatures = [];
             ReadOnlyMemory<byte>? salt = null;
             ReadOnlyMemory<byte>? metadata = null;
 
@@ -51,9 +52,7 @@ namespace MKW.Storage.MKPG
 
                     if (signaturePacket.Type == SignatureTypeTag.PositiveCertificationPublicKeyPacket)
                     {
-                        SignaturePacketV4Body body = SignaturePacketV4BodySerializer.Deserialize(signaturePacket.CreateReader());
-
-                        pubkeySignature = signaturePacket.Signature;
+                        signatures.Add(DatabaseTrustSignatureSerializer.Deserialize(signaturePacket));
                     }
                     else
                     {
@@ -74,11 +73,6 @@ namespace MKW.Storage.MKPG
             if (pubkey == null)
             {
                 throw new Exception("Public key is missing.");
-            }
-
-            if (pubkeySignature == null)
-            {
-                throw new Exception("Public key signature is missing.");
             }
 
             if (seckey == null)
@@ -103,7 +97,7 @@ namespace MKW.Storage.MKPG
                 {
                     PublicKey = pubkey.Value,
                     Metadata = metadata.Value,
-                    Signature = pubkeySignature.Value,
+                    Signature = signatures,
                 },
                 PrivateKey = new SecretPayload(seckey.Value),
                 Salt = salt.Value,
@@ -146,27 +140,17 @@ namespace MKW.Storage.MKPG
                                           new PgpPacket(PacketTag.SecretKey, seckeyPacketWriter.WrittenMemory),
                                           false);
 
-            ArrayBufferWriter<byte> signatureBodyWriter = new ArrayBufferWriter<byte>();
-            SignaturePacketV4Body body = new SignaturePacketV4Body
+            foreach (DatabaseTrustSignature signature in obj.ProtectedData.Signature)
             {
-                Subpackets = [],
-            };
-            SignaturePacketV4BodySerializer.Serialize(signatureBodyWriter, body);
+                SignaturePacketV4 signaturePacket = DatabaseTrustSignatureSerializer.Serialize(signature);
 
-            SignaturePacketV4 signaturePacket = new SignaturePacketV4
-            {
-                Type = SignatureTypeTag.PositiveCertificationPublicKeyPacket,
-                PublicKeyAlgorithm = PublicKeyAlgorithmTag.RsaGeneral,
-                HashAlgorithm = HashAlgorithmTag.Sha256,
-                RawData = signatureBodyWriter.WrittenMemory,
-                Signature = obj.ProtectedData.Signature,
-            };
-            ArrayBufferWriter<byte> signaturePacketWriter = new ArrayBufferWriter<byte>();
-            SignaturePacketV4Serializer.Serialize(signaturePacketWriter, signaturePacket);
+                ArrayBufferWriter<byte> signaturePacketWriter = new ArrayBufferWriter<byte>();
+                SignaturePacketV4Serializer.Serialize(signaturePacketWriter, signaturePacket);
 
-            PgpPacketSerializer.Serialize(writer,
-                                          new PgpPacket(PacketTag.Signature, signaturePacketWriter.WrittenMemory),
-                                          false);
+                PgpPacketSerializer.Serialize(writer,
+                                              new PgpPacket(PacketTag.Signature, signaturePacketWriter.WrittenMemory),
+                                              false);
+            }
 
             ArrayBufferWriter<byte> userIdPacketWriter = new ArrayBufferWriter<byte>();
             Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = new Core.Serialization.OpenPgp.Packets.UserIdPacket(obj.ProtectedData.Metadata);

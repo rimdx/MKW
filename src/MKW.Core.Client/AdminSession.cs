@@ -14,7 +14,7 @@ namespace MKW.Core.Client
     {
         private readonly ClientCryptography crypto;
         private readonly IDatabase database;
-        private readonly DatabaseUser admin;
+        private DatabaseUser admin;
         private readonly IAsymmetricPrivateTransformer transformer;
 
         private readonly UserMetadataDecoder metadata;
@@ -38,8 +38,21 @@ namespace MKW.Core.Client
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
         }
 
+
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
         {
+            // === 🤓 TERMINOLOGY 🤓 ===
+            // admin -> source (the one who performs the action)
+            // user -> target (the one whom me perform the action over)
+            //
+            // signatures are identified by the location where they are stored in the database.
+            //
+            // each signature is stored in the same place alongside with the data
+            //
+            // for example, our admin, since they can have as much signature as the amount
+            // of users in the database, store signatures of all these users, as a confirmation
+            // of their own pubkey+metadata packet.
+
             UserId userId = UserId.Create();
 
             DatabaseUserProtectedData protectedData = new DatabaseUserProtectedData
@@ -50,28 +63,43 @@ namespace MKW.Core.Client
 
             ReadOnlyMemory<byte> protectedDataBytes = database.SerializeProtectedData(protectedData);
 
-            DatabaseUserProtectedDataSigned protectedDataSigned = new DatabaseUserProtectedDataSigned
+            // represents a signature created by the admin (source) to add to the user (target)
+            DatabaseTrustSignature targetSignature = new DatabaseTrustSignature
+            {
+                Id = admin.Id,
+                SignatureBytes = transformer.Sign(protectedDataBytes.Span),
+            };
+
+            // represents a signature created by the user as they initialized their
+            // user access request and have confirmed that they trust the admin (us,
+            // the source of the operation).
+            DatabaseTrustSignature sourceSignature = new DatabaseTrustSignature
+            {
+                Id = userId,
+                SignatureBytes = request.AdminSignature,
+            };
+
+            DatabaseUserProtectedDataSigned targetProtectedDataSigned = new DatabaseUserProtectedDataSigned
             {
                 PublicKey = protectedData.PublicKey,
                 Metadata = protectedData.Metadata,
-                Signature = transformer.Sign(protectedDataBytes.Span),
+                Signature = [targetSignature],
             };
 
             DatabaseUser user = new DatabaseUser
             {
                 Id = userId,
                 Salt = request.Salt,
-                ProtectedData = protectedDataSigned,
+                ProtectedData = targetProtectedDataSigned,
                 PrivateKey = request.EncryptedPrivateKey,
             };
 
             database.CreateUser(userId, user);
 
-            database.AddTrustSignature(new DatabaseTrustSignature
-            {
-                Id = userId,
-                SignatureBytes = request.AdminSignature
-            });
+            // modify ourselves in the database to include user's signature (the one from
+            // user access request).
+            admin = UserSignatureManager.AddSignature(admin, sourceSignature);
+            database.UpdateUser(UserId.Admin(), admin);
 
             EntryDecoder decoder = new EntryDecoder(crypto, this, transformer);
             EntryEncoder encoder = new EntryEncoder(crypto, database, this);

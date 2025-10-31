@@ -5,6 +5,6 @@ namespace MKW.Storage
 {
     public record class DatabaseUserProtectedDataSigned : DatabaseUserProtectedData
     {
-        public ReadOnlyMemory<byte> Signature { get; init; }
+        public required IReadOnlyCollection<DatabaseTrustSignature> Signature { get; init; }
     }
 }

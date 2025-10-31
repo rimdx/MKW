@@ -84,7 +84,14 @@ namespace MKW.Storage.Tests
                 {
                     PublicKey = pubkey,
                     Metadata = metadata,
-                    Signature = new byte[32],
+                    Signature =
+                    [
+                        new DatabaseTrustSignature
+                        {
+                            Id = UserId.Create(),
+                            SignatureBytes = new byte[32]
+                        },
+                    ],
                 },
             };
             DatabaseEntry entry = new DatabaseEntry
@@ -213,7 +220,14 @@ namespace MKW.Storage.Tests
                 {
                     PublicKey = pubkey,
                     Metadata = random.NextBytes(34),
-                    Signature = random.NextBytes(239),
+                    Signature =
+                    [
+                        new DatabaseTrustSignature
+                        {
+                            Id = UserId.Admin(),
+                            SignatureBytes = random.NextBytes(239),
+                        },
+                    ],
                 },
             };
 
@@ -225,7 +239,14 @@ namespace MKW.Storage.Tests
                 CollectionAssert.AreEqual(user.Salt.ToArray(), decoded.Salt.ToArray());
                 CollectionAssert.AreEqual(user.PrivateKey.EncryptedPayload.ToArray(), decoded.PrivateKey.EncryptedPayload.ToArray());
                 CollectionAssert.AreEqual(user.ProtectedData.PublicKey.ToArray(), decoded.ProtectedData.PublicKey.ToArray());
-                CollectionAssert.AreEqual(user.ProtectedData.Signature.ToArray(), decoded.ProtectedData.Signature.ToArray());
+
+                IReadOnlyList<DatabaseTrustSignature> actualSignatures = [.. decoded.ProtectedData.Signature];
+                IReadOnlyList<DatabaseTrustSignature> expectedSignatures = [.. user.ProtectedData.Signature];
+                ClassicAssert.AreEqual(1, actualSignatures.Count);
+                ClassicAssert.AreEqual(expectedSignatures[0].Id, actualSignatures[0].Id);
+                CollectionAssert.AreEqual(expectedSignatures[0].SignatureBytes.ToArray(),
+                                          actualSignatures[0].SignatureBytes.ToArray());
+
                 CollectionAssert.AreEqual(user.ProtectedData.Metadata.ToArray(), decoded.ProtectedData.Metadata.ToArray());
 
                 transaction.CreateUser(user with { Id = UserId.Create() });
@@ -264,7 +285,14 @@ namespace MKW.Storage.Tests
                 {
                     PublicKey = pubkey,
                     Metadata = random.NextBytes(34),
-                    Signature = random.NextBytes(239),
+                    Signature =
+                    [
+                        new DatabaseTrustSignature
+                        {
+                            Id = UserId.Create(),
+                            SignatureBytes = random.NextBytes(239),
+                        },
+                    ],
                 },
             };
 
@@ -281,6 +309,82 @@ namespace MKW.Storage.Tests
                 transaction.CreateEntry(entry with { Id = EntryId.Create() });
                 transaction.CreateUser(user with { Id = UserId.Create() });
                 transaction.CreateUser(user with { Id = UserId.Create() });
+
+                transaction.Commit();
+            }
+
+            ClassicAssert.AreEqual(4, database.CreateSnapshot().EnumerateEntries().Count());
+            ClassicAssert.AreEqual(3, database.CreateSnapshot().EnumerateUsers().Count());
+        }
+
+        [Test]
+        public void AdminWithMultipleSignaturesTest()
+        {
+            ICryptographyProvider crypto = BouncyCastleLoader.GetProvider();
+            IRandomGenerator random = crypto.CreateRandomGenerator();
+
+            AsymmetricPrivateKey keypair = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
+            ReadOnlyMemory<byte> pubkey = crypto.EncodePkcsPublicKey(keypair.GetPublicKey());
+            ReadOnlyMemory<byte> fakeseckey = random.NextBytes(432);
+
+            DatabaseUserProtectedDataSigned protectedDataBase = new DatabaseUserProtectedDataSigned
+            {
+                PublicKey = pubkey,
+                Metadata = random.NextBytes(34),
+                Signature = [],
+            };
+
+            DatabaseUser userBase = new DatabaseUser
+            {
+                Salt = random.NextBytes(8),
+                PrivateKey = new SecretPayload(fakeseckey),
+                Id = null!,
+                ProtectedData = null!,
+            };
+
+            UserId userId1 = UserId.Create();
+            UserId userId2 = UserId.Create();
+            UserId userIdAdmin = UserId.Admin();
+
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                transaction.CreateUser(userBase with
+                {
+                    Id = userId1,
+                    ProtectedData = protectedDataBase with
+                    {
+                        Signature =
+                        [
+                            new DatabaseTrustSignature
+                            {
+                                Id = UserId.Create(),
+                                SignatureBytes = random.NextBytes(23 * 2),
+                            }
+                        ],
+                    }
+                });
+
+                transaction.CreateUser(userBase with
+                {
+                    Id = userId2,
+                    ProtectedData = protectedDataBase with
+                    {
+                        Signature =
+                        [
+                            new DatabaseTrustSignature
+                            {
+                                Id = UserId.Create(),
+                                SignatureBytes = random.NextBytes(23 * 2),
+                            }
+                        ],
+                    }
+                });
+
+                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateEntries().Count());
+                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateUsers().Count());
+
+                transaction.CreateUser(userBase with { Id = UserId.Create() });
+                transaction.CreateUser(userBase with { Id = UserId.Create() });
 
                 transaction.Commit();
             }

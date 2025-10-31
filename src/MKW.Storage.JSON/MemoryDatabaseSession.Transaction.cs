@@ -54,6 +54,29 @@ namespace MKW.Storage.JSON
                 return Database.Entries.Remove(id.GetStringLegacy());
             }
 
+            private void UpdateSignature(DatabaseUser user)
+            {
+                foreach (DatabaseTrustSignature signature in user.ProtectedData.Signature)
+                {
+                    string id = signature.Id.GetStringLegacy();
+
+                    if (signature.Id.IsAdmin)
+                    {
+                        Database.Admin = Database.Admin with
+                        {
+                            AdminSignature = signature.SignatureBytes
+                        };
+                    }
+                    else
+                    {
+                        Database.Users[id] = Database.Users[id] with
+                        {
+                            AdminSignature = signature.SignatureBytes
+                        };
+                    }
+                }
+            }
+
             // User
             public void CreateUser(DatabaseUser user)
             {
@@ -62,6 +85,8 @@ namespace MKW.Storage.JSON
                     if (Database.Admin == null)
                     {
                         Database.Admin = JSONDatabaseUser.Serialize(user);
+
+                        UpdateSignature(user);
                     }
                     else
                     {
@@ -88,6 +113,8 @@ namespace MKW.Storage.JSON
                     if (Database.Admin != null)
                     {
                         Database.Admin = JSONDatabaseUser.Serialize(user);
+
+                        UpdateSignature(user);
                     }
                     else
                     {

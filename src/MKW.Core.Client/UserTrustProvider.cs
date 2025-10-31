@@ -42,7 +42,8 @@ namespace MKW.Core.Client
             }
 
             // otherwise verify admin trust to this user
-            if (adminKey.Verify(bytes.Span, user.ProtectedData.Signature.Span))
+            DatabaseTrustSignature adminSignature = UserSignatureManager.GetAdminSignature(user.ProtectedData.Signature);
+            if (adminKey.Verify(bytes.Span, adminSignature.SignatureBytes.Span))
             {
                 return true;
             }
