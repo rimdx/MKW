@@ -38,7 +38,6 @@ namespace MKW.Core.Client
             trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
         }
 
-
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
         {
             // === 🤓 TERMINOLOGY 🤓 ===
