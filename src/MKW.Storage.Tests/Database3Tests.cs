@@ -346,6 +346,17 @@ namespace MKW.Storage.Tests
             UserId userId2 = UserId.Create();
             UserId userIdAdmin = UserId.Admin();
 
+            DatabaseTrustSignature sig1 = new DatabaseTrustSignature
+            {
+                Id = UserId.Admin(),
+                SignatureBytes = random.NextBytes(23 * 2),
+            };
+            DatabaseTrustSignature sig2 = new DatabaseTrustSignature
+            {
+                Id = UserId.Admin(),
+                SignatureBytes = random.NextBytes(23 * 5),
+            };
+
             using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
                 transaction.CreateUser(userBase with
@@ -353,14 +364,7 @@ namespace MKW.Storage.Tests
                     Id = userId1,
                     ProtectedData = protectedDataBase with
                     {
-                        Signature =
-                        [
-                            new DatabaseTrustSignature
-                            {
-                                Id = UserId.Create(),
-                                SignatureBytes = random.NextBytes(23 * 2),
-                            }
-                        ],
+                        Signature = [sig1],
                     }
                 });
 
@@ -369,28 +373,47 @@ namespace MKW.Storage.Tests
                     Id = userId2,
                     ProtectedData = protectedDataBase with
                     {
+                        Signature = [sig2],
+                    }
+                });
+
+                transaction.CreateUser(userBase with
+                {
+                    Id = userIdAdmin,
+                    ProtectedData = protectedDataBase with
+                    {
                         Signature =
                         [
                             new DatabaseTrustSignature
                             {
-                                Id = UserId.Create(),
+                                Id = userIdAdmin,
                                 SignatureBytes = random.NextBytes(23 * 2),
-                            }
+                            },
+                            new DatabaseTrustSignature
+                            {
+                                Id = userId1,
+                                SignatureBytes = random.NextBytes(23 * 3),
+                            },
+                            new DatabaseTrustSignature
+                            {
+                                Id = userId2,
+                                SignatureBytes = random.NextBytes(23 * 4),
+                            },
                         ],
                     }
                 });
 
-                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateEntries().Count());
-                ClassicAssert.AreEqual(1, transaction.Snapshot.EnumerateUsers().Count());
-
-                transaction.CreateUser(userBase with { Id = UserId.Create() });
-                transaction.CreateUser(userBase with { Id = UserId.Create() });
-
                 transaction.Commit();
             }
 
-            ClassicAssert.AreEqual(4, database.CreateSnapshot().EnumerateEntries().Count());
-            ClassicAssert.AreEqual(3, database.CreateSnapshot().EnumerateUsers().Count());
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+
+            CollectionAssert.AreEqual(sig1.SignatureBytes.ToArray(),
+                                      snapshot.OpenUser(userId1).ProtectedData.Signature.First().SignatureBytes.ToArray());
+            CollectionAssert.AreEqual(sig2.SignatureBytes.ToArray(),
+                                      snapshot.OpenUser(userId2).ProtectedData.Signature.First().SignatureBytes.ToArray());
+
+            ClassicAssert.AreEqual(3, snapshot.OpenUser(userIdAdmin).ProtectedData.Signature.Count);
         }
     }
 }
