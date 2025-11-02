@@ -3,7 +3,7 @@
 
 namespace MKW.Storage.MKPG.FileSystem
 {
-    internal sealed partial class FileSystemEditorFactory : IFileEditorFactory
+    public sealed partial class FileSystemEditorFactory : IFileEditorFactory
     {
         public string Path { get; }
 

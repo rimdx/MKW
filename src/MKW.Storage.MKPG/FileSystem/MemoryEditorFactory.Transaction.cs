@@ -3,7 +3,7 @@
 
 namespace MKW.Storage.MKPG.FileSystem
 {
-    internal sealed partial class MemoryEditorFactory
+    public sealed partial class MemoryEditorFactory
     {
         private sealed class Transaction : IFileEditorFactory.ITransaction, IDisposable
         {
