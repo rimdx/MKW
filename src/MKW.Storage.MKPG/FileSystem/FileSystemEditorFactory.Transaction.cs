@@ -5,7 +5,7 @@ using MKW.Common;
 
 namespace MKW.Storage.MKPG.FileSystem
 {
-    internal sealed partial class FileSystemEditorFactory
+    public sealed partial class FileSystemEditorFactory
     {
         private sealed class Transaction : IFileEditorFactory.ITransaction
         {

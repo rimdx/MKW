@@ -6,7 +6,7 @@ using MKW.Storage.MKPG.PgpBlob;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
-    internal sealed partial class DatabaseBlobStorageSingleFile : IDatabaseBlobStore
+    public sealed partial class DatabaseBlobStorageSingleFile : IDatabaseBlobStore
     {
         private readonly IFileEditorFactory editor;
 

@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
-    internal sealed partial class DatabaseBlobStorageMemory
+    public sealed partial class DatabaseBlobStorageMemory
     {
         private sealed class Transaction : IDatabaseBlobStore.ITransaction
         {

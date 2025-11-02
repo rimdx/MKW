@@ -3,7 +3,7 @@
 
 namespace MKW.Storage.MKPG.FileSystem
 {
-    internal partial interface IFileEditorFactory : IDisposable
+    public partial interface IFileEditorFactory : IDisposable
     {
         Stream CreateReader();
 

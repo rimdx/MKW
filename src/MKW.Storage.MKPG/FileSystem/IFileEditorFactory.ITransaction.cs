@@ -3,7 +3,7 @@
 
 namespace MKW.Storage.MKPG.FileSystem
 {
-    internal partial interface IFileEditorFactory
+    public partial interface IFileEditorFactory
     {
         public interface ITransaction : IDisposable
         {

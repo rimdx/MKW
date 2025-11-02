@@ -3,7 +3,7 @@
 
 namespace MKW.Storage.MKPG.FileSystem
 {
-    internal sealed partial class MemoryEditorFactory : IFileEditorFactory, IDisposable
+    public sealed partial class MemoryEditorFactory : IFileEditorFactory, IDisposable
     {
         public MemoryStream Buffer { get; private set; }
 

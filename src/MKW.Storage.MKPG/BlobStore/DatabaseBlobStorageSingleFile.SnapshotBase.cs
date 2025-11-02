@@ -5,7 +5,7 @@ using MKW.Storage.MKPG.PgpBlob;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
-    internal sealed partial class DatabaseBlobStorageSingleFile
+    public sealed partial class DatabaseBlobStorageSingleFile
     {
         private abstract class SnapshotBase : IDatabaseBlobStore.ISnapshot
         {

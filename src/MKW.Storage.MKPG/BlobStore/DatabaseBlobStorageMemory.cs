@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace MKW.Storage.MKPG.BlobStore
 {
-    internal sealed partial class DatabaseBlobStorageMemory : IDatabaseBlobStore
+    public sealed partial class DatabaseBlobStorageMemory : IDatabaseBlobStore
     {
         private ImmutableDictionary<BlobId, Blob> blobs;
 
