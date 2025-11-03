@@ -32,12 +32,7 @@ namespace MKW.Core.Client
 
             Memory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
 
-            SymmetricKey symkey = new SymmetricKey
-            {
-                Engine = SymmetricAlgorithmEngine.AesGcm,
-                KeyBytes = decryptedKey,
-                IVBytes = entry.Salt,
-            };
+            SymmetricKey symkey = crypto.OpenSymmetricKey(decryptedKey, entry.Salt);
 
             using ISymmetricTransformer dataDecoder = crypto.OpenSymmetricTransformer(symkey);
 
