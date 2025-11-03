@@ -31,6 +31,18 @@ namespace MKW.Cryptography.BouncyCastle
             };
         }
 
+        public SymmetricKey OpenSymmetricKey(SymmetricAlgorithmConfiguration config,
+                                             ReadOnlyMemory<byte> key,
+                                             ReadOnlyMemory<byte> iv)
+        {
+            return new SymmetricKey
+            {
+                Engine = config.Engine,
+                KeyBytes = key,
+                IVBytes = iv,
+            };
+        }
+
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
             return key.Engine switch

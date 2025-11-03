@@ -20,6 +20,9 @@ namespace MKW.Cryptography
                                                                 AsymmetricAlgorithmConfiguration config);
 
         SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config);
+        SymmetricKey OpenSymmetricKey(SymmetricAlgorithmConfiguration config,
+                                      ReadOnlyMemory<byte> key,
+                                      ReadOnlyMemory<byte> iv);
 
         ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key);
 
