@@ -58,6 +58,12 @@ namespace MKW.Core.Client
             return provider.CreateSymmetricKey(config.PreferredSymmetricAlgorithm);
         }
 
+        public SymmetricKey OpenSymmetricKey(ReadOnlyMemory<byte> key,
+                                             ReadOnlyMemory<byte> iv)
+        {
+            return provider.OpenSymmetricKey(config.PreferredSymmetricAlgorithm, key, iv);
+        }
+
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey symkey)
         {
             return provider.OpenSymmetricTransformer(symkey);
