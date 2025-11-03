@@ -39,12 +39,12 @@ namespace MKW.Cryptography.BouncyCastle
 
         public Memory<byte> ExportIV()
         {
-            return key.KeyBytes.ToArray();
+            return key.IVBytes.ToArray();
         }
 
         public Memory<byte> ExportKey()
         {
-            return key.IVBytes.ToArray();
+            return key.KeyBytes.ToArray();
         }
 
         public void Dispose()
