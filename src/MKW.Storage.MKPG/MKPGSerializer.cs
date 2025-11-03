@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core;
+using MKW.Core.Serialization.OpenPgp.Packets;
 using System.Buffers;
 
 namespace MKW.Storage.MKPG
@@ -54,7 +55,12 @@ namespace MKW.Storage.MKPG
         // Payloads
         public ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj)
         {
-            throw new NotImplementedException();
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            UserIdPacket userId = new UserIdPacket(obj.Metadata);
+
+            CertificationSignatureSerializer.Serialize(writer, obj.PublicKey.Span, userId);
+
+            return writer.WrittenMemory;
         }
     }
 }
