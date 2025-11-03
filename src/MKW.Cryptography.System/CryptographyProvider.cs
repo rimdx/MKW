@@ -95,5 +95,17 @@ namespace MKW.Cryptography.System
         public void Dispose()
         {
         }
+
+        public SymmetricKey OpenSymmetricKey(SymmetricAlgorithmConfiguration config,
+                                             ReadOnlyMemory<byte> key,
+                                             ReadOnlyMemory<byte> iv)
+        {
+            return new SymmetricKey
+            {
+                Engine = config.Engine,
+                KeyBytes = key,
+                IVBytes = iv,
+            };
+        }
     }
 }
