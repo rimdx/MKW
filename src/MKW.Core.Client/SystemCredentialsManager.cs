@@ -23,12 +23,8 @@ namespace MKW.Core.Client
             AsymmetricPrivateKey privateKey = crypto.CreateAsymmetricKey();
             AsymmetricPublicKey publicKey = privateKey.GetPublicKey();
 
-            SymmetricKey symkey = new SymmetricKey
-            {
-                Engine = SymmetricAlgorithmEngine.AesGcm,
-                KeyBytes = userCredentials.GetSecretKey(),
-                IVBytes = userCredentials.ExportSalt(),
-            };
+            SymmetricKey symkey = crypto.OpenSymmetricKey(userCredentials.GetSecretKey(),
+                                                          userCredentials.ExportSalt());
 
             // Symmetric encoder for secret section.
             using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(symkey);
@@ -52,12 +48,8 @@ namespace MKW.Core.Client
             // Symmetric decoder for secret section.
             // Uses user's secret key and public salt from the database.
 
-            SymmetricKey symkey = new SymmetricKey
-            {
-                Engine = SymmetricAlgorithmEngine.AesGcm,
-                KeyBytes = userCredentials.GetSecretKey(),
-                IVBytes = user.Salt,
-            };
+            SymmetricKey symkey = crypto.OpenSymmetricKey(userCredentials.GetSecretKey(),
+                                                          user.Salt);
 
             using ISymmetricTransformer decoder = crypto.OpenSymmetricTransformer(symkey);
 
