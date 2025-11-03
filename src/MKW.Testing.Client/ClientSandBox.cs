@@ -7,6 +7,9 @@ using MKW.Cryptography;
 using MKW.Cryptography.Loader;
 using MKW.Storage;
 using MKW.Storage.JSON;
+using MKW.Storage.MKPG;
+using MKW.Storage.MKPG.BlobStore;
+using MKW.Storage.MKPG.FileSystem;
 using MKW.Testing.Common;
 
 namespace MKW.Testing.Client
