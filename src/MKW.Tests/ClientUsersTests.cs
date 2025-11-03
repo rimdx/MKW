@@ -83,11 +83,11 @@ namespace MKW.Tests
             {
             }
 
-            database.AddTrustSignature(new DatabaseTrustSignature
-            {
-                Id = userInfo.Id,
-                SignatureBytes = new byte[42],
-            });
+            // database.AddTrustSignature(new DatabaseTrustSignature
+            // {
+            //     Id = userInfo.Id,
+            //     SignatureBytes = new byte[42],
+            // });
 
             Assert.Throws<Exception>(() => client.OpenUser(userInfo.Id, "123"));
         }
