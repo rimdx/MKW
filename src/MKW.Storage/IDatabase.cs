@@ -27,11 +27,6 @@ namespace MKW.Storage
         bool HasEntry(EntryId id);
         IEnumerable<DatabaseEntry> EnumerateEntries();
 
-        // Trust Signatures
-        void AddTrustSignature(DatabaseTrustSignature signature);
-        void DeleteTrustSignature(DatabaseTrustSignature signature);
-        IEnumerable<DatabaseTrustSignature> EnumerateTrustSignatures();
-
         DatabaseConfiguration GetConfiguration();
 
         Task<bool> WaitForDatabaseChangesAsync(CancellationToken cancellationToken);
