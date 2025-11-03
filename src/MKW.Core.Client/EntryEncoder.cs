@@ -41,7 +41,7 @@ namespace MKW.Core.Client
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(key);
 
-                Memory<byte> encyptedKey = keyEncoder.Encrypt(payloadEncoder.ExportKey().Span);
+                Memory<byte> encyptedKey = keyEncoder.Encrypt(sessionKey.KeyBytes.Span);
 
                 keys.Add(user.Id, encyptedKey);
             }
@@ -51,7 +51,7 @@ namespace MKW.Core.Client
                 Id = entryId,
                 Keys = keys,
                 Data = data,
-                Salt = payloadEncoder.ExportIV(),
+                Salt = sessionKey.IVBytes,
             };
         }
 
