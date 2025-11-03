@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Cryptography;
+
 namespace MKW.Storage
 {
     public sealed partial class MDatabase
@@ -27,7 +29,12 @@ namespace MKW.Storage
 
         public DatabaseConfiguration GetConfiguration()
         {
-            throw new NotImplementedException();
+            return new DatabaseConfiguration
+            {
+                PreferredSymmetricAlgorithm = CommonCryptographyAlgorithms.Aes128OpenPgpCfb,
+                PreferredPublicKeyAlgorithm = CommonCryptographyAlgorithms.Rsa2048,
+                PreferredStringToKeyAlgorithm = CommonCryptographyAlgorithms.OpenPgpStringToKey,
+            };
         }
 
         public void ReloadDatabaseFile()
