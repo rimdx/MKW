@@ -61,7 +61,11 @@ namespace MKW.Testing.Client
         {
             if (USE_MKPGDatabase)
             {
-                throw new NotImplementedException();
+                MKPGSerializer serializer = new MKPGSerializer();
+                FileSystemEditorFactory editor = new FileSystemEditorFactory(DatabasePath);
+                DatabaseBlobStorageSingleFile blobStore = new DatabaseBlobStorageSingleFile(editor);
+
+                return new CompatDatabase(new MDatabase(serializer, blobStore), serializer);
             }
             else
             {
