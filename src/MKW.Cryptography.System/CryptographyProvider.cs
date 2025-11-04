@@ -67,11 +67,18 @@ namespace MKW.Cryptography.System
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            return key.Engine switch
+            if (key is SymmetricKeyAesGcm gcmKey)
             {
-                SymmetricAlgorithmEngine.AesGcm => SymmetricTransformer.Open(key),
-                SymmetricAlgorithmEngine.AesOpenPgpCfb => throw new NotImplementedException()
-            };
+                return SymmetricTransformer.Open(gcmKey);
+            }
+            else if (key is SymmetricKeyAesOpenPgpCfb openPgpKey)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                throw new InvalidCastException();
+            }
         }
 
         public IUserCredentials CreateUserCredentials(string password,
@@ -100,11 +107,14 @@ namespace MKW.Cryptography.System
                                              ReadOnlyMemory<byte> key,
                                              ReadOnlyMemory<byte> iv)
         {
-            return new SymmetricKey
+            return config.Engine switch
             {
-                Engine = config.Engine,
-                KeyBytes = key,
-                IVBytes = iv,
+                SymmetricAlgorithmEngine.AesGcm => new SymmetricKeyAesGcm
+                {
+                    KeyBytes = key,
+                    IVBytes = iv,
+                },
+                SymmetricAlgorithmEngine.AesOpenPgpCfb => throw new InvalidCastException(),
             };
         }
     }

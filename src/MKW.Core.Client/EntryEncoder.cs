@@ -24,7 +24,7 @@ namespace MKW.Core.Client
 
         public DatabaseEntry EncodeEntry(EntryId entryId, EntryPayload payload)
         {
-            SymmetricKey sessionKey = crypto.CreateSymmetricKey();
+            SymmetricKeyAesGcm sessionKey = (SymmetricKeyAesGcm)crypto.CreateSymmetricKey();
 
             using ISymmetricTransformer payloadEncoder = crypto.OpenSymmetricTransformer(sessionKey);
 
