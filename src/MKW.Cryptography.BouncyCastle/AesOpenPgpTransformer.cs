@@ -21,8 +21,7 @@ namespace MKW.Cryptography.BouncyCastle
             OpenPgpCfbBlockCipher blockCipherMode = new OpenPgpCfbBlockCipher(blockCipher);
             BufferedBlockCipher cipher = new BufferedBlockCipher(blockCipherMode);
 
-            KeyParameter aesKey = new KeyParameter(key.KeyBytes.ToArray());
-            ParametersWithIV parameters = new ParametersWithIV(aesKey, key.IVBytes.ToArray());
+            KeyParameter parameters = new KeyParameter(key.KeyBytes.ToArray());
 
             this.cipher = new SymmetricCipher(cipher, parameters);
         }
