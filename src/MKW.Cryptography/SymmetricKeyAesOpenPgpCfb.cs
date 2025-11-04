@@ -6,7 +6,6 @@ namespace MKW.Cryptography
     public sealed record class SymmetricKeyAesOpenPgpCfb : SymmetricKey
     {
         public required ReadOnlyMemory<byte> KeyBytes { get; init; }
-        public required ReadOnlyMemory<byte> IVBytes { get; init; }
 
         public override T Visit<T>(IVisitor<T> visitor)
         {

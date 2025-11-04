@@ -30,7 +30,6 @@ namespace MKW.Cryptography.BouncyCastle
                 SymmetricAlgorithmEngine.AesOpenPgpCfb => new SymmetricKeyAesOpenPgpCfb
                 {
                     KeyBytes = random.NextBytes(config.KeySizeBits / 8),
-                    IVBytes = Array.Empty<byte>(),
                 },
             };
         }
@@ -49,7 +48,6 @@ namespace MKW.Cryptography.BouncyCastle
                 SymmetricAlgorithmEngine.AesOpenPgpCfb => new SymmetricKeyAesOpenPgpCfb
                 {
                     KeyBytes = key,
-                    IVBytes = iv,
                 },
             };
         }
