@@ -24,7 +24,7 @@ namespace MKW.Core.Client
 
         public DatabaseEntry EncodeEntry(EntryId entryId, EntryPayload payload)
         {
-            SymmetricKeyAesGcm sessionKey = (SymmetricKeyAesGcm)crypto.CreateSymmetricKey();
+            SymmetricKey sessionKey = crypto.CreateSymmetricKey();
 
             using ISymmetricTransformer payloadEncoder = crypto.OpenSymmetricTransformer(sessionKey);
 
@@ -41,7 +41,7 @@ namespace MKW.Core.Client
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(key);
 
-                Memory<byte> encyptedKey = keyEncoder.Encrypt(sessionKey.KeyBytes.Span);
+                Memory<byte> encyptedKey = keyEncoder.Encrypt(sessionKey.Visit(new GetSymmetricKeyVisitor()).Span);
 
                 keys.Add(user.Id, encyptedKey);
             }
@@ -51,7 +51,7 @@ namespace MKW.Core.Client
                 Id = entryId,
                 Keys = keys,
                 Data = data,
-                Salt = sessionKey.IVBytes,
+                Salt = sessionKey.Visit(new GetSymmetricSaltVisitor()),
             };
         }
 
