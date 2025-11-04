@@ -84,16 +84,6 @@ namespace MKW.Cryptography.System
             }
         }
 
-        public Memory<byte> ExportIV()
-        {
-            return aes.IV;
-        }
-
-        public Memory<byte> ExportKey()
-        {
-            return aes.Key;
-        }
-
         public void Dispose()
         {
             aes.Dispose();

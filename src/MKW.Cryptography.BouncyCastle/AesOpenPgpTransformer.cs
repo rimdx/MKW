@@ -37,16 +37,6 @@ namespace MKW.Cryptography.BouncyCastle
             return cipher.Encrypt(data);
         }
 
-        public Memory<byte> ExportIV()
-        {
-            return key.IVBytes.ToArray();
-        }
-
-        public Memory<byte> ExportKey()
-        {
-            return key.KeyBytes.ToArray();
-        }
-
         public void Dispose()
         {
             // no-op
