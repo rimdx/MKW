@@ -119,7 +119,7 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerTests()
         {
-            SymmetricKey symkey = crypto.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKeyAesGcm symkey = (SymmetricKeyAesGcm)crypto.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
 
             AsymmetricPrivateKey key = crypto.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
             IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(

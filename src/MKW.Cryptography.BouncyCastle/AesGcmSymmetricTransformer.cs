@@ -10,10 +10,10 @@ namespace MKW.Cryptography.BouncyCastle
 {
     internal sealed class AesGcmSymmetricTransformer : ISymmetricTransformer, IDisposable
     {
-        private readonly SymmetricKey key;
+        private readonly SymmetricKeyAesGcm key;
         private readonly SymmetricCipher cipher;
 
-        public AesGcmSymmetricTransformer(SymmetricKey key)
+        public AesGcmSymmetricTransformer(SymmetricKeyAesGcm key)
         {
             this.key = key;
 

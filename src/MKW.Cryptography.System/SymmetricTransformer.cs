@@ -22,15 +22,14 @@ namespace MKW.Cryptography.System
             aes.GenerateKey();
             aes.GenerateIV();
 
-            return new SymmetricKey
+            return new SymmetricKeyAesGcm
             {
-                Engine = SymmetricAlgorithmEngine.AesGcm,
                 KeyBytes = aes.Key,
                 IVBytes = aes.IV,
             };
         }
 
-        public static ISymmetricTransformer Open(SymmetricKey key)
+        public static ISymmetricTransformer Open(SymmetricKeyAesGcm key)
         {
             Aes aes = Aes.Create();
 

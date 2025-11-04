@@ -22,15 +22,13 @@ namespace MKW.Cryptography.BouncyCastle
 
             return config.Engine switch
             {
-                SymmetricAlgorithmEngine.AesGcm => new SymmetricKey
+                SymmetricAlgorithmEngine.AesGcm => new SymmetricKeyAesGcm
                 {
-                    Engine = config.Engine,
                     KeyBytes = random.NextBytes(config.KeySizeBits / 8),
                     IVBytes = random.NextBytes(config.KeySizeBits / 8),
                 },
-                SymmetricAlgorithmEngine.AesOpenPgpCfb => new SymmetricKey
+                SymmetricAlgorithmEngine.AesOpenPgpCfb => new SymmetricKeyAesOpenPgpCfb
                 {
-                    Engine = config.Engine,
                     KeyBytes = random.NextBytes(config.KeySizeBits / 8),
                     IVBytes = Array.Empty<byte>(),
                 },
@@ -41,21 +39,35 @@ namespace MKW.Cryptography.BouncyCastle
                                              ReadOnlyMemory<byte> key,
                                              ReadOnlyMemory<byte> iv)
         {
-            return new SymmetricKey
+            return config.Engine switch
             {
-                Engine = config.Engine,
-                KeyBytes = key,
-                IVBytes = iv,
+                SymmetricAlgorithmEngine.AesGcm => new SymmetricKeyAesGcm
+                {
+                    KeyBytes = key,
+                    IVBytes = iv,
+                },
+                SymmetricAlgorithmEngine.AesOpenPgpCfb => new SymmetricKeyAesOpenPgpCfb
+                {
+                    KeyBytes = key,
+                    IVBytes = iv,
+                },
             };
         }
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            return key.Engine switch
+            if (key is SymmetricKeyAesGcm gcmKey)
             {
-                SymmetricAlgorithmEngine.AesGcm => new AesGcmSymmetricTransformer(key),
-                SymmetricAlgorithmEngine.AesOpenPgpCfb => new AesOpenPgpTransformer(key),
-            };
+                return new AesGcmSymmetricTransformer(gcmKey);
+            }
+            else if (key is SymmetricKeyAesOpenPgpCfb openPgpKey)
+            {
+                return new AesOpenPgpTransformer(openPgpKey);
+            }
+            else
+            {
+                throw new InvalidCastException();
+            }
         }
 
         public ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config)

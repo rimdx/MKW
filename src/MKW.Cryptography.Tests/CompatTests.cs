@@ -64,7 +64,7 @@ namespace MKW.Cryptography.Tests
         public void AsymmetricTransformerTests()
         {
             AsymmetricPrivateKey key = crypto1.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
-            SymmetricKey symkey = crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKeyAesGcm symkey = (SymmetricKeyAesGcm)crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
 
             IAsymmetricPrivateTransformer key1 = crypto1.OpenAsymmetricTransformer(
                 key, CommonCryptographyAlgorithms.Rsa2048);
@@ -87,7 +87,7 @@ namespace MKW.Cryptography.Tests
         [Test]
         public void AsymmetricTransformerPublicKeyEncodeTests()
         {
-            SymmetricKey symkey = crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
+            SymmetricKeyAesGcm symkey = (SymmetricKeyAesGcm)crypto1.CreateSymmetricKey(CommonCryptographyAlgorithms.Aes128Gcm);
             AsymmetricPrivateKey key = crypto1.CreateAsymmetricKey(CommonCryptographyAlgorithms.Rsa2048);
 
             IAsymmetricPrivateTransformer decoder = crypto1.OpenAsymmetricTransformer(

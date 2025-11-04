@@ -104,12 +104,9 @@ namespace MKW.Storage.Tests
 
             IUserCredentials creds = crypto.CreateUserCredentials(password, s2kConfig);
 
-            SymmetricKey key = new SymmetricKey
-            {
-                Engine = SymmetricAlgorithmEngine.AesOpenPgpCfb,
-                IVBytes = new byte[16],
-                KeyBytes = creds.GetSecretKey(),
-            };
+            SymmetricKey key = crypto.OpenSymmetricKey(CommonCryptographyAlgorithms.Aes128OpenPgpCfb,
+                                                       creds.GetSecretKey(),
+                                                       new byte[16]);
 
             using ISymmetricTransformer transformer = crypto.OpenSymmetricTransformer(key);
 

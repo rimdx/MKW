@@ -14,12 +14,9 @@ namespace MKW.Cryptography.Tests
             ICryptographyProvider crypto = BouncyCastleLoader.GetProvider();
             IRandomGenerator random = crypto.CreateRandomGenerator();
 
-            SymmetricKey key = new SymmetricKey
-            {
-                Engine = SymmetricAlgorithmEngine.AesOpenPgpCfb,
-                KeyBytes = random.NextBytes(16),
-                IVBytes = new byte[16],
-            };
+            SymmetricKey key = crypto.OpenSymmetricKey(CommonCryptographyAlgorithms.Aes128OpenPgpCfb,
+                                                       random.NextBytes(16),
+                                                       new byte[0]);
 
             using ISymmetricTransformer transformer = crypto.OpenSymmetricTransformer(key);
 
@@ -38,12 +35,9 @@ namespace MKW.Cryptography.Tests
             IRandomGenerator random = crypto.CreateRandomGenerator();
             IUserCredentials creds = crypto.CreateUserCredentials("123", CommonCryptographyAlgorithms.OpenPgpStringToKey);
 
-            SymmetricKey key = new SymmetricKey
-            {
-                Engine = SymmetricAlgorithmEngine.AesOpenPgpCfb,
-                KeyBytes = creds.GetSecretKey(),
-                IVBytes = new byte[16],
-            };
+            SymmetricKey key = crypto.OpenSymmetricKey(CommonCryptographyAlgorithms.Aes128OpenPgpCfb,
+                                                       random.NextBytes(16),
+                                                       new byte[0]);
 
             using ISymmetricTransformer transformer = crypto.OpenSymmetricTransformer(key);
 
