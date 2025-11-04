@@ -20,14 +20,20 @@ namespace MKW.Cryptography.BouncyCastle
         {
             IRandomGenerator random = CreateRandomGenerator();
 
-            ReadOnlyMemory<byte> key = random.NextBytes(config.KeySizeBits / 8);
-            ReadOnlyMemory<byte> iv = random.NextBytes(config.IVSizeBits / 8);
-
-            return new SymmetricKey
+            return config.Engine switch
             {
-                Engine = config.Engine,
-                KeyBytes = key,
-                IVBytes = iv,
+                SymmetricAlgorithmEngine.AesGcm => new SymmetricKey
+                {
+                    Engine = config.Engine,
+                    KeyBytes = random.NextBytes(config.KeySizeBits / 8),
+                    IVBytes = random.NextBytes(config.KeySizeBits / 8),
+                },
+                SymmetricAlgorithmEngine.AesOpenPgpCfb => new SymmetricKey
+                {
+                    Engine = config.Engine,
+                    KeyBytes = random.NextBytes(config.KeySizeBits / 8),
+                    IVBytes = Array.Empty<byte>(),
+                },
             };
         }
 
