@@ -9,6 +9,7 @@
     <Import_RootNamespace>MKW.Cryptography.BouncyCastle.NETFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IDigestExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ISignerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PbeParametersGeneratorExtensions.cs" />
   </ItemGroup>
