@@ -67,18 +67,7 @@ namespace MKW.Cryptography.System
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            if (key is SymmetricKeyAesGcm gcmKey)
-            {
-                return SymmetricTransformer.Open(gcmKey);
-            }
-            else if (key is SymmetricKeyAesOpenPgpCfb openPgpKey)
-            {
-                throw new NotSupportedException();
-            }
-            else
-            {
-                throw new InvalidCastException();
-            }
+            return key.Visit(new SymmetricTransformerFactoryVisitor());
         }
 
         public IUserCredentials CreateUserCredentials(string password,

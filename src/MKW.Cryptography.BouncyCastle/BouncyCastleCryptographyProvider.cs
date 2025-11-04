@@ -56,18 +56,7 @@ namespace MKW.Cryptography.BouncyCastle
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)
         {
-            if (key is SymmetricKeyAesGcm gcmKey)
-            {
-                return new AesGcmSymmetricTransformer(gcmKey);
-            }
-            else if (key is SymmetricKeyAesOpenPgpCfb openPgpKey)
-            {
-                return new AesOpenPgpTransformer(openPgpKey);
-            }
-            else
-            {
-                throw new InvalidCastException();
-            }
+            return key.Visit(new SymmetricTransformerFactoryVisitor());
         }
 
         public ISymmetricTransformer CreateSymmetricTransformer(SymmetricAlgorithmConfiguration config)
