@@ -5,5 +5,12 @@ namespace MKW.Cryptography
 {
     public abstract record class SymmetricKey
     {
+        public abstract T Visit<T>(IVisitor<T> visitor);
+
+        public interface IVisitor<T>
+        {
+            T VisitAesGcm(SymmetricKeyAesGcm key);
+            T VisitAesOpenPgpCfb(SymmetricKeyAesOpenPgpCfb key);
+        }
     }
 }
