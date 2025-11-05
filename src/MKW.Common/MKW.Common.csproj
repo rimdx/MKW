@@ -3,6 +3,7 @@
   <Import Condition="'$(TargetFramework)' == 'net472'" Project="..\MKW.Common.NETFramework\MKW.Common.NETFramework.projitems" Label="Shared" />
 
   <ItemGroup>
+    <PackageReference Condition="'$(TargetFramework)' == 'net472'" Include="Microsoft.Bcl.Memory" Version="9.0.10" />
     <PackageReference Condition="'$(TargetFramework)' == 'net472'" Include="System.Memory" Version="4.6.3" />
   </ItemGroup>
 
