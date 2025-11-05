@@ -96,7 +96,7 @@ namespace MKW.Storage.Tests
             PasswordDerivationConfiguration s2kConfig = new PasswordDerivationConfiguration
             {
                 Engine = PasswordDerivationEngine.Pbkdf2,
-                HashEngine = HashAlgorithmEngine.Sha256,
+                HashEngine = CommonCryptographyAlgorithms.HashAlgorithms.Sha256,
                 Iterations = 1024,
                 KeySizeBits = 256,
                 SaltSizeBits = salt.Length * 8,
