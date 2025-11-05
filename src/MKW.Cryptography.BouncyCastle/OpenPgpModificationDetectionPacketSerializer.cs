@@ -13,8 +13,8 @@ namespace MKW.Cryptography.BouncyCastle
         public static void Serialize(IBufferWriter<byte> writer, OpenPgpModificationDetectionPacket obj)
         {
             writer.Write(obj.Salt.Span.EnsureSize(OpenPgpModificationDetectionPacketConfiguration.BlockSize));
+            writer.Write(obj.Salt.Span[^2]);
             writer.Write(obj.Salt.Span[^1]);
-            writer.Write(obj.Salt.Span[^0]);
 
             writer.Write(obj.Plaintext.Span);
 
@@ -37,8 +37,8 @@ namespace MKW.Cryptography.BouncyCastle
 
             ReadOnlyMemory<byte> salt = reader.ReadBytes(OpenPgpModificationDetectionPacketConfiguration.BlockSize);
 
-            if (salt.Span[^1] != reader.ReadByte() ||
-                salt.Span[^0] != reader.ReadByte())
+            if (salt.Span[^2] != reader.ReadByte() ||
+                salt.Span[^1] != reader.ReadByte())
             {
                 if (true)
                 {
