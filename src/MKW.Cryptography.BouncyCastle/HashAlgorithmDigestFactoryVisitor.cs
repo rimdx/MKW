@@ -8,6 +8,11 @@ namespace MKW.Cryptography.BouncyCastle
 {
     internal sealed class HashAlgorithmDigestFactoryVisitor : HashAlgorithm.IVisitor<IDigest>
     {
+        public IDigest VisitSha1(HashAlgorithmSha1 algorithm)
+        {
+            return new Sha1Digest();
+        }
+
         public IDigest VisitSha256(HashAlgorithmSha256 algorithm)
         {
             return new Sha256Digest();

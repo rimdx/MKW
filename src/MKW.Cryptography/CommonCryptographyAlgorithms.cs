@@ -51,6 +51,7 @@ namespace MKW.Cryptography
 
         public static class HashAlgorithms
         {
+            public static readonly HashAlgorithm Sha1 = new HashAlgorithmSha1();
             public static readonly HashAlgorithm Sha256 = new HashAlgorithmSha256();
         }
     }
