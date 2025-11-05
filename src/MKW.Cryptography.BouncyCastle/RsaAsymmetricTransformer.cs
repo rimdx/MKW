@@ -7,6 +7,7 @@ using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.IO;
+using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
@@ -33,11 +34,8 @@ namespace MKW.Cryptography.BouncyCastle
 
             cipher = CipherUtilities.GetCipher(PkcsObjectIdentifiers.RsaEncryption);
 
-            signer = config.HashEngine switch
-            {
-                HashAlgorithmEngine.Sha256 => SignerUtilities.GetSigner(
-                    PkcsObjectIdentifiers.Sha256WithRsaEncryption),
-            };
+            IDigest digest = config.HashEngine.Visit(new HashAlgorithmDigestFactoryVisitor());
+            signer = new RsaDigestSigner(digest);
         }
 
         public Memory<byte> Encrypt(ReadOnlySpan<byte> data)

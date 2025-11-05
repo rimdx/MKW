@@ -25,7 +25,7 @@ namespace MKW.Cryptography
             new AsymmetricAlgorithmConfiguration
             {
                 Engine = AsymmetricAlgorithmEngine.Rsa,
-                HashEngine = HashAlgorithmEngine.Sha256,
+                HashEngine = HashAlgorithms.Sha256,
                 StrengthBits = 2048,
             };
 
@@ -33,7 +33,7 @@ namespace MKW.Cryptography
             new PasswordDerivationConfiguration
             {
                 Engine = PasswordDerivationEngine.Pbkdf2,
-                HashEngine = HashAlgorithmEngine.Sha256,
+                HashEngine = HashAlgorithms.Sha256,
                 Iterations = 100_000,
                 KeySizeBits = 128,
                 SaltSizeBits = 128,
@@ -43,10 +43,15 @@ namespace MKW.Cryptography
             new PasswordDerivationConfiguration
             {
                 Engine = PasswordDerivationEngine.Pbkdf2,
-                HashEngine = HashAlgorithmEngine.Sha256,
+                HashEngine = HashAlgorithms.Sha256,
                 Iterations = 100_000,
                 KeySizeBits = 128,
                 SaltSizeBits = 64,
             };
+
+        public static class HashAlgorithms
+        {
+            public static readonly HashAlgorithm Sha256 = new HashAlgorithmSha256();
+        }
     }
 }
