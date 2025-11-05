@@ -9,6 +9,7 @@ namespace MKW.Cryptography
 
         public interface IVisitor<T>
         {
+            T VisitSha1(HashAlgorithmSha1 hashAlgorithmSha1);
             T VisitSha256(HashAlgorithmSha256 algorithm);
         }
     }
