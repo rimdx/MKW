@@ -7,7 +7,7 @@ namespace MKW.Cryptography
     {
         public required PasswordDerivationEngine Engine { get; init; }
 
-        public required HashAlgorithmEngine HashEngine { get; init; }
+        public required HashAlgorithm HashEngine { get; init; }
 
         public required int SaltSizeBits { get; init; }
         public required int KeySizeBits { get; init; }

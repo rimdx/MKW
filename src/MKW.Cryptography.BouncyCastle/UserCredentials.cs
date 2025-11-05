@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Security;
 
 namespace MKW.Cryptography.BouncyCastle
 {
@@ -24,10 +22,7 @@ namespace MKW.Cryptography.BouncyCastle
             this.salt = salt;
             this.config = config;
 
-            IDigest digest = config.HashEngine switch
-            {
-                HashAlgorithmEngine.Sha256 => DigestUtilities.GetDigest(NistObjectIdentifiers.IdSha256),
-            };
+            IDigest digest = config.HashEngine.Visit(new HashAlgorithmDigestFactoryVisitor());
 
             generator = new Pkcs5S2ParametersGenerator(digest);
         }
