@@ -12,12 +12,15 @@ namespace MKW.Core.Serialization.OpenPgp.Primitives
     {
         public static BigInteger Deserialize(IBufferReader<byte> reader)
         {
+            return new BigInteger(1, DeserializeBytes(reader).ToArray());
+        }
+
+        public static ReadOnlyMemory<byte> DeserializeBytes(IBufferReader<byte> reader)
+        {
             ushort lengthInBits = BinaryPrimitives.ReadUInt16BigEndian(reader.ReadBytes(2).Span);
             int lengthInBytes = (lengthInBits + 7) / 8;
 
-            ReadOnlyMemory<byte> bytes = reader.ReadBytes(lengthInBytes);
-
-            return new BigInteger(1, bytes.ToArray());
+            return reader.ReadBytes(lengthInBytes);
         }
 
         public static void Serialize(IBufferWriter<byte> writer,
