@@ -78,7 +78,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
                 return new SecretKeyStringToKey
                 {
                     SymmetricAlgorithm = SymmetricKeyAlgorithmTag.Null,
-                    StringToKey = StringToKeySerializer.Deserialize(reader),
+                    StringToKey = new StringToKeyNone(),
                 };
             }
             else
