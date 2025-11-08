@@ -8,17 +8,17 @@ namespace MKW.Core.Client
 {
     public class UserTrustProvider
     {
-        protected readonly IDatabase database;
+        protected readonly IDatabaseNG.ISnapshot snapshot;
         protected readonly ClientCryptography crypto;
         private readonly IAsymmetricPublicTransformer meKey;
         private readonly IAsymmetricPublicTransformer adminKey;
 
-        public UserTrustProvider(IDatabase database,
+        public UserTrustProvider(IDatabaseNG.ISnapshot snapshot,
                                  ClientCryptography crypto,
                                  IAsymmetricPublicTransformer meKey,
                                  IAsymmetricPublicTransformer adminKey)
         {
-            this.database = database;
+            this.snapshot = snapshot;
             this.crypto = crypto;
             this.meKey = meKey;
             this.adminKey = adminKey;
@@ -26,7 +26,7 @@ namespace MKW.Core.Client
 
         private bool VerifyTrust(DatabaseUser user)
         {
-            ReadOnlyMemory<byte> bytes = database.SerializeProtectedData(user.ProtectedData);
+            ReadOnlyMemory<byte> bytes = snapshot.SerializeProtectedData(user.ProtectedData);
 
             // trust ourselves
             if (user.ProtectedData.PublicKey.Span.SequenceEqual(meKey.ExportPublicKey().Span))
@@ -53,12 +53,12 @@ namespace MKW.Core.Client
 
         public bool VerifyTrust(UserId userId)
         {
-            return VerifyTrust(database.OpenUser(userId));
+            return VerifyTrust(snapshot.OpenUser(userId));
         }
 
         public IEnumerable<UserId> EnumerateTrustedUsers()
         {
-            foreach (DatabaseUser user in database.EnumerateUsers())
+            foreach (DatabaseUser user in snapshot.EnumerateUsers())
             {
                 if (VerifyTrust(user))
                 {

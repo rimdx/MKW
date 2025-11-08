@@ -15,9 +15,7 @@ namespace MKW.Core.Client
         private readonly IAsymmetricPrivateTransformer transformer;
 
         private readonly UserMetadataDecoder metadata;
-        private readonly EntryController entryController;
         private readonly IAsymmetricPublicTransformer adminPublicKey;
-        private readonly UserTrustProvider trustProvider;
 
         private readonly DatabaseUser user;
 
@@ -40,8 +38,6 @@ namespace MKW.Core.Client
                 decodedKey);
 
             metadata = new UserMetadataDecoder(database, adminPublicKey);
-            entryController = new EntryController(database, crypto, this, transformer);
-            trustProvider = new UserTrustProvider(database, crypto, transformer, adminPublicKey);
         }
 
         public UserMetadata OpenMetadata()
@@ -51,16 +47,25 @@ namespace MKW.Core.Client
 
         public EntryPayload? OpenEntry(EntryId entryId)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = new EntryController(database, crypto, user.Id, trustProvider, transformer);
+
             return entryController.Open(entryId);
         }
 
         public void CreateEntry(EntryId entryId, EntryPayload payload)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = new EntryController(database, crypto, user.Id, trustProvider, transformer);
+
             entryController.Create(entryId, payload);
         }
 
         public EntryId CreateEntry(EntryPayload payload)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = new EntryController(database, crypto, user.Id, trustProvider, transformer);
+
             EntryId entryId = EntryId.Create();
             entryController.Create(entryId, payload);
             return entryId;
@@ -68,17 +73,25 @@ namespace MKW.Core.Client
 
         public void UpdateEntry(EntryId entryId, EntryPayload newPayload)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = new EntryController(database, crypto, user.Id, trustProvider, transformer);
+
             entryController.Update(entryId, newPayload);
         }
 
         public void DeleteEntry(EntryId entryId)
         {
-            database.DeleteEntry(entryId);
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                transaction.DeleteEntry(entryId);
+                transaction.Commit();
+            }
         }
 
         public IEnumerable<KeyValuePair<EntryId, EntryPayload?>> EnumerateEntries()
         {
-            foreach (DatabaseEntry entry in database.EnumerateEntries())
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+            foreach (DatabaseEntry entry in snapshot.EnumerateEntries())
             {
                 EntryPayload? payload = OpenEntry(entry.Id);
                 yield return new KeyValuePair<EntryId, EntryPayload?>(entry.Id, payload);
@@ -89,6 +102,8 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserId> EnumerateTrustedUsers()
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+
             foreach (UserId userId in trustProvider.EnumerateTrustedUsers())
             {
                 yield return userId;
@@ -97,7 +112,14 @@ namespace MKW.Core.Client
 
         public bool VerifyTrust(UserId userId)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+
             return trustProvider.VerifyTrust(userId);
+        }
+
+        private UserTrustProvider CreateTrustProvider(IDatabaseNG.ISnapshot snapshot)
+        {
+            return new UserTrustProvider(snapshot, crypto, transformer, adminPublicKey);
         }
 
         public void Dispose()

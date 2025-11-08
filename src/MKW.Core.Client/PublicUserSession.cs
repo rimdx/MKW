@@ -20,7 +20,9 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserInfo> EnumerateUsers()
         {
-            DatabaseUser admin = database.OpenUser(UserId.Admin());
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+
+            DatabaseUser admin = snapshot.OpenUser(UserId.Admin());
 
             AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.ProtectedData.PublicKey.Span);
 
@@ -28,7 +30,7 @@ namespace MKW.Core.Client
 
             UserMetadataDecoder metadataDecoder = new UserMetadataDecoder(database, adminKey);
 
-            foreach (DatabaseUser user in database.EnumerateUsers())
+            foreach (DatabaseUser user in snapshot.EnumerateUsers())
             {
                 yield return CreateUserInfo(user, metadataDecoder.OpenMetadata(user));
             }
@@ -36,8 +38,10 @@ namespace MKW.Core.Client
 
         public UserInfo GetUserInfo(UserId id)
         {
-            DatabaseUser admin = database.OpenUser(UserId.Admin());
-            DatabaseUser user = database.OpenUser(id);
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+
+            DatabaseUser admin = snapshot.OpenUser(UserId.Admin());
+            DatabaseUser user = snapshot.OpenUser(id);
 
             AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.ProtectedData.PublicKey.Span);
 
@@ -50,7 +54,9 @@ namespace MKW.Core.Client
 
         public UserInfo GetAdminInfo()
         {
-            DatabaseUser admin = database.OpenUser(UserId.Admin());
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+
+            DatabaseUser admin = snapshot.OpenUser(UserId.Admin());
 
             AsymmetricPublicKey decodedKey = crypto.DecodePkcsPublicKey(admin.ProtectedData.PublicKey.Span);
 

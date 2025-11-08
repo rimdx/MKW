@@ -95,7 +95,12 @@ namespace MKW.GUI.Model
 
         public void DeleteEntry(EntryId id)
         {
-            Database.Database.DeleteEntry(id);
+            using (Storage.IDatabaseNG.ITransaction transaction = Database.Database.BeginTransaction())
+            {
+                transaction.DeleteEntry(id);
+                transaction.Commit();
+            }
+
             RefreshEntries();
         }
 
@@ -119,7 +124,12 @@ namespace MKW.GUI.Model
 
         public void DeleteUser(UserId id)
         {
-            Database.Database.DeleteUser(id);
+            using (Storage.IDatabaseNG.ITransaction transaction = Database.Database.BeginTransaction())
+            {
+                transaction.DeleteUser(id);
+                transaction.Commit();
+            }
+
             Database.RefreshUsers();
         }
 
