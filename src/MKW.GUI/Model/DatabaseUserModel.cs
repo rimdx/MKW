@@ -21,14 +21,7 @@ namespace MKW.GUI.Model
         {
             get
             {
-                if (user.IsAdmin)
-                {
-                    return "Admin";
-                }
-                else
-                {
-                    return Formatters.FormatUserName(user.Metadata.UserId, user.Metadata.DisplayName);
-                }
+                return Formatters.FormatUserName(user.Metadata.UserId, user.Metadata.DisplayName);
             }
         }
 
@@ -36,14 +29,7 @@ namespace MKW.GUI.Model
         {
             get
             {
-                if (user.IsAdmin)
-                {
-                    return "Admin";
-                }
-                else
-                {
-                    return Formatters.FormatLoginUserName(user.Metadata.UserId, user.Metadata.DisplayName);
-                }
+                return Formatters.FormatLoginUserName(user.Metadata.UserId, user.Metadata.DisplayName);
             }
         }
 
@@ -51,14 +37,7 @@ namespace MKW.GUI.Model
         {
             get
             {
-                if (user.IsAdmin)
-                {
-                    return "Admin";
-                }
-                else
-                {
-                    return Formatters.FormatShortName(user.Metadata.UserId, user.Metadata.DisplayName);
-                }
+                return Formatters.FormatShortName(user.Metadata.UserId, user.Metadata.DisplayName);
             }
         }
 

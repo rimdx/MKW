@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core;
 using MKW.GUI.Images;
 using MKW.GUI.Services;
 using MKW.GUI.Wizard;
@@ -23,11 +24,14 @@ namespace MKW.GUI.CreateDatabaseWizard
 
             databaseDirectory = registry.GetLastDatabaseDirectory();
             databaseName = "New Database";
+            userName = "";
+            userDisplayName = "";
 
             Password = new PasswordViewModel();
 
             AddPage(new PageLocation(this));
             AddPage(new PageMasterPassword(this));
+            AddPage(new PageUserDetails(this));
             AddPage(new PageConfirmation(this));
             AddPage(new PageCompleted(this));
         }
@@ -92,7 +96,35 @@ namespace MKW.GUI.CreateDatabaseWizard
 
         public void DoCreate()
         {
-            mainWindowViewModel.CreateDatabase(DatabasePath, Password.Password);
+            UserMetadata userMetadata = new UserMetadata
+            {
+                DisplayName = userDisplayName,
+                UserId = userName
+            };
+
+            mainWindowViewModel.CreateDatabase(DatabasePath, Password.Password, userMetadata);
+        }
+
+        public void VerifyDetails()
+        {
+            if (UserName.Length == 0)
+            {
+                throw new Exception("User ID cannot be empty.");
+            }
+        }
+
+        private string userName;
+        public string UserName
+        {
+            get => userName;
+            set => SetProperty(ref userName, value);
+        }
+
+        private string userDisplayName;
+        public string UserDisplayName
+        {
+            get => userDisplayName;
+            set => SetProperty(ref userDisplayName, value);
         }
     }
 }

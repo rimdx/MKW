@@ -31,7 +31,14 @@ namespace MKW.GUI.Tests
             entry3.SetProperty(CommonEntryPropertiesModel.Title.Key, "entry3");
 
             using ClientSandBox sbox = new ClientSandBox(false);
-            using DatabaseModel database = DatabaseModel.Create(sbox.Crypto, sbox.DatabasePath, sbox.AdminSecret);
+            using DatabaseModel database = DatabaseModel.Create(sbox.Crypto, 
+                                                                sbox.DatabasePath,
+                                                                sbox.AdminSecret,
+                                                                new UserMetadata
+                                                                { 
+                                                                    DisplayName = "John Doe", 
+                                                                    UserId = "jd@example.com"
+                                                                });
             using DatabaseUnlockedModel unlocked = database.Unlock(UserId.Admin(), sbox.AdminSecret);
 
             unlocked.CreateEntry(entry1key, entry1);
@@ -90,7 +97,14 @@ namespace MKW.GUI.Tests
             Stopwatch timer = new Stopwatch();
 
             using ClientSandBox sbox = new ClientSandBox(false);
-            using DatabaseModel database = DatabaseModel.Create(sbox.Crypto, sbox.DatabasePath, sbox.AdminSecret);
+            using DatabaseModel database = DatabaseModel.Create(sbox.Crypto,
+                                                                sbox.DatabasePath,
+                                                                sbox.AdminSecret,
+                                                                new UserMetadata
+                                                                {
+                                                                    DisplayName = "John Doe",
+                                                                    UserId = "jd@example.com"
+                                                                });
             using DatabaseUnlockedModel unlocked = database.Unlock(UserId.Admin(), sbox.AdminSecret);
 
             timer.Restart();

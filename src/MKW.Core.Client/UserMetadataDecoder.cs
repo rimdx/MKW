@@ -32,7 +32,18 @@ namespace MKW.Core.Client
         {
             if (VerifyMetadata(user.ProtectedData))
             {
-                return UserMetadataSerializer.Deserialize(user.ProtectedData.Metadata.Span);
+                UserMetadata userMetadata = UserMetadataSerializer.Deserialize(user.ProtectedData.Metadata.Span);
+
+                if (userMetadata.UserId == "" && user.Id.IsAdmin)
+                {
+                    // Backward compat.
+                    userMetadata = userMetadata with
+                    { 
+                        UserId = "Admin"
+                    };
+                }
+
+                return userMetadata;
             }
             else
             {

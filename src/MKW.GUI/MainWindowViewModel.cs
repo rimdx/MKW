@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core;
 using MKW.GUI.CreateDatabaseWizard;
 using MKW.GUI.Database;
 using MKW.GUI.Model;
@@ -99,11 +100,11 @@ namespace MKW.GUI
             return tabViewModel;
         }
 
-        public void CreateDatabase(string databasePath, string password)
+        public void CreateDatabase(string databasePath, string password, UserMetadata userMetadata)
         {
             recentFilesService.OnFileOpened(databasePath);
 
-            using (IDocumentLock document = appModel.CreateDatabase(databasePath, password))
+            using (IDocumentLock document = appModel.CreateDatabase(databasePath, password, userMetadata))
             {
                 DatabaseTabItemViewModel tabViewModel = AddDatabaseTab(document);
                 SelectedTab = tabViewModel;
