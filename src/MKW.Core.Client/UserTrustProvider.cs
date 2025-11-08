@@ -6,7 +6,7 @@ using MKW.Storage;
 
 namespace MKW.Core.Client
 {
-    public class UserTrustProvider : IDisposable
+    public class UserTrustProvider
     {
         protected readonly IDatabase database;
         protected readonly ClientCryptography crypto;
@@ -65,10 +65,6 @@ namespace MKW.Core.Client
                     yield return user.Id;
                 }
             }
-        }
-
-        public virtual void Dispose()
-        {
         }
     }
 }

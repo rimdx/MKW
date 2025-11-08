@@ -103,7 +103,6 @@ namespace MKW.Core.Client
         public void Dispose()
         {
             transformer.Dispose();
-            trustProvider.Dispose();
             adminPublicKey.Dispose();
         }
     }
