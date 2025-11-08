@@ -25,36 +25,6 @@ namespace MKW.Storage.JSON
             return CreateSnapshotInternal().OpenUser(id);
         }
 
-        public void CreateUser(UserId id, DatabaseUser user)
-        {
-            using (Transaction transaction = BeginTransactionInternal())
-            {
-                transaction.CreateUser(user);
-                transaction.Commit();
-            }
-        }
-
-        public void UpdateUser(UserId id, DatabaseUser user)
-        {
-            using (Transaction transaction = BeginTransactionInternal())
-            {
-                transaction.UpdateUser(user);
-                transaction.Commit();
-            }
-        }
-
-        public bool DeleteUser(UserId id)
-        {
-            bool result;
-            using (Transaction transaction = BeginTransactionInternal())
-            {
-                result = transaction.DeleteUser(id);
-                transaction.Commit();
-            }
-
-            return result;
-        }
-
         public bool HasUser(UserId id)
         {
             Snapshot snapshot = CreateSnapshotInternal();
@@ -69,62 +39,6 @@ namespace MKW.Storage.JSON
             foreach (DatabaseUser user in snapshot.EnumerateUsers())
             {
                 yield return user;
-            }
-        }
-
-        // Entry
-
-        public void CreateEntry(EntryId id, DatabaseEntry entry)
-        {
-            using (Transaction transaction = BeginTransactionInternal())
-            {
-                transaction.CreateEntry(entry);
-                transaction.Commit();
-            }
-        }
-
-        public void UpdateEntry(EntryId id, DatabaseEntry entry)
-        {
-            using (Transaction transaction = BeginTransactionInternal())
-            {
-                transaction.UpdateEntry(entry);
-                transaction.Commit();
-            }
-        }
-
-        public DatabaseEntry OpenEntry(EntryId id)
-        {
-            Snapshot snapshot = CreateSnapshotInternal();
-
-            return snapshot.OpenEntry(id);
-        }
-
-        public bool DeleteEntry(EntryId id)
-        {
-            bool result;
-            using (Transaction transaction = BeginTransactionInternal())
-            {
-                result = transaction.DeleteEntry(id);
-                transaction.Commit();
-            }
-
-            return result;
-        }
-
-        public bool HasEntry(EntryId id)
-        {
-            Snapshot snapshot = CreateSnapshotInternal();
-
-            return snapshot.HasEntry(id);
-        }
-
-        public IEnumerable<DatabaseEntry> EnumerateEntries()
-        {
-            Snapshot snapshot = CreateSnapshotInternal();
-
-            foreach (DatabaseEntry entry in snapshot.EnumerateEntries())
-            {
-                yield return entry;
             }
         }
 
