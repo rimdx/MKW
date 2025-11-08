@@ -166,6 +166,36 @@ namespace MKW.Storage.Tests
             "=5MHI\n" +
             "-----END PGP MESSAGE-----\n";
 
+        public const string PublicKeyEncryptedMessageAes256NoCompression =
+            "-----BEGIN PGP MESSAGE-----\n" +
+            "\n" +
+            "hQEMA5ULd/u5gOShAQf/cnxQQsecobaLHbr/mOuy2RgzRjRlmalCoJj+tw+pb9bX\n" +
+            "0fZliQis/Js5t9tQcUQSqDfEQWUOclpWqkDfBoiWOh8Obw6eH8loL2jG0Rfdlu+T\n" +
+            "04+V0Fj0MNxJFvP4K3ploO2negViAIz7JlwBPY/x9VsS9IhS2NkqTZjNnN1pCRN6\n" +
+            "meHdy+NfjyauAFZYqPPCtGpyrzmlWn2lUe5pCqmdBb59BPksWOTV4Y7E1wZpSMW7\n" +
+            "k85CxL3fXGt+2waBS14xYq9TJWh7f067nVlMK1an8SpwR3JVCA9vRPn+M+1eL+gx\n" +
+            "nymfqUpSpM6/c2c6Ee/eWF9PnZcEIqCzuf/dNePoz9J4AXebhW2llyw8zeMUpfra\n" +
+            "TudSx31QW43cCPuD/2dSlX+dqFbYOkFpx/wnWXl20SXEAOEhidJqrej9z9GtmMHw\n" +
+            "7kuDH3cNOwK9vf2ynynjjUxixkvw+7pZTJ3WWyKldT6iXvPYTHX+xJ9UUbvRLdcV\n" +
+            "BGGodxdangH3\n" +
+            "=0RGy\n" +
+            "-----END PGP MESSAGE-----\n";
+
+        public const string PublicKeyEncryptedMessageAes128NoCompression =
+            "-----BEGIN PGP MESSAGE-----\n" +
+            "\n" +
+            "hQEMA5ULd/u5gOShAQf+Or2kT6QAFQH2s/1/hlUdK9CbMkckt/Wmw+IbNSm1HjB0\n" +
+            "lmzjmt3Q+v2Lb+/sfdRTKG9fFfJNvUrT5UG5safgM4WcFGo3xcCv8Q8g56prF9fn\n" +
+            "ZtmgN4MTz5vi2hMlyrMgxUHNeshYB3vC/CnBdVrUm7jxrTfwRy08F2QTR/xgZpqG\n" +
+            "camTJw1EB0qsh4cbJKPdvG1U7BQiFTD3QDVY8zOFca0Ojttb76v6W5zCp66K9j3Z\n" +
+            "kqbWqiSzjieXm+wS5o8OsF5xnjrkLbeHmZhyvsgZM985B1PtjLS3uTHFqF9/5COh\n" +
+            "VrUxTS9Ftf4vVIPLyjPDRANWOC9hHfRyw+T5yPF+OdJ4AdUZ3a7sBgvaMqJPmUim\n" +
+            "9n/3uXnYXYB7o5wyTvGlqsCGmTwztI8ReXaUGBVncQYhFAMyEGzH9saIjVtvoSRc\n" +
+            "n0OprI65i9onpEDfVJJYM+LgU/KNOIB6202uaPM7EiiURCwW/ORI4DqU+qcc4lTE\n" +
+            "XK09BaV8mp3L\n" +
+            "=jyBb\n" +
+            "-----END PGP MESSAGE-----\n";
+
         // passphrase: 123
         // string-to-key iterations: 1024
         // gpg --symmetric --armor --s2k-count 1024 test.txt
