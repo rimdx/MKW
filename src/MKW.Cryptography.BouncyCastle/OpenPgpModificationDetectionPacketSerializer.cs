@@ -8,7 +8,7 @@ namespace MKW.Cryptography.BouncyCastle
 {
     internal static class OpenPgpModificationDetectionPacketSerializer
     {
-        private const byte MDPTag = 19;
+        private static ReadOnlySpan<byte> MDPTag => [0xD3, 0x14];
 
         public static void Serialize(IBufferWriter<byte> writer, OpenPgpModificationDetectionPacket obj)
         {
@@ -26,7 +26,7 @@ namespace MKW.Cryptography.BouncyCastle
         public static OpenPgpModificationDetectionPacket Deserialize(IBufferReader<byte> reader)
         {
             int leadBlockSize = OpenPgpModificationDetectionPacketConfiguration.BlockSize + 2;
-            int trailBlockSize = 2 + OpenPgpModificationDetectionPacketConfiguration.Sha1Length;
+            int trailBlockSize = MDPTag.Length + OpenPgpModificationDetectionPacketConfiguration.Sha1Length;
 
             int minPacketSize = leadBlockSize + 0 + trailBlockSize;
 
@@ -52,18 +52,11 @@ namespace MKW.Cryptography.BouncyCastle
 
             ReadOnlyMemory<byte> plaintext = reader.ReadBytes(reader.RemainingBytes - trailBlockSize);
 
-            byte tag = reader.ReadByte();
-            byte len = reader.ReadByte();
+            ReadOnlyMemory<byte> magic = reader.ReadBytes(MDPTag.Length);
 
-            if (tag != MDPTag)
+            if (!magic.Span.SequenceEqual(MDPTag))
             {
                 throw new OpenPgpModificationDetectionPacketCorruptedException("MDC tag is expected");
-            }
-
-            if (len != OpenPgpModificationDetectionPacketConfiguration.Sha1Length)
-            {
-                throw new OpenPgpModificationDetectionPacketCorruptedException(
-                    $"{OpenPgpModificationDetectionPacketConfiguration.Sha1Length} bytes of checksum are expected");
             }
 
             ReadOnlyMemory<byte> checksum = reader.ReadBytes(OpenPgpModificationDetectionPacketConfiguration.Sha1Length);
