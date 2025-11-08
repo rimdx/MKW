@@ -25,11 +25,11 @@ namespace MKW.Tests
             EntryId entryId = EntryId.Create();
             admin.CreateEntry(entryId, sbox.CreatePayload("secret"));
 
-            ClassicAssert.AreEqual(2, db.EnumerateUsers().Count());
-            ClassicAssert.AreEqual(1, db.EnumerateEntries().Count());
-            ClassicAssert.AreEqual(2, db.EnumerateEntries().First().Keys.Count);
+            ClassicAssert.AreEqual(2, db.CreateSnapshot().EnumerateUsers().Count());
+            ClassicAssert.AreEqual(1, db.CreateSnapshot().EnumerateEntries().Count());
+            ClassicAssert.AreEqual(2, db.CreateSnapshot().EnumerateEntries().First().Keys.Count);
 
-            ClassicAssert.AreEqual(entryId, db.EnumerateEntries().First().Id);
+            ClassicAssert.AreEqual(entryId, db.CreateSnapshot().EnumerateEntries().First().Id);
 
             ClassicAssert.AreEqual(sbox.CreatePayload("secret"),
                                    user.OpenEntry(entryId));
@@ -52,9 +52,14 @@ namespace MKW.Tests
             EntryId entry2id = oldUser.CreateEntry(sbox.CreatePayload("entry2"));
 
             {
-                DatabaseEntry entry = db.OpenEntry(entry1id);
-                entry.Keys.Remove(newUser.Id);
-                db.UpdateEntry(entry1id, entry);
+                using (IDatabaseNG.ITransaction transaction = db.BeginTransaction())
+                {
+                    DatabaseEntry entry = transaction.Snapshot.OpenEntry(entry1id);
+                    entry.Keys.Remove(newUser.Id);
+
+                    transaction.UpdateEntry(entry);
+                    transaction.Commit();
+                }
             }
 
             CollectionAssert.AreEqual(

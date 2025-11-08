@@ -10,16 +10,16 @@ namespace MKW.Core.Client
     public class EntryEncoder : IDisposable
     {
         private readonly ClientCryptography crypto;
-        private readonly IDatabase database;
-        private readonly IUserSession user;
+        private readonly IDatabaseNG.ISnapshot snapshot;
+        private readonly UserTrustProvider trustProvider;
 
         public EntryEncoder(ClientCryptography crypto,
-                            IDatabase database,
-                            IUserSession user)
+                            IDatabaseNG.ISnapshot snapshot,
+                            UserTrustProvider trustProvider)
         {
             this.crypto = crypto;
-            this.database = database;
-            this.user = user;
+            this.snapshot = snapshot;
+            this.trustProvider = trustProvider;
         }
 
         public DatabaseEntry EncodeEntry(EntryId entryId, EntryPayload payload)
@@ -33,9 +33,9 @@ namespace MKW.Core.Client
 
             Dictionary<UserId, ReadOnlyMemory<byte>> keys = [];
 
-            foreach (UserId userId in user.EnumerateTrustedUsers())
+            foreach (UserId userId in trustProvider.EnumerateTrustedUsers())
             {
-                DatabaseUser user = database.OpenUser(userId);
+                DatabaseUser user = snapshot.OpenUser(userId);
 
                 AsymmetricPublicKey key = crypto.DecodePkcsPublicKey(user.ProtectedData.PublicKey.Span);
 

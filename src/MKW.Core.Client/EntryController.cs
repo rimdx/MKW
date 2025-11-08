@@ -10,44 +10,56 @@ namespace MKW.Core.Client
     {
         private readonly IDatabase database;
         private readonly ClientCryptography crypto;
-        private readonly IUserSession user;
+        private readonly UserId userId;
+        private readonly UserTrustProvider trustProvider;
         private readonly IAsymmetricPrivateTransformer privateKey;
 
         public EntryController(IDatabase database,
                                ClientCryptography crypto,
-                               IUserSession user,
+                               UserId userId,
+                               UserTrustProvider trustProvider,
                                IAsymmetricPrivateTransformer privateKey)
         {
             this.database = database;
             this.crypto = crypto;
-            this.user = user;
+            this.userId = userId;
+            this.trustProvider = trustProvider;
             this.privateKey = privateKey;
         }
 
         public void Create(EntryId entryId,
                            EntryPayload payload)
         {
-            using EntryEncoder encoder = new EntryEncoder(crypto, database, user);
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                using EntryEncoder encoder = new EntryEncoder(crypto, transaction.Snapshot, trustProvider);
 
-            DatabaseEntry entry = encoder.EncodeEntry(entryId, payload);
+                DatabaseEntry entry = encoder.EncodeEntry(entryId, payload);
 
-            database.CreateEntry(entryId, entry);
+                transaction.CreateEntry(entry);
+                transaction.Commit();
+            }
         }
 
         public void Update(EntryId entryId, EntryPayload payload)
         {
-            using EntryEncoder encoder = new EntryEncoder(crypto, database, user);
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                using EntryEncoder encoder = new EntryEncoder(crypto, transaction.Snapshot, trustProvider);
 
-            DatabaseEntry entry = encoder.EncodeEntry(entryId, payload);
+                DatabaseEntry entry = encoder.EncodeEntry(entryId, payload);
 
-            database.UpdateEntry(entryId, entry);
+                transaction.UpdateEntry(entry);
+                transaction.Commit();
+            }
         }
 
         public EntryPayload? Open(EntryId entryId)
         {
-            using EntryDecoder decoder = new EntryDecoder(crypto, user, privateKey);
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+            using EntryDecoder decoder = new EntryDecoder(crypto, userId, privateKey);
 
-            DatabaseEntry entry = database.OpenEntry(entryId);
+            DatabaseEntry entry = snapshot.OpenEntry(entryId);
             EntryPayload? payload = decoder.DecodeEntry(entry);
 
             return payload;

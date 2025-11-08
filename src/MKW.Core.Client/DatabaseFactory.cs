@@ -58,7 +58,11 @@ namespace MKW.Core.Client
                 Salt = systemCreds.Salt,
             };
 
-            database.CreateUser(UserId.Admin(), admin);
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                transaction.CreateUser(admin);
+                transaction.Commit();
+            }
 
             // We are not gonna sign ourselves (as AddTrustSignature) for now
             // TODO: ?

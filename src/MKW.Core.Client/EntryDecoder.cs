@@ -10,21 +10,22 @@ namespace MKW.Core.Client
     public class EntryDecoder : IDisposable
     {
         private readonly ClientCryptography crypto;
-        private readonly IUserSession user;
+        private readonly UserId userId;
         private readonly IAsymmetricPrivateTransformer transformer;
 
         public EntryDecoder(ClientCryptography crypto,
-                            IUserSession user,
+                            UserId userId,
                             IAsymmetricPrivateTransformer transformer)
         {
             this.crypto = crypto;
-            this.user = user;
+            this.userId = userId;
+            this.userId = userId;
             this.transformer = transformer;
         }
 
         public EntryPayload? DecodeEntry(DatabaseEntry entry)
         {
-            if (entry.Keys.TryGetValue(user.Id, out ReadOnlyMemory<byte> encodedKey) == false)
+            if (entry.Keys.TryGetValue(userId, out ReadOnlyMemory<byte> encodedKey) == false)
             {
                 // No key for this user, cannot decode the entry
                 return null;

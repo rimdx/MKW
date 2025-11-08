@@ -105,17 +105,22 @@ namespace MKW.Tests
             {
             }
 
-            DatabaseUser dbUser = database.OpenUser(userInfo.Id);
-
-            database.UpdateUser(userInfo.Id, dbUser with
+            using (var transaction = database.BeginTransaction())
             {
-                ProtectedData = new DatabaseUserProtectedDataSigned
+                DatabaseUser dbUser = database.OpenUser(userInfo.Id);
+
+                transaction.UpdateUser(dbUser with
                 {
-                    PublicKey = new byte[42],
-                    Metadata = new byte[24],
-                    Signature = dbUser.ProtectedData.Signature,
-                },
-            });
+                    ProtectedData = new DatabaseUserProtectedDataSigned
+                    {
+                        PublicKey = new byte[42],
+                        Metadata = new byte[24],
+                        Signature = dbUser.ProtectedData.Signature,
+                    },
+                });
+
+                transaction.Commit();
+            }
 
             Assert.Throws<Exception>(() => client.OpenUser(userInfo.Id, "123"));
             Assert.Throws<Exception>(() => client.OpenAdmin(sbox.AdminSecret));

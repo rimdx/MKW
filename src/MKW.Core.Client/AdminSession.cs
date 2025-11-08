@@ -18,8 +18,6 @@ namespace MKW.Core.Client
         private readonly IAsymmetricPrivateTransformer transformer;
 
         private readonly UserMetadataDecoder metadata;
-        private readonly EntryController entryController;
-        private readonly UserTrustProvider trustProvider;
 
         public UserId Id => admin.Id;
 
@@ -34,8 +32,6 @@ namespace MKW.Core.Client
             this.transformer = transformer;
 
             metadata = new UserMetadataDecoder(database, transformer);
-            entryController = new EntryController(database, crypto, this, transformer);
-            trustProvider = new UserTrustProvider(database, crypto, transformer, transformer);
         }
 
         public UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata)
@@ -93,30 +89,37 @@ namespace MKW.Core.Client
                 PrivateKey = request.EncryptedPrivateKey,
             };
 
-            database.CreateUser(userId, user);
-
-            // modify ourselves in the database to include user's signature (the one from
-            // user access request).
-            admin = UserSignatureManager.AddSignature(admin, sourceSignature);
-            database.UpdateUser(UserId.Admin(), admin);
-
-            EntryDecoder decoder = new EntryDecoder(crypto, this, transformer);
-            EntryEncoder encoder = new EntryEncoder(crypto, database, this);
-            DatabaseEntry[] entries = [.. database.EnumerateEntries()];
-
-            foreach (DatabaseEntry entry in entries)
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
             {
-                EntryPayload? payload = decoder.DecodeEntry(entry);
+                transaction.CreateUser(user);
 
-                if (payload != null)
+                // modify ourselves in the database to include user's signature (the one from
+                // user access request).
+                admin = UserSignatureManager.AddSignature(admin, sourceSignature);
+                transaction.UpdateUser(admin);
+
+                UserTrustProvider trustProvider = new UserTrustProvider(transaction.Snapshot, crypto, transformer, transformer);
+
+                EntryDecoder decoder = new EntryDecoder(crypto, admin.Id, transformer);
+                EntryEncoder encoder = new EntryEncoder(crypto, transaction.Snapshot, trustProvider);
+                DatabaseEntry[] entries = [.. transaction.Snapshot.EnumerateEntries()];
+
+                foreach (DatabaseEntry entry in entries)
                 {
-                    DatabaseEntry encoded = encoder.EncodeEntry(entry.Id, payload);
-                    database.UpdateEntry(entry.Id, encoded);
+                    EntryPayload? payload = decoder.DecodeEntry(entry);
+
+                    if (payload != null)
+                    {
+                        DatabaseEntry encoded = encoder.EncodeEntry(entry.Id, payload);
+                        transaction.UpdateEntry(encoded);
+                    }
+                    else
+                    {
+                        // TODO: fail? warn?
+                    }
                 }
-                else
-                {
-                    // TODO: fail? warn?
-                }
+
+                transaction.Commit();
             }
 
             return new UserInfo
@@ -136,16 +139,25 @@ namespace MKW.Core.Client
 
         public EntryPayload? OpenEntry(EntryId entryId)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = CreateEntryController(trustProvider);
+
             return entryController.Open(entryId);
         }
 
         public void CreateEntry(EntryId entryId, EntryPayload payload)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = CreateEntryController(trustProvider);
+
             entryController.Create(entryId, payload);
         }
 
         public EntryId CreateEntry(EntryPayload payload)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = CreateEntryController(trustProvider);
+
             EntryId entryId = EntryId.Create();
             entryController.Create(entryId, payload);
             return entryId;
@@ -153,17 +165,25 @@ namespace MKW.Core.Client
 
         public void UpdateEntry(EntryId entryId, EntryPayload newPayload)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+            EntryController entryController = CreateEntryController(trustProvider);
+
             entryController.Update(entryId, newPayload);
         }
 
         public void DeleteEntry(EntryId entryId)
         {
-            database.DeleteEntry(entryId);
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                transaction.DeleteEntry(entryId);
+                transaction.Commit();
+            }
         }
 
         public IEnumerable<KeyValuePair<EntryId, EntryPayload?>> EnumerateEntries()
         {
-            foreach (DatabaseEntry entry in database.EnumerateEntries())
+            IDatabaseNG.ISnapshot snapshot = database.CreateSnapshot();
+            foreach (DatabaseEntry entry in snapshot.EnumerateEntries())
             {
                 EntryPayload? payload = OpenEntry(entry.Id);
                 yield return new KeyValuePair<EntryId, EntryPayload?>(entry.Id, payload);
@@ -174,6 +194,8 @@ namespace MKW.Core.Client
 
         public IEnumerable<UserId> EnumerateTrustedUsers()
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+
             foreach (UserId userId in trustProvider.EnumerateTrustedUsers())
             {
                 yield return userId;
@@ -182,7 +204,19 @@ namespace MKW.Core.Client
 
         public bool VerifyTrust(UserId userId)
         {
+            UserTrustProvider trustProvider = CreateTrustProvider(database.CreateSnapshot());
+
             return trustProvider.VerifyTrust(userId);
+        }
+
+        private UserTrustProvider CreateTrustProvider(IDatabaseNG.ISnapshot snapshot)
+        {
+            return new UserTrustProvider(snapshot, crypto, transformer, transformer);
+        }
+
+        private EntryController CreateEntryController(UserTrustProvider trustProvider)
+        {
+            return new EntryController(database, crypto, Id, trustProvider, transformer);
         }
 
         public void Dispose()
