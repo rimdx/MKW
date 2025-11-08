@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Core;
 using MKW.Cryptography;
 using MKW.Cryptography.Loader;
 using MKW.GUI.Model;
@@ -18,9 +19,9 @@ namespace MKW.GUI
             documentTable = new DocumentTable();
         }
 
-        public IDocumentLock CreateDatabase(string databasePath, string password)
+        public IDocumentLock CreateDatabase(string databasePath, string password, UserMetadata userMetadata)
         {
-            return documentTable.OpenDocument(databasePath, () => DatabaseModel.Create(cryptographyProvider, databasePath, password));
+            return documentTable.OpenDocument(databasePath, () => DatabaseModel.Create(cryptographyProvider, databasePath, password, userMetadata));
         }
 
         public IDocumentLock OpenDatabase(string filename)

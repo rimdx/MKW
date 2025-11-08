@@ -67,16 +67,10 @@ namespace MKW.GUI.Model
             return new DatabaseModel(database, path, client);
         }
 
-        public static DatabaseModel Create(ICryptographyProvider crypto, string path, string adminPassword)
+        public static DatabaseModel Create(ICryptographyProvider crypto, string path, string adminPassword, UserMetadata userMetadata)
         {
-            UserMetadata metadata = new UserMetadata // todo
-            {
-                DisplayName = "",
-                UserId = ""
-            };
-
             JSONDatabaseSession database = JSONDatabaseSession.Create(path);
-            ClientSession client = ClientSession.Create(database, crypto, adminPassword, metadata);
+            ClientSession client = ClientSession.Create(database, crypto, adminPassword, userMetadata);
             DatabaseModel model = new DatabaseModel(database, path, client);
 
             return model;
