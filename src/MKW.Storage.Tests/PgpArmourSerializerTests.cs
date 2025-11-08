@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Core.Serialization.OpenPgp;
+using MKW.Testing.Common;
 using NUnit.Framework.Legacy;
 
 namespace MKW.Storage.Tests
