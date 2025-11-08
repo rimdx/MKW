@@ -30,7 +30,8 @@ namespace MKW.Cryptography.BouncyCastle
 
             BufferedBlockCipher cipher = new BufferedBlockCipher(blockCipherMode);
 
-            KeyParameter parameters = new KeyParameter(key.KeyBytes.ToArray());
+            ICipherParameters aesKey = new KeyParameter(key.KeyBytes.ToArray());
+            ICipherParameters parameters = new ParametersWithIV(aesKey, new byte[cipher.GetBlockSize()]);
 
             this.cipher = new SymmetricCipher(cipher, parameters);
 
