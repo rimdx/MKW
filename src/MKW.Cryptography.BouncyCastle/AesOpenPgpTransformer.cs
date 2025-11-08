@@ -24,7 +24,10 @@ namespace MKW.Cryptography.BouncyCastle
             this.key = key;
 
             AesEngine blockCipher = new AesEngine();
-            CfbBlockCipher blockCipherMode = new CfbBlockCipher(blockCipher, blockCipher.GetBlockSize());
+
+            int bitsBlockSize = blockCipher.GetBlockSize() * 8;
+            CfbBlockCipher blockCipherMode = new CfbBlockCipher(blockCipher, bitsBlockSize);
+
             BufferedBlockCipher cipher = new BufferedBlockCipher(blockCipherMode);
 
             KeyParameter parameters = new KeyParameter(key.KeyBytes.ToArray());
