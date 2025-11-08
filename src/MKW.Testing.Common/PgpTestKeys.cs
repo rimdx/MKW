@@ -151,6 +151,7 @@ namespace MKW.Testing.Common
             "=PJs0\n" +
             "-----END PGP PRIVATE KEY BLOCK-----\n";
 
+        // gpg -e -a -r 950B77FBB980E4A1 -o - --cipher-algo AES-128 --compress-algo none [filename]
         public const string PublicKeyEncryptedMessage =
             "-----BEGIN PGP MESSAGE-----\n" +
             "\n" +
