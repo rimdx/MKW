@@ -41,12 +41,11 @@ namespace MKW.GUI.Database
             Entries = new DatabaseEntryCollectionViewModel(database);
             Users = new DatabaseUserCollectionViewModel(database.Database);
 
-            treeRootItem = new TreeItemViewModel("Database", ImageMoniker.Database, new PageInfo(this));
-            treeRootItem.Children.Add(
-                new TreeItemViewModel("Entries", ImageMoniker.AsymmetricKey, new PageEntries(this))
-                { 
-                    IsSelected = true
-                });
+            treeRootItem = new TreeItemViewModel("Entries", ImageMoniker.AsymmetricKey, new PageEntries(this))
+            {
+                IsSelected = true
+            };
+
             treeRootItem.Children.Add(new TreeItemViewModel("Users", ImageMoniker.Team, new PageUsers(this)));
 
             TreeViewItems = [treeRootItem];
