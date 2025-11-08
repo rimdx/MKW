@@ -21,6 +21,14 @@ namespace MKW.Cryptography
                 IVSizeBits = 128,
             };
 
+        public static readonly SymmetricAlgorithmConfiguration Aes256OpenPgpCfb =
+            new SymmetricAlgorithmConfiguration
+            {
+                Engine = SymmetricAlgorithmEngine.AesOpenPgpCfb,
+                KeySizeBits = 256,
+                IVSizeBits = 256,
+            };
+
         public static readonly AsymmetricAlgorithmConfiguration Rsa2048 =
             new AsymmetricAlgorithmConfiguration
             {
