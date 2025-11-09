@@ -3,7 +3,7 @@
 
 namespace MKW.Cryptography.System
 {
-    internal class SymmetricTransformerFactoryVisitor : SymmetricKey.IVisitor<ISymmetricTransformer>
+    internal sealed class SymmetricTransformerFactoryVisitor : SymmetricKey.IVisitor<ISymmetricTransformer>
     {
         public ISymmetricTransformer VisitAesGcm(SymmetricKeyAesGcm key)
         {
