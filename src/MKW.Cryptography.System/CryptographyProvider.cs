@@ -62,7 +62,7 @@ namespace MKW.Cryptography.System
 
         public SymmetricKey CreateSymmetricKey(SymmetricAlgorithmConfiguration config)
         {
-            return SymmetricTransformer.CreateKey();
+            return AesGcmSymmetricTransformer.CreateKey();
         }
 
         public ISymmetricTransformer OpenSymmetricTransformer(SymmetricKey key)

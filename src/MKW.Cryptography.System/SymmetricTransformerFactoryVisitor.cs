@@ -7,7 +7,7 @@ namespace MKW.Cryptography.System
     {
         public ISymmetricTransformer VisitAesGcm(SymmetricKeyAesGcm key)
         {
-            return SymmetricTransformer.Open(key);
+            return AesGcmSymmetricTransformer.Open(key);
         }
 
         public ISymmetricTransformer VisitAesOpenPgpCfb(SymmetricKeyAesOpenPgpCfb key)
