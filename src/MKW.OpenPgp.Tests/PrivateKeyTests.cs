@@ -17,12 +17,14 @@ namespace MKW.OpenPgp.Tests
         private static readonly ICryptographyProvider crypto = BouncyCastleLoader.GetProvider();
 
         [Test]
-        public void SimpleTest()
+        [TestCase(PgpTestKeys.PublicKeyEncryptedMessageAes128NoCompression)]
+        [TestCase(PgpTestKeys.PublicKeyEncryptedMessageAes256NoCompression)]
+        public void SimpleTest(string messageFileName)
         {
             PgpArmouredMessage? keyArmour = PgpArmouredMessageSerializer.Deserialize(new StreamReader(PgpTestKeys.TestPrivateKey));
             ClassicAssert.NotNull(keyArmour);
 
-            PgpArmouredMessage? msgArmour = PgpArmouredMessageSerializer.Deserialize(new StreamReader(PgpTestKeys.PublicKeyEncryptedMessageAes128NoCompression));
+            PgpArmouredMessage? msgArmour = PgpArmouredMessageSerializer.Deserialize(new StreamReader(messageFileName));
             ClassicAssert.NotNull(msgArmour);
 
             PgpPrivateKey key = new PgpPrivateKey(crypto);
