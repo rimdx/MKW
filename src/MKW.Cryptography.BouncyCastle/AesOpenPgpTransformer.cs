@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using MKW.Common;
+using MKW.Core.Serialization.OpenPgp.MDP;
 using MKW.Cryptography.Exceptions;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
