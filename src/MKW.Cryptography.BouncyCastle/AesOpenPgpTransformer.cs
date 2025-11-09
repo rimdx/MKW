@@ -70,15 +70,8 @@ namespace MKW.Cryptography.BouncyCastle
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
 
-            try
-            {
-                OpenPgpModificationDetectionPacket packet = mdpGenerator.CreatePacket(data);
-                OpenPgpModificationDetectionPacketSerializer.Serialize(writer, packet);
-            }
-            catch (OpenPgpModificationDetectionPacketCorruptedException ex)
-            {
-                throw new SymmetricOperationFailedException(ex);
-            }
+            OpenPgpModificationDetectionPacket packet = mdpGenerator.CreatePacket(data);
+            OpenPgpModificationDetectionPacketSerializer.Serialize(writer, packet);
 
             return cipher.Encrypt(writer.WrittenSpan);
         }
