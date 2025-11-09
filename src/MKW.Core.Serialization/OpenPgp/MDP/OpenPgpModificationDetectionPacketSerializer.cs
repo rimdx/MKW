@@ -4,9 +4,9 @@
 using MKW.Common;
 using System.Buffers;
 
-namespace MKW.Cryptography.BouncyCastle
+namespace MKW.Core.Serialization.OpenPgp.MDP
 {
-    internal static class OpenPgpModificationDetectionPacketSerializer
+    public static class OpenPgpModificationDetectionPacketSerializer
     {
         public static void Serialize(IBufferWriter<byte> writer, OpenPgpModificationDetectionPacket obj)
         {

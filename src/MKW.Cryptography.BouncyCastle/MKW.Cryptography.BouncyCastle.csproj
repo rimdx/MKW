@@ -5,6 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MKW.Core.Serialization\MKW.Core.Serialization.csproj" />
     <ProjectReference Include="..\MKW.Cryptography\MKW.Cryptography.csproj" />
     <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
   </ItemGroup>
