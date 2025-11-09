@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MKW.Core.Serialization.OpenPgp.Packets
 {
-    public sealed record class UserIdPacket
+    public sealed record class UserIdPacket : PgpPacketBody
     {
         public ReadOnlyMemory<byte> Content { get; }
 
@@ -22,6 +22,11 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
         public string GetString()
         {
             return Encoding.UTF8.GetString(Content.ToArray());
+        }
+
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            return visitor.VisitUserIdPacket(this);
         }
     }
 }
