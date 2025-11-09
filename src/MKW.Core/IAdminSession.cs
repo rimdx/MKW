@@ -8,5 +8,6 @@ namespace MKW.Core
         , IDisposable
     {
         UserInfo CreateUser(UserAccessRequest request, UserMetadata metadata);
+        void DeleteUser(UserId userId);
     }
 }

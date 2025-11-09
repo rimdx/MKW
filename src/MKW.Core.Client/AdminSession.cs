@@ -132,6 +132,15 @@ namespace MKW.Core.Client
             };
         }
 
+        public void DeleteUser(UserId userId)
+        {
+            using (IDatabaseNG.ITransaction transaction = database.BeginTransaction())
+            {
+                transaction.DeleteUser(userId);
+                transaction.Commit();
+            }
+        }
+
         public UserMetadata OpenMetadata()
         {
             return metadata.OpenMetadata(admin);
