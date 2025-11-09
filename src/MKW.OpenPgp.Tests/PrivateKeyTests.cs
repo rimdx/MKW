@@ -21,14 +21,22 @@ namespace MKW.OpenPgp.Tests
         [TestCase(PgpTestKeys.PublicKeyEncryptedMessageAes256NoCompression)]
         public void SimpleTest(string messageFileName)
         {
-            PgpArmouredMessage? keyArmour = PgpArmouredMessageSerializer.Deserialize(new StreamReader(PgpTestKeys.TestPrivateKey));
+            PgpArmouredMessage? keyArmour;
+            using (var stream = new StreamReader(PgpTestKeys.TestPrivateKey))
+            {
+                keyArmour = PgpArmouredMessageSerializer.Deserialize(stream);
+            }
             ClassicAssert.NotNull(keyArmour);
 
-            PgpArmouredMessage? msgArmour = PgpArmouredMessageSerializer.Deserialize(new StreamReader(messageFileName));
+            PgpArmouredMessage? msgArmour;
+            using (StreamReader stream = new StreamReader(messageFileName))
+            {
+                msgArmour = PgpArmouredMessageSerializer.Deserialize(stream);
+            }
             ClassicAssert.NotNull(msgArmour);
 
             PgpPrivateKey key = new PgpPrivateKey(crypto);
-            key.Import(keyArmour);
+            key.Import(keyArmour!);
 
             PgpMessage msg = PgpMessage.Open(msgArmour);
 
