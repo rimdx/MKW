@@ -60,7 +60,7 @@ namespace MKW.Cryptography.BouncyCastle
 
             digest.BlockUpdate(prefix);
             digest.BlockUpdate(plaintext);
-            digest.BlockUpdate(OpenPgpModificationDetectionPacketSerializer.MDPTag);
+            digest.BlockUpdate(OpenPgpModificationDetectionPacketConfiguration.MDPTag);
 
             digest.DoFinal(checksum, 0);
 
