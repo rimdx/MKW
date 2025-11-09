@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
 
@@ -36,7 +37,8 @@ namespace MKW.Cryptography.BouncyCastle
 
         public ReadOnlyMemory<byte> OpenPlaintext(OpenPgpModificationDetectionPacket packet)
         {
-            ReadOnlyMemory<byte> actualChecksum = GetChecksum(packet.Plaintext.Span);
+            ReadOnlyMemory<byte> actualChecksum = GetChecksum(packet.Salt.Span,
+                                                              packet.Plaintext.Span);
 
             if (packet.Checksum.Span.SequenceEqual(actualChecksum.Span))
             {
@@ -48,12 +50,22 @@ namespace MKW.Cryptography.BouncyCastle
             }
         }
 
-        private ReadOnlyMemory<byte> GetChecksum(ReadOnlySpan<byte> plaintext)
+        private ReadOnlyMemory<byte> GetChecksum(ReadOnlySpan<byte> salt, ReadOnlySpan<byte> plaintext)
         {
             byte[] checksum = new byte[digest.GetDigestSize()];
 
             digest.Reset();
+
+            Span<byte> prefix = [
+                .. salt.EnsureSize(OpenPgpModificationDetectionPacketConfiguration.BlockSize),
+                salt[^2],
+                salt[^1],
+            ];
+
+            digest.BlockUpdate(prefix);
             digest.BlockUpdate(plaintext);
+            digest.BlockUpdate(OpenPgpModificationDetectionPacketSerializer.MDPTag);
+
             digest.DoFinal(checksum, 0);
 
             return checksum;
