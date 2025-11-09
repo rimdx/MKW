@@ -17,22 +17,15 @@ namespace MKW.Storage.MKPG
             Dictionary<UserId, ReadOnlyMemory<byte>> users = [];
             ReadOnlyMemory<byte>? encryptedData = null;
 
-            while (reader.RemainingBytes > 0)
+            foreach (PgpPacketBody packet in PgpPacketReader.ReadAll(reader))
             {
-                PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
-                IBufferReader<byte> subreader = packet.CreateReader();
-
-                if (packet.Tag == PacketTag.PublicKeyEncryptedSession)
+                if (packet is PublicKeyEncryptedSessionKeyV3 sessionKey)
                 {
-                    PublicKeyEncryptedSessionKeyV3 sessionKey = PublicKeyEncryptedSessionKeyV3Serializer.Deserialize(subreader);
-
                     users.Add(UserId.FromBytes(sessionKey.KeyId), sessionKey.Data);
                 }
-                else if (packet.Tag == PacketTag.SymmetricEncryptedIntegrityProtected)
+                else if (packet is SymEncryptedProtectedDataV1 protectedData)
                 {
-                    SymEncryptedProtectedDataV1 data = SymEncryptedProtectedDataV1Serializer.Deserialize(subreader);
-
-                    encryptedData = data.Data;
+                    encryptedData = protectedData.Data;
                 }
                 else
                 {
@@ -68,7 +61,7 @@ namespace MKW.Storage.MKPG
                     Data = user.Value,
                 };
 
-                PublicKeyEncryptedSessionKeyV3Serializer.SerializePacket(writer, sessionKey, false);
+                PgpPacketSerializer.Serialize(writer, PgpPacketBodySerializer.Serialize(sessionKey), false);
             }
 
             SymEncryptedProtectedDataV1 packet = new SymEncryptedProtectedDataV1
@@ -76,7 +69,7 @@ namespace MKW.Storage.MKPG
                 Data = obj.Data,
             };
 
-            SymEncryptedProtectedDataV1Serializer.SerializePacket(writer, packet, false);
+            PgpPacketSerializer.Serialize(writer, PgpPacketBodySerializer.Serialize(packet), false);
         }
     }
 }

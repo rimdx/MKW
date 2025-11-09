@@ -26,14 +26,10 @@ namespace MKW.Storage.MKPG
             ReadOnlyMemory<byte>? salt = null;
             ReadOnlyMemory<byte>? metadata = null;
 
-            while (reader.RemainingBytes > 0)
+            foreach (PgpPacketBody packet in PgpPacketReader.ReadAll(reader))
             {
-                PgpPacket packet = PgpPacketSerializer.ReadPacket(reader);
-                IBufferReader<byte> subreader = packet.CreateReader();
-
-                if (packet.Tag == PacketTag.SecretKey)
+                if (packet is SecretKeyPacketV4 seckeyPacket)
                 {
-                    SecretKeyPacketV4 seckeyPacket = SecretKeyPacketV4Serializer.Deserialize(subreader);
                     PublicKeyMaterialRSA pubkeyMaterial = (PublicKeyMaterialRSA)seckeyPacket.PublicKey.PublicKeyMaterial;
                     StringToKeySaltedIterated s2k = (StringToKeySaltedIterated)seckeyPacket.StringToKey.StringToKey;
 
@@ -46,10 +42,8 @@ namespace MKW.Storage.MKPG
                     pubkey = parameters.GetEncoded();
                     salt = s2k.Salt;
                 }
-                else if (packet.Tag == PacketTag.Signature)
+                else if (packet is SignaturePacketV4 signaturePacket)
                 {
-                    SignaturePacketV4 signaturePacket = SignaturePacketV4Serializer.Deserialize(subreader);
-
                     if (signaturePacket.Type == SignatureTypeTag.PositiveCertificationPublicKeyPacket)
                     {
                         signatures.Add(DatabaseTrustSignatureSerializer.Deserialize(signaturePacket));
@@ -59,9 +53,8 @@ namespace MKW.Storage.MKPG
                         throw new NotSupportedException();
                     }
                 }
-                else if (packet.Tag == UserIdPacketSerializer.Tag)
+                else if (packet is Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket)
                 {
-                    Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = UserIdPacketSerializer.Deserialize(subreader);
                     metadata = userIdPacket.Content;
                 }
                 else
@@ -134,30 +127,21 @@ namespace MKW.Storage.MKPG
                 SecretKeyData = obj.PrivateKey.EncryptedPayload,
             };
 
-            ArrayBufferWriter<byte> seckeyPacketWriter = new ArrayBufferWriter<byte>();
-            SecretKeyPacketV4Serializer.Serialize(seckeyPacketWriter, seckeyPacket);
-            PgpPacketSerializer.Serialize(writer,
-                                          new PgpPacket(PacketTag.SecretKey, seckeyPacketWriter.WrittenMemory),
-                                          false);
+            PgpPacketSerializer.Serialize(writer, PgpPacketBodySerializer.Serialize(seckeyPacket), false);
 
             foreach (DatabaseTrustSignature signature in obj.ProtectedData.Signature)
             {
                 SignaturePacketV4 signaturePacket = DatabaseTrustSignatureSerializer.Serialize(signature);
 
-                ArrayBufferWriter<byte> signaturePacketWriter = new ArrayBufferWriter<byte>();
-                SignaturePacketV4Serializer.Serialize(signaturePacketWriter, signaturePacket);
-
                 PgpPacketSerializer.Serialize(writer,
-                                              new PgpPacket(PacketTag.Signature, signaturePacketWriter.WrittenMemory),
+                                              PgpPacketBodySerializer.Serialize(signaturePacket),
                                               false);
             }
 
-            ArrayBufferWriter<byte> userIdPacketWriter = new ArrayBufferWriter<byte>();
             Core.Serialization.OpenPgp.Packets.UserIdPacket userIdPacket = new Core.Serialization.OpenPgp.Packets.UserIdPacket(obj.ProtectedData.Metadata);
-            UserIdPacketSerializer.Serialize(userIdPacketWriter, userIdPacket);
 
             PgpPacketSerializer.Serialize(writer,
-                                          new PgpPacket(UserIdPacketSerializer.Tag, userIdPacketWriter.WrittenMemory),
+                                          PgpPacketBodySerializer.Serialize(userIdPacket),
                                           false);
         }
     }
