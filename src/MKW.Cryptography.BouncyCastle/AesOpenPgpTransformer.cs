@@ -54,6 +54,10 @@ namespace MKW.Cryptography.BouncyCastle
 
                 plaintext = mdpGenerator.OpenPlaintext(packet);
             }
+            catch (OpenPgpModificationDetectionPacketChecksumMismatchException ex)
+            {
+                throw new SymmetricOperationFailedException(ex);
+            }
             catch (OpenPgpModificationDetectionPacketCorruptedException ex)
             {
                 throw new SymmetricOperationFailedException(ex);
