@@ -34,13 +34,18 @@ namespace MKW.Tests
 
                 using (JSONDatabaseSession db2 = JSONDatabaseSession.Create(db2path))
                 {
-                    db2.CreateEntry(entryId, new DatabaseEntry
+                    using (IDatabaseNG.ITransaction transaction = db2.BeginTransaction())
                     {
-                        Id = entryId,
-                        Data = ReadOnlyMemory<byte>.Empty,
-                        Salt = ReadOnlyMemory<byte>.Empty,
-                        Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
-                    });
+                        transaction.CreateEntry(new DatabaseEntry
+                        {
+                            Id = entryId,
+                            Data = ReadOnlyMemory<byte>.Empty,
+                            Salt = ReadOnlyMemory<byte>.Empty,
+                            Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+                        });
+
+                        transaction.Commit();
+                    }
                 }
 
                 File.Replace(db2path, db1path, null);
@@ -54,11 +59,11 @@ namespace MKW.Tests
 
             //ClassicAssert.AreEqual(250, timer.ElapsedMilliseconds, 50);
             ClassicAssert.GreaterOrEqual(timer.ElapsedMilliseconds, 250);
-            ClassicAssert.AreEqual(0, db1.EnumerateEntries().Count());
+            ClassicAssert.AreEqual(0, db1.CreateSnapshot().EnumerateEntries().Count());
 
             db1.ReloadDatabaseFile();
 
-            ClassicAssert.AreEqual(1, db1.EnumerateEntries().Count());
+            ClassicAssert.AreEqual(1, db1.CreateSnapshot().EnumerateEntries().Count());
         }
 
         [Test]
@@ -78,14 +83,18 @@ namespace MKW.Tests
                 });
             });
 
-            EntryId entryId = EntryId.Create();
-            db.CreateEntry(entryId, new DatabaseEntry
+            using (IDatabaseNG.ITransaction transaction = db.BeginTransaction())
             {
-                Id = entryId,
-                Data = ReadOnlyMemory<byte>.Empty,
-                Salt = ReadOnlyMemory<byte>.Empty,
-                Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
-            });
+                EntryId entryId = EntryId.Create();
+                transaction.CreateEntry(new DatabaseEntry
+                {
+                    Id = entryId,
+                    Data = ReadOnlyMemory<byte>.Empty,
+                    Salt = ReadOnlyMemory<byte>.Empty,
+                    Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+                });
+                transaction.Commit();
+            }
 
             await Task.Delay(100);
 
@@ -120,14 +129,19 @@ namespace MKW.Tests
 
             Task task = WaitForChanges();
 
-            EntryId entryId = EntryId.Create();
-            db.CreateEntry(entryId, new DatabaseEntry
+            using (IDatabaseNG.ITransaction transaction = db.BeginTransaction())
             {
-                Id = entryId,
-                Data = ReadOnlyMemory<byte>.Empty,
-                Salt = ReadOnlyMemory<byte>.Empty,
-                Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
-            });
+                EntryId entryId = EntryId.Create();
+                transaction.CreateEntry(new DatabaseEntry
+                {
+                    Id = entryId,
+                    Data = ReadOnlyMemory<byte>.Empty,
+                    Salt = ReadOnlyMemory<byte>.Empty,
+                    Keys = new Dictionary<UserId, ReadOnlyMemory<byte>>(),
+                });
+
+                transaction.Commit();
+            }
 
             await Task.Delay(100);
 

@@ -20,8 +20,8 @@ namespace MKW.Storage.Tests
         {
             using JSONDatabaseSession database = JSONDatabaseSession.Open(path);
 
-            ClassicAssert.AreEqual(2, database.EnumerateEntries().Count());
-            ClassicAssert.AreEqual(2, database.EnumerateUsers().Count());
+            ClassicAssert.AreEqual(2, database.CreateSnapshot().EnumerateEntries().Count());
+            ClassicAssert.AreEqual(2, database.CreateSnapshot().EnumerateUsers().Count());
 
             using ClientSession client = ClientSession.Open(database, BouncyCastleLoader.GetProvider());
 
