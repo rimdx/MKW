@@ -28,12 +28,12 @@ namespace MKW.Cryptography.BouncyCastle
             this.cipher = new SymmetricCipher(cipher, parameters);
         }
 
-        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             return cipher.Decrypt(data);
         }
 
-        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             return cipher.Encrypt(data);
         }

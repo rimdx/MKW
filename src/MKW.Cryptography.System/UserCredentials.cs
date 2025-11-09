@@ -26,9 +26,9 @@ namespace MKW.Cryptography.System
             return new UserCredentials(password, salt);
         }
 
-        public Memory<byte> GetSecretKey()
+        public ReadOnlyMemory<byte> GetSecretKey()
         {
-            Memory<byte> password = GetPasswordBytes(this.password);
+            ReadOnlyMemory<byte> password = GetPasswordBytes(this.password);
 
             return Rfc2898DeriveBytes.Pbkdf2(password.Span,
                                              salt.Span,
@@ -47,7 +47,7 @@ namespace MKW.Cryptography.System
             return RandomNumberGenerator.GetBytes(CryptographicConstants.DerivePassword.SaltSize);
         }
 
-        private Memory<byte> GetPasswordBytes(string password)
+        private ReadOnlyMemory<byte> GetPasswordBytes(string password)
         {
             return EncodingConverter.GetBytes(password);
         }

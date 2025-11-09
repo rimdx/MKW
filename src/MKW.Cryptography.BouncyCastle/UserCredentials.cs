@@ -32,7 +32,7 @@ namespace MKW.Cryptography.BouncyCastle
             return salt.ToArray();
         }
 
-        public Memory<byte> GetSecretKey()
+        public ReadOnlyMemory<byte> GetSecretKey()
         {
             generator.Init(password.Span, salt.Span, config.Iterations);
 

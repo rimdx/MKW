@@ -29,10 +29,10 @@ namespace MKW.Core.Client
             // Symmetric encoder for secret section.
             using ISymmetricTransformer encoder = crypto.OpenSymmetricTransformer(symkey);
 
-            Memory<byte> privateKeyBytes = crypto.EncodePkcsPrivateKey(privateKey);
-            Memory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);
+            ReadOnlyMemory<byte> privateKeyBytes = crypto.EncodePkcsPrivateKey(privateKey);
+            ReadOnlyMemory<byte> privateKeyEncrypted = encoder.Encrypt(privateKeyBytes.Span);
 
-            Memory<byte> publicKeyBytes = crypto.EncodePkcsPublicKey(publicKey);
+            ReadOnlyMemory<byte> publicKeyBytes = crypto.EncodePkcsPublicKey(publicKey);
 
             return new SystemCredentials
             {

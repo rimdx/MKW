@@ -41,7 +41,7 @@ namespace MKW.Core.Client
 
                 using IAsymmetricPublicTransformer keyEncoder = crypto.OpenAsymmetricTransformer(key);
 
-                Memory<byte> encyptedKey = keyEncoder.Encrypt(sessionKey.Visit(new GetSymmetricKeyVisitor()).Span);
+                ReadOnlyMemory<byte> encyptedKey = keyEncoder.Encrypt(sessionKey.Visit(new GetSymmetricKeyVisitor()).Span);
 
                 keys.Add(user.Id, encyptedKey);
             }

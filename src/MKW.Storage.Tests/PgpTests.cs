@@ -111,7 +111,7 @@ namespace MKW.Storage.Tests
 
             using ISymmetricTransformer transformer = crypto.OpenSymmetricTransformer(key);
 
-            Memory<byte> decrypted = transformer.Decrypt(dataPacket);
+            ReadOnlyMemory<byte> decrypted = transformer.Decrypt(dataPacket);
 
             Console.Write(EncodingConverter.GetString(decrypted.Span));
         }

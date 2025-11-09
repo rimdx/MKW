@@ -91,12 +91,12 @@ namespace MKW.Cryptography.BouncyCastle
             return AsymmetricPrivateKeyExtensions.FromParameter((RsaPrivateCrtKeyParameters)decoded);
         }
 
-        public Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
+        public ReadOnlyMemory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
         {
             return SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(key.GetParameter()).GetEncoded();
         }
 
-        public Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
+        public ReadOnlyMemory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
         {
             return PrivateKeyInfoFactory.CreatePrivateKeyInfo(key.GetParameter()).GetEncoded();
         }

@@ -7,7 +7,7 @@ namespace MKW.Cryptography
 {
     public static class EncodingConverter
     {
-        public static Memory<byte> GetBytes(string data)
+        public static ReadOnlyMemory<byte> GetBytes(string data)
         {
             return Encoding.UTF8.GetBytes(data);
         }

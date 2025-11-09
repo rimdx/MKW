@@ -38,7 +38,7 @@ namespace MKW.Cryptography.BouncyCastle
             signer = new RsaDigestSigner(digest);
         }
 
-        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace MKW.Cryptography.BouncyCastle
             }
         }
 
-        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             if (privateKey == null)
             {
@@ -87,19 +87,19 @@ namespace MKW.Cryptography.BouncyCastle
             }
         }
 
-        public Memory<byte> ExportPrivateKey()
+        public ReadOnlyMemory<byte> ExportPrivateKey()
         {
             PrivateKeyInfo info = PrivateKeyInfoFactory.CreatePrivateKeyInfo(privateKey.GetParameter());
             return info.GetEncoded();
         }
 
-        public Memory<byte> ExportPublicKey()
+        public ReadOnlyMemory<byte> ExportPublicKey()
         {
             SubjectPublicKeyInfo info = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(publicKey.GetParameter());
             return info.GetEncoded();
         }
 
-        public Memory<byte> Sign(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Sign(ReadOnlySpan<byte> data)
         {
             if (privateKey == null)
             {
