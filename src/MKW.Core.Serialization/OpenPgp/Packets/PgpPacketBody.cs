@@ -7,6 +7,7 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
     {
         public interface IVisitor<T>
         {
+            T VisitLiteralData(LiteralDataPacket packetBody);
             T VisitPublicKeyEncryptedSessionKeyV3(PublicKeyEncryptedSessionKeyV3 packetBody);
             T VisitPublicKeyPacketV4(PublicKeyPacketV4 publicKeyPacketV4);
             T VisitSecretKeyPacketV4(SecretKeyPacketV4 packetBody);

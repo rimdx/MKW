@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
 using MKW.Core.Serialization.OpenPgp;
+using MKW.Core.Serialization.OpenPgp.Packets;
 using MKW.Cryptography;
 using MKW.Cryptography.Loader;
 using MKW.Testing.Common;
 using NUnit.Framework.Legacy;
-using System.Text;
 
 namespace MKW.OpenPgp.Tests
 {
@@ -31,7 +32,19 @@ namespace MKW.OpenPgp.Tests
 
             ReadOnlyMemory<byte> plaintext = key.DecryptMessage(msg);
 
-            Console.WriteLine(Encoding.UTF8.GetString(plaintext.ToArray()));
+            ArrayBufferReader<byte> reader = new ArrayBufferReader<byte>(plaintext);
+            foreach (PgpPacketBody messagePacket in PgpPacketReader.ReadAll(reader))
+            {
+                if (messagePacket is LiteralDataPacket literalData)
+                {
+                    Console.WriteLine($"Filename: {literalData.FileName}");
+                    Console.WriteLine(literalData.GetAsString());
+                }
+                else
+                {
+                    Assert.Fail($"Unexpected type {messagePacket.GetType()}");
+                }
+            }
         }
     }
 }
