@@ -39,11 +39,12 @@ namespace MKW.Storage.Tests
         [Test]
         [TestCase(PgpTestKeys.TestPublicKey)]
         [TestCase(PgpTestKeys.TestPrivateKey)]
-        [TestCase(PgpTestKeys.PublicKeyEncryptedMessage)]
+        [TestCase(PgpTestKeys.PublicKeyEncryptedMessageAes256NoCompression)]
+        [TestCase(PgpTestKeys.PublicKeyEncryptedMessageAes256NoCompression)]
         [TestCase(PgpTestKeys.SymmetricallyEncryptedMessage)]
-        public void Samples(string content)
+        public void Samples(string path)
         {
-            using StringReader reader = new StringReader(content);
+            using StreamReader reader = new StreamReader(path);
 
             PgpArmouredMessage? deserialized = PgpArmouredMessageSerializer.Deserialize(reader);
             ClassicAssert.NotNull(deserialized);
@@ -55,7 +56,7 @@ namespace MKW.Storage.Tests
 
             Console.WriteLine(writer.ToString());
 
-            ClassicAssert.AreEqual(content, writer.ToString());
+            ClassicAssert.AreEqual(File.ReadAllText(path), writer.ToString());
         }
 
         [Test]
