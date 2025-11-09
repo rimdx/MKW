@@ -119,7 +119,7 @@ namespace MKW.Storage.Tests
         [Test]
         public void PublicKeyParseTest()
         {
-            using StringReader armourReader = new StringReader(PgpTestKeys.TestPublicKey);
+            using StreamReader armourReader = new StreamReader(PgpTestKeys.TestPublicKey);
             PgpArmouredMessage? msg = PgpArmouredMessageSerializer.Deserialize(armourReader);
 
             ClassicAssert.NotNull(msg);
@@ -145,7 +145,7 @@ namespace MKW.Storage.Tests
         [Test]
         public void SecretKeyParseTest()
         {
-            using StringReader armourReader = new StringReader(PgpTestKeys.TestPrivateKeyEncrypted);
+            using StreamReader armourReader = new StreamReader(PgpTestKeys.TestPrivateKey);
             PgpArmouredMessage? msg = PgpArmouredMessageSerializer.Deserialize(armourReader);
 
             ClassicAssert.NotNull(msg);
