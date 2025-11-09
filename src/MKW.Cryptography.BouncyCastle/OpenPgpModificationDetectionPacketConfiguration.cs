@@ -7,5 +7,7 @@ namespace MKW.Cryptography.BouncyCastle
     {
         public const int BlockSize = 16;
         public const int Sha1Length = 20;
+
+        public static ReadOnlySpan<byte> MDPTag => [0xD3, 0x14];
     }
 }
