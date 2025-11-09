@@ -24,7 +24,7 @@ namespace MKW.Cryptography.Loader
         public static ICryptographyProvider GetProvider(string name) => name switch
         {
             BouncyCastleLoader.Name => BouncyCastleLoader.GetProvider(),
-            SystemCryptographyLoader.Name => BouncyCastleLoader.GetProvider(),
+            SystemCryptographyLoader.Name => SystemCryptographyLoader.GetProvider(),
             _ => throw new NotSupportedException(),
         };
     }
