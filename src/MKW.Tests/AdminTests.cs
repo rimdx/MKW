@@ -70,6 +70,10 @@ namespace MKW.Tests
             using (IUserSession admin = client.OpenUser(UserId.Admin(), sbox.AdminSecret))
             {
             }
+
+            using (IUserSession admin = client.OpenUser(sbox.AdminSecret))
+            {
+            }
         }
 
         [Test]
