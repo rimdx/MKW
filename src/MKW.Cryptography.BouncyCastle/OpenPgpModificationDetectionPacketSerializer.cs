@@ -8,7 +8,7 @@ namespace MKW.Cryptography.BouncyCastle
 {
     internal static class OpenPgpModificationDetectionPacketSerializer
     {
-        private static ReadOnlySpan<byte> MDPTag => [0xD3, 0x14];
+        internal static ReadOnlySpan<byte> MDPTag => [0xD3, 0x14];
 
         public static void Serialize(IBufferWriter<byte> writer, OpenPgpModificationDetectionPacket obj)
         {
