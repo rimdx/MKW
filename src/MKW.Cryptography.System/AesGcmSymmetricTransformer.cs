@@ -7,11 +7,11 @@ using System.Security.Cryptography;
 
 namespace MKW.Cryptography.System
 {
-    public class SymmetricTransformer : ISymmetricTransformer, IDisposable
+    public class AesGcmSymmetricTransformer : ISymmetricTransformer, IDisposable
     {
         private readonly Aes aes;
 
-        protected SymmetricTransformer(Aes aes)
+        protected AesGcmSymmetricTransformer(Aes aes)
         {
             this.aes = aes;
         }
@@ -44,7 +44,7 @@ namespace MKW.Cryptography.System
                 throw new InvalidKeyException(ex);
             }
 
-            return new SymmetricTransformer(aes /* move */);
+            return new AesGcmSymmetricTransformer(aes /* move */);
         }
 
         public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
