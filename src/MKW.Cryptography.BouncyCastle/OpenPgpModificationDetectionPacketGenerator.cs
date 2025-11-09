@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
-using MKW.Common;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
+using System.Buffers;
 
 namespace MKW.Cryptography.BouncyCastle
 {
@@ -52,15 +52,10 @@ namespace MKW.Cryptography.BouncyCastle
 
             digest.Reset();
 
-            Span<byte> prefix = [
-                .. salt.EnsureSize(OpenPgpModificationDetectionPacketConfiguration.BlockSize),
-                salt[^2],
-                salt[^1],
-            ];
+            ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+            OpenPgpModificationDetectionPacketSerializer.SerializeChecksum(writer, salt, plaintext);
 
-            digest.BlockUpdate(prefix);
-            digest.BlockUpdate(plaintext);
-            digest.BlockUpdate(OpenPgpModificationDetectionPacketConfiguration.MDPTag);
+            digest.BlockUpdate(writer.WrittenSpan);
 
             digest.DoFinal(checksum, 0);
 
