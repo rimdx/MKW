@@ -32,7 +32,7 @@ namespace MKW.Cryptography.System
             return AsymmetricPrivateKeyExtensions.FromParameter(rsa.ExportParameters(true));
         }
 
-        public Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
+        public ReadOnlyMemory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
         {
             // workaround
             using RSA rsa = RSA.Create();
@@ -40,7 +40,7 @@ namespace MKW.Cryptography.System
             return rsa.ExportSubjectPublicKeyInfo();
         }
 
-        public Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
+        public ReadOnlyMemory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
         {
             // workaround
             using RSA rsa = RSA.Create();

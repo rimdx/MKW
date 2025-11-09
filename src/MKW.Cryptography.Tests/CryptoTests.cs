@@ -27,10 +27,10 @@ namespace MKW.Cryptography.Tests
             using IAsymmetricPrivateTransformer transformer = crypto.OpenAsymmetricTransformer(
                 key, CommonCryptographyAlgorithms.Rsa2048);
 
-            Memory<byte> data = EncodingConverter.GetBytes("killmepls");
+            ReadOnlyMemory<byte> data = EncodingConverter.GetBytes("killmepls");
 
-            Memory<byte> sign1 = transformer.Sign(data.Span);
-            Memory<byte> sign2 = transformer.Sign(data.Span);
+            ReadOnlyMemory<byte> sign1 = transformer.Sign(data.Span);
+            ReadOnlyMemory<byte> sign2 = transformer.Sign(data.Span);
 
             CollectionAssert.AreEqual(sign1.ToArray(), sign2.ToArray());
 
@@ -91,15 +91,15 @@ namespace MKW.Cryptography.Tests
                 data[i] = (byte)(i * 7213732 % 7892);
             }
 
-            Memory<byte> encrypted1 = key1.Encrypt(data);
-            Memory<byte> decrypted1 = key1.Decrypt(encrypted1.Span);
+            ReadOnlyMemory<byte> encrypted1 = key1.Encrypt(data);
+            ReadOnlyMemory<byte> decrypted1 = key1.Decrypt(encrypted1.Span);
 
             CollectionAssert.AreEqual(data, decrypted1.ToArray());
 
             using ISymmetricTransformer key2 = crypto.OpenSymmetricTransformer(key);
 
-            Memory<byte> encrypted2 = key2.Encrypt(data);
-            Memory<byte> decrypted2 = key2.Decrypt(encrypted1.Span);
+            ReadOnlyMemory<byte> encrypted2 = key2.Encrypt(data);
+            ReadOnlyMemory<byte> decrypted2 = key2.Decrypt(encrypted1.Span);
 
             CollectionAssert.AreEqual(encrypted1.ToArray(), encrypted2.ToArray());
             CollectionAssert.AreEqual(decrypted1.ToArray(), decrypted2.ToArray());
@@ -108,8 +108,8 @@ namespace MKW.Cryptography.Tests
             {
                 using ISymmetricTransformer key3 = crypto.OpenSymmetricTransformer(key);
 
-                Memory<byte> encrypted3 = key3.Encrypt(data);
-                Memory<byte> decrypted3 = key3.Decrypt(encrypted3.Span);
+                ReadOnlyMemory<byte> encrypted3 = key3.Encrypt(data);
+                ReadOnlyMemory<byte> decrypted3 = key3.Decrypt(encrypted3.Span);
 
                 CollectionAssert.AreEqual(encrypted1.ToArray(), encrypted3.ToArray());
                 CollectionAssert.AreEqual(decrypted1.ToArray(), decrypted3.ToArray());
@@ -126,7 +126,7 @@ namespace MKW.Cryptography.Tests
                 key, CommonCryptographyAlgorithms.Rsa2048);
 
             ReadOnlyMemory<byte> data = symkey.KeyBytes;
-            Memory<byte> encrypted = transformer.Encrypt(data.Span);
+            ReadOnlyMemory<byte> encrypted = transformer.Encrypt(data.Span);
 
             IAsymmetricPrivateTransformer decoder = crypto.OpenAsymmetricTransformer(
                 key, CommonCryptographyAlgorithms.Rsa2048);
@@ -144,7 +144,7 @@ namespace MKW.Cryptography.Tests
                 key.GetPublicKey(),
                 CommonCryptographyAlgorithms.Rsa2048);
 
-            Memory<byte> encrypted2 = transformer.Encrypt(data.Span);
+            ReadOnlyMemory<byte> encrypted2 = transformer.Encrypt(data.Span);
             CollectionAssert.AreNotEqual(encrypted.ToArray(),
                                          encrypted2.ToArray());
 

@@ -5,8 +5,8 @@ namespace MKW.Cryptography
 {
     public interface IAsymmetricPublicTransformer : IDisposable
     {
-        Memory<byte> Encrypt(ReadOnlySpan<byte> data);
-        Memory<byte> ExportPublicKey();
+        ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data);
+        ReadOnlyMemory<byte> ExportPublicKey();
         bool Verify(ReadOnlySpan<byte> data, ReadOnlySpan<byte> signature);
     }
 }

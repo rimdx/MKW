@@ -46,7 +46,7 @@ namespace MKW.Cryptography.System
             return new SymmetricTransformer(aes /* move */);
         }
 
-        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace MKW.Cryptography.System
             }
         }
 
-        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             try
             {

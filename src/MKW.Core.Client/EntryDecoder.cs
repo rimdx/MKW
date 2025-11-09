@@ -31,13 +31,13 @@ namespace MKW.Core.Client
                 return null;
             }
 
-            Memory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
+            ReadOnlyMemory<byte> decryptedKey = transformer.Decrypt(encodedKey.Span);
 
             SymmetricKey symkey = crypto.OpenSymmetricKey(decryptedKey, entry.Salt);
 
             using ISymmetricTransformer dataDecoder = crypto.OpenSymmetricTransformer(symkey);
 
-            Memory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
+            ReadOnlyMemory<byte> decryptedData = dataDecoder.Decrypt(entry.Data.Span);
 
             return EntryPayloadSerializer.Deserialize(decryptedData.Span);
         }

@@ -43,12 +43,12 @@ namespace MKW.Core.Client
             return provider.DecodePkcsPrivateKey(data);
         }
 
-        public Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
+        public ReadOnlyMemory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key)
         {
             return provider.EncodePkcsPublicKey(key);
         }
 
-        public Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
+        public ReadOnlyMemory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key)
         {
             return provider.EncodePkcsPrivateKey(key);
         }

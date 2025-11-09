@@ -41,7 +41,7 @@ namespace MKW.Cryptography.BouncyCastle
             mdpGenerator = new OpenPgpModificationDetectionPacketGenerator(digest, random);
         }
 
-        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             ReadOnlyMemory<byte> raw = cipher.Decrypt(data);
 
@@ -67,7 +67,7 @@ namespace MKW.Cryptography.BouncyCastle
             return plaintext.ToArray(); // todo!!
         }
 
-        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
 

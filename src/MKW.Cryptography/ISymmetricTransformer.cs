@@ -5,7 +5,7 @@ namespace MKW.Cryptography
 {
     public interface ISymmetricTransformer : IDisposable
     {
-        Memory<byte> Encrypt(ReadOnlySpan<byte> data);
-        Memory<byte> Decrypt(ReadOnlySpan<byte> data);
+        ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data);
+        ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data);
     }
 }

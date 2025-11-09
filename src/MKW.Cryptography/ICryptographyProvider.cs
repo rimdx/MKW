@@ -10,8 +10,8 @@ namespace MKW.Cryptography
         AsymmetricPublicKey DecodePkcsPublicKey(ReadOnlySpan<byte> data);
         AsymmetricPrivateKey DecodePkcsPrivateKey(ReadOnlySpan<byte> data);
 
-        Memory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key);
-        Memory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key);
+        ReadOnlyMemory<byte> EncodePkcsPublicKey(AsymmetricPublicKey key);
+        ReadOnlyMemory<byte> EncodePkcsPrivateKey(AsymmetricPrivateKey key);
 
         IAsymmetricPublicTransformer OpenAsymmetricTransformer(AsymmetricPublicKey publicKey,
                                                                AsymmetricAlgorithmConfiguration config);

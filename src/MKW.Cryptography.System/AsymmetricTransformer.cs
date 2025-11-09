@@ -54,7 +54,7 @@ namespace MKW.Cryptography.System
             return new AsymmetricTransformer(rsa);
         }
 
-        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace MKW.Cryptography.System
             }
         }
 
-        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace MKW.Cryptography.System
             }
         }
 
-        public Memory<byte> Sign(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Sign(ReadOnlySpan<byte> data)
         {
             try
             {
@@ -107,12 +107,12 @@ namespace MKW.Cryptography.System
             }
         }
 
-        public Memory<byte> ExportPublicKey()
+        public ReadOnlyMemory<byte> ExportPublicKey()
         {
             return rsa.ExportSubjectPublicKeyInfo();
         }
 
-        public Memory<byte> ExportPrivateKey()
+        public ReadOnlyMemory<byte> ExportPrivateKey()
         {
             return rsa.ExportPkcs8PrivateKey();
         }

@@ -50,7 +50,7 @@ namespace MKW.Cryptography.Tests
             using ISymmetricTransformer key1 = crypto1.OpenSymmetricTransformer(key);
 
             byte[] data = [1, 2, 3];
-            Memory<byte> encrypted = key1.Encrypt(data);
+            ReadOnlyMemory<byte> encrypted = key1.Encrypt(data);
 
             using ISymmetricTransformer key2 = crypto2.OpenSymmetricTransformer(key);
 
@@ -97,7 +97,7 @@ namespace MKW.Cryptography.Tests
                 key.GetPublicKey(), CommonCryptographyAlgorithms.Rsa2048);
 
             ReadOnlyMemory<byte> data = symkey.KeyBytes;
-            Memory<byte> encrypted = encoder.Encrypt(data.Span);
+            ReadOnlyMemory<byte> encrypted = encoder.Encrypt(data.Span);
 
             CollectionAssert.AreEqual(data.ToArray(),
                                       decoder.Decrypt(encrypted.Span).ToArray());
@@ -118,10 +118,10 @@ namespace MKW.Cryptography.Tests
             using IAsymmetricPublicTransformer verifier2 = crypto2.OpenAsymmetricTransformer(
                 key.GetPublicKey(), CommonCryptographyAlgorithms.Rsa2048);
 
-            Memory<byte> data = EncodingConverter.GetBytes("data");
+            ReadOnlyMemory<byte> data = EncodingConverter.GetBytes("data");
 
-            Memory<byte> sign1 = signer1.Sign(data.Span);
-            Memory<byte> sign2 = signer2.Sign(data.Span);
+            ReadOnlyMemory<byte> sign1 = signer1.Sign(data.Span);
+            ReadOnlyMemory<byte> sign2 = signer2.Sign(data.Span);
 
             CollectionAssert.AreEqual(sign1.ToArray(), sign2.ToArray());
 

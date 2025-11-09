@@ -19,7 +19,7 @@ namespace MKW.Cryptography.BouncyCastle
             this.parameters = parameters;
         }
 
-        public Memory<byte> Decrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Decrypt(ReadOnlySpan<byte> data)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace MKW.Cryptography.BouncyCastle
             }
         }
 
-        public Memory<byte> Encrypt(ReadOnlySpan<byte> data)
+        public ReadOnlyMemory<byte> Encrypt(ReadOnlySpan<byte> data)
         {
             try
             {
