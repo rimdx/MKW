@@ -19,7 +19,6 @@ namespace MKW.Cryptography.BouncyCastle
             writer.Write(obj.Plaintext.Span);
 
             writer.Write(MDPTag);
-            writer.Write((byte)obj.Checksum.Length);
             writer.Write(obj.Checksum.Span.EnsureSize(OpenPgpModificationDetectionPacketConfiguration.Sha1Length));
         }
 
