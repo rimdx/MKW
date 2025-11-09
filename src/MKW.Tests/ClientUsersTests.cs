@@ -107,7 +107,7 @@ namespace MKW.Tests
 
             using (var transaction = database.BeginTransaction())
             {
-                DatabaseUser dbUser = database.OpenUser(userInfo.Id);
+                DatabaseUser dbUser = transaction.Snapshot.OpenUser(userInfo.Id);
 
                 transaction.UpdateUser(dbUser with
                 {
