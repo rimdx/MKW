@@ -25,13 +25,6 @@ namespace MKW.Storage.JSON
             return CreateSnapshotInternal().OpenUser(id);
         }
 
-        public bool HasUser(UserId id)
-        {
-            Snapshot snapshot = CreateSnapshotInternal();
-
-            return snapshot.HasUser(id);
-        }
-
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
             Snapshot snapshot = CreateSnapshotInternal();

@@ -24,13 +24,6 @@ namespace MKW.Storage
             return snapshot.OpenUser(id);
         }
 
-        public bool HasUser(UserId id)
-        {
-            IDatabaseNG.ISnapshot snapshot = proxy.CreateSnapshot();
-
-            return snapshot.HasUser(id);
-        }
-
         public IEnumerable<DatabaseUser> EnumerateUsers()
         {
             IDatabaseNG.ISnapshot snapshot = proxy.CreateSnapshot();

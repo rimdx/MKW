@@ -10,7 +10,6 @@ namespace MKW.Storage
         // User Management
         DatabaseUser OpenUser(UserId id);
 
-        bool HasUser(UserId id);
         IEnumerable<DatabaseUser> EnumerateUsers();
 
         ReadOnlyMemory<byte> SerializeProtectedData(DatabaseUserProtectedData obj);
