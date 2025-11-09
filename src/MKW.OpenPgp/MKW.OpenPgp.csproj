@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\MKW.Common\MKW.Common.csproj" />
+    <ProjectReference Include="..\MKW.Core.Serialization\MKW.Core.Serialization.csproj" />
+    <ProjectReference Include="..\MKW.Cryptography\MKW.Cryptography.csproj" />
+  </ItemGroup>
+
+</Project>
