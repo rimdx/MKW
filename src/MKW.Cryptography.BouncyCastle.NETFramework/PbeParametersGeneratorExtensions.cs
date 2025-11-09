@@ -5,7 +5,7 @@ using Org.BouncyCastle.Crypto.Generators;
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    public static class PbeParametersGeneratorExtensions
+    internal static class PbeParametersGeneratorExtensions
     {
         public static void Init(this Pkcs5S2ParametersGenerator generator,
                                 ReadOnlySpan<byte> password,
