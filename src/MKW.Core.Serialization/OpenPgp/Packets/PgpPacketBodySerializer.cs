@@ -42,6 +42,10 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
             {
                 return PublicKeyPacketV4Serializer.Deserialize(subreader);
             }
+            else if (packet.Tag == PacketTag.LiteralData)
+            {
+                return LiteralDataPacketSerializer.Deserialize(subreader);
+            }
             else
             {
                 throw new NotSupportedException();
@@ -50,6 +54,13 @@ namespace MKW.Core.Serialization.OpenPgp.Packets
 
         private sealed class SerializeVisitor : PgpPacketBody.IVisitor<PgpPacket>
         {
+            public PgpPacket VisitLiteralData(LiteralDataPacket packetBody)
+            {
+                ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
+                LiteralDataPacketSerializer.Serialize(writer, packetBody);
+                return new PgpPacket(PacketTag.LiteralData, writer.WrittenMemory);
+            }
+
             public PgpPacket VisitPublicKeyEncryptedSessionKeyV3(PublicKeyEncryptedSessionKeyV3 packetBody)
             {
                 ArrayBufferWriter<byte> writer = new ArrayBufferWriter<byte>();
