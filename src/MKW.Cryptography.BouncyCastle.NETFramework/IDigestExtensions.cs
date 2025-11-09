@@ -6,7 +6,7 @@ using System.Buffers;
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    public static class IDigestExtensions
+    internal static class IDigestExtensions
     {
         public static void BlockUpdate(this IDigest digest, ReadOnlySpan<byte> input)
         {

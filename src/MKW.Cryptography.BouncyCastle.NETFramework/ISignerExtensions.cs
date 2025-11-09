@@ -6,7 +6,7 @@ using System.Buffers;
 
 namespace MKW.Cryptography.BouncyCastle
 {
-    public static class ISignerExtensions
+    internal static class ISignerExtensions
     {
         public static void BlockUpdate(this ISigner signer, ReadOnlySpan<byte> input)
         {
