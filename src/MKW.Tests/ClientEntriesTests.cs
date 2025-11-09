@@ -108,11 +108,14 @@ namespace MKW.Tests
             using ClientSandBox sbox = new ClientSandBox();
             EntryId entryId;
 
+            UserId userId;
+
             using (IDatabase db = sbox.OpenDatabase())
             using (ClientSession client = sbox.OpenSession(db))
             {
                 using IUserSession user = sbox.CreateUser(client, "usersecret", out _);
 
+                userId = user.Id;
                 // create
                 entryId = user.CreateEntry(sbox.CreatePayload("data1"));
 
@@ -133,7 +136,7 @@ namespace MKW.Tests
             using (IDatabase db = sbox.OpenDatabase())
             using (ClientSession client = sbox.OpenSession(db))
             {
-                using IUserSession user = client.OpenUser("usersecret");
+                using IUserSession user = client.OpenUser(userId, "usersecret");
 
                 ClassicAssert.AreEqual(sbox.CreatePayload("data2"),
                                        user.OpenEntry(entryId));
