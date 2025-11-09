@@ -16,7 +16,7 @@ namespace MKW.Testing.Client
 {
     public class ClientSandBox : SandBoxBase
     {
-        private const bool USE_MKPGDatabase = true;
+        private const bool USE_MKPGDatabase = false;
 
         public string AdminSecret => "adminsecret123";
 
