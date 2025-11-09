@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Timofei Zhakov. All Rights Reserved
 // Licensed under the Apache License, Version 2.0.
 
+using MKW.Common;
 using MKW.Cryptography.Exceptions;
 using System.Security.Cryptography;
 
@@ -50,14 +51,9 @@ namespace MKW.Cryptography.System
         {
             try
             {
-                using MemoryStream output = new MemoryStream();
                 using ICryptoTransform encryptor = aes.CreateEncryptor();
-                using CryptoStream encryptorStream = new CryptoStream(output, encryptor, CryptoStreamMode.Write);
 
-                encryptorStream.Write(data);
-                encryptorStream.FlushFinalBlock();
-
-                return output.ToArray();
+                return encryptor.Transform(data);
             }
             catch (CryptographicException ex)
             {
@@ -69,14 +65,9 @@ namespace MKW.Cryptography.System
         {
             try
             {
-                using MemoryStream output = new MemoryStream();
                 using ICryptoTransform decryptor = aes.CreateDecryptor();
-                using CryptoStream decryptorStream = new CryptoStream(output, decryptor, CryptoStreamMode.Write);
 
-                decryptorStream.Write(data);
-                decryptorStream.FlushFinalBlock();
-
-                return output.ToArray();
+                return decryptor.Transform(data);
             }
             catch (CryptographicException ex)
             {
