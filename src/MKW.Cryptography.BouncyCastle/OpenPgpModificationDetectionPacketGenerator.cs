@@ -20,12 +20,9 @@ namespace MKW.Cryptography.BouncyCastle
 
         public OpenPgpModificationDetectionPacket CreatePacket(ReadOnlySpan<byte> plaintext)
         {
-            byte[] checksum = new byte[digest.GetDigestSize()];
-            digest.Reset();
-            digest.BlockUpdate(plaintext);
-            digest.DoFinal(checksum, 0);
-
             byte[] salt = SecureRandom.GetNextBytes(random, OpenPgpModificationDetectionPacketConfiguration.BlockSize);
+
+            ReadOnlyMemory<byte> checksum = GetChecksum(salt, plaintext);
 
             return new OpenPgpModificationDetectionPacket
             {
