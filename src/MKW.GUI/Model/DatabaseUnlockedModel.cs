@@ -118,13 +118,14 @@ namespace MKW.GUI.Model
             return new UserEditorModel(this, user);
         }
 
-        public void DeleteUser(UserId id)
+        public void DeleteUser(UserId userId)
         {
-            using (Storage.IDatabaseNG.ITransaction transaction = Database.Database.BeginTransaction())
+            if (admin == null)
             {
-                transaction.DeleteUser(id);
-                transaction.Commit();
+                throw new Exception("Not an admin.");
             }
+
+            admin.DeleteUser(userId);
 
             Database.RefreshUsers();
         }
