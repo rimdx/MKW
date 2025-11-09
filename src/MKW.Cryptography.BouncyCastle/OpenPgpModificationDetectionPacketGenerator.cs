@@ -42,7 +42,7 @@ namespace MKW.Cryptography.BouncyCastle
             }
             else
             {
-                throw new OpenPgpModificationDetectionPacketCorruptedException("checksum mismatch");
+                throw new OpenPgpModificationDetectionPacketChecksumMismatchException();
             }
         }
 
