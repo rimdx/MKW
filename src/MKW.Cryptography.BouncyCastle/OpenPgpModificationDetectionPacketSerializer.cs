@@ -68,5 +68,20 @@ namespace MKW.Cryptography.BouncyCastle
                 Checksum = checksum,
             };
         }
+
+        public static void SerializeChecksum(IBufferWriter<byte> writer,
+                                             ReadOnlySpan<byte> salt,
+                                             ReadOnlySpan<byte> plaintext)
+        {
+            Span<byte> prefix = [
+                .. salt.EnsureSize(OpenPgpModificationDetectionPacketConfiguration.BlockSize),
+                salt[^2],
+                salt[^1],
+            ];
+
+            writer.Write(prefix);
+            writer.Write(plaintext);
+            writer.Write(OpenPgpModificationDetectionPacketConfiguration.MDPTag);
+        }
     }
 }
