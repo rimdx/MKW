@@ -60,11 +60,6 @@ namespace MKW.Core.Client
             }
         }
 
-        public IUserSession OpenUser(string password)
-        {
-            return userController.OpenUser(password);
-        }
-
         public UserInfo GetUserInfo(UserId id)
         {
             return publicUserSession.GetUserInfo(id);

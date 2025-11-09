@@ -51,26 +51,6 @@ namespace MKW.Tests
         }
 
         [Test]
-        public void OpenUserTestNoId()
-        {
-            using ClientSandBox sbox = new ClientSandBox();
-            using IDatabase db = sbox.OpenDatabase();
-            using ClientSession client = sbox.OpenSession(db);
-
-            using IUserSession user1 = sbox.CreateUser(client, "cred1", out _);
-            using IUserSession user2 = sbox.CreateUser(client, "cred2", out _);
-            using IUserSession user3 = sbox.CreateUser(client, "cred3", out _);
-
-            using IUserSession userSession1 = client.OpenUser("cred1");
-            using IUserSession userSession2 = client.OpenUser("cred2");
-            using IUserSession userSession3 = client.OpenUser("cred3");
-
-            Assert.Throws<Exception>(
-                () => client.OpenUser("nonexistingpassword")
-            );
-        }
-
-        [Test]
         [Ignore("TODO")]
         public void UntrustedUserTest()
         {
