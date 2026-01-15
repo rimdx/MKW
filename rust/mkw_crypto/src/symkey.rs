@@ -1,9 +1,7 @@
 use aes::cipher::{AsyncStreamCipher, KeyIvInit};
 
 pub enum mkw_crypto_symkey_t {
-    opengpg_aes_128 {
-        key: [u8; 16],
-    },
+    opengpg_aes_128 { key: [u8; 16] },
 }
 
 impl mkw_crypto_symkey_t {
@@ -25,12 +23,12 @@ impl mkw_crypto_symkey_t {
                 let alg = enc_t::new(key.into(), iv.into());
 
                 // the only reason the error might occur is when data.len != output.len.
-                // 
+                //
                 // we already asserted for invalid data so throw the error away (or die)
                 alg.encrypt_b2b(data, output).unwrap();
 
                 // todo: implement openpgp feedback mode
-            },
+            }
         }
     }
 
@@ -38,7 +36,7 @@ impl mkw_crypto_symkey_t {
         match self {
             Self::opengpg_aes_128 { key: _ } => {
                 return len + len % 16;
-            },
+            }
         }
     }
 }
