@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "mkw_common",
+    "mkw_crypto",
+    "mkw_storage"
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.56"
+
+[workspace.lints.rust]
+non-camel-case-types = "allow"
