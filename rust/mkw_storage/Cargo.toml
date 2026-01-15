@@ -1,0 +1,9 @@
+lints.workspace = true
+
+[package]
+name = "mkw_storage"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+mkw_common = { path = "../mkw_common/" }
