@@ -20,9 +20,7 @@ impl mkw_user_id_t {
 
         rand::RngCore::fill_bytes(&mut rng, &mut buf[..]);
 
-        return Self {
-            data: buf,
-        };
+        return Self { data: buf };
     }
 }
 
@@ -33,9 +31,7 @@ impl mkw_entry_id_t {
 
         rand::RngCore::fill_bytes(&mut rng, &mut buf[..]);
 
-        return Self {
-            data: buf,
-        };
+        return Self { data: buf };
     }
 }
 

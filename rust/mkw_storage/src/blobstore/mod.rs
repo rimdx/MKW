@@ -1,11 +1,10 @@
 use crate::blobstore::txn::mkw_blobstore_txn_t;
 
-pub mod memory;
 pub mod entry;
+pub mod memory;
 pub mod txn;
 
-pub enum mkw_txn_result_t<T, E>
-{
+pub enum mkw_txn_result_t<T, E> {
     commit(T),
     rollback(E),
 }
@@ -20,12 +19,7 @@ impl<T, E> Into<Result<T, E>> for mkw_txn_result_t<T, E> {
 }
 
 pub trait IBlobStore {
-    fn with_transation<T, E, F>(
-        &mut self,
-        func: F
-    ) -> Result<T, E>
+    fn with_transation<T, E, F>(&mut self, func: F) -> Result<T, E>
     where
-        F : Fn(
-            &mut mkw_blobstore_txn_t
-        ) -> mkw_txn_result_t<T, E>;
+        F: Fn(&mut mkw_blobstore_txn_t) -> mkw_txn_result_t<T, E>;
 }

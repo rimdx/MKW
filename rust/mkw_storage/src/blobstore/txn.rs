@@ -36,4 +36,3 @@ impl<'a> mkw_blobstore_txn_t<'a> {
         return true;
     }
 }
-

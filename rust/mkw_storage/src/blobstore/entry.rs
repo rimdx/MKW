@@ -8,14 +8,8 @@ pub enum mkw_blobstore_id_t {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum mkw_blobstore_entry_t {
-    entry {
-        id: mkw_entry_id_t,
-        data: Box<[u8]>
-    },
-    user {
-        id: mkw_user_id_t,
-        data: Box<[u8]>
-    },
+    entry { id: mkw_entry_id_t, data: Box<[u8]> },
+    user { id: mkw_user_id_t, data: Box<[u8]> },
 }
 
 impl mkw_blobstore_entry_t {
