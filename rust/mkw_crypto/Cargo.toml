@@ -1,0 +1,14 @@
+lints.workspace = true
+
+[package]
+name = "mkw_crypto"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+mkw_common = { path = "../mkw_common/" }
+
+aes = { version = "0.9.0-rc.2", default-features = false, features = [] }
+cfb-mode = { version = "0.9.0-rc.1", default-features = false, features = [] }
+rsa = { version = "0.10.0-rc.12", default-features = false, features = [] }
+
