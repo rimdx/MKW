@@ -1,0 +1,11 @@
+[package]
+name = "mkw_opengpg"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+mkw_common = { version = "0.1.0", path = "../mkw_common" }
+
+[lints]
+workspace = true
