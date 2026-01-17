@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "mkw_common",
-    "mkw_crypto",
+    "mkw_crypto", "mkw_opengpg",
     "mkw_storage"
 ]
 resolver = "2"

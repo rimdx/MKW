@@ -183,6 +183,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "mkw_opengpg"
+version = "0.1.0"
+dependencies = [
+ "mkw_common",
+]
+
+[[package]]
 name = "mkw_storage"
 version = "0.1.0"
 dependencies = [
