@@ -86,6 +86,7 @@ mkw_free(void *ptr)
 #define MKW_ERROR_MDP_BAD_CHECKSUM      10
 #define MKW_ERROR_MDP_BAD_QUICK_CHECK   11
 #define MKW_ERROR_MDP_MALFORMED         12
+#define MKW_ERROR_MDP_BAD_TAG           13
 
 typedef int mkw_error_t;
 
@@ -797,30 +798,80 @@ typedef struct mkw_user_t {
     mkw_keypair_t key;
 } mkw_user_t;
 
-#define MKW_MDP_SIZE 16
+static void
+mkw_sha1(uint8_t *digest, const uint8_t *data, size_t size) {
+    struct sha1_ctx checksum;
+
+    nettle_sha1_init(&checksum);
+    nettle_sha1_update(&checksum, size, data);
+    nettle_sha1_digest(&checksum, SHA1_DIGEST_SIZE, digest);
+}
+
+#define MKW_MDP_SALT_SIZE 16
+#define MKW_MDP_TAG (uint16_t)0xd314
 
 static void
 mkw_mdp_write(mkw_ctx_t *ctx, mkw_membuf_t *mdp,
               const uint8_t *data, const uint8_t len)
 {
-    struct sha1_ctx checksum;
 
     /* prepends random salt+two last bytes */
-    nettle_yarrow256_random(&ctx->rng, MKW_MDP_SIZE,
-                            mkw_membuf_write_buf(mdp, MKW_MDP_SIZE));
-    mkw_membuf_write_uint8(mdp, mdp->data[MKW_MDP_SIZE - 2]);
-    mkw_membuf_write_uint8(mdp, mdp->data[MKW_MDP_SIZE - 1]);
+    nettle_yarrow256_random(&ctx->rng, MKW_MDP_SALT_SIZE,
+                            mkw_membuf_write_buf(mdp, MKW_MDP_SALT_SIZE));
+    mkw_membuf_write_uint8(mdp, mdp->data[MKW_MDP_SALT_SIZE - 2]);
+    mkw_membuf_write_uint8(mdp, mdp->data[MKW_MDP_SALT_SIZE - 1]);
 
     /* the dat itself */
     mkw_membuf_write_str(mdp, data, len);
 
-    /* and the SHA1 checksum */
-    nettle_sha1_init(&checksum);
-    nettle_sha1_update(&checksum, len, data);
-    nettle_sha1_digest(&checksum, SHA1_DIGEST_SIZE,
-                       mkw_membuf_write_buf(mdp, SHA1_DIGEST_SIZE));
+    /* and the SHA1 checksum with a tag */
+    mkw_membuf_write_uint16(mdp, MKW_MDP_TAG);
+    mkw_sha1(mkw_membuf_write_buf(mdp, SHA1_DIGEST_SIZE), data, len);
 }
  
+static mkw_error_t
+mkw_mdp_read(mkw_memreader_t *reader, mkw_membuf_t *plaintext)
+{
+    uint8_t salt[MKW_MDP_SALT_SIZE];
+    uint8_t checksum_computed[SHA1_DIGEST_SIZE];
+    uint8_t checksum_mdc[SHA1_DIGEST_SIZE];
+    uint8_t b0, b1;
+    uint16_t tag;
+    uint8_t *plaintext_start = plaintext->data;
+    size_t plaintext_size;
+
+    MKW_ERR(mkw_memreader_read_buf(reader, salt, sizeof(salt)));
+    MKW_ERR(mkw_memreader_read_uint8(reader, &b0));
+    MKW_ERR(mkw_memreader_read_uint8(reader, &b1));
+
+    if (b0 != salt[sizeof(salt) - 2] ||
+        b1 != salt[sizeof(salt) - 1]) {
+        return MKW_ERROR_MDP_BAD_QUICK_CHECK;
+    }
+
+    plaintext_size = reader->size - SHA1_DIGEST_SIZE - sizeof(MKW_MDP_TAG);
+    MKW_ERR(mkw_memreader_read_buf(
+                reader,
+                mkw_membuf_write_buf(plaintext, plaintext_size),
+                plaintext_size));
+
+    MKW_ERR(mkw_memreader_read_uint16(reader, &tag));
+    if (tag != MKW_MDP_TAG) {
+        return MKW_ERROR_MDP_BAD_TAG;
+    }
+
+    MKW_ERR(mkw_memreader_read_buf(reader, checksum_mdc,
+                                   sizeof(checksum_computed)));
+    mkw_sha1(checksum_computed, plaintext_start, plaintext_size);
+    if (memcmp(checksum_computed, checksum_mdc, SHA1_DIGEST_SIZE)) {
+        return MKW_ERROR_MDP_BAD_CHECKSUM;
+    }
+
+    assert((reader->offset) == (reader->size - 1));
+
+    return MKW_ERROR_NONE;
+}
+
 static void
 mkw_symkey_encrypt(mkw_ctx_t *ctx,
                    const mkw_symkey_aes_t *key,
@@ -869,6 +920,8 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
             mdp->data);
 
 
+
+    return MKW_ERROR_NONE;
 }
 
 static mkw_error_t
