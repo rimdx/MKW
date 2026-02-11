@@ -776,8 +776,6 @@ mkw_pgp_pubkey_deserialize(mkw_memreader_t *reader,
     return MKW_ERROR_NONE;
 }
 
-#define EXPBIAS 6
-
 static void
 mkw_pgp_s2k_serialize(mkw_membuf_t *buf,
                       const mkw_s2k_t *s2k)
@@ -825,6 +823,58 @@ mkw_pgp_s2k_deserialize(mkw_memreader_t *reader,
     }
 
     s2k->hash = hash;
+    return MKW_ERROR_NONE;
+}
+
+/* https://www.rfc-editor.org/rfc/rfc9580.html#section-3.7.1.3 */
+#define EXPBIAS 6
+#define UNPACK_S2K_ITERCOUNT(c) \
+    ((uint32_t)16 + (c & 15)) << ((c >> 4) + EXPBIAS)
+
+static mkw_error_t
+mkw_s2k_derive_key(const mkw_s2k_t *s2k,
+                   const uint8_t *passwd, size_t passwdsize,
+                   uint8_t *key, size_t keysize)
+{
+    struct sha256_ctx hash = { 0 };
+    uint8_t digest[SHA256_DIGEST_SIZE];
+
+    assert(keysize <= SHA256_DIGEST_SIZE);
+    assert(s2k->hash == mkw_hash_tag_sha256);
+
+    nettle_sha256_init(&hash);
+
+    if (s2k->tag == mkw_s2k_tag_simple) {
+        nettle_sha256_update(&hash, passwdsize, passwd);
+    } else if (s2k->tag == mkw_s2k_tag_salted) {
+        nettle_sha256_update(&hash, sizeof(s2k->salt), s2k->salt);
+        nettle_sha256_update(&hash, passwdsize, passwd);
+    } else if (s2k->tag == mkw_s2k_tag_salted_iterated) {
+        size_t remaining = UNPACK_S2K_ITERCOUNT(s2k->count);
+        size_t count;
+
+        printf("things: %ld\n", remaining);
+
+        while (remaining > 0) {
+            count = min(sizeof(s2k->salt), remaining);
+            nettle_sha256_update(&hash, count, s2k->salt);
+            remaining -= count;
+
+            count = min(passwdsize, remaining);
+            nettle_sha256_update(&hash, count, passwd);
+            remaining -= count;
+        }
+    } else {
+        return MKW_ERROR_BAD_S2K_TAG;
+    }
+
+    nettle_sha256_digest(&hash, sizeof(digest), digest);
+    memcpy(key, digest, keysize);
+
+    /* security consideration */
+    memset(&hash, 0, sizeof(hash));
+    memset(digest, 0, sizeof(digest));
+
     return MKW_ERROR_NONE;
 }
 
@@ -1235,9 +1285,35 @@ mkw_user_open(mkw_user_t *user,
 {
 }
 
+/* https://www.rfc-editor.org/rfc/rfc9580.html#appendix-A.9.1 */
+static mkw_error_t
+test_s2k() {
+    mkw_s2k_t s2k = {
+        .tag = mkw_s2k_tag_salted_iterated,
+        .hash = mkw_hash_tag_sha256,
+        .count = 0xff,
+        .salt = { 0x56, 0xa2, 0x98, 0xd2, 0xf5, 0xe3, 0x64, 0x53 },
+    };
+
+    uint8_t expected[16] = {
+        0xe8, 0x0d, 0xe2, 0x43, 0xa3, 0x62, 0xd9, 0x3b, 0x9d, 0xc6, 0x07, 0xed,
+        0xe9, 0x6a, 0x73, 0x56,
+    };
+    uint8_t actual[16] = { 0 };
+
+    MKW_ERR(mkw_s2k_derive_key(&s2k,
+                               (const uint8_t *)"password", 8,
+                               actual, sizeof(actual)));
+
+    assert(memcmp(expected, actual, sizeof(expected)) == 0);
+    return 0;
+}
+
 static mkw_error_t
 sub_main()
 {
+    MKW_ERR(test_s2k());
+
     mkw_blobstore_t *store = mkw_blobstore_create_mem();
     mkw_user_t user;
     mkw_ctx_t ctx;
@@ -1281,4 +1357,5 @@ int main()
         fprintf(stderr, "Error: %d\n", err);
     }
 }
+
 
