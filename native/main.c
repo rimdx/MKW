@@ -474,7 +474,7 @@ mkw_id_create(mkw_ctx_t *ctx, mkw_id_t *id) {
 }
 
 static int
-mkw_id_compare(mkw_id_t *left, mkw_id_t *right) {
+mkw_id_compare(const mkw_id_t *left, const mkw_id_t *right) {
     return memcmp(left->data, right->data, MKW_ID_SIZE);
 }
 
@@ -594,7 +594,7 @@ mkw_blobstore_create_mem()
 
 static mkw_blobstore_entry_t *
 mkw_blobstore_get_entry(mkw_blobstore_t *store,
-                        mkw_id_t *id)
+                        const mkw_id_t *id)
 {
     for (size_t i = 0; i < store->entries->size; i++) {
         mkw_blobstore_entry_t *current = store->entries->data[i];
@@ -831,7 +831,7 @@ mkw_pgp_s2k_deserialize(mkw_memreader_t *reader,
 #define UNPACK_S2K_ITERCOUNT(c) \
     ((uint32_t)16 + (c & 15)) << ((c >> 4) + EXPBIAS)
 
-static mkw_error_t
+static void
 mkw_s2k_derive_key(const mkw_s2k_t *s2k,
                    const uint8_t *passwd, size_t passwdsize,
                    uint8_t *key, size_t keysize)
@@ -865,7 +865,7 @@ mkw_s2k_derive_key(const mkw_s2k_t *s2k,
             remaining -= count;
         }
     } else {
-        return MKW_ERROR_BAD_S2K_TAG;
+        abort();
     }
 
     nettle_sha256_digest(&hash, sizeof(digest), digest);
@@ -874,8 +874,15 @@ mkw_s2k_derive_key(const mkw_s2k_t *s2k,
     /* security consideration */
     memset(&hash, 0, sizeof(hash));
     memset(digest, 0, sizeof(digest));
+}
 
-    return MKW_ERROR_NONE;
+static void
+mkw_s2k_init(mkw_ctx_t *ctx, mkw_s2k_t *s2k)
+{
+    s2k->tag = mkw_s2k_tag_salted_iterated;
+    s2k->hash = mkw_hash_tag_sha256;
+    s2k->count = 0xff;
+    nettle_yarrow256_random(&ctx->rng, sizeof(s2k->salt), s2k->salt);
 }
 
 /* https://www.rfc-editor.org/rfc/rfc4880#section-5.5.3 */
@@ -974,6 +981,7 @@ typedef struct mkw_user_info_t {
 
 typedef struct mkw_user_t {
     mkw_id_t id;
+    mkw_s2k_t s2k;
     mkw_keypair_t key;
 } mkw_user_t;
 
@@ -1231,6 +1239,7 @@ static mkw_error_t
 mkw_user_keygen(mkw_ctx_t *ctx, mkw_user_t *user) {
     int status;
 
+    mkw_s2k_init(ctx, &user->s2k);
     user->key.tag = mkw_pubkey_tag_rsa;
 
     rsa_public_key_init(&user->key.material.rsa.pubkey);
@@ -1254,9 +1263,15 @@ mkw_user_keygen(mkw_ctx_t *ctx, mkw_user_t *user) {
 }
 
 static void
-mkw_user_store(mkw_user_t *user, mkw_blobstore_t *store) {
+mkw_user_store(mkw_ctx_t *ctx,
+               mkw_user_t *user,
+               const uint8_t *passwd,
+               size_t passwdsize,
+               mkw_blobstore_t *store)
+{
     mkw_membuf_t *buf = mkw_membuf_create_empty();
     mkw_membuf_t *subbuf = mkw_membuf_create_empty(); 
+    mkw_symkey_aes_t symkey = { 0 };
 
     mkw_pubkey_t pubkey = {
         .time_created = 0,
@@ -1264,25 +1279,58 @@ mkw_user_store(mkw_user_t *user, mkw_blobstore_t *store) {
         .tag = user->key.tag,
         .material = user->key.material.rsa.pubkey,
     };
-    mkw_s2k_t s2k = {
-        .tag = mkw_s2k_tag_salted_iterated,
-        .hash = mkw_hash_tag_sha256,
-        .count = 100,
-    };
+
+    mkw_s2k_derive_key(&user->s2k,
+                       passwd, passwdsize,
+                       symkey.key, sizeof(symkey.key));
 
     mkw_pgp_pubkey_serialize(subbuf, &pubkey);
-    mkw_pgp_seckeydata_encrypt(subbuf, &s2k, NULL,
+    mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, &symkey,
                                &user->key.material.rsa.seckey);
     mkw_pgp_packet_serialize(buf, mkw_pgp_packet_pubkey,
                              subbuf->data, subbuf->size);
+
+    /* security consideration */
+    memset(&symkey, 0, sizeof(symkey));
 }
 
-static void
+static mkw_error_t
 mkw_user_open(mkw_user_t *user,
               mkw_blobstore_t *store,
-              mkw_id_t *id,
-              mkw_passwd_t *passwd)
+              const mkw_id_t *id,
+              const uint8_t *passwd,
+              size_t passwdsize)
 {
+    mkw_blobstore_entry_t *entry = mkw_blobstore_get_entry(store, id);
+    mkw_memreader_t *reader;
+
+    if (entry == NULL || entry->type != mkw_blob_type_user) {
+        return MKW_ERROR_USER_NOT_EXIST;
+    }
+
+    reader = mkw_memreader_create(entry->data->data, entry->data->size);
+
+    while (1) {
+        mkw_memreader_t bodyreader = { 0 };
+        enum mkw_pgp_packet_tag_e tag;
+
+        if (reader->offset == reader->size) {
+            break;
+        }
+
+        MKW_ERR(mkw_pgp_packet_deserialize(reader, &tag, &bodyreader));
+
+        if (tag == mkw_pgp_packet_seckey) {
+            mkw_pubkey_t pubkey = { 0 };
+            MKW_ERR(mkw_pgp_pubkey_deserialize(&bodyreader, &pubkey));
+            user->key.material.rsa.pubkey = pubkey.material.rsa;
+            // MKW_ERR(mkw_pgp_seckeydata_decrypt(&bodyreader, &user->s2k, ));
+        } else {
+            return MKW_ERROR_BAD_PACKET_TAG;
+        }
+    }
+
+    return MKW_ERROR_NONE;
 }
 
 /* https://www.rfc-editor.org/rfc/rfc9580.html#appendix-A.9.1 */
@@ -1301,9 +1349,9 @@ test_s2k() {
     };
     uint8_t actual[16] = { 0 };
 
-    MKW_ERR(mkw_s2k_derive_key(&s2k,
-                               (const uint8_t *)"password", 8,
-                               actual, sizeof(actual)));
+    mkw_s2k_derive_key(&s2k,
+                       (const uint8_t *)"password", 8,
+                       actual, sizeof(actual));
 
     assert(memcmp(expected, actual, sizeof(expected)) == 0);
     return 0;
