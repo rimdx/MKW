@@ -115,9 +115,9 @@ static mkw_vector_t *
 mkw_vector_create_empty()
 { 
     mkw_vector_t *vec = mkw_calloc(sizeof(*vec));
-    vec->data = NULL;
     vec->size = 0;
-    vec->capacity = 0;
+    vec->capacity = 8;
+    vec->data = mkw_calloc(vec->capacity * MKW_VECTOR_ELEMENT_SIZE);
     return vec;
 }
 
@@ -126,28 +126,30 @@ mkw_vector_resize(mkw_vector_t *vec, size_t new_capacity)
 {
     void **new_data = mkw_calloc(new_capacity * MKW_VECTOR_ELEMENT_SIZE); 
 
-    if (vec->data) {
-        memcpy(new_data, vec->data, vec->size * MKW_VECTOR_ELEMENT_SIZE);
-        mkw_free(vec->data);
-    }
+#ifdef DEBUG
+    fprintf(stderr, "vector.resize(%ld -> %ld)\n",
+            vec->capacity, new_capacity);
+#endif
+
+    memcpy(new_data, vec->data, vec->size);
+    mkw_free(vec->data);
 
     vec->data = new_data;
+    vec->capacity = new_capacity;
 }
 
 static void
 mkw_vector_ensure(mkw_vector_t *vec, size_t size)
 {
     if (size > vec->capacity) {
-        // Chose the largest of 8, twice as current capacity, or requested
-        // capacity.
-        mkw_vector_resize(vec, max(max(size, vec->capacity * 2), 8));
+        mkw_vector_resize(vec, max(size, vec->capacity * 2));
     }
 }
 
 static void
 mkw_vector_push(mkw_vector_t *vec, void *elem)
 {
-    mkw_vector_ensure(vec, vec->capacity + 1);
+    mkw_vector_ensure(vec, vec->size + 1);
     vec->data[vec->size] = elem;
     vec->size++;
 }
@@ -289,7 +291,7 @@ typedef struct mkw_memreader_t
 static mkw_memreader_t *
 mkw_memreader_create(const uint8_t *data, size_t size)
 {
-    mkw_memreader_t *result = mkw_calloc(size);
+    mkw_memreader_t *result = mkw_calloc(sizeof(*result));
     result->data = data;
     result->size = size;
     result->offset = 0;
@@ -406,7 +408,7 @@ mkw_memreader_subreader(mkw_memreader_t *reader,
                         mkw_memreader_t *subreader,
                         size_t len)
 {
-    if (len <= subreader->size - subreader->offset) {
+    if (len <= reader->size - reader->offset) {
         subreader->offset = 0;
         subreader->size = len;
         subreader->data = reader->data + reader->offset;
@@ -1202,18 +1204,24 @@ mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
 static mkw_error_t
 mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                            mkw_s2k_t *s2k,
-                           const mkw_symkey_aes_t *symkey,
+                           const uint8_t *passwd,
+                           size_t passwdsize,
                            mkw_seckey_rsa_t *seckey)
 {
     uint8_t sha1_computed[SHA1_DIGEST_SIZE], *sha1_packet;
     uint8_t s2k_usage;
+    mkw_symkey_aes_t symkey;
     mkw_membuf_t *plaintext = mkw_membuf_create_empty();
     mkw_memreader_t *plaintext_reader, payload_reader;
 
     /* read encrypted things as they are */
     MKW_ERR(mkw_memreader_read_uint8(reader, &s2k_usage));
     MKW_ERR(mkw_pgp_s2k_deserialize(reader, s2k));
-    mkw_symkey_decrypt(symkey, plaintext,
+
+    mkw_s2k_derive_key(s2k, passwd, passwdsize,
+                       symkey.key, sizeof(symkey.key));
+
+    mkw_symkey_decrypt(&symkey, plaintext,
                        &reader->data[reader->offset],
                        reader->size - reader->offset);
 
@@ -1264,14 +1272,15 @@ mkw_user_keygen(mkw_ctx_t *ctx, mkw_user_t *user) {
 
 static void
 mkw_user_store(mkw_ctx_t *ctx,
+               mkw_blobstore_t *store,
                mkw_user_t *user,
                const uint8_t *passwd,
-               size_t passwdsize,
-               mkw_blobstore_t *store)
+               size_t passwdsize)
 {
     mkw_membuf_t *buf = mkw_membuf_create_empty();
     mkw_membuf_t *subbuf = mkw_membuf_create_empty(); 
     mkw_symkey_aes_t symkey = { 0 };
+    mkw_blobstore_entry_t *entry;
 
     mkw_pubkey_t pubkey = {
         .time_created = 0,
@@ -1287,16 +1296,22 @@ mkw_user_store(mkw_ctx_t *ctx,
     mkw_pgp_pubkey_serialize(subbuf, &pubkey);
     mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, &symkey,
                                &user->key.material.rsa.seckey);
-    mkw_pgp_packet_serialize(buf, mkw_pgp_packet_pubkey,
+    mkw_pgp_packet_serialize(buf, mkw_pgp_packet_seckey,
                              subbuf->data, subbuf->size);
 
     /* security consideration */
     memset(&symkey, 0, sizeof(symkey));
+
+    entry = mkw_calloc(sizeof(*entry));
+    entry->type = mkw_blob_type_user;
+    entry->id = &user->id;
+    entry->data = buf;
+    mkw_blobstore_create_entry(store, entry);
 }
 
 static mkw_error_t
-mkw_user_open(mkw_user_t *user,
-              mkw_blobstore_t *store,
+mkw_user_open(mkw_blobstore_t *store,
+              mkw_user_t *user,
               const mkw_id_t *id,
               const uint8_t *passwd,
               size_t passwdsize)
@@ -1322,9 +1337,12 @@ mkw_user_open(mkw_user_t *user,
 
         if (tag == mkw_pgp_packet_seckey) {
             mkw_pubkey_t pubkey = { 0 };
+            mkw_seckey_rsa_t seckey = { 0 };
+
             MKW_ERR(mkw_pgp_pubkey_deserialize(&bodyreader, &pubkey));
             user->key.material.rsa.pubkey = pubkey.material.rsa;
-            // MKW_ERR(mkw_pgp_seckeydata_decrypt(&bodyreader, &user->s2k, ));
+            MKW_ERR(mkw_pgp_seckeydata_decrypt(&bodyreader, &user->s2k,
+                                               passwd, passwdsize, &seckey));
         } else {
             return MKW_ERROR_BAD_PACKET_TAG;
         }
@@ -1358,15 +1376,31 @@ test_s2k() {
 }
 
 static mkw_error_t
+test_user_round_trip(mkw_ctx_t *ctx)
+{ 
+    mkw_blobstore_t *store = mkw_blobstore_create_mem();
+    mkw_user_t user1, user2;
+
+    MKW_ERR(mkw_user_keygen(ctx, &user1));
+    mkw_user_store(ctx, store, &user1,
+                   (const uint8_t *)"password", 8);
+    MKW_ERR(mkw_user_open(store, &user2, &user1.id,
+                          (const uint8_t *)"password", 8));
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
 sub_main()
 {
-    MKW_ERR(test_s2k());
-
     mkw_blobstore_t *store = mkw_blobstore_create_mem();
     mkw_user_t user;
     mkw_ctx_t ctx;
 
     MKW_ERR(mkw_ctx_create(&ctx));
+
+    MKW_ERR(test_s2k());
+    MKW_ERR(test_user_round_trip(&ctx));
 
     MKW_ERR(mkw_id_create(&ctx, &user.id));
     MKW_ERR(mkw_user_keygen(&ctx, &user));
