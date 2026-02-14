@@ -353,7 +353,7 @@ mkw_memreader_read_mpi(mkw_memreader_t *reader, mpz_t mpi)
                    0,       /* nails    */
                    reader->data);
         reader->data += bytes;
-        reader->remaining += bytes;
+        reader->remaining -= bytes;
         return MKW_ERROR_NONE;
     } else {
         return MKW_ERROR_EOF;
