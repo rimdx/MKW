@@ -1098,7 +1098,8 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t plaintext[MKW_CFB_BLOCK_SIZE],
                           uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
 {
-    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE, ciphertext, ctx->p);
+    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
+                   ciphertext /* dst */, ctx->p /* src */);
     nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
     memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
 }
@@ -1111,7 +1112,8 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
 {
     assert(length < MKW_CFB_BLOCK_SIZE);
     if (length > 0) {
-        ctx->cipher_fn(ctx->cipher_ctx, length, ciphertext, ctx->p);
+        ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
+                       ciphertext /* dst */, ctx->p /* src */);
         nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
         /* nuke ctx because it should never be used after finalised */
         memset(ctx, 0, sizeof(*ctx));
@@ -1123,7 +1125,8 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
 {
-    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE, plaintext, ctx->p);
+    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
+                   plaintext /* dst */, ctx->p /* src */);
     nettle_memxor(plaintext, ciphertext, MKW_CFB_BLOCK_SIZE);
     memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
 }
