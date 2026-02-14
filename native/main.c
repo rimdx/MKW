@@ -50,14 +50,14 @@ mkw_base16_dump(FILE *file, const uint8_t *str, size_t len)
 static void *
 mkw_alloc(size_t size)
 {
+#ifdef DEBUG
+    fprintf(stderr, "malloc(%ld)\n", size);
+#endif
     void *ptr = malloc(size);
     if (! ptr) {
         fputs("out of memory\n", stderr);
         abort();
     }
-#ifdef DEBUG
-    fprintf(stderr, "malloc(%ld)\n", size);
-#endif
     return ptr;
 }
 
@@ -1060,7 +1060,7 @@ mkw_mdp_read(mkw_memreader_t *reader, mkw_membuf_t *plaintext)
     return MKW_ERROR_NONE;
 }
 
-#define ROUND_UP(num, block) ((num + block - 1) / block * block);
+#define ROUND_UP(num, block) ((num + block - 1) / block * block)
 
 static void
 mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
@@ -1070,8 +1070,8 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
 {
     uint8_t iv[AES128_KEY_SIZE] = { 0 };
     struct aes128_ctx aesctx = { 0 };
-    mkw_membuf_t *mdp = mkw_membuf_create_empty();
-    size_t output_size = ROUND_UP(mdp->size, AES128_KEY_SIZE);
+    size_t output_size = ROUND_UP(size, AES128_KEY_SIZE) + AES128_KEY_SIZE;
+    printf("sdfkjl: %ld\n", output_size);
 
     nettle_aes128_set_encrypt_key(&aesctx, key->key);
     nettle_cfb_encrypt(&aesctx,
@@ -1085,17 +1085,16 @@ static void
 mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
                    mkw_membuf_t *out,
                    const uint8_t *data,
-                   const uint8_t size) 
+                   size_t size) 
 {
     uint8_t iv[AES128_KEY_SIZE] = { 0 };
     struct aes128_ctx aesctx = { 0 };
-    size_t output_size;
 
     nettle_aes128_set_encrypt_key(&aesctx, key->key);
     nettle_cfb_decrypt(
             &aesctx, (nettle_cipher_func *)nettle_aes128_decrypt,
             AES128_KEY_SIZE, iv, size,
-            mkw_membuf_write_buf(out, output_size),
+            mkw_membuf_write_buf(out, size),
             data);
 }
 
@@ -1391,6 +1390,35 @@ test_user_round_trip(mkw_ctx_t *ctx)
 }
 
 static mkw_error_t
+test_aes_round_trip(mkw_ctx_t *ctx)
+{
+    mkw_symkey_aes_t symkey;
+    uint8_t plaintext1[16 * 3];
+    mkw_membuf_t *ciphertext = mkw_membuf_create_empty();
+    mkw_membuf_t *plaintext2 = mkw_membuf_create_empty();
+
+    nettle_yarrow256_random(&ctx->rng, sizeof(symkey.key), symkey.key);
+    nettle_yarrow256_random(&ctx->rng, sizeof(plaintext1), plaintext1);
+
+    mkw_symkey_encrypt(&symkey, ciphertext, plaintext1, sizeof(plaintext1));
+    mkw_symkey_decrypt(&symkey, plaintext2, ciphertext->data, ciphertext->size);
+
+    printf("afdkljf: %ld\n", ciphertext->size);
+    mkw_base16_dump(stderr, plaintext2->data, plaintext2->size);
+
+    assert(plaintext2->size == sizeof(plaintext1));
+    assert(memcmp(plaintext2->data, plaintext1, plaintext2->size));
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
+test_mdc_round_trip()
+{
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
 sub_main()
 {
     mkw_blobstore_t *store = mkw_blobstore_create_mem();
@@ -1400,6 +1428,7 @@ sub_main()
     MKW_ERR(mkw_ctx_create(&ctx));
 
     MKW_ERR(test_s2k());
+    MKW_ERR(test_aes_round_trip(&ctx));
     MKW_ERR(test_user_round_trip(&ctx));
 
     MKW_ERR(mkw_id_create(&ctx, &user.id));
