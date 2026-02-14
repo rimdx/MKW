@@ -286,8 +286,7 @@ mkw_membuf_write_buf(mkw_membuf_t *buf, size_t len)
 typedef struct mkw_memreader_t
 {
     const uint8_t *data;
-    size_t size;
-    size_t offset;
+    size_t remaining;
 } mkw_memreader_t;
 
 static mkw_memreader_t *
@@ -295,16 +294,17 @@ mkw_memreader_create(const uint8_t *data, size_t size)
 {
     mkw_memreader_t *result = mkw_calloc(sizeof(*result));
     result->data = data;
-    result->size = size;
-    result->offset = 0;
+    result->remaining = size;
     return result;
 }
 
 static mkw_error_t
 mkw_memreader_read_uint8(mkw_memreader_t *reader, uint8_t *result)
 {
-    if (reader->offset < reader->size) {
-        *result = reader->data[reader->offset++]; 
+    if (reader->remaining > 0) {
+        *result = *reader->data; 
+        reader->data++;
+        reader->remaining--;
         return MKW_ERROR_NONE;
     } else {
         return MKW_ERROR_EOF;
@@ -344,15 +344,16 @@ mkw_memreader_read_mpi(mkw_memreader_t *reader, mpz_t mpi)
     MKW_ERR(mkw_memreader_read_uint16(reader, &bits));
     bytes = (bits + 7) / 8;
 
-    if (reader->offset + bytes <= reader->size) {
+    if (reader->remaining >= bytes) {
         mpz_import(mpi,
                    bytes,   /* count    */
                    1,       /* order    */
                    1,       /* size     */
                    1,       /* endian   */
                    0,       /* nails    */
-                   reader->data + reader->offset);
-        reader->offset += bytes;
+                   reader->data);
+        reader->data += bytes;
+        reader->remaining += bytes;
         return MKW_ERROR_NONE;
     } else {
         return MKW_ERROR_EOF;
@@ -410,14 +411,15 @@ mkw_memreader_subreader(mkw_memreader_t *reader,
                         mkw_memreader_t *subreader,
                         size_t len)
 {
-    if (len <= reader->size - reader->offset) {
-        subreader->offset = 0;
-        subreader->size = len;
-        subreader->data = reader->data + reader->offset;
-        reader->offset += len;
+    if (reader->remaining >= len ) {
+        subreader->data = reader->data;
+        subreader->remaining = len;
+        reader->data += len;
+        reader->remaining -= len;
         return MKW_ERROR_NONE;
     } else {
-        reader->offset = reader->size;
+        reader->data += reader->remaining;
+        reader->remaining = 0;
         return MKW_ERROR_EOF;
     }
 }
@@ -1039,7 +1041,7 @@ mkw_mdp_read(mkw_memreader_t *reader, mkw_membuf_t *plaintext)
         return MKW_ERROR_MDP_BAD_QUICK_CHECK;
     }
 
-    plaintext_size = reader->size - SHA1_DIGEST_SIZE - sizeof(MKW_MDP_TAG);
+    plaintext_size = reader->remaining - SHA1_DIGEST_SIZE - sizeof(MKW_MDP_TAG);
     MKW_ERR(mkw_memreader_read_buf(
                 reader,
                 mkw_membuf_write_buf(plaintext, plaintext_size),
@@ -1057,7 +1059,7 @@ mkw_mdp_read(mkw_memreader_t *reader, mkw_membuf_t *plaintext)
         return MKW_ERROR_MDP_BAD_CHECKSUM;
     }
 
-    assert((reader->offset) == (reader->size - 1));
+    assert(reader->remaining == 0);
 
     return MKW_ERROR_NONE;
 }
@@ -1315,8 +1317,7 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                        symkey.key, sizeof(symkey.key));
 
     mkw_symkey_decrypt(&symkey, plaintext,
-                       &reader->data[reader->offset],
-                       reader->size - reader->offset);
+                       reader->data, reader->remaining);
 
     /* split packet onto two components; sha1 at the end and the rest is
      * the payload */
@@ -1418,13 +1419,9 @@ mkw_user_open(mkw_blobstore_t *store,
 
     reader = mkw_memreader_create(entry->data->data, entry->data->size);
 
-    while (1) {
+    while (reader->remaining) {
         mkw_memreader_t bodyreader = { 0 };
         enum mkw_pgp_packet_tag_e tag;
-
-        if (reader->offset == reader->size) {
-            break;
-        }
 
         MKW_ERR(mkw_pgp_packet_deserialize(reader, &tag, &bodyreader));
 
