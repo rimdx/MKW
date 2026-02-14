@@ -1149,6 +1149,8 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
     };
     uint8_t *buf;
 
+    nettle_aes128_set_encrypt_key(&aesctx, key->key);
+
     while (size > MKW_CFB_BLOCK_SIZE)
     {
         buf = mkw_membuf_write_buf(out, MKW_CFB_BLOCK_SIZE);
@@ -1180,6 +1182,8 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
     if (size % 16 != 0) {
         return MKW_ERROR_BAD_BLOCK_SIZE;
     }
+
+    nettle_aes128_set_decrypt_key(&aesctx, key->key);
 
     while (size >= MKW_CFB_BLOCK_SIZE)
     {
