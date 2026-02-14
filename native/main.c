@@ -1240,7 +1240,11 @@ mkw_symkey_protected_decrypt(mkw_ctx_t *ctx,
  * AEAD and deprecated V3 packets that we don't really care about so we stick
  * with that one only.
  *
- * 3) The symkey is derived using s2k (string to key). It's usage is described
+ * 3) When decrypting, we must first eat all MPIs utilising their lengths. Then
+ * a checksum must follow. 20 bytes are read and compared to what the data
+ * actually was.
+ *
+ * 4) The symkey is derived using s2k (string to key). It's usage is described
  * as first octect of seckey packet. In our case, it's always 254. Then finally
  * goes s2k description.
  */
@@ -1293,6 +1297,7 @@ mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
     /* prepare data to encrypt */
     mkw_pgp_seckeydata_encode(data, seckey);
     mkw_sha1(sha1, data->data, data->size);
+    mkw_membuf_write_str(data, sha1, sizeof(sha1));
 
     /* write everything to the output */
     mkw_membuf_write_uint8(buf, MKW_S2K_USAGE_SOME_SHA1);
@@ -1311,7 +1316,10 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
     uint8_t s2k_usage;
     mkw_symkey_aes_t symkey;
     mkw_membuf_t *plaintext = mkw_membuf_create_empty();
-    mkw_memreader_t *plaintext_reader, payload_reader;
+
+    mkw_memreader_t payload_reader = { 0 };
+    const uint8_t *payload_start;
+    size_t payload_size;
 
     /* read encrypted things as they are */
     MKW_ERR(mkw_memreader_read_uint8(reader, &s2k_usage));
@@ -1320,23 +1328,23 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
     mkw_s2k_derive_key(s2k, passwd, passwdsize,
                        symkey.key, sizeof(symkey.key));
 
-    mkw_symkey_decrypt(&symkey, plaintext,
-                       reader->data, reader->remaining);
+    MKW_ERR(mkw_symkey_decrypt(&symkey, plaintext,
+                               reader->data, reader->remaining));
 
-    /* split packet onto two components; sha1 at the end and the rest is
-     * the payload */
-    reader = mkw_memreader_create(plaintext->data,
-                                  plaintext->size - SHA1_DIGEST_SIZE);
-    sha1_packet = &plaintext->data[plaintext->size - SHA1_DIGEST_SIZE];
+    payload_start = plaintext->data;
+    payload_reader.data = plaintext->data;
+    payload_reader.remaining = plaintext->size;
+
+    MKW_ERR(mkw_pgp_seckeydata_decode(&payload_reader, seckey));
+    payload_size = payload_reader.data - payload_start;
 
     /* verify checksum before decoding plaintext payload body */
-    mkw_sha1(sha1_computed, plaintext->data, plaintext->size);
+    MKW_ERR(mkw_memreader_read_buf(&payload_reader,
+                                   sha1_packet, sizeof(sha1_packet)));
+    mkw_sha1(sha1_computed, payload_start, payload_size);
     if (memcmp(sha1_computed, sha1_packet, SHA1_DIGEST_SIZE) != 0) {
         return MKW_ERROR_MDP_BAD_CHECKSUM;
     }
-
-    /* let the decoder cool for the rest */
-    MKW_ERR(mkw_pgp_seckeydata_decode(reader, seckey));
 
     return MKW_ERROR_NONE;
 }
