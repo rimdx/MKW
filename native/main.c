@@ -16,6 +16,7 @@
 #include <nettle/yarrow.h>
 #include <nettle/rsa.h>
 #include <nettle/cfb.h>
+#include <nettle/memxor.h>
 #include <nettle/aes.h>
 #include <nettle/sha1.h>
 #include <nettle/base16.h>
@@ -1058,6 +1059,70 @@ mkw_mdp_read(mkw_memreader_t *reader, mkw_membuf_t *plaintext)
     assert((reader->offset) == (reader->size - 1));
 
     return MKW_ERROR_NONE;
+}
+
+/* 
+ * Streamly CFB feedback implementation.
+ *
+ * The nettle implementation does not support streaming and I don't really like
+ * it in general.
+ *
+ * The CFB cipher has some kind of context p which is initialized with the
+ * initilal vector. It's updated on every block. To encrypt a block, take that
+ * p and buink it though block cipher algorithm. The xor its output with new
+ * plaintext block. This will produce a block of ciphertext which is then saved
+ * into p.
+ *
+ * Decryption is done in basically the same way except that after block
+ * encrytion of internal p bufer is xored with plaintext (instead of
+ * ciphertext). This (the ciphertext) then becomes a new p (same as in
+ * encryption).
+ *
+ * We don't really care about non-aes implications. Hence hardcode the
+ * blocksize for convenience.
+ *
+ * There is no function to finalise context when decrypting because ciphertext
+ * must be aligned to blocksize.
+ */
+#define MKW_CFB_BLOCK_SIZE AES_BLOCK_SIZE
+
+typedef struct mkw_cfb_ctx_t {
+    uint8_t p[MKW_CFB_BLOCK_SIZE];
+    nettle_cipher_func *cipher_fn;
+    void *cipher_ctx;
+} mkw_cfb_ctx_t;
+
+static void
+mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx, 
+                          const uint8_t plaintext[MKW_CFB_BLOCK_SIZE],
+                          uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
+{
+    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE, ciphertext, ctx->p);
+    nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
+    memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
+}
+
+static void
+mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx, 
+                          size_t length,
+                          const uint8_t plaintext[length],
+                          uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
+{
+    assert(length < MKW_CFB_BLOCK_SIZE);
+    ctx->cipher_fn(ctx->cipher_ctx, length, ciphertext, ctx->p);
+    nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
+    /* nuke ctx because it should never be used after finalised */
+    memset(ctx, 0, sizeof(*ctx));
+}
+
+static void
+mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx, 
+                          const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
+                          uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
+{
+    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE, plaintext, ctx->p);
+    nettle_memxor(plaintext, ciphertext, MKW_CFB_BLOCK_SIZE);
+    memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
 }
 
 #define ROUND_UP(num, block) ((num + block - 1) / block * block)
