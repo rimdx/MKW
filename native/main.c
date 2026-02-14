@@ -1178,7 +1178,7 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
         return MKW_ERROR_BAD_BLOCK_SIZE;
     }
 
-    while (1)
+    while (size >= MKW_CFB_BLOCK_SIZE)
     {
         buf = mkw_membuf_write_buf(out, MKW_CFB_BLOCK_SIZE);
         mkw_cfb_ctx_decrypt_block(&cfb, data, buf);
@@ -1186,6 +1186,9 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
         size -= MKW_CFB_BLOCK_SIZE;
         data += MKW_CFB_BLOCK_SIZE;
     }
+
+    assert(size == 0);
+    return MKW_ERROR_NONE;
 }
 
 static void
