@@ -1147,7 +1147,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
     };
     uint8_t *buf;
 
-    while (size >= MKW_CFB_BLOCK_SIZE)
+    while (size > MKW_CFB_BLOCK_SIZE)
     {
         buf = mkw_membuf_write_buf(out, MKW_CFB_BLOCK_SIZE);
         mkw_cfb_ctx_encrypt_block(&cfb, data, buf);
