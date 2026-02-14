@@ -1110,7 +1110,7 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
                           const uint8_t plaintext[length],
                           uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
 {
-    assert(length < MKW_CFB_BLOCK_SIZE);
+    assert(length <= MKW_CFB_BLOCK_SIZE);
     if (length > 0) {
         ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
                        ciphertext /* dst */, ctx->p /* src */);
