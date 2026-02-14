@@ -1115,9 +1115,9 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
         ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
                        ciphertext /* dst */, ctx->p /* src */);
         nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
-        /* nuke ctx because it should never be used after finalised */
-        memset(ctx, 0, sizeof(*ctx));
     }
+    /* nuke ctx because it should never be used after finalised */
+    memset(ctx, 0, sizeof(*ctx));
 }
 
 static void
