@@ -1156,6 +1156,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
         data += MKW_CFB_BLOCK_SIZE;
     }
 
+    assert(size > 0);
     buf = mkw_membuf_write_buf(out, MKW_CFB_BLOCK_SIZE);
     mkw_cfb_ctx_encrypt_final(&cfb, size, data, buf);
 }
