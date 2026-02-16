@@ -1,0 +1,28 @@
+# Honestly, vibecoded, but who cares about files that nobody can understand
+# syntax of.
+
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 79
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: false
+
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+
+# Function parameters
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# Function call arguments
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+PenaltyBreakBeforeFirstCallParameter: 0
+
+# Alignment
+AlignAfterOpenBracket: Align
+
