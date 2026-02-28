@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.27)
 
-project(mkw LANGUAGES C)
+project(mkw LANGUAGES C CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build")
 
 find_package(PkgConfig)
@@ -20,7 +20,7 @@ target_link_libraries(mkw PRIVATE
 )
 
 add_executable(app
-    app.c
+    app.cpp
 )
-find_package(libui REQUIRED)
-target_link_libraries(app PRIVATE libui::ui)
+find_package(wxWidgets REQUIRED COMPONENTS core base)
+target_link_libraries(app PRIVATE wxWidgets::wxWidgets)
