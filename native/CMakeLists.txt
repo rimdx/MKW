@@ -11,7 +11,14 @@ pkg_check_modules(hogweed REQUIRED IMPORTED_TARGET hogweed)
 pkg_check_modules(gmp REQUIRED IMPORTED_TARGET gmp)
 
 add_executable(mkw
+    armour.c
     main.c
+    memory.c
+    mkw_crypto.c
+    mkw_pgp.c
+    mkw_storage.c
+    packet.c
+    s2k.c
 )
 target_link_libraries(mkw PRIVATE
     PkgConfig::nettle
