@@ -223,7 +223,7 @@ test_user_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 }
 
 static mkw_error_t
-test_aes_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
+test_aes_round_trip_full_blocks(mkw_ctx_t *ctx, mkw_pool_t *pool)
 {
     mkw_symkey_aes_t symkey;
     uint8_t plaintext1[16 * 3];
@@ -238,6 +238,26 @@ test_aes_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 
     assert(plaintext2->size == sizeof(plaintext1));
     assert(memcmp(plaintext2->data, plaintext1, plaintext2->size));
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
+test_aes_round_trip_unaligned(mkw_ctx_t *ctx, mkw_pool_t *pool)
+{
+    mkw_symkey_aes_t symkey;
+    uint8_t plaintext1[123];
+    mkw_membuf_t *ciphertext = mkw_membuf_create_empty(pool);
+    mkw_membuf_t *plaintext2 = mkw_membuf_create_empty(pool);
+
+    nettle_yarrow256_random(&ctx->rng, sizeof(symkey.key), symkey.key);
+    nettle_yarrow256_random(&ctx->rng, sizeof(plaintext1), plaintext1);
+
+    mkw_symkey_encrypt(&symkey, ciphertext, plaintext1, sizeof(plaintext1));
+    mkw_symkey_decrypt(&symkey, plaintext2, ciphertext->data, ciphertext->size);
+
+    assert(plaintext2->size >= sizeof(plaintext1));
+    assert(memcmp(plaintext2->data, plaintext1, sizeof(plaintext1)));
 
     return MKW_ERROR_NONE;
 }
@@ -304,7 +324,8 @@ sub_main(mkw_pool_t *pool)
     MKW_ERR(mkw_ctx_create(&ctx, pool));
 
     MKW_ERR(test_s2k());
-    MKW_ERR(test_aes_round_trip(&ctx, pool));
+    MKW_ERR(test_aes_round_trip_full_blocks(&ctx, pool));
+    MKW_ERR(test_aes_round_trip_unaligned(&ctx, pool));
     MKW_ERR(test_seckeydata_round_trip(&ctx, pool));
     MKW_ERR(test_user_round_trip(&ctx, pool));
 
