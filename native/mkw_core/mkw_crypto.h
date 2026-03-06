@@ -126,10 +126,20 @@ mkw_mdp_write(mkw_ctx_t *ctx, mkw_membuf_t *mdp,
 mkw_error_t
 mkw_mdp_read(mkw_memreader_t *reader, mkw_membuf_t *plaintext);
 
+
+void
+mkw_pgp_seckeydata_encode(mkw_membuf_t *buf,
+                          const mkw_seckey_rsa_t *seckey);
+
+mkw_error_t
+mkw_pgp_seckeydata_decode(mkw_memreader_t *reader,
+                          mkw_seckey_rsa_t *seckey);
+
 void
 mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
                            const mkw_s2k_t *s2k,
-                           const mkw_symkey_aes_t *symkey,
+                           const uint8_t *passwd,
+                           size_t passwdsize,
                            const mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool);
 

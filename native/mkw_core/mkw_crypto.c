@@ -120,7 +120,7 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
     };
     uint8_t *buf;
 
-    if (size % 16 != 0) {
+    if (size % MKW_CFB_BLOCK_SIZE != 0) {
         return MKW_ERROR_BAD_BLOCK_SIZE;
     }
 
@@ -229,22 +229,29 @@ mkw_pgp_seckeydata_decode(mkw_memreader_t *reader,
 void
 mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
                            const mkw_s2k_t *s2k,
-                           const mkw_symkey_aes_t *symkey,
+                           const uint8_t *passwd,
+                           size_t passwdsize,
                            const mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool)
 {
     uint8_t sha1[SHA1_DIGEST_SIZE];
     mkw_membuf_t *data = mkw_membuf_create_empty(pool);
+    mkw_symkey_aes_t symkey;
 
     /* prepare data to encrypt */
     mkw_pgp_seckeydata_encode(data, seckey);
     mkw_sha1(sha1, data->data, data->size);
     mkw_membuf_write_str(data, sha1, sizeof(sha1));
+    
+    mkw_base16_dump(stderr, data->data, data->size);
+
+    mkw_s2k_derive_key(s2k, passwd, passwdsize,
+                       symkey.key, sizeof(symkey.key));
 
     /* write everything to the output */
     mkw_membuf_write_uint8(buf, MKW_S2K_USAGE_SOME_SHA1);
     mkw_pgp_s2k_serialize(buf, s2k);
-    mkw_symkey_encrypt(symkey, buf, data->data, data->size);
+    mkw_symkey_encrypt(&symkey, buf, data->data, data->size);
 }
 
 mkw_error_t
@@ -269,17 +276,29 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
     MKW_ERR(mkw_memreader_read_uint8(reader, &s2k_usage));
     MKW_ERR(mkw_pgp_s2k_deserialize(reader, s2k));
 
+    if (s2k_usage != MKW_S2K_USAGE_SOME_SHA1) {
+        return MKW_ERROR_BAD_S2K_USAGE;
+    }
+
     mkw_s2k_derive_key(s2k, passwd, passwdsize,
                        symkey.key, sizeof(symkey.key));
 
+    /* decrypt and consume everything from the reader */
     MKW_ERR(mkw_symkey_decrypt(&symkey, plaintext,
                                reader->data, reader->remaining));
+    reader->data += reader->remaining;
+    reader->remaining = 0;
+
+    mkw_base16_dump(stderr, plaintext->data, plaintext->size);
 
     payload_start = plaintext->data;
     payload_reader.data = plaintext->data;
     payload_reader.remaining = plaintext->size;
 
     MKW_ERR(mkw_pgp_seckeydata_decode(&payload_reader, seckey));
+
+    mkw_base16_dump(stderr, plaintext->data, plaintext->size);
+
     payload_size = payload_reader.data - payload_start;
 
     /* verify checksum before decoding plaintext payload body */

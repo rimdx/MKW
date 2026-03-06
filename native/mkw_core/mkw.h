@@ -45,6 +45,7 @@ typedef int mkw_error_t;
 #define MKW_ERROR_ENTRY_NOT_EXIST               18
 #define MKW_ERROR_PARTIAL_LENGTH_NOT_SUPPORTED  19
 #define MKW_ERROR_BAD_BLOCK_SIZE                20
+#define MKW_ERROR_BAD_S2K_USAGE                 21 
 
 /* memory allocations */
 typedef struct mkw_pool_t mkw_pool_t; 
@@ -135,5 +136,8 @@ typedef struct mkw_ctx_t {
 
 mkw_error_t
 mkw_ctx_create(mkw_ctx_t *ctx, mkw_pool_t *pool);
+
+#include <stdio.h>
+void mkw_base16_dump(FILE *file, const uint8_t *str, size_t len);
 
 #endif

@@ -17,7 +17,7 @@
 #include <nettle/base16.h>
 #include <nettle/base64.h>
 
-static void
+void
 mkw_base16_dump(FILE *file, const uint8_t *str, size_t len)
 {
     static char *hex_table = "0123456789abcdef";
@@ -60,7 +60,6 @@ mkw_ctx_create(mkw_ctx_t *ctx, mkw_pool_t *pool)
         goto cleanup;
     }
     
-    mkw_base16_dump(stderr, buf, RNG_SEED_SIZE);
     yarrow256_seed(&ctx->rng, RNG_SEED_SIZE, buf);
 
 cleanup:
@@ -128,12 +127,8 @@ mkw_user_store(mkw_blobstore_t *store,
         .material = user->key.material.rsa.pubkey,
     };
 
-    mkw_s2k_derive_key(&user->s2k,
-                       passwd, passwdsize,
-                       symkey.key, sizeof(symkey.key));
-
     mkw_pgp_pubkey_serialize(subbuf, &pubkey);
-    mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, &symkey,
+    mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, passwd, passwdsize,
                                &user->key.material.rsa.seckey, pool);
     mkw_pgp_packet_serialize(buf, mkw_pgp_packet_seckey,
                              subbuf->data, subbuf->size);
@@ -243,11 +238,54 @@ test_aes_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
     mkw_symkey_encrypt(&symkey, ciphertext, plaintext1, sizeof(plaintext1));
     mkw_symkey_decrypt(&symkey, plaintext2, ciphertext->data, ciphertext->size);
 
-    printf("afdkljf: %ld\n", ciphertext->size);
-    mkw_base16_dump(stderr, plaintext2->data, plaintext2->size);
-
     assert(plaintext2->size == sizeof(plaintext1));
     assert(memcmp(plaintext2->data, plaintext1, plaintext2->size));
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
+test_seckeydata_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
+{
+    mkw_membuf_t *ciphertext;
+    mkw_user_t user;
+    mkw_s2k_t s2k;
+    mkw_seckey_rsa_t *seckey1;
+    mkw_seckey_rsa_t seckey2 = { 0 };
+    mkw_seckey_rsa_t seckey3 = { 0 };
+    mkw_error_t err;
+    mkw_memreader_t *reader;
+
+    mkw_user_keygen(ctx, &user);
+    mkw_s2k_init(ctx, &s2k);
+    seckey1 = &user.key.material.rsa.seckey;
+
+    // using plaintext encode/decode
+    ciphertext = mkw_membuf_create_empty(pool);
+    mkw_pgp_seckeydata_encode(ciphertext, seckey1);
+    reader = mkw_memreader_create(ciphertext->data, ciphertext->size, pool); 
+    err = mkw_pgp_seckeydata_decode(reader, &seckey2);
+    assert(reader->remaining == 0);
+    assert(err == 0);
+    assert(0 == mpz_cmp(seckey1->p, seckey2.p));
+    assert(0 == mpz_cmp(seckey1->q, seckey2.q));
+
+    /* */
+    ciphertext = mkw_membuf_create_empty(pool);
+    mkw_pgp_seckeydata_encrypt(ciphertext, &s2k,
+                               (const uint8_t *)"password", 8,
+                               seckey1, pool);
+
+    reader = mkw_memreader_create(ciphertext->data, ciphertext->size, pool);
+
+    mkw_pgp_seckeydata_decrypt(reader, &s2k,
+                               (const uint8_t *)"password", 8,
+                               &seckey3, pool);
+
+    assert(reader->remaining == 0);
+    assert(err == 0);
+    assert(0 == mpz_cmp(seckey1->p, seckey2.p));
+    assert(0 == mpz_cmp(seckey1->q, seckey2.q));
 
     return MKW_ERROR_NONE;
 }
@@ -269,6 +307,7 @@ sub_main(mkw_pool_t *pool)
 
     MKW_ERR(test_s2k());
     MKW_ERR(test_aes_round_trip(&ctx, pool));
+    MKW_ERR(test_seckeydata_round_trip(&ctx, pool));
     MKW_ERR(test_user_round_trip(&ctx, pool));
 
     MKW_ERR(mkw_id_create(&ctx, &user.id));
@@ -283,8 +322,6 @@ sub_main(mkw_pool_t *pool)
 
     mkw_membuf_t *text = mkw_membuf_create_empty(pool);
     mkw_membuf_t *buf = mkw_membuf_create_empty(pool);
-
-    mkw_base16_dump(stdout, buf->data, buf->size);
 
     mkw_blobstore_entry_t entry = {
         .type = mkw_blob_type_entry,
