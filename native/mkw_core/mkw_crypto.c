@@ -255,7 +255,8 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                            mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool)
 {
-    uint8_t sha1_computed[SHA1_DIGEST_SIZE], *sha1_packet;
+    uint8_t sha1_computed[SHA1_DIGEST_SIZE];
+    uint8_t sha1_packet[SHA1_DIGEST_SIZE];
     uint8_t s2k_usage;
     mkw_symkey_aes_t symkey;
     mkw_membuf_t *plaintext = mkw_membuf_create_empty(pool);
