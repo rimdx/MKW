@@ -39,10 +39,10 @@ mkw_base16_dump(FILE *file, const uint8_t *str, size_t len)
 #define RNG_DEVICE "/dev/urandom"
 
 mkw_error_t
-mkw_ctx_create(mkw_ctx_t *ctx)
+mkw_ctx_create(mkw_ctx_t *ctx, mkw_pool_t *pool)
 {
     FILE *fdevice = NULL;
-    uint8_t *buf = mkw_calloc(RNG_SEED_SIZE);
+    uint8_t *buf = mkw_pcalloc(pool, RNG_SEED_SIZE);
     mkw_error_t err = MKW_ERROR_NONE;
     size_t bytes_read;
 
@@ -64,7 +64,6 @@ mkw_ctx_create(mkw_ctx_t *ctx)
     yarrow256_seed(&ctx->rng, RNG_SEED_SIZE, buf);
 
 cleanup:
-    mkw_free(buf);
     if (fdevice) {
         fclose(fdevice);
     }
@@ -111,14 +110,14 @@ mkw_user_keygen(mkw_ctx_t *ctx, mkw_user_t *user) {
 }
 
 static void
-mkw_user_store(mkw_ctx_t *ctx,
-               mkw_blobstore_t *store,
+mkw_user_store(mkw_blobstore_t *store,
                mkw_user_t *user,
                const uint8_t *passwd,
-               size_t passwdsize)
+               size_t passwdsize,
+               mkw_ctx_t *ctx, mkw_pool_t *pool)
 {
-    mkw_membuf_t *buf = mkw_membuf_create_empty();
-    mkw_membuf_t *subbuf = mkw_membuf_create_empty(); 
+    mkw_membuf_t *buf = mkw_membuf_create_empty(pool);
+    mkw_membuf_t *subbuf = mkw_membuf_create_empty(pool); 
     mkw_symkey_aes_t symkey = { 0 };
     mkw_blobstore_entry_t *entry;
 
@@ -135,14 +134,14 @@ mkw_user_store(mkw_ctx_t *ctx,
 
     mkw_pgp_pubkey_serialize(subbuf, &pubkey);
     mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, &symkey,
-                               &user->key.material.rsa.seckey);
+                               &user->key.material.rsa.seckey, pool);
     mkw_pgp_packet_serialize(buf, mkw_pgp_packet_seckey,
                              subbuf->data, subbuf->size);
 
     /* security consideration */
     memset(&symkey, 0, sizeof(symkey));
 
-    entry = mkw_calloc(sizeof(*entry));
+    entry = mkw_pcalloc(pool, sizeof(*entry));
     entry->type = mkw_blob_type_user;
     entry->id = &user->id;
     entry->data = buf;
@@ -154,7 +153,8 @@ mkw_user_open(mkw_blobstore_t *store,
               mkw_user_t *user,
               const mkw_id_t *id,
               const uint8_t *passwd,
-              size_t passwdsize)
+              size_t passwdsize,
+              mkw_pool_t *pool)
 {
     mkw_blobstore_entry_t *entry = mkw_blobstore_get_entry(store, id);
     mkw_memreader_t *reader;
@@ -163,7 +163,7 @@ mkw_user_open(mkw_blobstore_t *store,
         return MKW_ERROR_USER_NOT_EXIST;
     }
 
-    reader = mkw_memreader_create(entry->data->data, entry->data->size);
+    reader = mkw_memreader_create(entry->data->data, entry->data->size, pool);
 
     while (reader->remaining) {
         mkw_memreader_t bodyreader = { 0 };
@@ -178,7 +178,8 @@ mkw_user_open(mkw_blobstore_t *store,
             MKW_ERR(mkw_pgp_pubkey_deserialize(&bodyreader, &pubkey));
             user->key.material.rsa.pubkey = pubkey.material.rsa;
             MKW_ERR(mkw_pgp_seckeydata_decrypt(&bodyreader, &user->s2k,
-                                               passwd, passwdsize, &seckey));
+                                               passwd, passwdsize, &seckey,
+                                               pool));
         } else {
             return MKW_ERROR_BAD_PACKET_TAG;
         }
@@ -212,27 +213,29 @@ test_s2k() {
 }
 
 static mkw_error_t
-test_user_round_trip(mkw_ctx_t *ctx)
+test_user_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 { 
-    mkw_blobstore_t *store = mkw_blobstore_create_mem();
+    mkw_blobstore_t *store = mkw_blobstore_create_mem(pool);
     mkw_user_t user1, user2;
 
     MKW_ERR(mkw_user_keygen(ctx, &user1));
-    mkw_user_store(ctx, store, &user1,
-                   (const uint8_t *)"password", 8);
+    mkw_user_store(store, &user1,
+                   (const uint8_t *)"password", 8,
+                   ctx, pool);
     MKW_ERR(mkw_user_open(store, &user2, &user1.id,
-                          (const uint8_t *)"password", 8));
+                          (const uint8_t *)"password", 8,
+                          pool));
 
     return MKW_ERROR_NONE;
 }
 
 static mkw_error_t
-test_aes_round_trip(mkw_ctx_t *ctx)
+test_aes_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 {
     mkw_symkey_aes_t symkey;
     uint8_t plaintext1[16 * 3];
-    mkw_membuf_t *ciphertext = mkw_membuf_create_empty();
-    mkw_membuf_t *plaintext2 = mkw_membuf_create_empty();
+    mkw_membuf_t *ciphertext = mkw_membuf_create_empty(pool);
+    mkw_membuf_t *plaintext2 = mkw_membuf_create_empty(pool);
 
     nettle_yarrow256_random(&ctx->rng, sizeof(symkey.key), symkey.key);
     nettle_yarrow256_random(&ctx->rng, sizeof(plaintext1), plaintext1);
@@ -256,17 +259,17 @@ test_mdc_round_trip()
 }
 
 static mkw_error_t
-sub_main()
+sub_main(mkw_pool_t *pool)
 {
-    mkw_blobstore_t *store = mkw_blobstore_create_mem();
+    mkw_blobstore_t *store = mkw_blobstore_create_mem(pool);
     mkw_user_t user;
     mkw_ctx_t ctx;
 
-    MKW_ERR(mkw_ctx_create(&ctx));
+    MKW_ERR(mkw_ctx_create(&ctx, pool));
 
     MKW_ERR(test_s2k());
-    MKW_ERR(test_aes_round_trip(&ctx));
-    MKW_ERR(test_user_round_trip(&ctx));
+    MKW_ERR(test_aes_round_trip(&ctx, pool));
+    MKW_ERR(test_user_round_trip(&ctx, pool));
 
     MKW_ERR(mkw_id_create(&ctx, &user.id));
     MKW_ERR(mkw_user_keygen(&ctx, &user));
@@ -278,8 +281,8 @@ sub_main()
         .material.rsa = user.key.material.rsa.pubkey, 
     };
 
-    mkw_membuf_t *text = mkw_membuf_create_empty();
-    mkw_membuf_t *buf = mkw_membuf_create_empty();
+    mkw_membuf_t *text = mkw_membuf_create_empty(pool);
+    mkw_membuf_t *buf = mkw_membuf_create_empty(pool);
 
     mkw_base16_dump(stdout, buf->data, buf->size);
 
@@ -298,12 +301,15 @@ sub_main()
 
 int main()
 {
-    mkw_error_t err = sub_main();
+    mkw_pool_t *pool = mkw_pool_create();
+
+    mkw_error_t err = sub_main(pool);
+
+    mkw_pool_nuke(pool);
+
     if (err == MKW_ERROR_NONE) {
         return 0;
     } else {
         fprintf(stderr, "Error: %d\n", err);
     }
 }
-
-

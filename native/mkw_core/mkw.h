@@ -47,21 +47,23 @@ typedef int mkw_error_t;
 #define MKW_ERROR_BAD_BLOCK_SIZE                20
 
 /* memory allocations */
-void *
-mkw_alloc(size_t size);
+typedef struct mkw_pool_t mkw_pool_t; 
 
-void mkw_free(void *ptr);
+mkw_pool_t *mkw_pool_create();
+void mkw_pool_nuke(mkw_pool_t *pool);
+void *mkw_palloc(mkw_pool_t *pool, size_t size);
 
-#define mkw_calloc(size) memset(mkw_alloc(size), 0, size)
+#define mkw_pcalloc(pool, size) memset(mkw_palloc(pool, size), 0, size)
 
 /* growable collection of pointers */
 typedef struct mkw_vector_t {
     void **data;
     size_t size;
     size_t capacity;
+    mkw_pool_t *pool;
 } mkw_vector_t;
 
-mkw_vector_t *mkw_vector_create_empty();
+mkw_vector_t *mkw_vector_create_empty(mkw_pool_t *pool);
 void mkw_vector_resize(mkw_vector_t *vec, size_t new_capacity);
 void mkw_vector_ensure(mkw_vector_t *vec, size_t size);
 void mkw_vector_push(mkw_vector_t *vec, void *elem);
@@ -71,9 +73,10 @@ typedef struct mkw_membuf_t {
     uint8_t *data;
     size_t size;
     size_t capacity;
+    mkw_pool_t *pool;
 } mkw_membuf_t;
 
-mkw_membuf_t *mkw_membuf_create_empty();
+mkw_membuf_t *mkw_membuf_create_empty(mkw_pool_t *pool);
 void mkw_membuf_resize(mkw_membuf_t *buf, size_t new_capacity);
 void mkw_membuf_ensure(mkw_membuf_t *buf, size_t size);
 
@@ -94,7 +97,7 @@ typedef struct mkw_memreader_t {
 } mkw_memreader_t;
 
 mkw_memreader_t *
-mkw_memreader_create(const uint8_t *data, size_t size);
+mkw_memreader_create(const uint8_t *data, size_t size, mkw_pool_t *pool);
 
 mkw_error_t
 mkw_memreader_read_uint8(mkw_memreader_t *reader, uint8_t *result);
@@ -131,6 +134,6 @@ typedef struct mkw_ctx_t {
 } mkw_ctx_t;
 
 mkw_error_t
-mkw_ctx_create(mkw_ctx_t *ctx);
+mkw_ctx_create(mkw_ctx_t *ctx, mkw_pool_t *pool);
 
 #endif

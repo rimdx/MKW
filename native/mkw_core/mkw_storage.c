@@ -3,10 +3,10 @@
 #include "mkw_storage.h"
 
 mkw_blobstore_t *
-mkw_blobstore_create_mem()
+mkw_blobstore_create_mem(mkw_pool_t *pool)
 {
-    mkw_blobstore_t *result = mkw_calloc(sizeof(*result));
-    result->entries = mkw_vector_create_empty();
+    mkw_blobstore_t *result = mkw_pcalloc(pool, sizeof(*result));
+    result->entries = mkw_vector_create_empty(pool);
     return result;
 }
 

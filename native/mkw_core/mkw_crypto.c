@@ -140,30 +140,30 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
 }
 
 void
-mkw_symkey_protected_encrypt(mkw_ctx_t *ctx,
-                             const mkw_symkey_aes_t *key,
+mkw_symkey_protected_encrypt(const mkw_symkey_aes_t *key,
                              mkw_membuf_t *out,
                              const uint8_t *data,
-                             size_t size) 
+                             size_t size,
+                             mkw_ctx_t *ctx, mkw_pool_t *pool) 
 {
-    mkw_membuf_t *mdp = mkw_membuf_create_empty();
+    mkw_membuf_t *mdp = mkw_membuf_create_empty(pool);
 
     mkw_mdp_write(ctx, mdp, data, size);
     mkw_symkey_encrypt(key, out, mdp->data, mdp->size);
 }
 
 mkw_error_t
-mkw_symkey_protected_decrypt(mkw_ctx_t *ctx,
-                             const mkw_symkey_aes_t *key,
+mkw_symkey_protected_decrypt(const mkw_symkey_aes_t *key,
                              mkw_membuf_t *plaintext,
                              const uint8_t *data,
-                             size_t size) 
+                             size_t size,
+                             mkw_ctx_t *ctx, mkw_pool_t *pool) 
 {
-    mkw_membuf_t *mdp = mkw_membuf_create_empty();
+    mkw_membuf_t *mdp = mkw_membuf_create_empty(pool);
     mkw_memreader_t *reader;
 
     mkw_symkey_decrypt(key, mdp, data, size);
-    reader = mkw_memreader_create(mdp->data, mdp->size);
+    reader = mkw_memreader_create(mdp->data, mdp->size, pool);
     MKW_ERR(mkw_mdp_read(reader, plaintext));
 
     return MKW_ERROR_NONE;
@@ -230,10 +230,11 @@ void
 mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
                            const mkw_s2k_t *s2k,
                            const mkw_symkey_aes_t *symkey,
-                           const mkw_seckey_rsa_t *seckey)
+                           const mkw_seckey_rsa_t *seckey,
+                           mkw_pool_t *pool)
 {
     uint8_t sha1[SHA1_DIGEST_SIZE];
-    mkw_membuf_t *data = mkw_membuf_create_empty();
+    mkw_membuf_t *data = mkw_membuf_create_empty(pool);
 
     /* prepare data to encrypt */
     mkw_pgp_seckeydata_encode(data, seckey);
@@ -251,12 +252,13 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                            mkw_s2k_t *s2k,
                            const uint8_t *passwd,
                            size_t passwdsize,
-                           mkw_seckey_rsa_t *seckey)
+                           mkw_seckey_rsa_t *seckey,
+                           mkw_pool_t *pool)
 {
     uint8_t sha1_computed[SHA1_DIGEST_SIZE], *sha1_packet;
     uint8_t s2k_usage;
     mkw_symkey_aes_t symkey;
-    mkw_membuf_t *plaintext = mkw_membuf_create_empty();
+    mkw_membuf_t *plaintext = mkw_membuf_create_empty(pool);
 
     mkw_memreader_t payload_reader = { 0 };
     const uint8_t *payload_start;

@@ -21,7 +21,7 @@ typedef struct mkw_blobstore_entry_t {
 } mkw_blobstore_entry_t;
 
 mkw_blobstore_t *
-mkw_blobstore_create_mem();
+mkw_blobstore_create_mem(mkw_pool_t *pool);
 
 mkw_blobstore_entry_t *
 mkw_blobstore_get_entry(mkw_blobstore_t *store,

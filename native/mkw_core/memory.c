@@ -2,48 +2,24 @@
 #include <stdio.h>
 #include <nettle/base16.h>
 
-/* memory primitives */
-void *
-mkw_alloc(size_t size)
-{
-#ifdef DEBUG
-    fprintf(stderr, "malloc(%ld)\n", size);
-#endif
-    void *ptr = malloc(size);
-    if (! ptr) {
-        fputs("out of memory\n", stderr);
-        abort();
-    }
-    return ptr;
-}
-
-void
-mkw_free(void *ptr)
-{
-    free(ptr);
-#ifdef DEBUG
-    fprintf(stderr, "free()\n");
-#endif
-}
-
-
 /* growable vector of pointers */
 #define MKW_VECTOR_ELEMENT_SIZE sizeof(void *)
 
 mkw_vector_t *
-mkw_vector_create_empty()
+mkw_vector_create_empty(mkw_pool_t *pool)
 { 
-    mkw_vector_t *vec = mkw_calloc(sizeof(*vec));
+    mkw_vector_t *vec = mkw_palloc(pool, sizeof(*vec));
     vec->size = 0;
     vec->capacity = 8;
-    vec->data = mkw_calloc(vec->capacity * MKW_VECTOR_ELEMENT_SIZE);
+    vec->data = mkw_pcalloc(pool, vec->capacity * MKW_VECTOR_ELEMENT_SIZE);
+    vec->pool = pool;
     return vec;
 }
 
 void
 mkw_vector_resize(mkw_vector_t *vec, size_t new_capacity)
 {
-    void **new_data = mkw_calloc(new_capacity * MKW_VECTOR_ELEMENT_SIZE); 
+    void **new_data = mkw_palloc(vec->pool, new_capacity * MKW_VECTOR_ELEMENT_SIZE); 
 
 #ifdef DEBUG
     fprintf(stderr, "vector.resize(%ld -> %ld)\n",
@@ -51,7 +27,6 @@ mkw_vector_resize(mkw_vector_t *vec, size_t new_capacity)
 #endif
 
     memcpy(new_data, vec->data, vec->size);
-    mkw_free(vec->data);
 
     vec->data = new_data;
     vec->capacity = new_capacity;
@@ -75,19 +50,20 @@ mkw_vector_push(mkw_vector_t *vec, void *elem)
 
 /* growable memory buffer of bytes */
 mkw_membuf_t *
-mkw_membuf_create_empty()
+mkw_membuf_create_empty(mkw_pool_t *pool)
 { 
-    mkw_membuf_t *buf = mkw_calloc(sizeof(*buf));
+    mkw_membuf_t *buf = mkw_palloc(pool, sizeof(*buf));
     buf->size = 0;
     buf->capacity = 64;
-    buf->data = mkw_calloc(buf->capacity);
+    buf->data = mkw_palloc(pool, buf->capacity);
+    buf->pool = pool;
     return buf;
 }
 
 void
 mkw_membuf_resize(mkw_membuf_t *buf, size_t new_capacity)
 {
-    uint8_t *new_data = mkw_calloc(new_capacity); 
+    uint8_t *new_data = mkw_palloc(buf->pool, new_capacity); 
 
 #ifdef DEBUG
     fprintf(stderr, "membuf.resize(%ld -> %ld)\n",
@@ -95,7 +71,6 @@ mkw_membuf_resize(mkw_membuf_t *buf, size_t new_capacity)
 #endif
 
     memcpy(new_data, buf->data, buf->size);
-    mkw_free(buf->data);
 
     buf->data = new_data;
     buf->capacity = new_capacity;
@@ -194,9 +169,9 @@ mkw_membuf_write_buf(mkw_membuf_t *buf, size_t len)
 
 /* memory reader */
 mkw_memreader_t *
-mkw_memreader_create(const uint8_t *data, size_t size)
+mkw_memreader_create(const uint8_t *data, size_t size, mkw_pool_t *pool)
 {
-    mkw_memreader_t *result = mkw_calloc(sizeof(*result));
+    mkw_memreader_t *result = mkw_pcalloc(pool, sizeof(*result));
     result->data = data;
     result->remaining = size;
     return result;
@@ -326,4 +301,105 @@ mkw_memreader_subreader(mkw_memreader_t *reader,
         reader->remaining = 0;
         return MKW_ERROR_EOF;
     }
+}
+
+/* memory pools */
+#define MKW_PAGE_SIZE 4096
+
+#define ALIGMENT sizeof(void *)
+#define ROUND_UP(num, magnitute) (num + magnitute - 1) / magnitute * magnitute
+#define ALIGN(size) ROUND_UP(size, ALIGMENT)
+
+struct mkw_node_t {
+    struct mkw_node_t *next;
+    size_t remaining;
+    size_t size;
+    void *current;
+};
+
+static struct mkw_node_t *
+node_create(size_t size)
+{
+    struct mkw_node_t *node;
+    size_t real_size = sizeof(*node) + size;
+
+    node = malloc(real_size);
+    memset(node, 0, real_size);
+
+    node->next = NULL;
+    node->remaining = size;
+    node->size = size;
+    node->current = (void *)node + sizeof(*node);
+    return node;
+}
+
+static void *
+node_alloc(struct mkw_node_t *node, size_t size)
+{
+    void *result;
+    assert(size <= node->remaining);
+
+    result = node->current;
+    node->current += ALIGN(size);
+    node->remaining -= ALIGN(size);
+    return result;
+}
+
+static void
+node_nuke(struct mkw_node_t *node)
+{
+    size_t real_size = sizeof(*node) + node->size; 
+    memset(node, 0, real_size);
+    free(node);
+}
+
+struct mkw_pool_t {
+    struct mkw_node_t *self;
+    struct mkw_node_t *active;
+};
+
+mkw_pool_t *
+mkw_pool_create()
+{
+    mkw_pool_t *pool;
+    struct mkw_node_t *self;
+
+    self = node_create(sizeof(*pool));
+    pool = node_alloc(self, sizeof(*pool));
+
+    pool->self = self;
+    pool->active = NULL;
+    return pool;
+}
+
+void *
+mkw_palloc(mkw_pool_t *pool, size_t size)
+{
+    struct mkw_node_t *node, *old_node;
+    void *result;
+
+    for (node = pool->active; node; node = node->next) {
+        if (node->remaining >= size) {
+            goto have_mem;
+        }
+    }
+
+    node = node_create(ROUND_UP(size, MKW_PAGE_SIZE));
+
+    old_node = pool->active;
+    node->next = old_node;
+    pool->active = node;
+
+have_mem:
+    return node_alloc(node, size);
+}
+
+void
+mkw_pool_nuke(mkw_pool_t *pool)
+{
+    struct mkw_node_t *node = pool->active;
+    while (node) {
+        node_nuke(node);
+    }
+    node_nuke(pool->self);
 }
