@@ -349,7 +349,7 @@ static void
 node_nuke(struct mkw_node_t *node)
 {
     size_t real_size = sizeof(*node) + node->size; 
-    memset(node, 0, real_size);
+    /* memset(node, 0, real_size); */
     free(node);
 }
 
@@ -399,7 +399,10 @@ mkw_pool_nuke(mkw_pool_t *pool)
 {
     struct mkw_node_t *node = pool->active;
     while (node) {
+        /* node will be free'd on end iteration */
+        struct mkw_node_t *next = node->next;
         node_nuke(node);
+        node = next;
     }
     node_nuke(pool->self);
 }
