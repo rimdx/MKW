@@ -49,11 +49,7 @@ enum mkw_symkey_tag_e {
 typedef struct mkw_pubkey_t {
     mkw_pgp_time_t time_created;
     uint16_t expires_in_days;
-
-    enum mkw_pubkey_tag_e tag;
-    union {
-        mkw_pubkey_rsa_t rsa;
-    } material;
+    mkw_pubkey_rsa_t material;
 } mkw_pubkey_t;
 
 void
@@ -68,13 +64,6 @@ typedef struct mkw_keypair_rsa_t {
     mkw_pubkey_rsa_t pubkey;
     mkw_seckey_rsa_t seckey;
 } mkw_keypair_rsa_t;
-
-typedef struct mkw_keypair_t {
-    enum mkw_pubkey_tag_e tag;
-    union {
-        mkw_keypair_rsa_t rsa;
-    } material;
-} mkw_keypair_t; 
 
 /* public key encrypted sesssion key packet */
 typedef struct mkw_enckey_t {

@@ -77,7 +77,7 @@ typedef struct mkw_user_info_t {
 typedef struct mkw_user_t {
     mkw_id_t id;
     mkw_s2k_t s2k;
-    mkw_keypair_t key;
+    mkw_keypair_rsa_t key;
 } mkw_user_t;
 
 
@@ -86,14 +86,13 @@ mkw_user_keygen(mkw_ctx_t *ctx, mkw_user_t *user) {
     int status;
 
     mkw_s2k_init(ctx, &user->s2k);
-    user->key.tag = mkw_pubkey_tag_rsa;
 
-    rsa_public_key_init(&user->key.material.rsa.pubkey);
-    rsa_private_key_init(&user->key.material.rsa.seckey);
+    rsa_public_key_init(&user->key.pubkey);
+    rsa_private_key_init(&user->key.seckey);
 
     status = nettle_rsa_generate_keypair(
-            &user->key.material.rsa.pubkey,
-            &user->key.material.rsa.seckey,
+            &user->key.pubkey,
+            &user->key.seckey,
             &ctx->rng,
             (nettle_random_func *)yarrow256_random,
             NULL,   /* progress_ctx */
@@ -123,13 +122,12 @@ mkw_user_store(mkw_blobstore_t *store,
     mkw_pubkey_t pubkey = {
         .time_created = 0,
         .expires_in_days = 0,
-        .tag = user->key.tag,
-        .material = user->key.material.rsa.pubkey,
+        .material = user->key.pubkey,
     };
 
     mkw_pgp_pubkey_serialize(subbuf, &pubkey);
     mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, passwd, passwdsize,
-                               &user->key.material.rsa.seckey, pool);
+                               &user->key.seckey, pool);
     mkw_pgp_packet_serialize(buf, mkw_pgp_packet_seckey,
                              subbuf->data, subbuf->size);
 
@@ -171,7 +169,7 @@ mkw_user_open(mkw_blobstore_t *store,
             mkw_seckey_rsa_t seckey = { 0 };
 
             MKW_ERR(mkw_pgp_pubkey_deserialize(&bodyreader, &pubkey));
-            user->key.material.rsa.pubkey = pubkey.material.rsa;
+            user->key.pubkey = pubkey.material;
             MKW_ERR(mkw_pgp_seckeydata_decrypt(&bodyreader, &user->s2k,
                                                passwd, passwdsize, &seckey,
                                                pool));
@@ -258,7 +256,7 @@ test_seckeydata_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 
     mkw_user_keygen(ctx, &user);
     mkw_s2k_init(ctx, &s2k);
-    seckey1 = &user.key.material.rsa.seckey;
+    seckey1 = &user.key.seckey;
 
     // using plaintext encode/decode
     ciphertext = mkw_membuf_create_empty(pool);
@@ -316,8 +314,7 @@ sub_main(mkw_pool_t *pool)
     mkw_pubkey_t pubkey = {
         .time_created = 0,
         .expires_in_days = 0,
-        .tag = mkw_pubkey_tag_rsa,
-        .material.rsa = user.key.material.rsa.pubkey, 
+        .material = user.key.pubkey, 
     };
 
     mkw_membuf_t *text = mkw_membuf_create_empty(pool);

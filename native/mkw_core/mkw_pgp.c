@@ -56,15 +56,11 @@ mkw_pgp_pubkey_serialize(mkw_membuf_t *buf,
     mkw_membuf_write_uint8(buf, 4 /* version */);
     mkw_membuf_write_uint32(buf, pubkey->time_created);
     mkw_membuf_write_uint16(buf, pubkey->expires_in_days);
-    mkw_membuf_write_uint8(buf, pubkey->tag);
+    mkw_membuf_write_uint8(buf, mkw_pubkey_tag_rsa);
 
-    if (pubkey->tag == mkw_pubkey_tag_rsa) {
-        const mkw_pubkey_rsa_t *rsa = &pubkey->material.rsa;
-        mkw_membuf_write_mpi(buf, rsa->n);
-        mkw_membuf_write_mpi(buf, rsa->e);
-    } else {
-        abort();
-    }
+    /* RSA material */
+    mkw_membuf_write_mpi(buf, pubkey->material.n);
+    mkw_membuf_write_mpi(buf, pubkey->material.e);
 }
 
 mkw_error_t
@@ -83,11 +79,9 @@ mkw_pgp_pubkey_deserialize(mkw_memreader_t *reader,
     mkw_memreader_read_uint16(reader, &pubkey_p->expires_in_days);
     mkw_memreader_read_uint8(reader, &tag);
 
-    pubkey_p->tag = tag;
     if (tag == mkw_pubkey_tag_rsa) {
-        mkw_pubkey_rsa_t *rsa = &pubkey_p->material.rsa;
-        mkw_memreader_read_mpi(reader, rsa->n);
-        mkw_memreader_read_mpi(reader, rsa->e);
+        mkw_memreader_read_mpi(reader, pubkey_p->material.n);
+        mkw_memreader_read_mpi(reader, pubkey_p->material.e);
     } else {
         return MKW_ERROR_BAD_PUBKEY_TAG;
     }
