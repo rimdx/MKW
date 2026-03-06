@@ -278,9 +278,9 @@ test_seckeydata_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 
     reader = mkw_memreader_create(ciphertext->data, ciphertext->size, pool);
 
-    mkw_pgp_seckeydata_decrypt(reader, &s2k,
-                               (const uint8_t *)"password", 8,
-                               &seckey3, pool);
+    err = mkw_pgp_seckeydata_decrypt(reader, &s2k,
+                                     (const uint8_t *)"password", 8,
+                                     &seckey3, pool);
 
     assert(reader->remaining == 0);
     assert(err == 0);
