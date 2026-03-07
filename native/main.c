@@ -237,7 +237,7 @@ test_aes_round_trip_full_blocks(mkw_ctx_t *ctx, mkw_pool_t *pool)
     mkw_symkey_decrypt(&symkey, plaintext2, ciphertext->data, ciphertext->size);
 
     assert(plaintext2->size == sizeof(plaintext1));
-    assert(memcmp(plaintext2->data, plaintext1, plaintext2->size));
+    assert(memcmp(plaintext2->data, plaintext1, plaintext2->size) == 0);
 
     return MKW_ERROR_NONE;
 }
@@ -257,7 +257,7 @@ test_aes_round_trip_unaligned(mkw_ctx_t *ctx, mkw_pool_t *pool)
     mkw_symkey_decrypt(&symkey, plaintext, ciphertext->data, ciphertext->size);
 
     assert(plaintext->size >= sizeof(data));
-    assert(memcmp(plaintext->data, data, sizeof(data)));
+    assert(memcmp(plaintext->data, data, sizeof(data)) == 0);
 
     return MKW_ERROR_NONE;
 }
