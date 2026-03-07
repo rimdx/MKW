@@ -117,6 +117,17 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE]);
 
+void
+mkw_cfb_ctx_init_encryption(mkw_cfb_ctx_t *cfb,
+                            const mkw_symkey_aes_t *key,
+                            const uint8_t iv[MKW_CFB_BLOCK_SIZE]);
+
+void
+mkw_cfb_ctx_init_decryption(mkw_cfb_ctx_t *cfb,
+                            const mkw_symkey_aes_t *key,
+                            const uint8_t iv[MKW_CFB_BLOCK_SIZE]);
+
+/* Modification Detection Code (MDC). */
 
 void
 mkw_mdp_write(mkw_ctx_t *ctx, mkw_membuf_t *mdp,
