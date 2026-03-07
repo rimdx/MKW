@@ -132,19 +132,19 @@ mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
 
 void
 mkw_cfb_ctx_init_encryption(mkw_cfb_ctx_t *cfb,
-                            const mkw_symkey_aes_t *key,
+                            const uint8_t key[AES128_KEY_SIZE],
                             const uint8_t iv[MKW_CFB_BLOCK_SIZE])
 {
-    nettle_aes128_set_encrypt_key(&cfb->aesctx, key->key);
+    nettle_aes128_set_encrypt_key(&cfb->aesctx, key);
     memcpy(cfb->p, iv, sizeof(cfb->p));
 }
 
 void
 mkw_cfb_ctx_init_decryption(mkw_cfb_ctx_t *cfb,
-                            const mkw_symkey_aes_t *key,
+                            const uint8_t key[AES128_KEY_SIZE],
                             const uint8_t iv[MKW_CFB_BLOCK_SIZE])
 {
-    nettle_aes128_set_decrypt_key(&cfb->aesctx, key->key);
+    nettle_aes128_set_decrypt_key(&cfb->aesctx, key);
     memcpy(cfb->p, iv, sizeof(cfb->p));
 }
 
@@ -160,7 +160,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
     mkw_cfb_ctx_t cfb;
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
-    mkw_cfb_ctx_init_encryption(&cfb, key, pgp_iv);
+    mkw_cfb_ctx_init_encryption(&cfb, key->key, pgp_iv);
     mkw_cfb_ctx_encrypt_full(&cfb, out, data, size);
 }
 
@@ -172,7 +172,7 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
 {
     mkw_cfb_ctx_t cfb;
 
-    mkw_cfb_ctx_init_decryption(&cfb, key, pgp_iv);
+    mkw_cfb_ctx_init_decryption(&cfb, key->key, pgp_iv);
     MKW_ERR(mkw_cfb_ctx_decrypt_full(&cfb, out, data, size));
 
     return MKW_ERROR_NONE;
