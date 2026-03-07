@@ -89,17 +89,6 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
         .cipher_ctx = &aesctx,
     };
 
-    /*
-const struct aes128_ctx *ctx,
-	       size_t length, uint8_t *dst,
-	       const uint8_t *src
-
-const void *ctx,
-				size_t length, uint8_t *dst,
-				const uint8_t *src
-               *;
-               */
-
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
     nettle_aes128_set_encrypt_key(&aesctx, key->key);
