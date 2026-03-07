@@ -71,6 +71,29 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
 }
 
 void
+mkw_cfb_ctx_encrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
+                         const uint8_t *data, size_t size)
+{
+    uint8_t buf[MKW_CFB_BLOCK_SIZE];
+
+    while (size > MKW_CFB_BLOCK_SIZE)
+    {
+        memset(buf, 0, sizeof(buf));
+        mkw_cfb_ctx_encrypt_block(cfb, data, buf);
+        mkw_membuf_write_str(out, buf, sizeof(buf));
+
+        size -= MKW_CFB_BLOCK_SIZE;
+        data += MKW_CFB_BLOCK_SIZE;
+    }
+
+    assert(size > 0);
+
+    memset(buf, 0, sizeof(buf));
+    mkw_cfb_ctx_encrypt_final(cfb, size, data, buf);
+    mkw_membuf_write_str(out, buf, sizeof(buf));
+}
+
+void
 mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx, 
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
@@ -82,6 +105,29 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
 
     nettle_memxor(plaintext, ciphertext, MKW_CFB_BLOCK_SIZE);
     memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
+}
+
+mkw_error_t
+mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
+                         const uint8_t *data, size_t size)
+{
+    if (size % MKW_CFB_BLOCK_SIZE != 0) {
+        return MKW_ERROR_BAD_BLOCK_SIZE;
+    }
+
+    while (size >= MKW_CFB_BLOCK_SIZE)
+    {
+        uint8_t buf[MKW_CFB_BLOCK_SIZE];
+        mkw_cfb_ctx_decrypt_block(cfb, data, buf);
+
+        mkw_membuf_write_str(out, buf, MKW_CFB_BLOCK_SIZE);
+
+        size -= MKW_CFB_BLOCK_SIZE;
+        data += MKW_CFB_BLOCK_SIZE;
+    }
+
+    assert(size == 0);
+    return MKW_ERROR_NONE;
 }
 
 void
@@ -115,22 +161,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
     mkw_cfb_ctx_init_encryption(&cfb, key, pgp_iv);
-
-    while (size > MKW_CFB_BLOCK_SIZE)
-    {
-        memset(buf, 0, sizeof(buf));
-        mkw_cfb_ctx_encrypt_block(&cfb, data, buf);
-        mkw_membuf_write_str(out, buf, sizeof(buf));
-
-        size -= MKW_CFB_BLOCK_SIZE;
-        data += MKW_CFB_BLOCK_SIZE;
-    }
-
-    assert(size > 0);
-
-    memset(buf, 0, sizeof(buf));
-    mkw_cfb_ctx_encrypt_final(&cfb, size, data, buf);
-    mkw_membuf_write_str(out, buf, sizeof(buf));
+    mkw_cfb_ctx_encrypt_full(&cfb, out, data, size);
 }
 
 mkw_error_t
@@ -140,26 +171,10 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
                    size_t size) 
 {
     mkw_cfb_ctx_t cfb;
-    uint8_t *buf;
 
     mkw_cfb_ctx_init_decryption(&cfb, key, pgp_iv);
+    MKW_ERR(mkw_cfb_ctx_decrypt_full(&cfb, out, data, size));
 
-    if (size % MKW_CFB_BLOCK_SIZE != 0) {
-        return MKW_ERROR_BAD_BLOCK_SIZE;
-    }
-
-    while (size >= MKW_CFB_BLOCK_SIZE)
-    {
-        uint8_t buf[MKW_CFB_BLOCK_SIZE];
-        mkw_cfb_ctx_decrypt_block(&cfb, data, buf);
-
-        mkw_membuf_write_str(out, buf, MKW_CFB_BLOCK_SIZE);
-
-        size -= MKW_CFB_BLOCK_SIZE;
-        data += MKW_CFB_BLOCK_SIZE;
-    }
-
-    assert(size == 0);
     return MKW_ERROR_NONE;
 }
 
