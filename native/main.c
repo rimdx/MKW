@@ -246,18 +246,18 @@ static mkw_error_t
 test_aes_round_trip_unaligned(mkw_ctx_t *ctx, mkw_pool_t *pool)
 {
     mkw_symkey_aes_t symkey;
-    uint8_t plaintext1[123];
+    uint8_t data[123];
     mkw_membuf_t *ciphertext = mkw_membuf_create_empty(pool);
-    mkw_membuf_t *plaintext2 = mkw_membuf_create_empty(pool);
+    mkw_membuf_t *plaintext = mkw_membuf_create_empty(pool);
 
     nettle_yarrow256_random(&ctx->rng, sizeof(symkey.key), symkey.key);
-    nettle_yarrow256_random(&ctx->rng, sizeof(plaintext1), plaintext1);
+    nettle_yarrow256_random(&ctx->rng, sizeof(data), data);
 
-    mkw_symkey_encrypt(&symkey, ciphertext, plaintext1, sizeof(plaintext1));
-    mkw_symkey_decrypt(&symkey, plaintext2, ciphertext->data, ciphertext->size);
+    mkw_symkey_encrypt(&symkey, ciphertext, data, sizeof(data));
+    mkw_symkey_decrypt(&symkey, plaintext, ciphertext->data, ciphertext->size);
 
-    assert(plaintext2->size >= sizeof(plaintext1));
-    assert(memcmp(plaintext2->data, plaintext1, sizeof(plaintext1)));
+    assert(plaintext->size >= sizeof(data));
+    assert(memcmp(plaintext->data, data, sizeof(data)));
 
     return MKW_ERROR_NONE;
 }
