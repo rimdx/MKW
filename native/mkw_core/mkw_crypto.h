@@ -98,8 +98,7 @@ typedef struct rsa_private_key mkw_seckey_rsa_t;
 
 typedef struct mkw_cfb_ctx_t {
     uint8_t p[MKW_CFB_BLOCK_SIZE];
-    nettle_cipher_func *cipher_fn;
-    void *cipher_ctx;
+    struct aes128_ctx aesctx;
 } mkw_cfb_ctx_t;
 
 void

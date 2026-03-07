@@ -42,8 +42,11 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t plaintext[MKW_CFB_BLOCK_SIZE],
                           uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
 {
-    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
-                   ciphertext /* dst */, ctx->p /* src */);
+    nettle_aes128_encrypt(&ctx->aesctx,
+                          MKW_CFB_BLOCK_SIZE,
+                          ciphertext /* dst */,
+                          ctx->p /* src */);
+
     nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
     memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
 }
@@ -56,8 +59,11 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
 {
     assert(length <= MKW_CFB_BLOCK_SIZE);
     if (length > 0) {
-        ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
-                       ciphertext /* dst */, ctx->p /* src */);
+        nettle_aes128_encrypt(&ctx->aesctx,
+                              MKW_CFB_BLOCK_SIZE,
+                              ciphertext /* dst */,
+                              ctx->p /* src */);
+
         nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
     }
     /* nuke ctx because it should never be used after finalised */
@@ -69,8 +75,11 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
 {
-    ctx->cipher_fn(ctx->cipher_ctx, MKW_CFB_BLOCK_SIZE,
-                   plaintext /* dst */, ctx->p /* src */);
+    nettle_aes128_decrypt(&ctx->aesctx,
+                          MKW_CFB_BLOCK_SIZE,
+                          plaintext, /* dst */
+                          ctx->p /* src */);
+
     nettle_memxor(plaintext, ciphertext, MKW_CFB_BLOCK_SIZE);
     memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
 }
@@ -82,16 +91,13 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
                    const uint8_t *data,
                    size_t size)
 {
-    struct aes128_ctx aesctx = { 0 };
     mkw_cfb_ctx_t cfb = {
         .p = { 0 },
-        .cipher_fn = (nettle_cipher_func *)nettle_aes128_encrypt,
-        .cipher_ctx = &aesctx,
+        .aesctx = { 0 },
     };
-
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
-    nettle_aes128_set_encrypt_key(&aesctx, key->key);
+    nettle_aes128_set_encrypt_key(&cfb.aesctx, key->key);
 
     while (size > MKW_CFB_BLOCK_SIZE)
     {
@@ -116,11 +122,9 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
                    const uint8_t *data,
                    size_t size) 
 {
-    struct aes128_ctx aesctx = { 0 };
     mkw_cfb_ctx_t cfb = {
         .p = { 0 },
-        .cipher_fn = (nettle_cipher_func *)nettle_aes128_decrypt,
-        .cipher_ctx = &aesctx,
+        .aesctx = { 0 },
     };
     uint8_t *buf;
 
@@ -128,7 +132,7 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
         return MKW_ERROR_BAD_BLOCK_SIZE;
     }
 
-    nettle_aes128_set_decrypt_key(&aesctx, key->key);
+    nettle_aes128_set_decrypt_key(&cfb.aesctx, key->key);
 
     while (size >= MKW_CFB_BLOCK_SIZE)
     {
