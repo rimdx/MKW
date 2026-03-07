@@ -113,9 +113,17 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
                           uint8_t ciphertext[MKW_CFB_BLOCK_SIZE]);
 
 void
+mkw_cfb_ctx_encrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
+                         const uint8_t *data, size_t size);
+
+void
 mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx, 
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE]);
+
+mkw_error_t
+mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
+                         const uint8_t *data, size_t size);
 
 void
 mkw_cfb_ctx_init_encryption(mkw_cfb_ctx_t *cfb,
