@@ -21,11 +21,6 @@ mkw_vector_resize(mkw_vector_t *vec, size_t new_capacity)
 {
     void **new_data = mkw_palloc(vec->pool, new_capacity * MKW_VECTOR_ELEMENT_SIZE); 
 
-#ifdef DEBUG
-    fprintf(stderr, "vector.resize(%ld -> %ld)\n",
-            vec->capacity, new_capacity);
-#endif
-
     memcpy(new_data, vec->data, vec->size);
 
     vec->data = new_data;
@@ -64,11 +59,6 @@ void
 mkw_membuf_resize(mkw_membuf_t *buf, size_t new_capacity)
 {
     uint8_t *new_data = mkw_palloc(buf->pool, new_capacity); 
-
-#ifdef DEBUG
-    fprintf(stderr, "membuf.resize(%ld -> %ld)\n",
-            buf->capacity, new_capacity);
-#endif
 
     memcpy(new_data, buf->data, buf->size);
 
