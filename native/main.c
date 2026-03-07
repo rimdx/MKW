@@ -181,6 +181,9 @@ mkw_user_open(mkw_blobstore_t *store,
     return MKW_ERROR_NONE;
 }
 
+static uint8_t *
+hex(const char *str, mkw_pool_t *pool);
+
 /* https://www.rfc-editor.org/rfc/rfc9580.html#appendix-A.9.1 */
 static mkw_error_t
 test_s2k() {
@@ -219,6 +222,37 @@ test_user_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
                           (const uint8_t *)"password", 8,
                           pool));
 
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
+test_aescfb_testvectors(mkw_ctx_t *ctx, mkw_pool_t *pool)
+{
+    /*
+     * COUNT = 0
+     * KEY = 3d2013d183970f00d3551281f2543fbd
+     * IV = 953eb9921a7ae4b9ec6d115eb720f7f0
+     * PLAINTEXT = 2590ad2e5455a6a5fe61a09ea4033c81
+     * CIPHERTEXT = 72beed95ea2239d3d087cba751e3769e
+     */
+
+    mkw_cfb_ctx_t cfb;
+    mkw_membuf_t *out = mkw_membuf_create_empty(pool);
+    uint8_t *expected = hex("72beed95ea2239d3d087cba751e3769e", pool);
+
+    mkw_cfb_ctx_init_encryption(&cfb,
+                                hex("3d2013d183970f00d3551281f2543fbd", pool),
+                                hex("953eb9921a7ae4b9ec6d115eb720f7f0", pool));
+    mkw_cfb_ctx_encrypt_full(&cfb, out,
+                             hex("2590ad2e5455a6a5fe61a09ea4033c81", pool),
+                             16);
+
+#if 0
+    mkw_base16_dump(stdout, out->data, out->size);
+#endif
+
+    assert(out->size == 16);
+    assert(memcmp(expected, out->data, 16) == 0);
     return MKW_ERROR_NONE;
 }
 
@@ -361,6 +395,7 @@ sub_main(mkw_pool_t *pool)
     MKW_ERR(mkw_ctx_create(&ctx, pool));
 
     MKW_ERR(test_s2k());
+    MKW_ERR(test_aescfb_testvectors(&ctx, pool));
     MKW_ERR(test_aes_round_trip_full_blocks(&ctx, pool));
     MKW_ERR(test_aes_round_trip_unaligned(&ctx, pool));
     MKW_ERR(test_seckeydata_round_trip(&ctx, pool));
