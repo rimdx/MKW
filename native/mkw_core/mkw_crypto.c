@@ -131,8 +131,7 @@ mkw_pgp_seckeydata_decode(mkw_memreader_t *reader,
 void
 mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
                            const mkw_s2k_t *s2k,
-                           const uint8_t *passwd,
-                           size_t passwdsize,
+                           const char *passwd,
                            const mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool)
 {
@@ -145,8 +144,7 @@ mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
     mkw_sha1(sha1, data->data, data->size);
     mkw_membuf_write_str(data, sha1, sizeof(sha1));
     
-    mkw_s2k_derive_key(s2k, passwd, passwdsize,
-                       symkey.key, sizeof(symkey.key));
+    mkw_s2k_derive_key(s2k, passwd, symkey.key, sizeof(symkey.key));
 
     /* write everything to the output */
     mkw_membuf_write_uint8(buf, MKW_S2K_USAGE_SOME_SHA1);
@@ -157,8 +155,7 @@ mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
 mkw_error_t
 mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                            mkw_s2k_t *s2k,
-                           const uint8_t *passwd,
-                           size_t passwdsize,
+                           const char *passwd,
                            mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool)
 {
@@ -180,8 +177,7 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
         return MKW_ERROR_BAD_S2K_USAGE;
     }
 
-    mkw_s2k_derive_key(s2k, passwd, passwdsize,
-                       symkey.key, sizeof(symkey.key));
+    mkw_s2k_derive_key(s2k, passwd, symkey.key, sizeof(symkey.key));
 
     /* decrypt and consume everything from the reader */
     mkw_symkey_decrypt(&symkey, plaintext,

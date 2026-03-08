@@ -110,8 +110,7 @@ mkw_user_keygen(mkw_ctx_t *ctx, mkw_user_t *user) {
 static void
 mkw_user_store(mkw_blobstore_t *store,
                mkw_user_t *user,
-               const uint8_t *passwd,
-               size_t passwdsize,
+               const char *passwd,
                mkw_ctx_t *ctx, mkw_pool_t *pool)
 {
     mkw_membuf_t *buf = mkw_membuf_create_empty(pool);
@@ -126,7 +125,7 @@ mkw_user_store(mkw_blobstore_t *store,
     };
 
     mkw_pgp_pubkey_serialize(subbuf, &pubkey);
-    mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, passwd, passwdsize,
+    mkw_pgp_seckeydata_encrypt(subbuf, &user->s2k, passwd,
                                &user->key.seckey, pool);
     mkw_pgp_packet_serialize(buf, mkw_pgp_packet_seckey,
                              subbuf->data, subbuf->size);
@@ -145,8 +144,7 @@ static mkw_error_t
 mkw_user_open(mkw_blobstore_t *store,
               mkw_user_t *user,
               const mkw_id_t *id,
-              const uint8_t *passwd,
-              size_t passwdsize,
+              const char *passwd,
               mkw_pool_t *pool)
 {
     mkw_blobstore_entry_t *entry = mkw_blobstore_get_entry(store, id);
@@ -171,8 +169,7 @@ mkw_user_open(mkw_blobstore_t *store,
             MKW_ERR(mkw_pgp_pubkey_deserialize(&bodyreader, &pubkey));
             user->key.pubkey = pubkey.material;
             MKW_ERR(mkw_pgp_seckeydata_decrypt(&bodyreader, &user->s2k,
-                                               passwd, passwdsize, &seckey,
-                                               pool));
+                                               passwd, &seckey, pool));
         } else {
             return MKW_ERROR_BAD_PACKET_TAG;
         }
@@ -200,9 +197,7 @@ test_s2k() {
     };
     uint8_t actual[16] = { 0 };
 
-    mkw_s2k_derive_key(&s2k,
-                       (const uint8_t *)"password", 8,
-                       actual, sizeof(actual));
+    mkw_s2k_derive_key(&s2k, "password", actual, sizeof(actual));
 
     assert(memcmp(expected, actual, sizeof(expected)) == 0);
     return 0;
@@ -215,12 +210,8 @@ test_user_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
     mkw_user_t user1, user2;
 
     MKW_ERR(mkw_user_keygen(ctx, &user1));
-    mkw_user_store(store, &user1,
-                   (const uint8_t *)"password", 8,
-                   ctx, pool);
-    MKW_ERR(mkw_user_open(store, &user2, &user1.id,
-                          (const uint8_t *)"password", 8,
-                          pool));
+    mkw_user_store(store, &user1, "password", ctx, pool);
+    MKW_ERR(mkw_user_open(store, &user2, &user1.id, "password", pool));
 
     return MKW_ERROR_NONE;
 }
@@ -367,14 +358,12 @@ test_seckeydata_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 
     /* */
     ciphertext = mkw_membuf_create_empty(pool);
-    mkw_pgp_seckeydata_encrypt(ciphertext, &s2k,
-                               (const uint8_t *)"password", 8,
+    mkw_pgp_seckeydata_encrypt(ciphertext, &s2k, "password",
                                seckey1, pool);
 
     reader = mkw_memreader_create(ciphertext->data, ciphertext->size, pool);
 
-    err = mkw_pgp_seckeydata_decrypt(reader, &s2k,
-                                     (const uint8_t *)"password", 8,
+    err = mkw_pgp_seckeydata_decrypt(reader, &s2k, "password",
                                      &seckey3, pool);
 
     assert(reader->remaining == 0);

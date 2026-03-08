@@ -67,7 +67,7 @@ mkw_s2k_init(mkw_ctx_t *ctx, mkw_s2k_t *s2k);
 
 void
 mkw_s2k_derive_key(const mkw_s2k_t *s2k,
-                   const uint8_t *passwd, size_t passwdsize,
+                   const char *passwd,
                    uint8_t *key, size_t keysize);
 
 void
@@ -172,16 +172,14 @@ mkw_pgp_seckeydata_decode(mkw_memreader_t *reader,
 void
 mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
                            const mkw_s2k_t *s2k,
-                           const uint8_t *passwd,
-                           size_t passwdsize,
+                           const char *passwd,
                            const mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool);
 
 mkw_error_t
 mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                            mkw_s2k_t *s2k,
-                           const uint8_t *passwd,
-                           size_t passwdsize,
+                           const char *passwd,
                            mkw_seckey_rsa_t *seckey,
                            mkw_pool_t *pool);
 

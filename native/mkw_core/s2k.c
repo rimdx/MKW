@@ -58,11 +58,13 @@ mkw_pgp_s2k_deserialize(mkw_memreader_t *reader,
 
 void
 mkw_s2k_derive_key(const mkw_s2k_t *s2k,
-                   const uint8_t *passwd, size_t passwdsize,
+                   const char *passwd,
                    uint8_t *key, size_t keysize)
 {
     struct sha256_ctx hash = { 0 };
     uint8_t digest[SHA256_DIGEST_SIZE];
+    size_t passwdsize = strlen(passwd) - 1;
+    const uint8_t *passwdbytes = (const uint8_t *)passwd;
 
     assert(keysize <= SHA256_DIGEST_SIZE);
     assert(s2k->hash == mkw_hash_tag_sha256);
@@ -70,10 +72,10 @@ mkw_s2k_derive_key(const mkw_s2k_t *s2k,
     nettle_sha256_init(&hash);
 
     if (s2k->tag == mkw_s2k_tag_simple) {
-        nettle_sha256_update(&hash, passwdsize, passwd);
+        nettle_sha256_update(&hash, passwdsize, passwdbytes);
     } else if (s2k->tag == mkw_s2k_tag_salted) {
         nettle_sha256_update(&hash, sizeof(s2k->salt), s2k->salt);
-        nettle_sha256_update(&hash, passwdsize, passwd);
+        nettle_sha256_update(&hash, passwdsize, passwdbytes);
     } else if (s2k->tag == mkw_s2k_tag_salted_iterated) {
         size_t remaining = UNPACK_S2K_ITERCOUNT(s2k->count);
         size_t count;
@@ -84,7 +86,7 @@ mkw_s2k_derive_key(const mkw_s2k_t *s2k,
             remaining -= count;
 
             count = min(passwdsize, remaining);
-            nettle_sha256_update(&hash, count, passwd);
+            nettle_sha256_update(&hash, count, passwdbytes);
             remaining -= count;
         }
     } else {
