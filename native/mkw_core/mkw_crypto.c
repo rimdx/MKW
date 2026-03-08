@@ -46,8 +46,7 @@ mkw_sha1(uint8_t *digest, const uint8_t *data, size_t size)
 
 void
 mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx, 
-                          const uint8_t plaintext[MKW_CFB_BLOCK_SIZE],
-                          uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
+                          uint8_t block[MKW_CFB_BLOCK_SIZE])
 {
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
@@ -60,16 +59,14 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
     mkw_aes_encrypt_block(&ctx->aesctx, buf);
 
     for (size_t i = 0; i < MKW_CFB_BLOCK_SIZE; i++)
-        ciphertext[i] = plaintext[i] ^ buf[i];
+        block[i] ^= buf[i];
 
-    memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
+    memcpy(ctx->p, block, MKW_CFB_BLOCK_SIZE);
 }
 
 void
 mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx, 
-                          size_t length,
-                          const uint8_t plaintext[length],
-                          uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
+                          uint8_t *block, size_t length)
 {
     assert(length <= MKW_CFB_BLOCK_SIZE);
 
@@ -80,7 +77,7 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
         mkw_aes_encrypt_block(&ctx->aesctx, buf);
 
         for (size_t i = 0; i < length; i++)
-            ciphertext[i] = plaintext[i] ^ buf[i];
+            block[i] ^= buf[i];
     }
 
     /* nuke ctx because it should never be used after finalised */
@@ -95,8 +92,8 @@ mkw_cfb_ctx_encrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
 
     while (size > MKW_CFB_BLOCK_SIZE)
     {
-        memset(buf, 0, sizeof(buf));
-        mkw_cfb_ctx_encrypt_block(cfb, data, buf);
+        memcpy(buf, data, sizeof(buf));
+        mkw_cfb_ctx_encrypt_block(cfb, buf);
         mkw_membuf_write_str(out, buf, sizeof(buf));
 
         size -= MKW_CFB_BLOCK_SIZE;
@@ -105,41 +102,42 @@ mkw_cfb_ctx_encrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
 
     assert(size > 0);
 
-    memset(buf, 0, sizeof(buf));
-    mkw_cfb_ctx_encrypt_final(cfb, size, data, buf);
-    mkw_membuf_write_str(out, buf, sizeof(buf));
+    memcpy(buf, data, size);
+    mkw_cfb_ctx_encrypt_final(cfb, buf, size);
+    mkw_membuf_write_str(out, buf, size);
 }
 
 void
 mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx, 
-                          const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
-                          uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
+                          uint8_t block[MKW_CFB_BLOCK_SIZE])
 {
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
     memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
     /* it's not a mistake. we should use "encrypt" even when decrypting */
     mkw_aes_encrypt_block(&ctx->aesctx, buf);
-    nettle_memxor(buf, ciphertext, MKW_CFB_BLOCK_SIZE);
 
-    memcpy(ctx->p, buf, MKW_CFB_BLOCK_SIZE);
-    memcpy(plaintext, buf, MKW_CFB_BLOCK_SIZE);
+    for (size_t i = 0; i < MKW_CFB_BLOCK_SIZE; i++)
+        block[i] ^= buf[i];
+
+    memcpy(ctx->p, block, MKW_CFB_BLOCK_SIZE);
 }
 
 mkw_error_t
 mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
                          const uint8_t *data, size_t size)
 {
+    uint8_t buf[MKW_CFB_BLOCK_SIZE];
+
     if (size % MKW_CFB_BLOCK_SIZE != 0) {
         return MKW_ERROR_BAD_BLOCK_SIZE;
     }
 
     while (size >= MKW_CFB_BLOCK_SIZE)
     {
-        uint8_t buf[MKW_CFB_BLOCK_SIZE];
-        mkw_cfb_ctx_decrypt_block(cfb, data, buf);
-
-        mkw_membuf_write_str(out, buf, MKW_CFB_BLOCK_SIZE);
+        memcpy(buf, data, sizeof(buf));
+        mkw_cfb_ctx_decrypt_block(cfb, buf);
+        mkw_membuf_write_str(out, buf, sizeof(buf));
 
         size -= MKW_CFB_BLOCK_SIZE;
         data += MKW_CFB_BLOCK_SIZE;
