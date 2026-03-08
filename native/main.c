@@ -236,18 +236,17 @@ test_aescfb_testvectors(mkw_ctx_t *ctx, mkw_pool_t *pool)
      * CIPHERTEXT = 72beed95ea2239d3d087cba751e3769e
      */
 
-    uint8_t *key = hex("3d2013d183970f00d3551281f2543fbd", pool);
-    uint8_t *iv = hex("953eb9921a7ae4b9ec6d115eb720f7f0", pool);
-    uint8_t *plaintext = hex("2590ad2e5455a6a5fe61a09ea4033c81", pool);
-    uint8_t *ciphertext = hex("72beed95ea2239d3d087cba751e3769e", pool);
-
+    uint8_t *key = hex("085b8af6788fa6bc1a0b47dcf50fbd35", pool);
+    uint8_t *iv = hex("58cb2b12bb52c6f14b56da9210524864", pool);
+    uint8_t *plaintext = hex("4b5a872260293312eea1a570fd39c788", pool);
+    uint8_t *ciphertext = hex("e92c80e0cfb6d8b1c27fd58bc3708b16", pool);
 
     {
         mkw_cfb_ctx_t cfb;
         mkw_membuf_t *out = mkw_membuf_create_empty(pool);
         mkw_cfb_ctx_init(&cfb, key, iv);
         mkw_cfb_ctx_encrypt_full(&cfb, out, plaintext, 16);
-
+        mkw_base16_dump(stdout, out->data, 16);
         assert(out->size == 16);
         assert(memcmp(ciphertext, out->data, 16) == 0);
     }
@@ -260,6 +259,45 @@ test_aescfb_testvectors(mkw_ctx_t *ctx, mkw_pool_t *pool)
         mkw_base16_dump(stdout, out->data, 16);
         assert(out->size == 16);
         assert(memcmp(plaintext, out->data, 16) == 0);
+    }
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
+test_aescfb_testvectors_multiblock(mkw_ctx_t *ctx, mkw_pool_t *pool)
+{
+    /*
+     * KEY = 0a8e8876c96cddf3223069002002c99f
+     * IV = b125a20ecd79e8b5ae91af738037acf7
+     * PLAINTEXT = 4fd0ecac65bfd321c88ebca0daea35d2b061205d696aab08bea68320db65451a6d6c3679fdf633f37cf8ebcf1fa94b91
+     * CIPHERTEXT = cdd1ba252b2c009f34551a6a200602d71ffbf13e684a5e60478cdf74ffe61dfded344bdc7e8000c3b0b67552917f3e4c
+     */
+
+    size_t size = 96 / 2;
+    uint8_t *key = hex("0a8e8876c96cddf3223069002002c99f", pool);
+    uint8_t *iv = hex("b125a20ecd79e8b5ae91af738037acf7", pool);
+    uint8_t *plaintext = hex("4fd0ecac65bfd321c88ebca0daea35d2b061205d696aab08bea68320db65451a6d6c3679fdf633f37cf8ebcf1fa94b91", pool);
+    uint8_t *ciphertext = hex("cdd1ba252b2c009f34551a6a200602d71ffbf13e684a5e60478cdf74ffe61dfded344bdc7e8000c3b0b67552917f3e4c", pool);
+
+    {
+        mkw_cfb_ctx_t cfb;
+        mkw_membuf_t *out = mkw_membuf_create_empty(pool);
+        mkw_cfb_ctx_init(&cfb, key, iv);
+        mkw_cfb_ctx_encrypt_full(&cfb, out, plaintext, size);
+        mkw_base16_dump(stdout, out->data, size);
+        assert(out->size == size);
+        assert(memcmp(ciphertext, out->data, size) == 0);
+    }
+
+    {
+        mkw_cfb_ctx_t cfb;
+        mkw_membuf_t *out = mkw_membuf_create_empty(pool);
+        mkw_cfb_ctx_init(&cfb, key, iv);
+        mkw_cfb_ctx_decrypt_full(&cfb, out, ciphertext, size);
+        mkw_base16_dump(stdout, out->data, size);
+        assert(out->size == size);
+        assert(memcmp(plaintext, out->data, size) == 0);
     }
 
     return MKW_ERROR_NONE;
@@ -299,7 +337,7 @@ test_aes_round_trip_unaligned(mkw_ctx_t *ctx, mkw_pool_t *pool)
     mkw_symkey_encrypt(&symkey, ciphertext, data, sizeof(data));
     mkw_symkey_decrypt(&symkey, plaintext, ciphertext->data, ciphertext->size);
 
-    assert(plaintext->size >= sizeof(data));
+    assert(plaintext->size == sizeof(data));
     assert(memcmp(plaintext->data, data, sizeof(data)) == 0);
 
     return MKW_ERROR_NONE;
@@ -405,6 +443,7 @@ sub_main(mkw_pool_t *pool)
 
     MKW_ERR(test_s2k());
     MKW_ERR(test_aescfb_testvectors(&ctx, pool));
+    MKW_ERR(test_aescfb_testvectors_multiblock(&ctx, pool));
     MKW_ERR(test_aes_round_trip_full_blocks(&ctx, pool));
     MKW_ERR(test_aes_round_trip_unaligned(&ctx, pool));
     MKW_ERR(test_seckeydata_round_trip(&ctx, pool));
