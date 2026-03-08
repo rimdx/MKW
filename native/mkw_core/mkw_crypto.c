@@ -132,17 +132,36 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
         block[i] ^= buf[i];
 }
 
-mkw_error_t
+void
+mkw_cfb_ctx_decrypt_final(mkw_cfb_ctx_t *ctx,
+                          uint8_t block[], size_t size)
+{
+    assert(size <= MKW_CFB_BLOCK_SIZE);
+
+    if (size > 0) {
+        uint8_t buf[MKW_CFB_BLOCK_SIZE];
+        mkw_aes_ctx_t aes;
+
+        memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
+
+        mkw_aes_init(&aes, ctx->key);
+        mkw_aes_encrypt_block(&aes, buf);
+
+        for (size_t i = 0; i < size; i++)
+            block[i] ^= buf[i];
+    }
+
+    /* nuke ctx because it should never be used after finalised */
+    memset(ctx, 0, sizeof(*ctx));
+}
+
+void
 mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
                          const uint8_t *data, size_t size)
 {
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
-    if (size % MKW_CFB_BLOCK_SIZE != 0) {
-        return MKW_ERROR_BAD_BLOCK_SIZE;
-    }
-
-    while (size >= MKW_CFB_BLOCK_SIZE)
+    while (size > MKW_CFB_BLOCK_SIZE)
     {
         memcpy(buf, data, sizeof(buf));
         mkw_cfb_ctx_decrypt_block(cfb, buf);
@@ -152,8 +171,9 @@ mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
         data += MKW_CFB_BLOCK_SIZE;
     }
 
-    assert(size == 0);
-    return MKW_ERROR_NONE;
+    memcpy(buf, data, size);
+    mkw_cfb_ctx_decrypt_final(cfb, buf, size);
+    mkw_membuf_write_str(out, buf, size);
 }
 
 void
@@ -180,7 +200,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
     mkw_cfb_ctx_encrypt_full(&cfb, out, data, size);
 }
 
-mkw_error_t
+void
 mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
                    mkw_membuf_t *out,
                    const uint8_t *data,
@@ -189,9 +209,7 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
     mkw_cfb_ctx_t cfb;
 
     mkw_cfb_ctx_init(&cfb, key->key, pgp_iv);
-    MKW_ERR(mkw_cfb_ctx_decrypt_full(&cfb, out, data, size));
-
-    return MKW_ERROR_NONE;
+    mkw_cfb_ctx_decrypt_full(&cfb, out, data, size);
 }
 
 void
@@ -339,8 +357,8 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
                        symkey.key, sizeof(symkey.key));
 
     /* decrypt and consume everything from the reader */
-    MKW_ERR(mkw_symkey_decrypt(&symkey, plaintext,
-                               reader->data, reader->remaining));
+    mkw_symkey_decrypt(&symkey, plaintext,
+                       reader->data, reader->remaining);
     reader->data += reader->remaining;
     reader->remaining = 0;
 

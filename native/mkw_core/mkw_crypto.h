@@ -89,7 +89,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
                    const uint8_t *data,
                    size_t size);
 
-mkw_error_t
+void
 mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
                    mkw_membuf_t *out,
                    const uint8_t *data,
@@ -137,7 +137,12 @@ void
 mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx, 
                           uint8_t block[MKW_CFB_BLOCK_SIZE]);
 
-mkw_error_t
+void
+mkw_cfb_ctx_decrypt_final(mkw_cfb_ctx_t *ctx, 
+                          uint8_t block[], size_t size);
+
+
+void
 mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
                          const uint8_t *data, size_t size);
 
