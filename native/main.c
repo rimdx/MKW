@@ -236,23 +236,32 @@ test_aescfb_testvectors(mkw_ctx_t *ctx, mkw_pool_t *pool)
      * CIPHERTEXT = 72beed95ea2239d3d087cba751e3769e
      */
 
-    mkw_cfb_ctx_t cfb;
-    mkw_membuf_t *out = mkw_membuf_create_empty(pool);
-    uint8_t *expected = hex("72beed95ea2239d3d087cba751e3769e", pool);
+    uint8_t *key = hex("3d2013d183970f00d3551281f2543fbd", pool);
+    uint8_t *iv = hex("953eb9921a7ae4b9ec6d115eb720f7f0", pool);
+    uint8_t *plaintext = hex("2590ad2e5455a6a5fe61a09ea4033c81", pool);
+    uint8_t *ciphertext = hex("72beed95ea2239d3d087cba751e3769e", pool);
 
-    mkw_cfb_ctx_init_encryption(&cfb,
-                                hex("3d2013d183970f00d3551281f2543fbd", pool),
-                                hex("953eb9921a7ae4b9ec6d115eb720f7f0", pool));
-    mkw_cfb_ctx_encrypt_full(&cfb, out,
-                             hex("2590ad2e5455a6a5fe61a09ea4033c81", pool),
-                             16);
 
-#if 0
-    mkw_base16_dump(stdout, out->data, out->size);
-#endif
+    {
+        mkw_cfb_ctx_t cfb;
+        mkw_membuf_t *out = mkw_membuf_create_empty(pool);
+        mkw_cfb_ctx_init_encryption(&cfb, key, iv);
+        mkw_cfb_ctx_encrypt_full(&cfb, out, plaintext, 16);
 
-    assert(out->size == 16);
-    assert(memcmp(expected, out->data, 16) == 0);
+        assert(out->size == 16);
+        assert(memcmp(ciphertext, out->data, 16) == 0);
+    }
+
+    {
+        mkw_cfb_ctx_t cfb;
+        mkw_membuf_t *out = mkw_membuf_create_empty(pool);
+        mkw_cfb_ctx_init_decryption(&cfb, key, iv);
+        mkw_cfb_ctx_decrypt_full(&cfb, out, ciphertext, 16);
+        mkw_base16_dump(stdout, out->data, 16);
+        assert(out->size == 16);
+        assert(memcmp(plaintext, out->data, 16) == 0);
+    }
+
     return MKW_ERROR_NONE;
 }
 
@@ -373,8 +382,8 @@ hex(const char *str, mkw_pool_t *pool)
 {
     assert(strlen(str) % 2 == 0);
     uint8_t *result = mkw_pcalloc(pool, strlen(str) / 2);
-    for (; *str; str += 2, result++) {
-        *result = decrypt_one_hex(str[0]) * 16 + decrypt_one_hex(str[1]);
+    for (uint8_t *p = result; *str; str += 2, p++) {
+        *p = decrypt_one_hex(str[0]) * 16 + decrypt_one_hex(str[1]);
     }
     return result;
 }
