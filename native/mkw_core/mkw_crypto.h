@@ -19,11 +19,7 @@ void
 mkw_sha1(uint8_t *digest, const uint8_t *data, size_t size);
 
 /* AES context */
-
-/* Block size in bytes - AES is 128b block only */
 #define MKW_AES_BLOCK_SIZE 16 
-
-/* Key length in bytes */
 #define MKW_AES_KEY_SIZE 16   
 
 typedef struct mkw_aes_ctx_t {
