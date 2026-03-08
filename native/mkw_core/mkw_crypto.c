@@ -49,13 +49,19 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t plaintext[MKW_CFB_BLOCK_SIZE],
                           uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
 {
-    nettle_aes128_encrypt(&ctx->aesctx,
-                          MKW_CFB_BLOCK_SIZE,
-                          ciphertext /* dst */,
-                          ctx->p /* src */);
+    uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
-    nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
-    memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
+    /* buf is what we want to encrypt. it's filled with the 'p'.
+     * mkw_aes_encrypt_block() does encryption in-places so it nukes the given
+     * block and writes the result there. this variables also what we need to
+     * return from the function and save to the context */
+
+    memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
+    mkw_aes_encrypt_block(&ctx->aesctx, buf);
+    nettle_memxor(buf, plaintext, MKW_CFB_BLOCK_SIZE);
+
+    memcpy(ctx->p, buf, MKW_CFB_BLOCK_SIZE);
+    memcpy(ciphertext, buf, MKW_CFB_BLOCK_SIZE);
 }
 
 void
@@ -65,14 +71,18 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
                           uint8_t ciphertext[MKW_CFB_BLOCK_SIZE])
 {
     assert(length <= MKW_CFB_BLOCK_SIZE);
-    if (length > 0) {
-        nettle_aes128_encrypt(&ctx->aesctx,
-                              MKW_CFB_BLOCK_SIZE,
-                              ciphertext /* dst */,
-                              ctx->p /* src */);
 
-        nettle_memxor(ciphertext, plaintext, MKW_CFB_BLOCK_SIZE);
+    if (length > 0) {
+        uint8_t buf[MKW_CFB_BLOCK_SIZE];
+
+        memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
+        mkw_aes_encrypt_block(&ctx->aesctx, buf);
+        nettle_memxor(buf, plaintext, MKW_CFB_BLOCK_SIZE);
+
+        memcpy(ctx->p, buf, MKW_CFB_BLOCK_SIZE);
+        memcpy(ciphertext, buf, MKW_CFB_BLOCK_SIZE);
     }
+
     /* nuke ctx because it should never be used after finalised */
     memset(ctx, 0, sizeof(*ctx));
 }
@@ -105,14 +115,15 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
 {
-    /* it's not a mistake. we should use "encrypt" even when decrypting */
-    nettle_aes128_encrypt(&ctx->aesctx,
-                          MKW_CFB_BLOCK_SIZE,
-                          plaintext, /* dst */
-                          ctx->p /* src */);
+    uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
-    nettle_memxor(plaintext, ciphertext, MKW_CFB_BLOCK_SIZE);
-    memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
+    memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
+    /* it's not a mistake. we should use "encrypt" even when decrypting */
+    mkw_aes_encrypt_block(&ctx->aesctx, buf);
+    nettle_memxor(buf, ciphertext, MKW_CFB_BLOCK_SIZE);
+
+    memcpy(ctx->p, buf, MKW_CFB_BLOCK_SIZE);
+    memcpy(plaintext, buf, MKW_CFB_BLOCK_SIZE);
 }
 
 mkw_error_t
@@ -143,7 +154,7 @@ mkw_cfb_ctx_init(mkw_cfb_ctx_t *cfb,
                  const uint8_t key[AES128_KEY_SIZE],
                  const uint8_t iv[MKW_CFB_BLOCK_SIZE])
 {
-    nettle_aes128_set_encrypt_key(&cfb->aesctx, key);
+    mkw_aes_init(&cfb->aesctx, key);
     memcpy(cfb->p, iv, sizeof(cfb->p));
 }
 
