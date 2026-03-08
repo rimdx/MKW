@@ -49,6 +49,7 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
                           uint8_t block[MKW_CFB_BLOCK_SIZE])
 {
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
+    mkw_aes_ctx_t aes;
 
     /* buf is what we want to encrypt. it's filled with the 'p'.
      * mkw_aes_encrypt_block() does encryption in-places so it nukes the given
@@ -56,7 +57,9 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
      * return from the function and save to the context */
 
     memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
-    mkw_aes_encrypt_block(&ctx->aesctx, buf);
+
+    mkw_aes_init(&aes, ctx->key);
+    mkw_aes_encrypt_block(&aes, buf);
 
     for (size_t i = 0; i < MKW_CFB_BLOCK_SIZE; i++)
         block[i] ^= buf[i];
@@ -72,9 +75,12 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
 
     if (length > 0) {
         uint8_t buf[MKW_CFB_BLOCK_SIZE];
+        mkw_aes_ctx_t aes;
 
         memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
-        mkw_aes_encrypt_block(&ctx->aesctx, buf);
+
+        mkw_aes_init(&aes, ctx->key);
+        mkw_aes_encrypt_block(&aes, buf);
 
         for (size_t i = 0; i < length; i++)
             block[i] ^= buf[i];
@@ -112,15 +118,18 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
                           uint8_t block[MKW_CFB_BLOCK_SIZE])
 {
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
+    mkw_aes_ctx_t aes;
 
     memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
+
     /* it's not a mistake. we should use "encrypt" even when decrypting */
-    mkw_aes_encrypt_block(&ctx->aesctx, buf);
+    mkw_aes_init(&aes, ctx->key);
+    mkw_aes_encrypt_block(&aes, buf);
+
+    memcpy(ctx->p, block, MKW_CFB_BLOCK_SIZE);
 
     for (size_t i = 0; i < MKW_CFB_BLOCK_SIZE; i++)
         block[i] ^= buf[i];
-
-    memcpy(ctx->p, block, MKW_CFB_BLOCK_SIZE);
 }
 
 mkw_error_t
@@ -152,7 +161,7 @@ mkw_cfb_ctx_init(mkw_cfb_ctx_t *cfb,
                  const uint8_t key[AES128_KEY_SIZE],
                  const uint8_t iv[MKW_CFB_BLOCK_SIZE])
 {
-    mkw_aes_init(&cfb->aesctx, key);
+    memcpy(cfb->key, key, sizeof(cfb->key));
     memcpy(cfb->p, iv, sizeof(cfb->p));
 }
 

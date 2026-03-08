@@ -118,7 +118,7 @@ typedef struct rsa_private_key mkw_seckey_rsa_t;
 
 typedef struct mkw_cfb_ctx_t {
     uint8_t p[MKW_CFB_BLOCK_SIZE];
-    struct mkw_aes_ctx_t aesctx;
+    uint8_t key[MKW_AES_KEY_SIZE];
 } mkw_cfb_ctx_t;
 
 void
