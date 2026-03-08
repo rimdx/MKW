@@ -11,6 +11,7 @@ pkg_check_modules(hogweed REQUIRED IMPORTED_TARGET hogweed)
 pkg_check_modules(gmp REQUIRED IMPORTED_TARGET gmp)
 
 add_library(mkw_core
+    mkw_core/aes.c
     mkw_core/armour.c
     mkw_core/memory.c
     mkw_core/mkw_crypto.c
