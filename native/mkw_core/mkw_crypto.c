@@ -316,8 +316,6 @@ mkw_pgp_seckeydata_encrypt(mkw_membuf_t *buf,
     mkw_sha1(sha1, data->data, data->size);
     mkw_membuf_write_str(data, sha1, sizeof(sha1));
     
-    mkw_base16_dump(stderr, data->data, data->size);
-
     mkw_s2k_derive_key(s2k, passwd, passwdsize,
                        symkey.key, sizeof(symkey.key));
 
@@ -362,15 +360,11 @@ mkw_pgp_seckeydata_decrypt(mkw_memreader_t *reader,
     reader->data += reader->remaining;
     reader->remaining = 0;
 
-    mkw_base16_dump(stderr, plaintext->data, plaintext->size);
-
     payload_start = plaintext->data;
     payload_reader.data = plaintext->data;
     payload_reader.remaining = plaintext->size;
 
     MKW_ERR(mkw_pgp_seckeydata_decode(&payload_reader, seckey));
-
-    mkw_base16_dump(stderr, plaintext->data, plaintext->size);
 
     payload_size = payload_reader.data - payload_start;
 
