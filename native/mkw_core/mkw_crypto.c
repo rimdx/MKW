@@ -166,7 +166,6 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
                    size_t size)
 {
     mkw_cfb_ctx_t cfb;
-    uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
     mkw_cfb_ctx_init(&cfb, key->key, pgp_iv);
     mkw_cfb_ctx_encrypt_full(&cfb, out, data, size);
