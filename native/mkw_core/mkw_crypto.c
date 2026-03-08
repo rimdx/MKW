@@ -17,6 +17,8 @@ mkw_sha1(uint8_t *digest, const uint8_t *data, size_t size)
 /* 
  * Streamly CFB feedback implementation.
  *
+ * RFC: https://www.rfc-editor.org/rfc/rfc3826#section-3.1.3
+ *
  * The nettle implementation does not support streaming and I don't really like
  * it in general.
  *
@@ -31,12 +33,17 @@ mkw_sha1(uint8_t *digest, const uint8_t *data, size_t size)
  * ciphertext). This (the ciphertext) then becomes a new p (same as in
  * encryption).
  *
+ * Important note: for both decryption and encryption, no matter where it
+ * transforms the data, we still use AES encrypt primitive. It does the job
+ * into both sides.
+ *
  * We don't really care about non-aes implications. Hence hardcode the
  * blocksize for convenience.
  *
  * There is no function to finalise context when decrypting because ciphertext
  * must be aligned to blocksize.
  */
+
 void
 mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx, 
                           const uint8_t plaintext[MKW_CFB_BLOCK_SIZE],
@@ -98,7 +105,8 @@ mkw_cfb_ctx_decrypt_block(mkw_cfb_ctx_t *ctx,
                           const uint8_t ciphertext[MKW_CFB_BLOCK_SIZE],
                           uint8_t plaintext[MKW_CFB_BLOCK_SIZE])
 {
-    nettle_aes128_decrypt(&ctx->aesctx,
+    /* it's not a mistake. we should use "encrypt" even when decrypting */
+    nettle_aes128_encrypt(&ctx->aesctx,
                           MKW_CFB_BLOCK_SIZE,
                           plaintext, /* dst */
                           ctx->p /* src */);
@@ -131,20 +139,11 @@ mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
 }
 
 void
-mkw_cfb_ctx_init_encryption(mkw_cfb_ctx_t *cfb,
-                            const uint8_t key[AES128_KEY_SIZE],
-                            const uint8_t iv[MKW_CFB_BLOCK_SIZE])
+mkw_cfb_ctx_init(mkw_cfb_ctx_t *cfb,
+                 const uint8_t key[AES128_KEY_SIZE],
+                 const uint8_t iv[MKW_CFB_BLOCK_SIZE])
 {
     nettle_aes128_set_encrypt_key(&cfb->aesctx, key);
-    memcpy(cfb->p, iv, sizeof(cfb->p));
-}
-
-void
-mkw_cfb_ctx_init_decryption(mkw_cfb_ctx_t *cfb,
-                            const uint8_t key[AES128_KEY_SIZE],
-                            const uint8_t iv[MKW_CFB_BLOCK_SIZE])
-{
-    nettle_aes128_set_decrypt_key(&cfb->aesctx, key);
     memcpy(cfb->p, iv, sizeof(cfb->p));
 }
 
@@ -160,7 +159,7 @@ mkw_symkey_encrypt(const mkw_symkey_aes_t *key,
     mkw_cfb_ctx_t cfb;
     uint8_t buf[MKW_CFB_BLOCK_SIZE];
 
-    mkw_cfb_ctx_init_encryption(&cfb, key->key, pgp_iv);
+    mkw_cfb_ctx_init(&cfb, key->key, pgp_iv);
     mkw_cfb_ctx_encrypt_full(&cfb, out, data, size);
 }
 
@@ -172,7 +171,7 @@ mkw_symkey_decrypt(const mkw_symkey_aes_t *key,
 {
     mkw_cfb_ctx_t cfb;
 
-    mkw_cfb_ctx_init_decryption(&cfb, key->key, pgp_iv);
+    mkw_cfb_ctx_init(&cfb, key->key, pgp_iv);
     MKW_ERR(mkw_cfb_ctx_decrypt_full(&cfb, out, data, size));
 
     return MKW_ERROR_NONE;

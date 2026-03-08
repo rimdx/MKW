@@ -126,14 +126,9 @@ mkw_cfb_ctx_decrypt_full(mkw_cfb_ctx_t *cfb, mkw_membuf_t *out,
                          const uint8_t *data, size_t size);
 
 void
-mkw_cfb_ctx_init_encryption(mkw_cfb_ctx_t *cfb,
-                            const uint8_t key[AES128_KEY_SIZE],
-                            const uint8_t iv[MKW_CFB_BLOCK_SIZE]);
-
-void
-mkw_cfb_ctx_init_decryption(mkw_cfb_ctx_t *cfb,
-                            const uint8_t key[AES128_KEY_SIZE],
-                            const uint8_t iv[MKW_CFB_BLOCK_SIZE]);
+mkw_cfb_ctx_init(mkw_cfb_ctx_t *cfb,
+                 const uint8_t key[AES128_KEY_SIZE],
+                 const uint8_t iv[MKW_CFB_BLOCK_SIZE]);
 
 /* Modification Detection Code (MDC). */
 

@@ -245,7 +245,7 @@ test_aescfb_testvectors(mkw_ctx_t *ctx, mkw_pool_t *pool)
     {
         mkw_cfb_ctx_t cfb;
         mkw_membuf_t *out = mkw_membuf_create_empty(pool);
-        mkw_cfb_ctx_init_encryption(&cfb, key, iv);
+        mkw_cfb_ctx_init(&cfb, key, iv);
         mkw_cfb_ctx_encrypt_full(&cfb, out, plaintext, 16);
 
         assert(out->size == 16);
@@ -255,7 +255,7 @@ test_aescfb_testvectors(mkw_ctx_t *ctx, mkw_pool_t *pool)
     {
         mkw_cfb_ctx_t cfb;
         mkw_membuf_t *out = mkw_membuf_create_empty(pool);
-        mkw_cfb_ctx_init_decryption(&cfb, key, iv);
+        mkw_cfb_ctx_init(&cfb, key, iv);
         mkw_cfb_ctx_decrypt_full(&cfb, out, ciphertext, 16);
         mkw_base16_dump(stdout, out->data, 16);
         assert(out->size == 16);
