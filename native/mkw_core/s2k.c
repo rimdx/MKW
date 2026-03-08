@@ -63,7 +63,7 @@ mkw_s2k_derive_key(const mkw_s2k_t *s2k,
 {
     struct sha256_ctx hash = { 0 };
     uint8_t digest[SHA256_DIGEST_SIZE];
-    size_t passwdsize = strlen(passwd) - 1;
+    size_t passwdsize = strlen(passwd);
     const uint8_t *passwdbytes = (const uint8_t *)passwd;
 
     assert(keysize <= SHA256_DIGEST_SIZE);
