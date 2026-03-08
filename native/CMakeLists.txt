@@ -13,6 +13,7 @@ pkg_check_modules(gmp REQUIRED IMPORTED_TARGET gmp)
 add_library(mkw_core
     mkw_core/aes.c
     mkw_core/armour.c
+    mkw_core/cfb.c
     mkw_core/memory.c
     mkw_core/mkw_crypto.c
     mkw_core/mkw_pgp.c
