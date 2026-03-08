@@ -35,7 +35,8 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 /*****************************************************************************/
 /* Includes:                                                                 */
 /*****************************************************************************/
-#include "aes.h"
+
+#include "mkw_crypto.h"
 
 /*****************************************************************************/
 /* Defines:                                                                  */
@@ -179,11 +180,6 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
     RoundKey[j + 2] = RoundKey[k + 2] ^ tempa[2];
     RoundKey[j + 3] = RoundKey[k + 3] ^ tempa[3];
   }
-}
-
-void AES_init_ctx(struct AES_ctx* ctx, const uint8_t* key)
-{
-  KeyExpansion(ctx->RoundKey, key);
 }
 
 // This function adds the round key to state.
@@ -338,13 +334,22 @@ static void InvShiftRows(state_t* state)
   (*state)[3][3] = temp;
 }
 
+void mkw_aes_init(mkw_aes_ctx_t *ctx,
+                  const uint8_t key[MKW_AES_KEY_SIZE])
+{
+  KeyExpansion(ctx->RoundKey, key);
+}
+
 // Cipher is the main function that encrypts the PlainText.
-static void Cipher(state_t* state, const uint8_t* RoundKey)
+
+void mkw_aes_encrypt_block(mkw_aes_ctx_t *ctx,
+                           uint8_t block[MKW_AES_BLOCK_SIZE])
 {
   uint8_t round = 0;
+  state_t *state = (state_t *)block;
 
   // Add the First round key to the state before starting the rounds.
-  AddRoundKey(0, state, RoundKey);
+  AddRoundKey(0, state, ctx->RoundKey);
 
   // There will be Nr rounds.
   // The first Nr-1 rounds are identical.
@@ -358,18 +363,21 @@ static void Cipher(state_t* state, const uint8_t* RoundKey)
       break;
     }
     MixColumns(state);
-    AddRoundKey(round, state, RoundKey);
+    AddRoundKey(round, state, ctx->RoundKey);
   }
   // Add round key to last round
-  AddRoundKey(Nr, state, RoundKey);
+  AddRoundKey(Nr, state, ctx->RoundKey);
 }
 
-static void InvCipher(state_t* state, const uint8_t* RoundKey)
+void
+mkw_aes_decrypt_block(mkw_aes_ctx_t *ctx,
+                      uint8_t block[MKW_AES_BLOCK_SIZE])
 {
   uint8_t round = 0;
+  state_t *state = (state_t *)block;
 
   // Add the First round key to the state before starting the rounds.
-  AddRoundKey(Nr, state, RoundKey);
+  AddRoundKey(Nr, state, ctx->RoundKey);
 
   // There will be Nr rounds.
   // The first Nr-1 rounds are identical.
@@ -379,7 +387,7 @@ static void InvCipher(state_t* state, const uint8_t* RoundKey)
   {
     InvShiftRows(state);
     InvSubBytes(state);
-    AddRoundKey(round, state, RoundKey);
+    AddRoundKey(round, state, ctx->RoundKey);
     if (round == 0) {
       break;
     }

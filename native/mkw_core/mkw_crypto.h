@@ -18,6 +18,30 @@ enum mkw_hash_tag_e {
 void
 mkw_sha1(uint8_t *digest, const uint8_t *data, size_t size);
 
+/* AES context */
+
+/* Block size in bytes - AES is 128b block only */
+#define MKW_AES_BLOCK_SIZE 16 
+
+/* Key length in bytes */
+#define MKW_AES_KEY_SIZE 16   
+
+typedef struct mkw_aes_ctx_t {
+  uint8_t RoundKey[176];
+} mkw_aes_ctx_t;
+
+void
+mkw_aes_init(mkw_aes_ctx_t *ctx,
+             const uint8_t key[MKW_AES_KEY_SIZE]);
+
+void
+mkw_aes_encrypt_block(mkw_aes_ctx_t *ctx, 
+                      uint8_t block[MKW_AES_BLOCK_SIZE]);
+
+void
+mkw_aes_decrypt_block(mkw_aes_ctx_t *ctx,
+                      uint8_t block[MKW_AES_BLOCK_SIZE]);
+
 /*
  * string to key idendifier 
  *
