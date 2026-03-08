@@ -58,10 +58,11 @@ mkw_cfb_ctx_encrypt_block(mkw_cfb_ctx_t *ctx,
 
     memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
     mkw_aes_encrypt_block(&ctx->aesctx, buf);
-    nettle_memxor(buf, plaintext, MKW_CFB_BLOCK_SIZE);
 
-    memcpy(ctx->p, buf, MKW_CFB_BLOCK_SIZE);
-    memcpy(ciphertext, buf, MKW_CFB_BLOCK_SIZE);
+    for (size_t i = 0; i < MKW_CFB_BLOCK_SIZE; i++)
+        ciphertext[i] = plaintext[i] ^ buf[i];
+
+    memcpy(ctx->p, ciphertext, MKW_CFB_BLOCK_SIZE);
 }
 
 void
@@ -77,10 +78,9 @@ mkw_cfb_ctx_encrypt_final(mkw_cfb_ctx_t *ctx,
 
         memcpy(buf, ctx->p, MKW_CFB_BLOCK_SIZE);
         mkw_aes_encrypt_block(&ctx->aesctx, buf);
-        nettle_memxor(buf, plaintext, MKW_CFB_BLOCK_SIZE);
 
-        memcpy(ctx->p, buf, MKW_CFB_BLOCK_SIZE);
-        memcpy(ciphertext, buf, MKW_CFB_BLOCK_SIZE);
+        for (size_t i = 0; i < length; i++)
+            ciphertext[i] = plaintext[i] ^ buf[i];
     }
 
     /* nuke ctx because it should never be used after finalised */
