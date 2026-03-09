@@ -274,7 +274,7 @@ mkw_memreader_eat_cstr(mkw_memreader_t *reader,
                        const char *str)
 {
     uint8_t ch;
-    for (; str; str++) {
+    for (; *str; str++) {
         MKW_ERR(mkw_memreader_read_uint8(reader, &ch));
         if (ch != *str) {
             return MKW_ERROR_BAD_CHAR;
