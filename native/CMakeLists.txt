@@ -19,6 +19,7 @@ add_library(mkw_core
     mkw_core/mkw_pgp.c
     mkw_core/mkw_storage.c
     mkw_core/packet.c
+    mkw_core/payload.c
     mkw_core/s2k.c
 )
 target_link_libraries(mkw_core PRIVATE

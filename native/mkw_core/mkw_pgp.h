@@ -90,4 +90,19 @@ void
 mkw_pgp_seckey_serialize(mkw_membuf_t *buf,
                          const mkw_encseckey_t *seckey);
 
+/* */
+typedef struct mkw_payload_entry_t {
+    const char *key;
+    mkw_membuf_t *content;
+} mkw_payload_entry_t;
+
+void
+mkw_payload_write(mkw_membuf_t *out,
+                  mkw_payload_entry_t *items[],
+                  size_t count);
+
+mkw_error_t
+mkw_payload_read(mkw_memreader_t *reader, mkw_vector_t *items,
+                 mkw_pool_t *pool);
+
 #endif
