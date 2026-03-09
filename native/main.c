@@ -418,6 +418,33 @@ test_mdc_round_trip()
 }
 
 static mkw_error_t
+test_payload(mkw_ctx_t *ctx, mkw_pool_t *pool)
+{
+    mkw_membuf_t *buf = mkw_membuf_create_empty(pool);
+    mkw_vector_t *vec = mkw_vector_create_empty(pool);
+
+    mkw_payload_entry_t username = {
+        .key = "mkw:username",
+        .content = mkw_membuf_create_from_cstr(pool, "tima"),
+    };
+    mkw_payload_entry_t passwd = {
+        .key = "mkw:password",
+        .content = mkw_membuf_create_from_cstr(pool, "secret123"),
+    };
+    mkw_payload_entry_t *items[] = { &username, &passwd };
+
+    mkw_payload_write(buf, items, 2);
+    MKW_ERR(mkw_payload_read(mkw_memreader_create(buf->data, buf->size, pool),
+                             vec, pool));
+
+#if 0
+    fwrite(buf->data, buf->size, 1, stdout);
+#endif
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
 sub_main(mkw_pool_t *pool)
 {
     mkw_blobstore_t *store = mkw_blobstore_create_mem(pool);
@@ -433,6 +460,7 @@ sub_main(mkw_pool_t *pool)
     MKW_ERR(test_aes_round_trip_unaligned(&ctx, pool));
     MKW_ERR(test_seckeydata_round_trip(&ctx, pool));
     MKW_ERR(test_user_round_trip(&ctx, pool));
+    MKW_ERR(test_payload(&ctx, pool));
 
     MKW_ERR(mkw_id_create(&ctx, &user.id));
     MKW_ERR(mkw_user_keygen(&ctx, &user));
