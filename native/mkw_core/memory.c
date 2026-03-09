@@ -74,7 +74,7 @@ mkw_membuf_create_from_nstr(mkw_pool_t *pool,
 mkw_membuf_t *
 mkw_membuf_create_from_cstr(mkw_pool_t *pool, const char *str)
 {
-    size_t size = strlen(str) + 1;
+    size_t size = strlen(str);
     return mkw_membuf_create_from_nstr(pool, str, size);
 }
 
