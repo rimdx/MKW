@@ -397,6 +397,14 @@ mkw_pstrdup(mkw_pool_t *pool, const char *cstr)
 }
 
 void *
+mkw_pmemdup(mkw_pool_t *pool, void *mem, size_t size)
+{
+    void *buf = mkw_palloc(pool, size);
+    memcpy(buf, mem, size);
+    return buf;
+}
+
+void *
 mkw_palloc(mkw_pool_t *pool, size_t size)
 {
     struct mkw_node_t *node, *old_node;

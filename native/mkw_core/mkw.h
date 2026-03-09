@@ -66,6 +66,7 @@ void mkw_pool_nuke(mkw_pool_t *pool);
 void *mkw_palloc(mkw_pool_t *pool, size_t size);
 char *mkw_pstrndup(mkw_pool_t *pool, const char *str, size_t len);
 char *mkw_pstrdup(mkw_pool_t *pool, const char *cstr);
+void *mkw_pmemdup(mkw_pool_t *pool, void *mem, size_t size);
 
 #define mkw_pcalloc(pool, size) memset(mkw_palloc(pool, size), 0, size)
 
