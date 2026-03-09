@@ -207,11 +207,17 @@ static mkw_error_t
 test_user_round_trip(mkw_ctx_t *ctx, mkw_pool_t *pool)
 { 
     mkw_blobstore_t *store = mkw_blobstore_create_mem(pool);
+    mkw_membuf_t *buf = mkw_membuf_create_empty(pool);
     mkw_user_t user1, user2;
 
     MKW_ERR(mkw_user_keygen(ctx, &user1));
     mkw_user_store(store, &user1, "password", ctx, pool);
     MKW_ERR(mkw_user_open(store, &user2, &user1.id, "password", pool));
+
+#if 1
+    mkw_blobstore_write(store, buf);
+    fwrite(buf->data, buf->size, 1, stdout);
+#endif
 
     return MKW_ERROR_NONE;
 }

@@ -23,6 +23,15 @@ typedef struct mkw_blobstore_entry_t {
 mkw_blobstore_t *
 mkw_blobstore_create_mem(mkw_pool_t *pool);
 
+mkw_error_t
+mkw_blobstore_read(mkw_blobstore_t *store,
+                   mkw_memreader_t *reader,
+                   mkw_pool_t *pool);
+
+mkw_error_t
+mkw_blobstore_write(mkw_blobstore_t *store,
+                    mkw_membuf_t *out);
+
 mkw_blobstore_entry_t *
 mkw_blobstore_get_entry(mkw_blobstore_t *store,
                         const mkw_id_t *id);
