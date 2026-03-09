@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include <gmp.h> /* for mpz_t */
 #include <nettle/yarrow.h> /* for yarrow256_ctx */
