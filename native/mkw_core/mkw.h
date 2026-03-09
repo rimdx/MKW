@@ -24,6 +24,12 @@ typedef int mkw_error_t;
         return __err; \
 } while(0);
 
+#define MKW_ERR_WRAP(expr, err) do { \
+    mkw_error_t __err = (expr); \
+    if (__err != MKW_ERROR_NONE) \
+        return err; \
+} while(0);
+
 /* error handling */
 #define MKW_ERROR_NONE                          0
 #define MKW_ERROR_EOF                           1 
