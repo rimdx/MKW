@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <nettle/base16.h>
 
+#define ALIGMENT sizeof(void *)
+#define ROUND_UP(num, magnitute) (num + magnitute - 1) / magnitute * magnitute
+#define ALIGN(size) ROUND_UP(size, ALIGMENT)
+
 /* growable vector of pointers */
 #define MKW_VECTOR_ELEMENT_SIZE sizeof(void *)
 
@@ -45,14 +49,33 @@ mkw_vector_push(mkw_vector_t *vec, void *elem)
 
 /* growable memory buffer of bytes */
 mkw_membuf_t *
-mkw_membuf_create_empty(mkw_pool_t *pool)
+mkw_membuf_create(mkw_pool_t *pool, size_t capacity)
 { 
     mkw_membuf_t *buf = mkw_palloc(pool, sizeof(*buf));
     buf->size = 0;
-    buf->capacity = 64;
+    buf->capacity = capacity;
     buf->data = mkw_palloc(pool, buf->capacity);
     buf->pool = pool;
     return buf;
+}
+
+mkw_membuf_t *
+mkw_membuf_create_from_nstr(mkw_pool_t *pool,
+                            const char *str, size_t size)
+{ 
+    mkw_membuf_t *buf = mkw_palloc(pool, sizeof(*buf));
+    buf->size = size;
+    buf->capacity = size;
+    buf->data = (uint8_t *)mkw_pstrndup(pool, str, size);
+    buf->pool = pool;
+    return buf;
+}
+
+mkw_membuf_t *
+mkw_membuf_create_from_cstr(mkw_pool_t *pool, const char *str)
+{
+    size_t size = strlen(str) + 1;
+    return mkw_membuf_create_from_nstr(pool, str, size);
 }
 
 void
@@ -296,10 +319,6 @@ mkw_memreader_subreader(mkw_memreader_t *reader,
 /* memory pools */
 #define MKW_PAGE_SIZE 4096
 
-#define ALIGMENT sizeof(void *)
-#define ROUND_UP(num, magnitute) (num + magnitute - 1) / magnitute * magnitute
-#define ALIGN(size) ROUND_UP(size, ALIGMENT)
-
 struct mkw_node_t {
     struct mkw_node_t *next;
     size_t remaining;
@@ -360,6 +379,21 @@ mkw_pool_create()
     pool->self = self;
     pool->active = NULL;
     return pool;
+}
+
+char *
+mkw_pstrndup(mkw_pool_t *pool, const char *str, size_t len)
+{
+    char *mem = mkw_palloc(pool, len);
+    memcpy(mem, str, len);
+    return mem;
+}
+
+char *
+mkw_pstrdup(mkw_pool_t *pool, const char *cstr)
+{
+    size_t len = strlen(cstr);
+    return mkw_pstrndup(pool, cstr, len);
 }
 
 void *

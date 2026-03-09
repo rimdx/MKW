@@ -46,13 +46,19 @@ typedef int mkw_error_t;
 #define MKW_ERROR_PARTIAL_LENGTH_NOT_SUPPORTED  19
 #define MKW_ERROR_BAD_BLOCK_SIZE                20
 #define MKW_ERROR_BAD_S2K_USAGE                 21 
+#define MKW_ERROR_PAYLOAD_BAD_LENGTH            22
+#define MKW_ERROR_PAYLOAD_MALFORMED             23
+#define MKW_ERROR_PAYLOAD_BAD_KEY               24
 
 /* memory allocations */
 typedef struct mkw_pool_t mkw_pool_t; 
 
 mkw_pool_t *mkw_pool_create();
 void mkw_pool_nuke(mkw_pool_t *pool);
+
 void *mkw_palloc(mkw_pool_t *pool, size_t size);
+char *mkw_pstrndup(mkw_pool_t *pool, const char *str, size_t len);
+char *mkw_pstrdup(mkw_pool_t *pool, const char *cstr);
 
 #define mkw_pcalloc(pool, size) memset(mkw_palloc(pool, size), 0, size)
 
@@ -77,7 +83,18 @@ typedef struct mkw_membuf_t {
     mkw_pool_t *pool;
 } mkw_membuf_t;
 
-mkw_membuf_t *mkw_membuf_create_empty(mkw_pool_t *pool);
+mkw_membuf_t *
+mkw_membuf_create(mkw_pool_t *pool, size_t capacity);
+
+#define mkw_membuf_create_empty(pool) mkw_membuf_create(pool, 64)
+
+mkw_membuf_t *
+mkw_membuf_create_from_cstr(mkw_pool_t *pool, const char *str);
+
+mkw_membuf_t *
+mkw_membuf_create_from_nstr(mkw_pool_t *pool,
+                            const char *str, size_t size);
+
 void mkw_membuf_resize(mkw_membuf_t *buf, size_t new_capacity);
 void mkw_membuf_ensure(mkw_membuf_t *buf, size_t size);
 
