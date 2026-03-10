@@ -5,6 +5,44 @@
 
 #include <nettle/rsa.h> /* for rsa_public_key and rsa_private_key */
 
+/* out big-integer implementation */
+typedef uint32_t mkw_limb_t;
+typedef struct mkw_bigint_t {
+    uint32_t *digits;
+    int limbs;
+    mkw_pool_t *pool;
+} mkw_bigint_t;
+
+mkw_bigint_t *mkw_bigint_create(int limbs, mkw_pool_t *pool);
+mkw_bigint_t *mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool);
+mkw_bigint_t *mkw_bigint_from_num(mkw_limb_t num, mkw_pool_t *pool);
+mkw_bigint_t *mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
+                                    mkw_pool_t *pool);
+
+void mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
+int mkw_bigint_bitsize(const mkw_bigint_t *num);
+
+/*
+ * Compares bigints a and b, returning zero if they are equal, positive value
+ * if a is greater than b and negative in opposite scenario.
+ */
+int mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b);
+
+void mkw_bigint_limbshift(mkw_bigint_t *x, int n);
+
+void mkw_bigint_reserve_limbs(mkw_bigint_t *num, int limbs);
+void mkw_bigint_reserve_bits(mkw_bigint_t *num, int bits);
+
+void mkw_bigint_print(const mkw_bigint_t *num, FILE *file);
+
+void mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n);
+void mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n);
+
+void mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n);
+void mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n);
+
+void mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n);
+
 /* digest utilities */
 enum mkw_hash_tag_e {
     mkw_hash_tag_md5 = 1,

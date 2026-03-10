@@ -451,6 +451,26 @@ test_payload(mkw_ctx_t *ctx, mkw_pool_t *pool)
 }
 
 static mkw_error_t
+test_bigint(mkw_pool_t *pool)
+{
+    {
+        mkw_bigint_t *a = mkw_bigint_from_num(UINT32_MAX, pool);
+        mkw_bigint_add_n(a, 42);
+        mkw_bigint_sub_n(a, 42);
+        assert(0 == mkw_bigint_cmp(a, mkw_bigint_from_num(UINT32_MAX, pool)));
+    }
+
+    {
+        mkw_bigint_t *a = mkw_bigint_from_num(UINT32_MAX, pool);
+        mkw_limb_t data[] = { 1, UINT32_MAX - 1 };
+        mkw_bigint_mul_n(a, 2);
+        assert(0 == mkw_bigint_cmp(a, mkw_bigint_from_limbs(data, 2, pool)));
+    }
+
+    return MKW_ERROR_NONE;
+}
+
+static mkw_error_t
 sub_main(mkw_pool_t *pool)
 {
     mkw_blobstore_t *store = mkw_blobstore_create_mem(pool);
@@ -459,6 +479,7 @@ sub_main(mkw_pool_t *pool)
 
     MKW_ERR(mkw_ctx_create(&ctx, pool));
 
+    MKW_ERR(test_bigint(pool));
     MKW_ERR(test_s2k());
     MKW_ERR(test_aescfb_testvectors(&ctx, pool));
     MKW_ERR(test_aescfb_testvectors_multiblock(&ctx, pool));
