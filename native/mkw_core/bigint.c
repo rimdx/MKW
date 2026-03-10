@@ -75,22 +75,37 @@ void
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n)
 {
     mkw_bigint_reserve_limbs(x, n->limbs);
-    memcpy(x->digits, n->digits, n->limbs * sizeof(mkw_limb_t));
+    memset(x->digits, 0, x->limbs * sizeof(mkw_limb_t));
+    memcpy(x->digits + x->limbs - n->limbs, n->digits, n->limbs * sizeof(mkw_limb_t));
+}
+
+void
+mkw_bigint_zero(mkw_bigint_t *x)
+{
+    memset(x->digits, 0, x->limbs * sizeof(mkw_limb_t));
 }
 
 void
 mkw_bigint_limbshift(mkw_bigint_t *x, int n)
 {
+    int maybe_move_right = (n < 0) ? abs(n) : 0;
+    int maybe_move_left = (n > 0) ? abs(n) : 0;
+    int bitsize = mkw_bigint_bitsize(x);
     int srcsize = x->limbs;
-    int dstsize = mkw_bigint_bitsize(x) / bitsize(mkw_limb_t) + abs(n);
-    mkw_limb_t *last = x->digits + x->limbs;
 
-    mkw_bigint_reserve_limbs(x, dstsize);
-    memmove(last - srcsize, last - dstsize, srcsize);
+    mkw_bigint_reserve_limbs(x, LIMBS_FROM_BITSIZE(bitsize) + maybe_move_left);
+
+    memmove(&x->digits[maybe_move_right],
+            &x->digits[maybe_move_left],
+            (x->limbs - abs(n)) * sizeof(mkw_limb_t));
+
+    /* strip leftover parts */
+    memset(&x->digits[(n > 0) ? x->limbs - abs(n) : 0], 0,
+           abs(n) * sizeof(mkw_limb_t));
 }
 
-static int
-limb_bitsize(mkw_limb_t limb)
+int
+mkw_limb_bitsize(mkw_limb_t limb)
 {
     int size = bitsize(mkw_limb_t);
     int mask = 1 << (size - 1);
@@ -111,7 +126,7 @@ mkw_bigint_bitsize(const mkw_bigint_t *num)
     while (size) {
         size -= bitsize(mkw_limb_t);
         if (*limb) {
-            return size + limb_bitsize(*limb);
+            return size + mkw_limb_bitsize(*limb);
         }
         limb++;
     }
@@ -122,10 +137,13 @@ void
 mkw_bigint_print(const mkw_bigint_t *num, FILE *file)
 {
     int i;
+    for (i = 0; i < 9 * (8 - num->limbs); i++) {
+        putc(' ', file);
+    }
     for (i = 0; i < num->limbs; i++) {
-        if (i > 0 && i % 4 == 0) {
-            putc('\n', file);
-        }
+        // if (i > 0 && i % 4 == 0) {
+        //     putc('\n', file);
+        // }
         fprintf(file, "%08x ", num->digits[i]);
     }
     putc('\n', file);
@@ -134,7 +152,7 @@ mkw_bigint_print(const mkw_bigint_t *num, FILE *file)
 void
 mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n)
 {
-    mkw_limb_t carry = 0;
+    mkw_biglimb_t carry = 0;
     int i;
     int size = max(mkw_bigint_bitsize(x), mkw_bigint_bitsize(n));
     mkw_bigint_reserve_bits(x, size + 1);
@@ -144,7 +162,7 @@ mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n)
         mkw_biglimb_t b = (i < n->limbs) ? LIMB_BACKWARD(n, i) : 0;
         mkw_biglimb_t sum = a + b + carry;
         LIMB_BACKWARD(x, i) = sum & LS_LIMB_MASK;
-        carry = sum & MS_LIMB_MASK;
+        carry = (sum & MS_LIMB_MASK) >> LIMB_BITS;
     }
     assert(carry == 0);
 }
@@ -154,7 +172,7 @@ mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n)
 {
     mkw_biglimb_t carry = n;
     int i;
-    int size = max(mkw_bigint_bitsize(x), limb_bitsize(n));
+    int size = max(mkw_bigint_bitsize(x), mkw_limb_bitsize(n));
     mkw_bigint_reserve_bits(x, size + 1);
 
     for (i = 0; i < x->limbs && carry; i++) {
@@ -185,7 +203,7 @@ mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
      * numbers (works for 0*0 as well).
      * */
 
-    mkw_bigint_reserve_bits(x, mkw_bigint_bitsize(x) + limb_bitsize(n));
+    mkw_bigint_reserve_bits(x, mkw_bigint_bitsize(x) + mkw_limb_bitsize(n));
     for (i = 0; i < x->limbs; i++) {
         mkw_biglimb_t product = LIMB_BACKWARD(x, i);
         product *= n;
@@ -197,16 +215,17 @@ mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
 }
 
 void
-mkw_bigint_mul(mkw_bigint_t *result, mkw_bigint_t *tmp,
-               const mkw_bigint_t *a, const mkw_bigint_t *b)
+mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
+               const mkw_bigint_t *b, mkw_bigint_t *tmp)
 {
     int i;
-    int size = mkw_bigint_bitsize(a) + mkw_bigint_bitsize(b);
-    mkw_bigint_reserve_bits(result, size + 1);
-    mkw_bigint_reserve_bits(tmp, size + 1);
+    mkw_bigint_zero(x);
 
-    for (i = 0; i < result->limbs; i++) {
-
+    for (i = 0; i < b->limbs; i++) {
+        mkw_bigint_set(tmp, a);
+        mkw_bigint_mul_n(tmp, LIMB_BACKWARD(b, i));
+        mkw_bigint_limbshift(tmp, i);
+        mkw_bigint_add(x, tmp);
     }
 }
 

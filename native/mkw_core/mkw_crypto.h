@@ -21,6 +21,7 @@ mkw_bigint_t *mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
 
 void mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
 int mkw_bigint_bitsize(const mkw_bigint_t *num);
+int mkw_limb_bitsize(mkw_limb_t limb);
 
 /*
  * Compares bigints a and b, returning zero if they are equal, positive value
@@ -42,6 +43,9 @@ void mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n);
 void mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n);
 
 void mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n);
+
+void mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
+                    const mkw_bigint_t *b, mkw_bigint_t *tmp);
 
 /* digest utilities */
 enum mkw_hash_tag_e {
