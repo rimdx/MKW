@@ -478,6 +478,7 @@ test_bigint(mkw_pool_t *pool)
 
     {
         mkw_bigint_t *x = mkw_bigint_create(0, pool);
+        mkw_bigint_t *r = mkw_bigint_create(0, pool);
         mkw_bigint_t *tmp = mkw_bigint_create(0, pool);
         mkw_limb_t data[] = { UINT32_MAX, UINT32_MAX };
         mkw_limb_t e[] = { UINT32_MAX, UINT32_MAX - 1, 0, 1 };
@@ -486,6 +487,13 @@ test_bigint(mkw_pool_t *pool)
                        mkw_bigint_from_limbs(data, 2, pool),
                        tmp);
         assert(0 == mkw_bigint_cmp(x, mkw_bigint_from_limbs(e, 4, pool)));
+
+        mkw_bigint_div(x, r,
+                       mkw_bigint_create(0, pool), mkw_bigint_create(0, pool),
+                       mkw_bigint_dup(x, pool),
+                       mkw_bigint_from_limbs(data, 2, pool));
+        mkw_bigint_print(x, stdout);
+        assert(0 == mkw_bigint_cmp(x, mkw_bigint_from_limbs(data, 2, pool)));
     }
 
     return MKW_ERROR_NONE;
