@@ -14,6 +14,7 @@ typedef struct mkw_bigint_t {
 } mkw_bigint_t;
 
 mkw_bigint_t *mkw_bigint_create(int limbs, mkw_pool_t *pool);
+mkw_bigint_t *mkw_bigint_create_empty(mkw_pool_t *pool);
 mkw_bigint_t *mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool);
 mkw_bigint_t *mkw_bigint_from_num(mkw_limb_t num, mkw_pool_t *pool);
 mkw_bigint_t *mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
@@ -21,6 +22,7 @@ mkw_bigint_t *mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
 
 mkw_bigint_t *
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
+void mkw_bigint_zero(mkw_bigint_t *x);
 
 int mkw_bigint_bitsize(const mkw_bigint_t *num);
 int mkw_limb_bitsize(mkw_limb_t limb);
@@ -53,6 +55,17 @@ void
 mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
                mkw_bigint_t *tmp1, mkw_bigint_t *tmp2,
                const mkw_bigint_t *a, const mkw_bigint_t *b);
+
+#if 1
+#define MKW_BIGINT_TRACE(x)                                                   \
+    fprintf(stderr,                                                           \
+            "BIGINT TRACING %s:%s\t" #x "\t",                                \
+            (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__), \
+            __FUNCTION__);                                                    \
+    mkw_bigint_print(x, stderr);
+#else
+#define MKW_BIGINT_TRACE(x)
+#endif
 
 /* digest utilities */
 enum mkw_hash_tag_e {

@@ -29,6 +29,16 @@ mkw_bigint_create(int limbs, mkw_pool_t *pool)
 }
 
 mkw_bigint_t *
+mkw_bigint_create_empty(mkw_pool_t *pool)
+{
+    mkw_bigint_t *bigint = mkw_pcalloc(pool, sizeof(*bigint));
+    bigint->limbs = 0;
+    bigint->digits = NULL;
+    bigint->pool = pool;
+    return bigint;
+}
+
+mkw_bigint_t *
 mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool)
 {
     mkw_bigint_t *result = mkw_bigint_create(n->limbs, pool);
@@ -279,53 +289,55 @@ mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n)
         carry = 1 ^ ((sum & MS_LIMB_MASK) >> LIMB_BITS);
     }
 
-    if (carry) {
-        fprintf(stderr, "panic in mkw_bigint_sub: negative result");
-        abort();
-    }
+    assert(carry == 0);
 }
 
 void
 mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
 {
-    mkw_biglimb_t carry = 0;
+    mkw_biglimb_t borrow = 0;
     int i;
+    int xlimbs = mkw_bigint_limbsize(x);
+    assert(xlimbs >= mkw_bigint_limbsize(n));
 
-    for (i = 0; i < x->limbs && carry; i++) {
-        mkw_biglimb_t sum = LIMB_BACKWARD(x, i);
+    MKW_BIGINT_TRACE(x);
+    MKW_BIGINT_TRACE(n);
+
+    for (i = 0; i < xlimbs; i++) {
+        mkw_biglimb_t sum = (1L << LIMB_BITS) | LIMB_BACKWARD(x, i);
         mkw_biglimb_t subtrahend = (i < n->limbs) ? LIMB_BACKWARD(n, i) : 0;
-        sum |= ((mkw_biglimb_t)1 << LIMB_BITS); /* set maybe-carry bit */
-        sum = sum - carry - subtrahend; /* perform substraction */
-
+        sum = sum - borrow - subtrahend;
         LIMB_BACKWARD(x, i) = sum & LS_LIMB_MASK;
-        carry = 1 ^ ((sum & MS_LIMB_MASK) >> LIMB_BITS);
+        borrow = 1 ^ ((sum & MS_LIMB_MASK) >> LIMB_BITS);
     }
 
-    if (carry) {
-        fprintf(stderr, "panic in mkw_bigint_sub: negative result");
-        abort();
-    }
+    MKW_BIGINT_TRACE(x);
+    assert(borrow == 0); /* prevents the number from being negative */
 }
 
 int
 mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
 {
-    int sa = mkw_bigint_bitsize(a);
-    int sb = mkw_bigint_bitsize(b);
+    int sa = mkw_bigint_limbsize(a);
+    int sb = mkw_bigint_limbsize(b);
     if (sa != sb) {
         /* larger bitsizes signifie larger integer value */
         return sa - sb;
     } else {
-        /* with the same bitsize, redirect logic to memcmp. please note, that
-         * even though bitsize are the same, the amount of limbs might still
-         * differ. for examle, the most significant limb might be zeroed and
-         * reserved for potential use in future. this still means that
-         * (0x00,0x01) and (0x01) are the same bigints (assume 8 bit limbs for
-         * convenience). */
-        int size = min(a->limbs, b->limbs);
-        return memcmp(a->digits + (a->limbs - size),
-                      b->digits + (b->limbs - size),
-                      size * sizeof(mkw_limb_t));
+        /* with the same bitsize, compare actual limbs. please note, that even
+         * though bitsize are the same, the amount of limbs might still differ.
+         * for examle, the most significant limb might be zeroed and reserved
+         * for potential use in future. this still means that (0x00,0x01) and
+         * (0x01) are the same bigints (assume 8 bit limbs for convenience). */
+
+        for (int size = min(sa, sb); size; size--) {
+            mkw_limb_t la = a->digits[a->limbs - size];
+            mkw_limb_t lb = b->digits[b->limbs - size];
+            if (la != lb) {
+                return la > lb ? 1 : -1;
+            }
+        }
+        return 0;
     }
 }
 
@@ -336,14 +348,14 @@ mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
  */
 static mkw_limb_t
 knuthd_div(mkw_bigint_t *r, mkw_bigint_t *tmp,
-                 const mkw_bigint_t *x, const mkw_bigint_t *n)
+           const mkw_bigint_t *x, const mkw_bigint_t *n)
 {
     mkw_biglimb_t result;
     int xsize = mkw_bigint_limbsize(x);
     int nsize = mkw_bigint_limbsize(n);
 
-    mkw_bigint_print(r, stdout);
-    mkw_bigint_print(n, stdout);
+    MKW_BIGINT_TRACE(x);
+    MKW_BIGINT_TRACE(n);
 
     if (xsize < nsize) {
         /* if the divident has fewer bits (i.e. is just smaller) it's obviously
@@ -387,11 +399,19 @@ knuthd_div(mkw_bigint_t *r, mkw_bigint_t *tmp,
         mkw_limb_t xmsl2 = x->digits[x->limbs - xsize + 1];
         mkw_biglimb_t xdword = (mkw_biglimb_t)xmsl1 << LIMB_BITS | xmsl2;
         mkw_biglimb_t nword = n->digits[n->limbs - nsize];
-        result = xdword / nword - 1;
-        // assert(result < ((mkw_biglimb_t)1 << LIMB_BITS));
+        result = xdword / nword;
+
+        // printf("%lx / %lx = %lx\n", xdword, nword, result);
+        if (result > LS_LIMB_MASK) {
+            result = LS_LIMB_MASK;
+        }
 
         mkw_bigint_set(r, n);
         mkw_bigint_mul_n(r, result);
+
+        MKW_BIGINT_TRACE(r);
+        MKW_BIGINT_TRACE(x);
+
         while (mkw_bigint_cmp(r, x) > 0 /* r > x, n*q > x */) {
             mkw_bigint_sub(r, n);
             result--;
@@ -400,7 +420,7 @@ knuthd_div(mkw_bigint_t *r, mkw_bigint_t *tmp,
         mkw_bigint_sub(tmp, r);
         mkw_bigint_set(r, tmp);
     }
-    mkw_bigint_print(r, stdout);
+    MKW_BIGINT_TRACE(r);
     return result;
 }
 
