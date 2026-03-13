@@ -7,10 +7,10 @@
 
 /* out big-integer implementation */
 typedef uint32_t mkw_limb_t;
+
 typedef struct mkw_bigint_t {
-    uint32_t *digits;
+    mkw_limb_t digits[512 / 32];
     int limbs;
-    mkw_pool_t *pool;
 } mkw_bigint_t;
 
 mkw_bigint_t *mkw_bigint_create(int limbs, mkw_pool_t *pool);

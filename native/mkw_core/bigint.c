@@ -22,9 +22,7 @@ mkw_bigint_t *
 mkw_bigint_create(int limbs, mkw_pool_t *pool)
 {
     mkw_bigint_t *bigint = mkw_pcalloc(pool, sizeof(*bigint));
-    bigint->limbs = limbs;
-    bigint->digits = mkw_pcalloc(pool, bigint->limbs * sizeof(mkw_limb_t));
-    bigint->pool = pool;
+    bigint->limbs = countof(bigint->digits);
     return bigint;
 }
 
@@ -32,9 +30,7 @@ mkw_bigint_t *
 mkw_bigint_create_empty(mkw_pool_t *pool)
 {
     mkw_bigint_t *bigint = mkw_pcalloc(pool, sizeof(*bigint));
-    bigint->limbs = 0;
-    bigint->digits = NULL;
-    bigint->pool = pool;
+    bigint->limbs = countof(bigint->digits);
     return bigint;
 }
 
@@ -49,13 +45,7 @@ mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool)
 void
 mkw_bigint_reserve_limbs(mkw_bigint_t *num, int limbs)
 {
-    if (num->limbs < limbs) {
-        int offset = limbs - num->limbs;
-        mkw_limb_t *buf = mkw_pcalloc(num->pool, limbs * sizeof(mkw_limb_t));
-        memcpy(buf + offset, num->digits, num->limbs * sizeof(mkw_limb_t));
-        num->digits = buf;
-        num->limbs = limbs;
-    }
+    assert(limbs <= countof(num->digits));
 }
 
 void
@@ -68,7 +58,7 @@ mkw_bigint_t *
 mkw_bigint_from_num(mkw_limb_t num, mkw_pool_t *pool)
 {
     mkw_bigint_t *bigint = mkw_bigint_create(1, pool);
-    bigint->digits[0] = num;
+    LIMB_BACKWARD(bigint, 0) = num;
     return bigint;
 }
 
@@ -77,7 +67,8 @@ mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
                       mkw_pool_t *pool)
 {
     mkw_bigint_t *bigint = mkw_bigint_create(size, pool);
-    memcpy(bigint->digits, data, size * sizeof(mkw_limb_t));
+    memcpy(&bigint->digits[bigint->limbs - size],
+           data, size * sizeof(mkw_limb_t));
     return bigint;
 }
 
@@ -147,7 +138,7 @@ int
 mkw_bigint_limbsize(const mkw_bigint_t *x)
 {
     int size = x->limbs;
-    mkw_limb_t *limb = x->digits;
+    const mkw_limb_t *limb = x->digits;
     while (size && *limb == 0) {
         limb++;
         size--;
@@ -159,7 +150,7 @@ int
 mkw_bigint_bitsize(const mkw_bigint_t *num)
 {
     int size = num->limbs * bitsize(mkw_limb_t);
-    mkw_limb_t *limb = num->digits;
+    const mkw_limb_t *limb = num->digits;
     while (size) {
         size -= bitsize(mkw_limb_t);
         if (*limb) {
@@ -194,8 +185,6 @@ mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n)
 {
     mkw_biglimb_t carry = 0;
     int i;
-    int size = max(mkw_bigint_bitsize(x), mkw_bigint_bitsize(n));
-    mkw_bigint_reserve_bits(x, size + 1);
 
     for (i = 0; i < x->limbs; i++) {
         mkw_biglimb_t a = (i < x->limbs) ? LIMB_BACKWARD(x, i) : 0;
@@ -212,8 +201,6 @@ mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n)
 {
     mkw_biglimb_t carry = n;
     int i;
-    int size = max(mkw_bigint_bitsize(x), mkw_limb_bitsize(n));
-    mkw_bigint_reserve_bits(x, size + 1);
 
     for (i = 0; i < x->limbs && carry; i++) {
         mkw_biglimb_t a = (i < x->limbs) ? LIMB_BACKWARD(x, i) : 0;
@@ -243,7 +230,6 @@ mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
      * numbers (works for 0*0 as well).
      * */
 
-    mkw_bigint_reserve_bits(x, mkw_bigint_bitsize(x) + mkw_limb_bitsize(n));
     for (i = 0; i < x->limbs; i++) {
         mkw_biglimb_t product = LIMB_BACKWARD(x, i);
         product *= n;
@@ -261,7 +247,7 @@ mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
     int i;
     mkw_bigint_zero(x);
 
-    for (i = 0; i < b->limbs; i++) {
+    for (i = 0; i < b->limbs / 2; i++) {
         mkw_bigint_set(tmp, a);
         mkw_bigint_mul_n(tmp, LIMB_BACKWARD(b, i));
         mkw_bigint_limbshift(tmp, i);
@@ -435,7 +421,6 @@ mkw_bigint_div(mkw_bigint_t *x, mkw_bigint_t *r,
 
     mkw_bigint_zero(x);
     mkw_bigint_zero(r);
-    mkw_bigint_reserve_limbs(x, LIMBS_FROM_BITSIZE(mkw_bigint_bitsize(a)));
 
     for (i = 0; i < alimbs; i++) {
         mkw_bigint_limbshift(r, 1);

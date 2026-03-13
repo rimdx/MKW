@@ -517,10 +517,10 @@ test_bigint(mkw_pool_t *pool)
             mkw_limb_t a_data[] = { rand(), rand() };
             mkw_limb_t b_data[] = { rand(), rand() };
 
-            a->digits[0] = rand();
-            a->digits[1] = rand();
-            b->digits[0] = rand();
-            b->digits[1] = rand();
+            a->digits[14] = rand();
+            a->digits[15] = rand();
+            b->digits[14] = rand();
+            b->digits[15] = rand();
             mkw_bigint_zero(x);
             mkw_bigint_zero(r);
 

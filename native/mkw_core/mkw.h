@@ -16,6 +16,7 @@
 #define DEBUG
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
+#define countof(p) sizeof(p) / sizeof(*p)
 
 typedef int mkw_error_t;
 
