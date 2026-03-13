@@ -78,8 +78,8 @@ mkw_bigint_zero(mkw_bigint_t *x)
 void
 mkw_bigint_limbshift(mkw_bigint_t *x, int n)
 {
-    int maybe_move_right = (n < 0) ? abs(n) : 0;
-    int maybe_move_left = (n > 0) ? abs(n) : 0;
+    int maybe_move_right = (n > 0) ? abs(n) : 0;
+    int maybe_move_left = (n < 0) ? abs(n) : 0;
     int srcsize = x->limbs;
 
     memmove(&x->digits[maybe_move_right],
@@ -87,7 +87,7 @@ mkw_bigint_limbshift(mkw_bigint_t *x, int n)
             max(x->limbs - abs(n), 0) * sizeof(mkw_limb_t));
 
     /* strip leftover parts */
-    memset(&x->digits[(n > 0) ? x->limbs - abs(n) : 0], 0,
+    memset(&x->digits[(n < 0) ? x->limbs - abs(n) : 0], 0,
            abs(n) * sizeof(mkw_limb_t));
 }
 
@@ -122,7 +122,7 @@ mkw_limb_bitsize(mkw_limb_t limb)
 void
 mkw_bigint_print(const mkw_bigint_t *num, FILE *file)
 {
-    for (int i = countof(num->digits); i >= 0; i--) {
+    for (int i = 6; i >= 0; i--) {
         fprintf(file, "%08x ", num->digits[i]);
     }
     putc('\n', file);
@@ -250,19 +250,106 @@ mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
 int
 mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
 {
+    int size, result = 0;
+
+    MKW_BIGINT_TRACE(a);
+    MKW_BIGINT_TRACE(b);
+
     /* with the same bitsize, compare actual limbs. please note, that even
      * though bitsize are the same, the amount of limbs might still differ.
      * for examle, the most significant limb might be zeroed and reserved
      * for potential use in future. this still means that (0x00,0x01) and
      * (0x01) are the same bigints (assume 8 bit limbs for convenience). */
 
-    for (int size = 16; size; size--) {
+    for (size = 15; size >= 0; size--) {
         mkw_limb_t la = a->digits[size];
         mkw_limb_t lb = b->digits[size];
         if (la != lb) {
-            return la > lb ? 1 : -1;
+            result = la > lb ? 1 : -1;
+            break;
         }
     }
 
-    return 0;
+    printf("compared: %d\n", result);
+    return result;
+}
+
+#define BIGLIMB(low, high) (((mkw_biglimb_t)low << LIMB_BITS) | (high))
+
+void
+mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
+               const mkw_bigint_t *x, const mkw_bigint_t *n)
+{
+    /* nsize is more like an index actually. it holds position of first
+     * non-zero limb index of what we divide by. this is imprortant for the
+     * whole thing to function because we want to avoid dividing by zero. and
+     * this is just how the algorithm generally works. */
+    int nsize = n->limbs - 1;
+    int i;
+    mkw_biglimb_t nword;
+
+    MKW_BIGINT_TRACE(x);
+    MKW_BIGINT_TRACE(n);
+
+    memset(remainder->digits, 0, sizeof(remainder->digits));
+    memset(result->digits, 0, sizeof(result->digits));
+
+    /* skips all zeres from n to measure its real size. also capture nword */
+    while ((nword = n->digits[nsize]) == 0) {
+        nsize--;
+
+        /* this basically signifies that the number we divide by is zero which
+         * is illegal and banned by convention of our implementation. we're not
+         * going to make any speacial cases to handle that nor do we need any
+         * in the real world. */
+        assert(nsize >= 0);
+    }
+
+    /* division is rare case when the operaion actually start from the lowest
+     * limb. substract one cuz it's an index. */
+    for (i = countof(x->digits) - 1; i >= 0; i--) {
+        mkw_biglimb_t xdword, quotient;
+        mkw_bigint_t product = {
+            .limbs = countof(product.digits)
+        };
+
+        /* leftshift and move new number into the newly emptied slot */
+        memmove(&remainder->digits[1],
+                &remainder->digits[0],
+                countof(remainder->digits) - 1);
+        remainder->digits[0] = x->digits[i];
+
+        MKW_BIGINT_TRACE(remainder);
+
+        /* that's weird to add one to the first component (lower) when parsing
+         * a number but that is the life with little endian. the xdword number
+         * must capture one more digit then the nword */
+        xdword = BIGLIMB(remainder->digits[nsize + 1],
+                         remainder->digits[nsize]);
+
+        /* cut of if result tends to be more than it fits into a single limb.
+         * this is possible but out of range number will never be the answer to
+         * what we want to write into the digit. */
+        quotient = min(xdword / nword, LS_LIMB_MASK);
+
+        printf("%ld / %ld = %ld\n", xdword, nword, quotient);
+
+        /* here we recover the digits with a hint that we currently have in the
+         * quotient and the formula (x=n*q+r). we just iterate until the
+         * conditions meet. (product that we guessed should become less than
+         * the other factor (remainder in our case) -> while[p > n]). the
+         * remainder and the quotient (answer to the short the guessed number)
+         * are adjusted in process. */
+
+        /* product = n * quotient */
+        mkw_bigint_mul_n(mkw_bigint_set(&product, n), quotient);
+        /* while [product > remainder] */
+        while (mkw_bigint_cmp(&product, remainder) > 0) {
+            mkw_bigint_sub(&product, n);
+            quotient--;
+        }
+
+        mkw_bigint_sub(remainder, &product);
+        result->digits[i] = quotient;
+    }
 }

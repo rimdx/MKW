@@ -55,6 +55,9 @@ void mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n);
 void mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
                     const mkw_bigint_t *b, mkw_bigint_t *tmp);
 
+void mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
+                    const mkw_bigint_t *x, const mkw_bigint_t *n);
+
 #if 1
 #define MKW_BIGINT_TRACE(x)                                                   \
     fprintf(stderr,                                                           \
