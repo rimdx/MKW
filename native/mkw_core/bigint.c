@@ -42,18 +42,6 @@ mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool)
     return result;
 }
 
-void
-mkw_bigint_reserve_limbs(mkw_bigint_t *num, int limbs)
-{
-    assert(limbs <= countof(num->digits));
-}
-
-void
-mkw_bigint_reserve_bits(mkw_bigint_t *num, int bits)
-{
-    mkw_bigint_reserve_limbs(num, LIMBS_FROM_BITSIZE(bits));
-}
-
 mkw_bigint_t *
 mkw_bigint_from_num(mkw_limb_t num, mkw_pool_t *pool)
 {
@@ -75,7 +63,6 @@ mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
 mkw_bigint_t *
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n)
 {
-    mkw_bigint_reserve_limbs(x, n->limbs);
     memset(x->digits, 0, x->limbs * sizeof(mkw_limb_t));
     memcpy(x->digits + x->limbs - n->limbs, n->digits, n->limbs * sizeof(mkw_limb_t));
     return x;
@@ -94,8 +81,6 @@ mkw_bigint_limbshift(mkw_bigint_t *x, int n)
     int maybe_move_left = (n > 0) ? abs(n) : 0;
     int bitsize = mkw_bigint_bitsize(x);
     int srcsize = x->limbs;
-
-    mkw_bigint_reserve_limbs(x, LIMBS_FROM_BITSIZE(bitsize) + maybe_move_left);
 
     memmove(&x->digits[maybe_move_right],
             &x->digits[maybe_move_left],

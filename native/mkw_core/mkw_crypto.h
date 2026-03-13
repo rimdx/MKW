@@ -35,9 +35,6 @@ int mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b);
 
 void mkw_bigint_limbshift(mkw_bigint_t *x, int n);
 
-void mkw_bigint_reserve_limbs(mkw_bigint_t *num, int limbs);
-void mkw_bigint_reserve_bits(mkw_bigint_t *num, int bits);
-
 void mkw_bigint_print(const mkw_bigint_t *num, FILE *file);
 
 void mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n);
