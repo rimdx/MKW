@@ -67,6 +67,56 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
 #define MKW_BIGINT_TRACE(x)
 #endif
 
+/* Elliptic Curves Cryptosystem. */
+typedef struct mkw_ecc_point_t {
+    /* a ecc curve could be stuck at something often called zero or infinity
+     * point. it's just a special state that should be handled. in most cases
+     * infinity points are just banned and are illegal for most transformations
+     * to function properly. */
+    int is_infinity;
+    mkw_bigint_t *x;
+    mkw_bigint_t *y;
+} mkw_ecc_point_t;
+
+/* 
+ * Represents the curve parameters.
+ * https://en.wikipedia.org/wiki/Elliptic-curve_cryptography#Domain_parameters 
+ */
+typedef struct mkw_ecc_curve_t {
+    /*
+     * a and b constants from the curve equation.
+     * y^2 (mod p) = x^3+x^a+b (mod p)
+     * https://en.wikipedia.org/wiki/Elliptic-curve_cryptography#Elliptic_curve_theory
+     */
+    mkw_bigint_t *a;
+    mkw_bigint_t *b;
+
+    /* the starting (generator) point. it must be on the curve. */
+    mkw_ecc_point_t *g;
+
+    /* prime p (or non-prime for binray curves but we're not binray to care to
+     * support them) that represents modulus of elliptic curve field. */
+    mkw_bigint_t *p;
+} mkw_ecc_curve;
+
+/* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_addition */
+void
+mkw_ecc_point_add(mkw_ecc_point_t *x, const mkw_ecc_point_t *n);
+
+/* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_doubling  */
+void
+mkw_ecc_point_double(mkw_ecc_point_t *x);
+
+/*
+ * point multiplication is built on repeated doubling it and adding of a point
+ * to itself. similar to square-and-multiply exponentiation of large numbers
+ * (which is used in RSA and not only), the same is applicable and is the basic
+ * operation which the entire ECC cryptosystem relies on.
+ *
+ * https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
+ */
+void mkw_ecc_point_mul(mkw_ecc_point_t *x, const mkw_bigint_t *n);
+
 /* digest utilities */
 enum mkw_hash_tag_e {
     mkw_hash_tag_md5 = 1,
