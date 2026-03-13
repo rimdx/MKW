@@ -6,8 +6,18 @@
 #include <nettle/rsa.h> /* for rsa_public_key and rsa_private_key */
 
 /* out big-integer implementation */
+
 typedef uint32_t mkw_limb_t;
 
+/* 
+ * a representation of a large unsigned integer number with support of
+ * essential cryptographic math functions that we need to implement public key
+ * cryptosystem.
+ *
+ * please note: the digits are in little-endian. this simplifies backward
+ * indexing (what we need more often) and gives more significance to higher
+ * components (limbs).
+ * */
 typedef struct mkw_bigint_t {
     mkw_limb_t digits[512 / 32];
     int limbs;
@@ -23,9 +33,6 @@ mkw_bigint_t *mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
 mkw_bigint_t *
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
 void mkw_bigint_zero(mkw_bigint_t *x);
-
-int mkw_bigint_bitsize(const mkw_bigint_t *num);
-int mkw_limb_bitsize(mkw_limb_t limb);
 
 /*
  * Compares bigints a and b, returning zero if they are equal, positive value
@@ -47,11 +54,6 @@ void mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n);
 
 void mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
                     const mkw_bigint_t *b, mkw_bigint_t *tmp);
-
-void
-mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
-               mkw_bigint_t *tmp1, mkw_bigint_t *tmp2,
-               const mkw_bigint_t *a, const mkw_bigint_t *b);
 
 #if 1
 #define MKW_BIGINT_TRACE(x)                                                   \
