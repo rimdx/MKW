@@ -178,16 +178,17 @@ mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
 
 void
 mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
-               const mkw_bigint_t *b, mkw_bigint_t *tmp)
+               const mkw_bigint_t *b)
 {
     int i;
     mkw_bigint_zero(x);
 
     for (i = 0; i < MKW_BIGINT_LIMBS / 2; i++) {
-        mkw_bigint_set(tmp, a);
-        mkw_bigint_mul_n(tmp, b->digits[i]);
-        mkw_bigint_limbshift(tmp, i);
-        mkw_bigint_add(x, tmp);
+        mkw_bigint_t tmp;
+        mkw_bigint_set(&tmp, a);
+        mkw_bigint_mul_n(&tmp, b->digits[i]);
+        mkw_bigint_limbshift(&tmp, i);
+        mkw_bigint_add(x, &tmp);
     }
 }
 
