@@ -220,9 +220,6 @@ mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
     mkw_biglimb_t borrow = 0;
     int i;
 
-    MKW_BIGINT_TRACE(x);
-    MKW_BIGINT_TRACE(n);
-
     for (i = 0; i < MKW_BIGINT_LIMBS; i++) {
         mkw_biglimb_t sum = (1L << MKW_BIGINT_LIMB_BITS) | x->digits[i];
         sum = sum - borrow - n->digits[i];
@@ -230,7 +227,6 @@ mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
         borrow = 1 ^ ((sum & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS);
     }
 
-    MKW_BIGINT_TRACE(x);
     assert(borrow == 0); /* prevents the number from being negative */
 }
 
@@ -238,9 +234,6 @@ int
 mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
 {
     int size, result = 0;
-
-    MKW_BIGINT_TRACE(a);
-    MKW_BIGINT_TRACE(b);
 
     /* with the same bitsize, compare actual limbs. please note, that even
      * though bitsize are the same, the amount of limbs might still differ.
@@ -257,7 +250,6 @@ mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
         }
     }
 
-    printf("compared: %d\n", result);
     return result;
 }
 
@@ -274,9 +266,6 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
     int nsize = MKW_BIGINT_LIMBS - 1;
     int i;
     mkw_biglimb_t nword;
-
-    MKW_BIGINT_TRACE(x);
-    MKW_BIGINT_TRACE(n);
 
     memset(remainder->digits, 0, sizeof(remainder->digits));
     memset(result->digits, 0, sizeof(result->digits));
@@ -304,8 +293,6 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
                 countof(remainder->digits) - 1);
         remainder->digits[0] = x->digits[i];
 
-        MKW_BIGINT_TRACE(remainder);
-
         /* that's weird to add one to the first component (lower) when parsing
          * a number but that is the life with little endian. the xdword number
          * must capture one more digit then the nword */
@@ -316,8 +303,6 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
          * this is possible but out of range number will never be the answer to
          * what we want to write into the digit. */
         quotient = min(xdword / nword, LS_LIMB_MASK);
-
-        printf("%ld / %ld = %ld\n", xdword, nword, quotient);
 
         /* here we recover the digits with a hint that we currently have in the
          * quotient and the formula (x=n*q+r). we just iterate until the
