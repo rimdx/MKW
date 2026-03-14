@@ -4,12 +4,7 @@
 typedef uint64_t mkw_biglimb_t;
 #define LS_LIMB_MASK 0x00000000ffffffff
 #define MS_LIMB_MASK 0xffffffff00000000
-#define LIMBS_FROM_BITSIZE(bits) \
-    ((bits + bitsize(mkw_limb_t) - 1) / bitsize(mkw_limb_t))
 #define LIMB_BITS bitsize(mkw_limb_t)
-
-#define LIMB_FORWARD(bigint, index) bigint->digits[index]
-#define LIMB_BACKWARD(bigint, index) bigint->digits[MKW_BIGINT_LIMBS - 1 - (index)]
 
 #undef max
 static int
@@ -95,7 +90,7 @@ mkw_bigint_getbit(const mkw_bigint_t *x, int n)
 void
 mkw_bigint_setbit(mkw_bigint_t *x, int n, int v)
 {
-    int limb = LIMB_BACKWARD(x, n / LIMB_BITS);
+    int limb = x->digits[n / LIMB_BITS];
     limb = (limb & ~(1 << (n % LIMB_BITS))) | (v << (n % LIMB_BITS));
     x->digits[n / LIMB_BITS] = limb;
 }
