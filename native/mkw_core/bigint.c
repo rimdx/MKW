@@ -12,57 +12,10 @@ max(int a, int b) {
 }
 
 mkw_bigint_t *
-mkw_bigint_create(int limbs, mkw_pool_t *pool)
-{
-    mkw_bigint_t *bigint = mkw_pcalloc(pool, sizeof(*bigint));
-    return bigint;
-}
-
-mkw_bigint_t *
-mkw_bigint_create_empty(mkw_pool_t *pool)
-{
-    mkw_bigint_t *bigint = mkw_pcalloc(pool, sizeof(*bigint));
-    return bigint;
-}
-
-mkw_bigint_t *
-mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool)
-{
-    mkw_bigint_t *result = mkw_bigint_create(0, pool);
-    mkw_bigint_set(result, n);
-    return result;
-}
-
-mkw_bigint_t *
-mkw_bigint_from_num(mkw_limb_t num, mkw_pool_t *pool)
-{
-    mkw_bigint_t *bigint = mkw_bigint_create(1, pool);
-    bigint->digits[0] = num;
-    return bigint;
-}
-
-mkw_bigint_t *
-mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
-                      mkw_pool_t *pool)
-{
-    mkw_bigint_t *bigint = mkw_bigint_create(size, pool);
-    for (int i = 0; i < size; i++) {
-        bigint->digits[size - i - 1] = data[i];
-    }
-    return bigint;
-}
-
-mkw_bigint_t *
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n)
 {
     memcpy(x->digits, n->digits, sizeof(x->digits));
     return x;
-}
-
-void
-mkw_bigint_zero(mkw_bigint_t *x)
-{
-    memset(x->digits, 0, sizeof(x->digits));
 }
 
 void
@@ -78,20 +31,6 @@ mkw_bigint_limbshift(mkw_bigint_t *x, int n)
     /* strip leftover parts */
     memset(&x->digits[(n < 0) ? MKW_BIGINT_LIMBS - abs(n) : 0], 0,
            abs(n) * sizeof(mkw_limb_t));
-}
-
-int
-mkw_bigint_getbit(const mkw_bigint_t *x, int n)
-{
-    return x->digits[n / MKW_BIGINT_LIMB_BITS] & (1 << (n % MKW_BIGINT_LIMB_BITS));
-}
-
-void
-mkw_bigint_setbit(mkw_bigint_t *x, int n, int v)
-{
-    int limb = x->digits[n / MKW_BIGINT_LIMB_BITS];
-    limb = (limb & ~(1 << (n % MKW_BIGINT_LIMB_BITS))) | (v << (n % MKW_BIGINT_LIMB_BITS));
-    x->digits[n / MKW_BIGINT_LIMB_BITS] = limb;
 }
 
 int
@@ -181,7 +120,7 @@ mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
                const mkw_bigint_t *b)
 {
     int i;
-    mkw_bigint_zero(x);
+    memset(x->digits, 0, sizeof(x->digits));
 
     for (i = 0; i < MKW_BIGINT_LIMBS / 2; i++) {
         mkw_bigint_t tmp;

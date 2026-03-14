@@ -456,86 +456,55 @@ test_bigint(mkw_pool_t *pool)
     int i;
 
     {
-        mkw_bigint_t *a = mkw_bigint_from_num(UINT32_MAX, pool);
-        mkw_bigint_add_n(a, 42);
-        mkw_bigint_sub_n(a, 42);
-        assert(0 == mkw_bigint_cmp(a, mkw_bigint_from_num(UINT32_MAX, pool)));
+        mkw_bigint_t a, b;
+        a.digits[0] = UINT32_MAX;
+        b.digits[0] = UINT32_MAX;
+        mkw_bigint_add_n(&a, 42);
+        mkw_bigint_sub_n(&a, 42);
+        assert(0 == mkw_bigint_cmp(&a, &b));
     }
 
     {
-        mkw_bigint_t *a = mkw_bigint_from_num(UINT32_MAX, pool);
-        mkw_limb_t data[] = { 1, UINT32_MAX - 1 };
-        mkw_bigint_mul_n(a, 2);
-        assert(0 == mkw_bigint_cmp(a, mkw_bigint_from_limbs(data, 2, pool)));
+        mkw_bigint_t a, b;
+        a.digits[0] = UINT32_MAX;
+        b.digits[0] = UINT32_MAX - 1;
+        b.digits[1] = 1;
+        mkw_bigint_mul_n(&a, 2);
+        assert(0 == mkw_bigint_cmp(&a, &b));
     }
 
-    {
-        mkw_limb_t data[] = { UINT32_MAX, UINT32_MAX };
-        mkw_limb_t e[] = { 1, UINT32_MAX, UINT32_MAX - 1 };
-        mkw_bigint_t *x = mkw_bigint_from_limbs(data, 2, pool);
-        mkw_bigint_t *n = mkw_bigint_from_limbs(data, 2, pool);
-        mkw_bigint_add(x, n);
-        assert(0 == mkw_bigint_cmp(x, mkw_bigint_from_limbs(e, 3, pool)));
-    }
+    for (i = 64969871; i < 100000000; i++) {
+        mkw_bigint_t a, b, tmp;
+        mkw_bigint_t x = { 0 };
+        mkw_bigint_t r = { 0 };
 
-    {
-        mkw_bigint_t *x = mkw_bigint_create(0, pool);
-        mkw_bigint_t *r = mkw_bigint_create(0, pool);
-        mkw_bigint_t *tmp = mkw_bigint_create(0, pool);
-        mkw_limb_t data[] = { UINT32_MAX, UINT32_MAX };
-        mkw_limb_t e[] = { UINT32_MAX, UINT32_MAX - 1, 0, 1 };
-        mkw_bigint_mul(x,
-                       mkw_bigint_from_limbs(data, 2, pool),
-                       mkw_bigint_from_limbs(data, 2, pool));
-        assert(0 == mkw_bigint_cmp(x, mkw_bigint_from_limbs(e, 4, pool)));
-
-        mkw_bigint_div(x, r,
-                       mkw_bigint_dup(x, pool),
-                       mkw_bigint_from_limbs(data, 2, pool));
-        assert(0 == mkw_bigint_cmp(x, mkw_bigint_from_limbs(data, 2, pool)));
-        // assert(0 == mkw_bigint_bitsize(r));
-     }
- 
-    {
-        mkw_bigint_t *tmp1 = mkw_bigint_create_empty(pool);
-        mkw_bigint_t *tmp2 = mkw_bigint_create_empty(pool);
-        mkw_bigint_t *tmp3 = mkw_bigint_create_empty(pool);
-        mkw_bigint_t *a = mkw_bigint_create(2, pool);
-        mkw_bigint_t *b = mkw_bigint_create(2, pool);
-        mkw_bigint_t *x = mkw_bigint_create_empty(pool);
-        mkw_bigint_t *r = mkw_bigint_create_empty(pool);
-
-        for (i = 64969871; i < 100000000; i++) {
-            if (i % 10000 == 0 || 1) {
-                fprintf(stdout, "fuzzing: %d\n", i);
-            }
-
-            srand(i);
-
-            mkw_limb_t a_data[] = { rand(), rand() };
-            mkw_limb_t b_data[] = { rand(), rand() };
-
-            a->digits[1] = rand();
-            a->digits[0] = rand();
-            b->digits[1] = rand();
-            b->digits[0] = rand();
-            mkw_bigint_zero(x);
-            mkw_bigint_zero(r);
-
-            mkw_bigint_mul(x, a, b);
-
-            MKW_BIGINT_TRACE(a);
-            MKW_BIGINT_TRACE(b);
-
-            mkw_bigint_div(x, r, mkw_bigint_set(tmp3, x), a);
-            assert(0 == mkw_bigint_cmp(x, b));
-            // assert(0 == mkw_bigint_bitsize(r));
-
-            mkw_bigint_mul(x, a, b);
-            mkw_bigint_div(x, r, mkw_bigint_set(tmp3, x), b);
-            assert(0 == mkw_bigint_cmp(x, a));
-            // assert(0 == mkw_bigint_bitsize(r));
+        if (i % 10000 == 0 || 1) {
+            fprintf(stdout, "fuzzing: %d\n", i);
         }
+
+        srand(i);
+
+        mkw_limb_t a_data[] = { rand(), rand() };
+        mkw_limb_t b_data[] = { rand(), rand() };
+
+        a.digits[1] = rand();
+        a.digits[0] = rand();
+        b.digits[1] = rand();
+        b.digits[0] = rand();
+
+        mkw_bigint_mul(&x, &a, &b);
+
+        MKW_BIGINT_TRACE(&a);
+        MKW_BIGINT_TRACE(&b);
+
+        mkw_bigint_div(&x, &r, mkw_bigint_set(&tmp, &x), &a);
+        assert(0 == mkw_bigint_cmp(&x, &b));
+        // assert(0 == mkw_bigint_bitsize(r));
+
+        mkw_bigint_mul(&x, &a, &b);
+        mkw_bigint_div(&x, &r, mkw_bigint_set(&tmp, &x), &b);
+        assert(0 == mkw_bigint_cmp(&x, &a));
+        // assert(0 == mkw_bigint_bitsize(r));
     }
 
     return MKW_ERROR_NONE;

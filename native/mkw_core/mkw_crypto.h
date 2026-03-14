@@ -26,16 +26,8 @@ typedef struct mkw_bigint_t {
     mkw_limb_t digits[MKW_BIGINT_LIMBS];
 } mkw_bigint_t;
 
-mkw_bigint_t *mkw_bigint_create(int limbs, mkw_pool_t *pool);
-mkw_bigint_t *mkw_bigint_create_empty(mkw_pool_t *pool);
-mkw_bigint_t *mkw_bigint_dup(const mkw_bigint_t *n, mkw_pool_t *pool);
-mkw_bigint_t *mkw_bigint_from_num(mkw_limb_t num, mkw_pool_t *pool);
-mkw_bigint_t *mkw_bigint_from_limbs(const mkw_limb_t *data, mkw_limb_t size,
-                                    mkw_pool_t *pool);
-
 mkw_bigint_t *
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
-void mkw_bigint_zero(mkw_bigint_t *x);
 
 /*
  * Compares bigints a and b, returning zero if they are equal, positive value
