@@ -4,7 +4,6 @@
 typedef uint64_t mkw_biglimb_t;
 #define LS_LIMB_MASK 0x00000000ffffffff
 #define MS_LIMB_MASK 0xffffffff00000000
-#define LIMB_BITS bitsize(mkw_limb_t)
 
 #undef max
 static int
@@ -84,15 +83,15 @@ mkw_bigint_limbshift(mkw_bigint_t *x, int n)
 int
 mkw_bigint_getbit(const mkw_bigint_t *x, int n)
 {
-    return x->digits[n / LIMB_BITS] & (1 << (n % LIMB_BITS));
+    return x->digits[n / MKW_BIGINT_LIMB_BITS] & (1 << (n % MKW_BIGINT_LIMB_BITS));
 }
 
 void
 mkw_bigint_setbit(mkw_bigint_t *x, int n, int v)
 {
-    int limb = x->digits[n / LIMB_BITS];
-    limb = (limb & ~(1 << (n % LIMB_BITS))) | (v << (n % LIMB_BITS));
-    x->digits[n / LIMB_BITS] = limb;
+    int limb = x->digits[n / MKW_BIGINT_LIMB_BITS];
+    limb = (limb & ~(1 << (n % MKW_BIGINT_LIMB_BITS))) | (v << (n % MKW_BIGINT_LIMB_BITS));
+    x->digits[n / MKW_BIGINT_LIMB_BITS] = limb;
 }
 
 int
@@ -129,7 +128,7 @@ mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n)
         mkw_biglimb_t b = (i < MKW_BIGINT_LIMBS) ? n->digits[i] : 0;
         mkw_biglimb_t sum = a + b + carry;
         x->digits[i] = sum & LS_LIMB_MASK;
-        carry = (sum & MS_LIMB_MASK) >> LIMB_BITS;
+        carry = (sum & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS;
     }
     assert(carry == 0);
 }
@@ -143,7 +142,7 @@ mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n)
     for (i = 0; i < MKW_BIGINT_LIMBS && carry; i++) {
         mkw_biglimb_t sum = x->digits[i] + carry;
         x->digits[i] = sum & LS_LIMB_MASK;
-        carry = (sum & MS_LIMB_MASK) >> LIMB_BITS;
+        carry = (sum & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS;
     }
 }
 
@@ -172,7 +171,7 @@ mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
         product *= n;
         product += carry;
         x->digits[i] = product & LS_LIMB_MASK;
-        carry = (product & MS_LIMB_MASK) >> LIMB_BITS;
+        carry = (product & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS;
     }
     assert(carry == 0);
 }
@@ -200,7 +199,7 @@ mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n)
 
     for (i = 0; i < MKW_BIGINT_LIMBS && carry; i++) {
         mkw_biglimb_t sum = x->digits[i];
-        sum |= ((mkw_biglimb_t)1 << LIMB_BITS); /* set maybe-carry bit */
+        sum |= ((mkw_biglimb_t)1 << MKW_BIGINT_LIMB_BITS); /* set maybe-carry bit */
         sum -= carry; /* perform substraction */
 
         /* recover result from the least significant component, and carry from
@@ -209,7 +208,7 @@ mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n)
          * moves it back to the least significant position and XOR inverts
          * this, and only this bit */
         x->digits[i] = sum & LS_LIMB_MASK;
-        carry = 1 ^ ((sum & MS_LIMB_MASK) >> LIMB_BITS);
+        carry = 1 ^ ((sum & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS);
     }
 
     assert(carry == 0);
@@ -225,10 +224,10 @@ mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
     MKW_BIGINT_TRACE(n);
 
     for (i = 0; i < MKW_BIGINT_LIMBS; i++) {
-        mkw_biglimb_t sum = (1L << LIMB_BITS) | x->digits[i];
+        mkw_biglimb_t sum = (1L << MKW_BIGINT_LIMB_BITS) | x->digits[i];
         sum = sum - borrow - n->digits[i];
         x->digits[i] = sum & LS_LIMB_MASK;
-        borrow = 1 ^ ((sum & MS_LIMB_MASK) >> LIMB_BITS);
+        borrow = 1 ^ ((sum & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS);
     }
 
     MKW_BIGINT_TRACE(x);
@@ -262,7 +261,7 @@ mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
     return result;
 }
 
-#define BIGLIMB(low, high) (((mkw_biglimb_t)low << LIMB_BITS) | (high))
+#define BIGLIMB(low, high) (((mkw_biglimb_t)low << MKW_BIGINT_LIMB_BITS) | (high))
 
 void
 mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,

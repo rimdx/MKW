@@ -9,6 +9,7 @@
 
 typedef uint32_t mkw_limb_t;
 
+#define MKW_BIGINT_LIMB_BITS bitsize(mkw_limb_t)
 #define MKW_BIGINT_BITS 512 
 #define MKW_BIGINT_LIMBS (MKW_BIGINT_BITS / bitsize(mkw_limb_t))
 
