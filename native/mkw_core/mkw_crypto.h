@@ -9,6 +9,9 @@
 
 typedef uint32_t mkw_limb_t;
 
+#define MKW_BIGINT_BITS 512 
+#define MKW_BIGINT_LIMBS (MKW_BIGINT_BITS / bitsize(mkw_limb_t))
+
 /* 
  * a representation of a large unsigned integer number with support of
  * essential cryptographic math functions that we need to implement public key
@@ -19,8 +22,7 @@ typedef uint32_t mkw_limb_t;
  * components (limbs).
  * */
 typedef struct mkw_bigint_t {
-    mkw_limb_t digits[512 / 32];
-    int limbs;
+    mkw_limb_t digits[MKW_BIGINT_LIMBS];
 } mkw_bigint_t;
 
 mkw_bigint_t *mkw_bigint_create(int limbs, mkw_pool_t *pool);

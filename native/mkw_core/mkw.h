@@ -17,6 +17,7 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 #define countof(p) sizeof(p) / sizeof(*p)
+#define bitsize(type) (sizeof(type) * CHAR_BIT)
 
 typedef int mkw_error_t;
 
