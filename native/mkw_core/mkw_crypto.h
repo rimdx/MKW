@@ -35,6 +35,8 @@ mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
  */
 int mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b);
 
+int mkw_bigint_bitsize(const mkw_bigint_t *x);
+
 void mkw_bigint_limbshift(mkw_bigint_t *x, int n);
 
 void mkw_bigint_print(const mkw_bigint_t *num, FILE *file);
@@ -53,13 +55,17 @@ void mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
 void mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
                     const mkw_bigint_t *x, const mkw_bigint_t *n);
 
+void mkw_bigint_inv(mkw_bigint_t *x,
+                    const mkw_bigint_t *a,
+                    const mkw_bigint_t *n);
+
 #if 1
 #define MKW_BIGINT_TRACE(x)                                                   \
-    fprintf(stderr,                                                           \
+    fprintf(stdout,                                                           \
             "BIGINT TRACING %s:%s\t" #x "\t",                                \
             (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__), \
             __FUNCTION__);                                                    \
-    mkw_bigint_print(x, stderr);
+    mkw_bigint_print(x, stdout);
 #else
 #define MKW_BIGINT_TRACE(x)
 #endif

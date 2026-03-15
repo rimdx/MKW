@@ -19,6 +19,16 @@ mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n)
 }
 
 void
+mkw_bigint_swap(mkw_bigint_t *a, mkw_bigint_t *b)
+{
+    for (int i = 0; i < MKW_BIGINT_LIMBS; i++) {
+        mkw_limb_t tmp = a->digits[i];
+        a->digits[i] = b->digits[i];
+        b->digits[i] = tmp;
+    }
+}
+
+void
 mkw_bigint_limbshift(mkw_bigint_t *x, int n)
 {
     int maybe_move_right = (n > 0) ? abs(n) : 0;
@@ -45,6 +55,18 @@ mkw_limb_bitsize(mkw_limb_t limb)
         size--;
     }
     return size;
+}
+
+int
+mkw_bigint_bitsize(const mkw_bigint_t *x)
+{
+    int i = MKW_BIGINT_LIMBS - 1;
+    for (int i = 0; i >= 0; i--) {
+        if (x->digits[i]) {
+            return i + mkw_limb_bitsize(x->digits[i]);
+        }
+    }
+    return 0;
 }
 
 void
@@ -261,5 +283,61 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
 
         mkw_bigint_sub(remainder, &product);
         result->digits[i] = quotient;
+    }
+}
+
+/* Modular inverse using the Extended Euclidean Algorithm [1].
+ *
+ * This is basically a way to divide numbers in modular arithmentic. In fancier
+ * way we can say that it finds some t that satisfies this equation:
+ *
+ * a*t=1 mod n
+ *
+ * [1] https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers */
+void mkw_bigint_inv(mkw_bigint_t *x,
+                    const mkw_bigint_t *a,
+                    const mkw_bigint_t *n)
+{
+    mkw_bigint_t t = { 0 };
+    mkw_bigint_t r = { 0 };
+    mkw_bigint_t newt = { 0 };
+    mkw_bigint_t newr = { 0 };
+    int sign = 1;
+
+    mkw_bigint_set(&r, n);
+    newt.digits[0] = 1;
+    mkw_bigint_set(&newr, a);
+
+    while (mkw_bigint_bitsize(&newr) != 0) {
+        mkw_bigint_t quotient, discard_remainder, tmp;
+
+        MKW_BIGINT_TRACE(&t);
+        MKW_BIGINT_TRACE(&r);
+
+        /* quotient := r div newr */
+        mkw_bigint_div(&quotient, &discard_remainder, &r, &newr);
+
+        /* 
+         * (t, newt) := (newt, t − quotient × newt) 
+         * (r, newr) := (newr, r − quotient × newr)
+         *
+         * tmp = quotient * new##(t|r)##
+         */
+        mkw_bigint_mul(&tmp, &quotient, &newt);
+        mkw_bigint_add(&t, &tmp);
+        mkw_bigint_swap(&t, &newt);
+
+        mkw_bigint_mul(&tmp, &quotient, &newr);
+        mkw_bigint_sub(&r, &tmp);
+        mkw_bigint_swap(&r, &newr);
+
+        sign = -sign;
+    }
+
+    if (sign > 0) {
+        mkw_bigint_set(x, n);
+        mkw_bigint_sub(x, &t);
+    } else {
+        mkw_bigint_set(x, &t);
     }
 }

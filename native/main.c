@@ -473,7 +473,19 @@ test_bigint(mkw_pool_t *pool)
         assert(0 == mkw_bigint_cmp(&a, &b));
     }
 
-    for (i = 64969871; i < 100000000; i++) {
+    {
+        mkw_bigint_t x = { 0 };
+        mkw_bigint_t e = { 0 };
+        mkw_bigint_t a = { 0 };
+        mkw_bigint_t b = { 0 };
+        a.digits[0] = 17; 
+        b.digits[0] = 3233; 
+        mkw_bigint_inv(&x, &a, &b);
+        e.digits[0] = 2092; 
+        assert(0 == mkw_bigint_cmp(&x, &e));
+    }
+
+    for (i = 0; i < 0; i++) {
         mkw_bigint_t a, b, tmp;
         mkw_bigint_t x = { 0 };
         mkw_bigint_t r = { 0 };
@@ -499,12 +511,12 @@ test_bigint(mkw_pool_t *pool)
 
         mkw_bigint_div(&x, &r, mkw_bigint_set(&tmp, &x), &a);
         assert(0 == mkw_bigint_cmp(&x, &b));
-        // assert(0 == mkw_bigint_bitsize(r));
+        assert(0 == mkw_bigint_bitsize(&r));
 
         mkw_bigint_mul(&x, &a, &b);
         mkw_bigint_div(&x, &r, mkw_bigint_set(&tmp, &x), &b);
         assert(0 == mkw_bigint_cmp(&x, &a));
-        // assert(0 == mkw_bigint_bitsize(r));
+        assert(0 == mkw_bigint_bitsize(&r));
     }
 
     return MKW_ERROR_NONE;
