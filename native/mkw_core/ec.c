@@ -72,7 +72,7 @@ void mkw_ec_pt_mul(const mkw_ec_curve_t *curve,
                    const mkw_bigint_t *n)
 {
     mkw_ec_pt_t base2, tmp; 
-    mkw_ec_pt_set(&base2, &curve->g);
+    mkw_ec_pt_set(&base2, pt);
 
     for (int bit = 0; bit < MKW_BIGINT_BITS; bit++) {
         if (mkw_bigint_getbit(n, bit)) {
