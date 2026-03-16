@@ -71,14 +71,10 @@ void mkw_ecc_point_mul(const mkw_ecc_curve_t *curve,
                        const mkw_ecc_point_t *pt,
                        const mkw_bigint_t *n)
 {
-    mkw_ecc_point_t base2; 
-    mkw_ecc_point_t tmp = { 0 };
-
+    mkw_ecc_point_t base2, tmp; 
     mkw_ecc_point_set(&base2, &curve->g);
 
     for (int bit = 0; bit < MKW_BIGINT_BITS; bit++) {
-        mkw_bigint_t tmp_x, tmp_y;
-
         if (mkw_bigint_getbit(n, bit)) {
             /* result += base2 */
             mkw_ecc_point_add(result, curve,
