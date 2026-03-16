@@ -69,6 +69,14 @@ mkw_bigint_bitsize(const mkw_bigint_t *x)
     return 0;
 }
 
+int
+mkw_bigint_getbit(const mkw_bigint_t *x, int n)
+{
+    mkw_limb_t limb = x->digits[n / MKW_BIGINT_LIMB_BITS];
+    int mask = 1 << (n % MKW_BIGINT_LIMB_BITS);
+    return (limb & mask) ? 1 : 0;
+}
+
 void
 mkw_bigint_print(const mkw_bigint_t *num, FILE *file)
 {
@@ -104,6 +112,17 @@ mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n)
         mkw_biglimb_t sum = x->digits[i] + carry;
         x->digits[i] = sum & LS_LIMB_MASK;
         carry = (sum & MS_LIMB_MASK) >> MKW_BIGINT_LIMB_BITS;
+    }
+}
+
+void mkw_bigint_modadd(mkw_bigint_t *x,
+                       const mkw_bigint_t *a,
+                       const mkw_bigint_t *b,
+                       const mkw_bigint_t *p)
+{
+    mkw_bigint_add(mkw_bigint_set(x, a), b);
+    if (mkw_bigint_cmp(x, p) > 0) {
+        mkw_bigint_sub(x, p);
     }
 }
 
@@ -190,6 +209,18 @@ mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
     }
 
     assert(borrow == 0); /* prevents the number from being negative */
+}
+
+void mkw_bigint_modsub(mkw_bigint_t *x,
+                       const mkw_bigint_t *a,
+                       const mkw_bigint_t *b,
+                       const mkw_bigint_t *p)
+{
+    if (mkw_bigint_cmp(a, b) > 0) {
+        mkw_bigint_sub(mkw_bigint_set(x, a), b);
+    } else {
+        mkw_bigint_sub(mkw_bigint_set(x, b), a);
+    }
 }
 
 int
@@ -284,6 +315,14 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
         mkw_bigint_sub(remainder, &product);
         result->digits[i] = quotient;
     }
+}
+
+void mkw_bigint_modmul(mkw_bigint_t *x, const mkw_bigint_t *a,
+                       const mkw_bigint_t *b, const mkw_bigint_t *p)
+{
+    mkw_bigint_t tmp, discard;
+    mkw_bigint_mul(&tmp, a, b);
+    mkw_bigint_div(x, &discard, &tmp, p);
 }
 
 /* Modular inverse using the Extended Euclidean Algorithm [1].

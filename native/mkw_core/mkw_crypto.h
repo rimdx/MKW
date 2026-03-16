@@ -36,6 +36,7 @@ mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
 int mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b);
 
 int mkw_bigint_bitsize(const mkw_bigint_t *x);
+int mkw_bigint_getbit(const mkw_bigint_t *x, int n);
 
 void mkw_bigint_limbshift(mkw_bigint_t *x, int n);
 
@@ -43,14 +44,25 @@ void mkw_bigint_print(const mkw_bigint_t *num, FILE *file);
 
 void mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n);
 void mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n);
+void mkw_bigint_modadd(mkw_bigint_t *x,
+                       const mkw_bigint_t *a,
+                       const mkw_bigint_t *b,
+                       const mkw_bigint_t *p);
 
 void mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n);
 void mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n);
+void mkw_bigint_modsub(mkw_bigint_t *x,
+                       const mkw_bigint_t *a,
+                       const mkw_bigint_t *b,
+                       const mkw_bigint_t *p);
 
 void mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n);
 
 void mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
                     const mkw_bigint_t *b);
+
+void mkw_bigint_modmul(mkw_bigint_t *x, const mkw_bigint_t *a,
+                       const mkw_bigint_t *b, const mkw_bigint_t *p);
 
 void mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
                     const mkw_bigint_t *x, const mkw_bigint_t *n);
@@ -100,15 +112,18 @@ typedef struct mkw_ecc_curve_t {
     /* prime p (or non-prime for binray curves but we're not binray to care to
      * support them) that represents modulus of elliptic curve field. */
     mkw_bigint_t *p;
-} mkw_ecc_curve;
+} mkw_ecc_curve_t;
 
 /* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_addition */
 void
-mkw_ecc_point_add(mkw_ecc_point_t *x, const mkw_ecc_point_t *n);
+mkw_ecc_point_add(mkw_ecc_point_t *x,
+                  const mkw_ecc_curve_t *curve,
+                  const mkw_ecc_point_t *a,
+                  const mkw_ecc_point_t *b);
 
 /* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_doubling  */
 void
-mkw_ecc_point_double(mkw_ecc_point_t *x);
+mkw_ecc_point_double(const mkw_ecc_curve_t *curve, mkw_ecc_point_t *x);
 
 /*
  * point multiplication is built on repeated doubling it and adding of a point
@@ -118,7 +133,10 @@ mkw_ecc_point_double(mkw_ecc_point_t *x);
  *
  * https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
  */
-void mkw_ecc_point_mul(mkw_ecc_point_t *x, const mkw_bigint_t *n);
+void mkw_ecc_point_mul(const mkw_ecc_curve_t *curve,
+                       mkw_ecc_point_t *result,
+                       const mkw_ecc_point_t *x,
+                       const mkw_bigint_t *n);
 
 /* digest utilities */
 enum mkw_hash_tag_e {
