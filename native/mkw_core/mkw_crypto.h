@@ -117,6 +117,9 @@ typedef struct mkw_ec_curve_t {
     mkw_bigint_t p;
 } mkw_ec_curve_t;
 
+mkw_ec_pt_t *
+mkw_ec_pt_set(mkw_ec_pt_t *x, const mkw_ec_pt_t *n);
+
 /* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_addition */
 void
 mkw_ec_pt_add(mkw_ec_pt_t *x,
