@@ -92,8 +92,8 @@ typedef struct mkw_ecc_point_t {
      * infinity points are just banned and are illegal for most transformations
      * to function properly. */
     int is_infinity;
-    mkw_bigint_t *x;
-    mkw_bigint_t *y;
+    mkw_bigint_t x;
+    mkw_bigint_t y;
 } mkw_ecc_point_t;
 
 /* 
@@ -106,15 +106,15 @@ typedef struct mkw_ecc_curve_t {
      * y^2 (mod p) = x^3+x^a+b (mod p)
      * https://en.wikipedia.org/wiki/Elliptic-curve_cryptography#Elliptic_curve_theory
      */
-    mkw_bigint_t *a;
-    mkw_bigint_t *b;
+    mkw_bigint_t a;
+    mkw_bigint_t b;
 
     /* the starting (generator) point. it must be on the curve. */
-    mkw_ecc_point_t *g;
+    mkw_ecc_point_t g;
 
     /* prime p (or non-prime for binray curves but we're not binray to care to
      * support them) that represents modulus of elliptic curve field. */
-    mkw_bigint_t *p;
+    mkw_bigint_t p;
 } mkw_ecc_curve_t;
 
 /* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_addition */
