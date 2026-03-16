@@ -15,6 +15,7 @@ add_library(mkw_core
     mkw_core/armour.c
     mkw_core/bigint.c
     mkw_core/cfb.c
+    mkw_core/ec.c
     mkw_core/memory.c
     mkw_core/mkw_crypto.c
     mkw_core/mkw_pgp.c
