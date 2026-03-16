@@ -85,22 +85,22 @@ void mkw_bigint_inv(mkw_bigint_t *x,
 #define MKW_BIGINT_TRACE(x)
 #endif
 
-/* Elliptic Curves Cryptosystem. */
-typedef struct mkw_ecc_point_t {
-    /* a ecc curve could be stuck at something often called zero or infinity
+/* Elliptic Curves Cryptosystem (ECC). */
+typedef struct mkw_ec_point_t {
+    /* a ec curve could be stuck at something often called zero or infinity
      * point. it's just a special state that should be handled. in most cases
      * infinity points are just banned and are illegal for most transformations
      * to function properly. */
     int is_infinity;
     mkw_bigint_t x;
     mkw_bigint_t y;
-} mkw_ecc_point_t;
+} mkw_ec_point_t;
 
 /* 
  * Represents the curve parameters.
  * https://en.wikipedia.org/wiki/Elliptic-curve_cryptography#Domain_parameters 
  */
-typedef struct mkw_ecc_curve_t {
+typedef struct mkw_ec_curve_t {
     /*
      * a and b constants from the curve equation.
      * y^2 (mod p) = x^3+x^a+b (mod p)
@@ -110,39 +110,39 @@ typedef struct mkw_ecc_curve_t {
     mkw_bigint_t b;
 
     /* the starting (generator) point. it must be on the curve. */
-    mkw_ecc_point_t g;
+    mkw_ec_point_t g;
 
     /* prime p (or non-prime for binray curves but we're not binray to care to
      * support them) that represents modulus of elliptic curve field. */
     mkw_bigint_t p;
-} mkw_ecc_curve_t;
+} mkw_ec_curve_t;
 
 /* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_addition */
 void
-mkw_ecc_point_add(mkw_ecc_point_t *x,
-                  const mkw_ecc_curve_t *curve,
-                  const mkw_ecc_point_t *a,
-                  const mkw_ecc_point_t *b);
+mkw_ec_point_add(mkw_ec_point_t *x,
+                 const mkw_ec_curve_t *curve,
+                 const mkw_ec_point_t *a,
+                 const mkw_ec_point_t *b);
 
 /* https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Point_doubling  */
 void
-mkw_ecc_point_double(const mkw_ecc_curve_t *curve, mkw_ecc_point_t *x);
+mkw_ec_point_double(const mkw_ec_curve_t *curve, mkw_ec_point_t *x);
 
 /*
  * point multiplication is built on repeated doubling it and adding of a point
  * to itself. similar to square-and-multiply exponentiation of large numbers
  * (which is used in RSA and not only), the same is applicable and is the basic
- * operation which the entire ECC cryptosystem relies on.
+ * operation which the entire ec cryptosystem relies on.
  *
  * https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication#Double-and-add
  */
-void mkw_ecc_point_mul(const mkw_ecc_curve_t *curve,
-                       mkw_ecc_point_t *result,
-                       const mkw_ecc_point_t *x,
-                       const mkw_bigint_t *n);
+void mkw_ec_point_mul(const mkw_ec_curve_t *curve,
+                      mkw_ec_point_t *result,
+                      const mkw_ec_point_t *x,
+                      const mkw_bigint_t *n);
 
 void
-mkw_ecc_curve_nistp256(mkw_ecc_curve_t *x);
+mkw_ec_curve_nistp256(mkw_ec_curve_t *x);
 
 /* digest utilities */
 enum mkw_hash_tag_e {

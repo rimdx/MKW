@@ -2,7 +2,7 @@
 #include "mkw_crypto.h"
 
 void
-mkw_ecc_curve_nistp256(mkw_ecc_curve_t *x)
+mkw_ec_curve_nistp256(mkw_ec_curve_t *x)
 {
     /* https://std.neuromancer.sk/nist/P-256 */
     mkw_bigint_set_hex(&x->p,
@@ -17,17 +17,17 @@ mkw_ecc_curve_nistp256(mkw_ecc_curve_t *x)
         "4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5");
 }
 
-mkw_ecc_point_t *
-mkw_ecc_point_set(mkw_ecc_point_t *x, const mkw_ecc_point_t *n)
+mkw_ec_point_t *
+mkw_ec_point_set(mkw_ec_point_t *x, const mkw_ec_point_t *n)
 {
     memcpy(x, n, sizeof(*x));
     return x;
 }
 
-void mkw_ecc_point_add(mkw_ecc_point_t *result,
-                       const mkw_ecc_curve_t *curve,
-                       const mkw_ecc_point_t *p,
-                       const mkw_ecc_point_t *q)
+void mkw_ec_point_add(mkw_ec_point_t *result,
+                       const mkw_ec_curve_t *curve,
+                       const mkw_ec_point_t *p,
+                       const mkw_ec_point_t *q)
 {
     mkw_bigint_t slope, slope_squared, tmp;
 
@@ -66,24 +66,24 @@ void mkw_ecc_point_add(mkw_ecc_point_t *result,
                       &p->y, &curve->p);
 }
 
-void mkw_ecc_point_mul(const mkw_ecc_curve_t *curve,
-                       mkw_ecc_point_t *result,
-                       const mkw_ecc_point_t *pt,
+void mkw_ec_point_mul(const mkw_ec_curve_t *curve,
+                       mkw_ec_point_t *result,
+                       const mkw_ec_point_t *pt,
                        const mkw_bigint_t *n)
 {
-    mkw_ecc_point_t base2, tmp; 
-    mkw_ecc_point_set(&base2, &curve->g);
+    mkw_ec_point_t base2, tmp; 
+    mkw_ec_point_set(&base2, &curve->g);
 
     for (int bit = 0; bit < MKW_BIGINT_BITS; bit++) {
         if (mkw_bigint_getbit(n, bit)) {
             /* result += base2 */
-            mkw_ecc_point_add(result, curve,
-                              mkw_ecc_point_set(&tmp, result),
+            mkw_ec_point_add(result, curve,
+                              mkw_ec_point_set(&tmp, result),
                               &base2);
         }
 
         /* base2 *= 2 */
-        mkw_ecc_point_set(&tmp, &base2);
-        mkw_ecc_point_add(&base2, curve, &tmp, &tmp);
+        mkw_ec_point_set(&tmp, &base2);
+        mkw_ec_point_add(&base2, curve, &tmp, &tmp);
     }
 }
