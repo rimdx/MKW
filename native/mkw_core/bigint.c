@@ -18,6 +18,22 @@ mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n)
     return x;
 }
 
+mkw_bigint_t *
+mkw_bigint_set_hex(mkw_bigint_t *x, const char *data)
+{
+    int i;
+    int len = strlen(data);
+    assert(len % 2 == 0);
+    assert(len / 2 < MKW_BIGINT_LIMBS);
+
+    memset(x->digits, 0, sizeof(x->digits));
+    for (i = 0; i < len; i++) {
+        x->digits[i] = data[i * 2 + 0];
+        x->digits[i] = data[i * 2 + 1];
+    }
+    return x;
+}
+
 void
 mkw_bigint_swap(mkw_bigint_t *a, mkw_bigint_t *b)
 {

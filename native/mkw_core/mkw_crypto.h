@@ -29,6 +29,9 @@ typedef struct mkw_bigint_t {
 mkw_bigint_t *
 mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
 
+mkw_bigint_t *
+mkw_bigint_set_hex(mkw_bigint_t *x, const char *data);
+
 /*
  * Compares bigints a and b, returning zero if they are equal, positive value
  * if a is greater than b and negative in opposite scenario.
@@ -137,6 +140,9 @@ void mkw_ecc_point_mul(const mkw_ecc_curve_t *curve,
                        mkw_ecc_point_t *result,
                        const mkw_ecc_point_t *x,
                        const mkw_bigint_t *n);
+
+void
+mkw_ecc_curve_nistp256(mkw_ecc_curve_t *x);
 
 /* digest utilities */
 enum mkw_hash_tag_e {
