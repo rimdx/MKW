@@ -24,12 +24,11 @@ mkw_bigint_set_hex(mkw_bigint_t *x, const char *data)
     int i;
     int len = strlen(data);
     assert(len % 2 == 0);
-    assert(len / 2 < MKW_BIGINT_LIMBS);
+    assert(len / 2 < sizeof(*x));
 
     memset(x->digits, 0, sizeof(x->digits));
-    for (i = 0; i < len; i++) {
+    for (; len >= 0; len--) {
         x->digits[i] = data[i * 2 + 0];
-        x->digits[i] = data[i * 2 + 1];
     }
     return x;
 }
