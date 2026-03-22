@@ -519,6 +519,35 @@ test_bigint(mkw_pool_t *pool)
         assert(0 == mkw_bigint_bitsize(&r));
     }
 
+    {
+        mkw_ec_curve_t curve;
+        mkw_ec_pt_t pt1, pt2, tmp;
+        mkw_bigint_t key1, key2;
+        int i;
+
+        srand(42);
+        for (i = 0; i < MKW_BIGINT_LIMBS / 2 - 1; i++) {
+            key1.digits[i] = rand();
+            key2.digits[i] = rand();
+        }
+
+        mkw_ec_curve_nistp256(&curve);
+        MKW_BIGINT_TRACE(&curve.a);
+        MKW_BIGINT_TRACE(&curve.g.x);
+        MKW_BIGINT_TRACE(&curve.g.y);
+
+        mkw_ec_pt_mul(&curve, &tmp, &curve.g, &key1);
+        mkw_ec_pt_mul(&curve, &pt1, &tmp, &key2);
+
+        mkw_ec_pt_mul(&curve, &tmp, &curve.g, &key2);
+        mkw_ec_pt_mul(&curve, &pt2, &tmp, &key1);
+
+        MKW_BIGINT_TRACE(&pt1.x);
+        MKW_BIGINT_TRACE(&pt1.y);
+        MKW_BIGINT_TRACE(&pt2.x);
+        MKW_BIGINT_TRACE(&pt2.y);
+    }
+
     return MKW_ERROR_NONE;
 }
 

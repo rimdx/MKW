@@ -9,7 +9,7 @@ mkw_ec_curve_nistp256(mkw_ec_curve_t *x)
         "ffffffff00000001000000000000000000000000ffffffffffffffffffffffff");
     mkw_bigint_set_hex(&x->a,
         "ffffffff00000001000000000000000000000000fffffffffffffffffffffffc");
-    mkw_bigint_set_hex(&x->a,
+    mkw_bigint_set_hex(&x->b,
         "5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b");
     mkw_bigint_set_hex(&x->g.x,
         "6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296");
@@ -29,17 +29,14 @@ void mkw_ec_pt_add(mkw_ec_pt_t *result,
                    const mkw_ec_pt_t *p,
                    const mkw_ec_pt_t *q)
 {
-    mkw_bigint_t slope, slope_squared, tmp;
+    mkw_bigint_t slope, slope_squared, tmp1, tmp2;
 
     if (p->is_infinity || q->is_infinity) {
         /* if any point of two points we add is at infinity, the result would
          * always be at infinity as well no matter what. hence, easy out. */
         result->is_infinity = 1;
         return;
-    } else if (mkw_bigint_cmp(&p->x, &q->x) == 1 || mkw_bigint_cmp(&p->y, &q->y)) {
-        /* slope = (3*[p.x]^2 + a) / 2*[p.y] */
-
-    } else {
+    } else if (mkw_bigint_cmp(&p->x, &q->x) == 0 && mkw_bigint_cmp(&p->y, &q->y) == 0) {
         /* slope = dy/dx = (y2 - y1)/(x2 - x1) */
         mkw_bigint_t dy, dx, dx_inv, discard;
 
@@ -48,21 +45,37 @@ void mkw_ec_pt_add(mkw_ec_pt_t *result,
 
         mkw_bigint_inv(&dx_inv, &dx, &curve->p);
         mkw_bigint_modmul(&slope, &dy, &dx_inv, &curve->p);
+    } else {
+        /* slope = (3*[p.x]^2 + a) / 2*[p.y] */
+        mkw_bigint_t upper, lower;
+
+        MKW_BIGINT_TRACE(&p->x);
+        mkw_bigint_modmul(&tmp1, &p->x, &p->x, &curve->p);
+        MKW_BIGINT_TRACE(&tmp1);
+        mkw_bigint_modadd(&tmp2, &tmp1, &tmp1, &curve->p);
+        mkw_bigint_modadd(&tmp1, &tmp2, &tmp2, &curve->p);
+        mkw_bigint_modadd(&tmp2, &tmp1, &tmp1, &curve->p);
+        mkw_bigint_modadd(&upper, &tmp2, &curve->a, &curve->p);
+
+        mkw_bigint_modadd(&tmp1, &p->y, &p->y, &curve->p);
+        mkw_bigint_inv(&lower, &tmp1, &curve->p);
+
+        mkw_bigint_modmul(&slope, &upper, &lower, &curve->p);
     }
 
     /* r.x = slope^2 - p.x - q.x */
     mkw_bigint_modmul(&result->x, &slope, &slope, &curve->p);
     mkw_bigint_modsub(&result->x,
-                      mkw_bigint_set(&tmp, &result->x),
+                      mkw_bigint_set(&tmp1, &result->x),
                       &p->x, &curve->p);
     mkw_bigint_modsub(&result->x,
-                      mkw_bigint_set(&tmp, &result->x),
+                      mkw_bigint_set(&tmp1, &result->x),
                       &q->x, &curve->p);
 
     /* r.y = slope(p.x - r.x) - p.y */
-    mkw_bigint_modsub(&tmp, &p->x, &result->x, &curve->p);
-    mkw_bigint_modmul(&result->y, &tmp, &slope, &curve->p);
-    mkw_bigint_modsub(&result->y, mkw_bigint_set(&tmp, &result->y),
+    mkw_bigint_modsub(&tmp1, &p->x, &result->x, &curve->p);
+    mkw_bigint_modmul(&result->y, &tmp1, &slope, &curve->p);
+    mkw_bigint_modsub(&result->y, mkw_bigint_set(&tmp1, &result->y),
                       &p->y, &curve->p);
 }
 
