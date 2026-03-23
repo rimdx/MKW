@@ -152,6 +152,16 @@ void uint512_modadd(uint512_t *x,
     }
 }
 
+static void
+lshift(uint512_t *x) {
+    int carry = 0;
+    for (int i = 0; i < countof(x->digits); i++) {
+        mkw_biglimb_t limb = (mkw_biglimb_t)x->digits[i] << 1;
+        carry = limb & ((mkw_biglimb_t)1 << 32);
+        x->digits[i] = limb | carry;
+    }
+}
+
 void
 uint512_mul_n(uint512_t *x, mkw_limb_t n)
 {
@@ -183,17 +193,19 @@ uint512_mul_n(uint512_t *x, mkw_limb_t n)
 }
 
 void
-uint512_mul(uint512_t *x, const uint512_t *a,
-               const uint512_t *b)
+uint512_mul(uint512_t *x, const uint512_t *a, const uint512_t *b)
 {
     int i;
-    memset(x->digits, 0, sizeof(x->digits));
+    uint512_t tmp;
 
-    for (i = 0; i < MKW_BIGINT_LIMBS / 2; i++) {
-        uint512_t tmp = { 0 };
-        memcpy(&tmp.digits[i], &a->digits[0], MKW_BIGINT_LIMBS / 2);
-        uint512_mul_n(&tmp, b->digits[i]);
-        uint512_add(x, &tmp);
+    memset(x, 0, sizeof(*x));
+    memcpy(&tmp, a, sizeof(tmp));
+
+    for (i = 0; i < bitsize(x->digits) / 2; i++) {
+        if (uint512_getbit(b, i)) {
+            uint512_add(x, &tmp);
+        }
+        lshift(&tmp);
     }
 }
 
