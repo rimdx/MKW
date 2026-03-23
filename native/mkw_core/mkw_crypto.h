@@ -41,8 +41,6 @@ int uint512_cmp(const uint512_t *a, const uint512_t *b);
 int uint512_bitsize(const uint512_t *x);
 int uint512_getbit(const uint512_t *x, int n);
 
-void uint512_limbshift(uint512_t *x, int n);
-
 void uint512_print(const uint512_t *num, FILE *file);
 
 void uint512_add_n(uint512_t *x, mkw_limb_t n);

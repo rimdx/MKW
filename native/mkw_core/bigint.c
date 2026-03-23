@@ -69,21 +69,6 @@ uint512_swap(uint512_t *a, uint512_t *b)
     }
 }
 
-void
-uint512_limbshift(uint512_t *x, int n)
-{
-    int maybe_move_right = (n > 0) ? abs(n) : 0;
-    int maybe_move_left = (n < 0) ? abs(n) : 0;
-
-    memmove(&x->digits[maybe_move_right],
-            &x->digits[maybe_move_left],
-            max(MKW_BIGINT_LIMBS - abs(n), 0) * sizeof(mkw_limb_t));
-
-    /* strip leftover parts */
-    memset(&x->digits[(n < 0) ? MKW_BIGINT_LIMBS - abs(n) : 0], 0,
-           abs(n) * sizeof(mkw_limb_t));
-}
-
 int
 mkw_limb_bitsize(mkw_limb_t limb)
 {
