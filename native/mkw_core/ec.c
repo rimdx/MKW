@@ -5,15 +5,15 @@ void
 mkw_ec_curve_nistp256(mkw_ec_curve_t *x)
 {
     /* https://std.neuromancer.sk/nist/P-256 */
-    mkw_bigint_set_hex(&x->p,
+    uint512_set_hex(&x->p,
         "ffffffff00000001000000000000000000000000ffffffffffffffffffffffff");
-    mkw_bigint_set_hex(&x->a,
+    uint512_set_hex(&x->a,
         "ffffffff00000001000000000000000000000000fffffffffffffffffffffffc");
-    mkw_bigint_set_hex(&x->b,
+    uint512_set_hex(&x->b,
         "5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b");
-    mkw_bigint_set_hex(&x->g.x,
+    uint512_set_hex(&x->g.x,
         "6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296");
-    mkw_bigint_set_hex(&x->g.y,
+    uint512_set_hex(&x->g.y,
         "4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5");
 }
 
@@ -29,66 +29,66 @@ void mkw_ec_pt_add(mkw_ec_pt_t *result,
                    const mkw_ec_pt_t *p,
                    const mkw_ec_pt_t *q)
 {
-    mkw_bigint_t slope, slope_squared, tmp1, tmp2;
+    uint512_t slope, slope_squared, tmp1, tmp2;
 
     if (p->is_infinity || q->is_infinity) {
         /* if any point of two points we add is at infinity, the result would
          * always be at infinity as well no matter what. hence, easy out. */
         result->is_infinity = 1;
         return;
-    } else if (mkw_bigint_cmp(&p->x, &q->x) == 0 && mkw_bigint_cmp(&p->y, &q->y) == 0) {
+    } else if (uint512_cmp(&p->x, &q->x) == 0 && uint512_cmp(&p->y, &q->y) == 0) {
         /* slope = dy/dx = (y2 - y1)/(x2 - x1) */
-        mkw_bigint_t dy, dx, dx_inv, discard;
+        uint512_t dy, dx, dx_inv, discard;
 
-        mkw_bigint_modsub(&dy, &p->y, &q->y, &curve->p);
-        mkw_bigint_modsub(&dx, &p->x, &q->x, &curve->p);
+        uint512_modsub(&dy, &p->y, &q->y, &curve->p);
+        uint512_modsub(&dx, &p->x, &q->x, &curve->p);
 
-        mkw_bigint_inv(&dx_inv, &dx, &curve->p);
-        mkw_bigint_modmul(&slope, &dy, &dx_inv, &curve->p);
+        uint512_inv(&dx_inv, &dx, &curve->p);
+        uint512_modmul(&slope, &dy, &dx_inv, &curve->p);
     } else {
         /* slope = (3*[p.x]^2 + a) / 2*[p.y] */
-        mkw_bigint_t upper, lower;
+        uint512_t upper, lower;
 
         MKW_BIGINT_TRACE(&p->x);
-        mkw_bigint_modmul(&tmp1, &p->x, &p->x, &curve->p);
+        uint512_modmul(&tmp1, &p->x, &p->x, &curve->p);
         MKW_BIGINT_TRACE(&tmp1);
-        mkw_bigint_modadd(&tmp2, &tmp1, &tmp1, &curve->p);
-        mkw_bigint_modadd(&tmp1, &tmp2, &tmp2, &curve->p);
-        mkw_bigint_modadd(&tmp2, &tmp1, &tmp1, &curve->p);
-        mkw_bigint_modadd(&upper, &tmp2, &curve->a, &curve->p);
+        uint512_modadd(&tmp2, &tmp1, &tmp1, &curve->p);
+        uint512_modadd(&tmp1, &tmp2, &tmp2, &curve->p);
+        uint512_modadd(&tmp2, &tmp1, &tmp1, &curve->p);
+        uint512_modadd(&upper, &tmp2, &curve->a, &curve->p);
 
-        mkw_bigint_modadd(&tmp1, &p->y, &p->y, &curve->p);
-        mkw_bigint_inv(&lower, &tmp1, &curve->p);
+        uint512_modadd(&tmp1, &p->y, &p->y, &curve->p);
+        uint512_inv(&lower, &tmp1, &curve->p);
 
-        mkw_bigint_modmul(&slope, &upper, &lower, &curve->p);
+        uint512_modmul(&slope, &upper, &lower, &curve->p);
     }
 
     /* r.x = slope^2 - p.x - q.x */
-    mkw_bigint_modmul(&result->x, &slope, &slope, &curve->p);
-    mkw_bigint_modsub(&result->x,
-                      mkw_bigint_set(&tmp1, &result->x),
+    uint512_modmul(&result->x, &slope, &slope, &curve->p);
+    uint512_modsub(&result->x,
+                      uint512_set(&tmp1, &result->x),
                       &p->x, &curve->p);
-    mkw_bigint_modsub(&result->x,
-                      mkw_bigint_set(&tmp1, &result->x),
+    uint512_modsub(&result->x,
+                      uint512_set(&tmp1, &result->x),
                       &q->x, &curve->p);
 
     /* r.y = slope(p.x - r.x) - p.y */
-    mkw_bigint_modsub(&tmp1, &p->x, &result->x, &curve->p);
-    mkw_bigint_modmul(&result->y, &tmp1, &slope, &curve->p);
-    mkw_bigint_modsub(&result->y, mkw_bigint_set(&tmp1, &result->y),
+    uint512_modsub(&tmp1, &p->x, &result->x, &curve->p);
+    uint512_modmul(&result->y, &tmp1, &slope, &curve->p);
+    uint512_modsub(&result->y, uint512_set(&tmp1, &result->y),
                       &p->y, &curve->p);
 }
 
 void mkw_ec_pt_mul(const mkw_ec_curve_t *curve,
                    mkw_ec_pt_t *result,
                    const mkw_ec_pt_t *pt,
-                   const mkw_bigint_t *n)
+                   const uint512_t *n)
 {
     mkw_ec_pt_t base2, tmp; 
     mkw_ec_pt_set(&base2, pt);
 
     for (int bit = 0; bit < MKW_BIGINT_BITS; bit++) {
-        if (mkw_bigint_getbit(n, bit)) {
+        if (uint512_getbit(n, bit)) {
             /* result += base2 */
             mkw_ec_pt_add(result, curve,
                           mkw_ec_pt_set(&tmp, result),

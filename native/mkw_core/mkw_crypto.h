@@ -22,57 +22,57 @@ typedef uint32_t mkw_limb_t;
  * indexing (what we need more often) and gives more significance to higher
  * components (limbs).
  * */
-typedef struct mkw_bigint_t {
+typedef struct uint512_t {
     mkw_limb_t digits[MKW_BIGINT_LIMBS];
-} mkw_bigint_t;
+} uint512_t;
 
-mkw_bigint_t *
-mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n);
+uint512_t *
+uint512_set(uint512_t *x, const uint512_t *n);
 
-mkw_bigint_t *
-mkw_bigint_set_hex(mkw_bigint_t *x, const char *data);
+uint512_t *
+uint512_set_hex(uint512_t *x, const char *data);
 
 /*
  * Compares bigints a and b, returning zero if they are equal, positive value
  * if a is greater than b and negative in opposite scenario.
  */
-int mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b);
+int uint512_cmp(const uint512_t *a, const uint512_t *b);
 
-int mkw_bigint_bitsize(const mkw_bigint_t *x);
-int mkw_bigint_getbit(const mkw_bigint_t *x, int n);
+int uint512_bitsize(const uint512_t *x);
+int uint512_getbit(const uint512_t *x, int n);
 
-void mkw_bigint_limbshift(mkw_bigint_t *x, int n);
+void uint512_limbshift(uint512_t *x, int n);
 
-void mkw_bigint_print(const mkw_bigint_t *num, FILE *file);
+void uint512_print(const uint512_t *num, FILE *file);
 
-void mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n);
-void mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n);
-void mkw_bigint_modadd(mkw_bigint_t *x,
-                       const mkw_bigint_t *a,
-                       const mkw_bigint_t *b,
-                       const mkw_bigint_t *p);
+void uint512_add_n(uint512_t *x, mkw_limb_t n);
+void uint512_add(uint512_t *x, const uint512_t *n);
+void uint512_modadd(uint512_t *x,
+                       const uint512_t *a,
+                       const uint512_t *b,
+                       const uint512_t *p);
 
-void mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n);
-void mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n);
-void mkw_bigint_modsub(mkw_bigint_t *x,
-                       const mkw_bigint_t *a,
-                       const mkw_bigint_t *b,
-                       const mkw_bigint_t *p);
+void uint512_sub_n(uint512_t *x, mkw_limb_t n);
+void uint512_sub(uint512_t *x, const uint512_t *n);
+void uint512_modsub(uint512_t *x,
+                       const uint512_t *a,
+                       const uint512_t *b,
+                       const uint512_t *p);
 
-void mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n);
+void uint512_mul_n(uint512_t *x, mkw_limb_t n);
 
-void mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
-                    const mkw_bigint_t *b);
+void uint512_mul(uint512_t *x, const uint512_t *a,
+                    const uint512_t *b);
 
-void mkw_bigint_modmul(mkw_bigint_t *x, const mkw_bigint_t *a,
-                       const mkw_bigint_t *b, const mkw_bigint_t *p);
+void uint512_modmul(uint512_t *x, const uint512_t *a,
+                       const uint512_t *b, const uint512_t *p);
 
-void mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
-                    const mkw_bigint_t *x, const mkw_bigint_t *n);
+void uint512_div(uint512_t *result, uint512_t *remainder,
+                    const uint512_t *x, const uint512_t *n);
 
-void mkw_bigint_inv(mkw_bigint_t *x,
-                    const mkw_bigint_t *a,
-                    const mkw_bigint_t *n);
+void uint512_inv(uint512_t *x,
+                    const uint512_t *a,
+                    const uint512_t *n);
 
 #if 1
 #define MKW_BIGINT_TRACE(x)                                                   \
@@ -80,7 +80,7 @@ void mkw_bigint_inv(mkw_bigint_t *x,
             "BIGINT TRACING %s:%s\t" #x "\t",                                \
             (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__), \
             __FUNCTION__);                                                    \
-    mkw_bigint_print(x, stdout);
+    uint512_print(x, stdout);
 #else
 #define MKW_BIGINT_TRACE(x)
 #endif
@@ -92,8 +92,8 @@ typedef struct mkw_ec_pt_t {
      * infinity points are just banned and are illegal for most transformations
      * to function properly. */
     int is_infinity;
-    mkw_bigint_t x;
-    mkw_bigint_t y;
+    uint512_t x;
+    uint512_t y;
 } mkw_ec_pt_t;
 
 /* 
@@ -106,15 +106,15 @@ typedef struct mkw_ec_curve_t {
      * y^2 (mod p) = x^3+x^a+b (mod p)
      * https://en.wikipedia.org/wiki/Elliptic-curve_cryptography#Elliptic_curve_theory
      */
-    mkw_bigint_t a;
-    mkw_bigint_t b;
+    uint512_t a;
+    uint512_t b;
 
     /* the starting (generator) point. it must be on the curve. */
     mkw_ec_pt_t g;
 
     /* prime p (or non-prime for binray curves but we're not binray to care to
      * support them) that represents modulus of elliptic curve field. */
-    mkw_bigint_t p;
+    uint512_t p;
 } mkw_ec_curve_t;
 
 mkw_ec_pt_t *
@@ -142,7 +142,7 @@ mkw_ec_pt_double(const mkw_ec_curve_t *curve, mkw_ec_pt_t *x);
 void mkw_ec_pt_mul(const mkw_ec_curve_t *curve,
                    mkw_ec_pt_t *result,
                    const mkw_ec_pt_t *x,
-                   const mkw_bigint_t *n);
+                   const uint512_t *n);
 
 void
 mkw_ec_curve_nistp256(mkw_ec_curve_t *x);

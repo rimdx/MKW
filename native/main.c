@@ -456,39 +456,39 @@ test_bigint(mkw_pool_t *pool)
     int i;
 
     {
-        mkw_bigint_t a, b;
+        uint512_t a, b;
         a.digits[0] = UINT32_MAX;
         b.digits[0] = UINT32_MAX;
-        mkw_bigint_add_n(&a, 42);
-        mkw_bigint_sub_n(&a, 42);
-        assert(0 == mkw_bigint_cmp(&a, &b));
+        uint512_add_n(&a, 42);
+        uint512_sub_n(&a, 42);
+        assert(0 == uint512_cmp(&a, &b));
     }
 
     {
-        mkw_bigint_t a, b;
+        uint512_t a, b;
         a.digits[0] = UINT32_MAX;
         b.digits[0] = UINT32_MAX - 1;
         b.digits[1] = 1;
-        mkw_bigint_mul_n(&a, 2);
-        assert(0 == mkw_bigint_cmp(&a, &b));
+        uint512_mul_n(&a, 2);
+        assert(0 == uint512_cmp(&a, &b));
     }
 
     {
-        mkw_bigint_t x = { 0 };
-        mkw_bigint_t e = { 0 };
-        mkw_bigint_t a = { 0 };
-        mkw_bigint_t b = { 0 };
+        uint512_t x = { 0 };
+        uint512_t e = { 0 };
+        uint512_t a = { 0 };
+        uint512_t b = { 0 };
         a.digits[0] = 17; 
         b.digits[0] = 3233; 
-        mkw_bigint_inv(&x, &a, &b);
+        uint512_inv(&x, &a, &b);
         e.digits[0] = 2092; 
-        assert(0 == mkw_bigint_cmp(&x, &e));
+        assert(0 == uint512_cmp(&x, &e));
     }
 
     for (i = 0; i < 0; i++) {
-        mkw_bigint_t a, b, tmp;
-        mkw_bigint_t x = { 0 };
-        mkw_bigint_t r = { 0 };
+        uint512_t a, b, tmp;
+        uint512_t x = { 0 };
+        uint512_t r = { 0 };
 
         if (i % 10000 == 0 || 1) {
             fprintf(stdout, "fuzzing: %d\n", i);
@@ -504,25 +504,25 @@ test_bigint(mkw_pool_t *pool)
         b.digits[1] = rand();
         b.digits[0] = rand();
 
-        mkw_bigint_mul(&x, &a, &b);
+        uint512_mul(&x, &a, &b);
 
         MKW_BIGINT_TRACE(&a);
         MKW_BIGINT_TRACE(&b);
 
-        mkw_bigint_div(&x, &r, mkw_bigint_set(&tmp, &x), &a);
-        assert(0 == mkw_bigint_cmp(&x, &b));
-        assert(0 == mkw_bigint_bitsize(&r));
+        uint512_div(&x, &r, uint512_set(&tmp, &x), &a);
+        assert(0 == uint512_cmp(&x, &b));
+        assert(0 == uint512_bitsize(&r));
 
-        mkw_bigint_mul(&x, &a, &b);
-        mkw_bigint_div(&x, &r, mkw_bigint_set(&tmp, &x), &b);
-        assert(0 == mkw_bigint_cmp(&x, &a));
-        assert(0 == mkw_bigint_bitsize(&r));
+        uint512_mul(&x, &a, &b);
+        uint512_div(&x, &r, uint512_set(&tmp, &x), &b);
+        assert(0 == uint512_cmp(&x, &a));
+        assert(0 == uint512_bitsize(&r));
     }
 
     {
         mkw_ec_curve_t curve;
         mkw_ec_pt_t pt1, pt2, tmp;
-        mkw_bigint_t key1, key2;
+        uint512_t key1, key2;
         int i;
 
         srand(42);

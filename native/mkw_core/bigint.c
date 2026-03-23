@@ -11,8 +11,8 @@ max(int a, int b) {
     return (a > b) ? a : b;
 }
 
-mkw_bigint_t *
-mkw_bigint_set(mkw_bigint_t *x, const mkw_bigint_t *n)
+uint512_t *
+uint512_set(uint512_t *x, const uint512_t *n)
 {
     memcpy(x->digits, n->digits, sizeof(x->digits));
     return x;
@@ -42,8 +42,8 @@ decrypt_one_hex(char ch)
     };
 }
 
-mkw_bigint_t *
-mkw_bigint_set_hex(mkw_bigint_t *x, const char *data)
+uint512_t *
+uint512_set_hex(uint512_t *x, const char *data)
 {
     int i;
     int len = strlen(data);
@@ -60,7 +60,7 @@ mkw_bigint_set_hex(mkw_bigint_t *x, const char *data)
 }
 
 void
-mkw_bigint_swap(mkw_bigint_t *a, mkw_bigint_t *b)
+uint512_swap(uint512_t *a, uint512_t *b)
 {
     for (int i = 0; i < MKW_BIGINT_LIMBS; i++) {
         mkw_limb_t tmp = a->digits[i];
@@ -70,7 +70,7 @@ mkw_bigint_swap(mkw_bigint_t *a, mkw_bigint_t *b)
 }
 
 void
-mkw_bigint_limbshift(mkw_bigint_t *x, int n)
+uint512_limbshift(uint512_t *x, int n)
 {
     int maybe_move_right = (n > 0) ? abs(n) : 0;
     int maybe_move_left = (n < 0) ? abs(n) : 0;
@@ -99,7 +99,7 @@ mkw_limb_bitsize(mkw_limb_t limb)
 }
 
 int
-mkw_bigint_bitsize(const mkw_bigint_t *x)
+uint512_bitsize(const uint512_t *x)
 {
     int i = MKW_BIGINT_LIMBS - 1;
     for (int i = 0; i >= 0; i--) {
@@ -111,7 +111,7 @@ mkw_bigint_bitsize(const mkw_bigint_t *x)
 }
 
 int
-mkw_bigint_getbit(const mkw_bigint_t *x, int n)
+uint512_getbit(const uint512_t *x, int n)
 {
     mkw_limb_t limb = x->digits[n / MKW_BIGINT_LIMB_BITS];
     int mask = 1 << (n % MKW_BIGINT_LIMB_BITS);
@@ -119,7 +119,7 @@ mkw_bigint_getbit(const mkw_bigint_t *x, int n)
 }
 
 void
-mkw_bigint_print(const mkw_bigint_t *num, FILE *file)
+uint512_print(const uint512_t *num, FILE *file)
 {
     for (int i = 6; i >= 0; i--) {
         fprintf(file, "%08x ", num->digits[i]);
@@ -128,7 +128,7 @@ mkw_bigint_print(const mkw_bigint_t *num, FILE *file)
 }
 
 void
-mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n)
+uint512_add(uint512_t *x, const uint512_t *n)
 {
     mkw_biglimb_t carry = 0;
     int i;
@@ -144,7 +144,7 @@ mkw_bigint_add(mkw_bigint_t *x, const mkw_bigint_t *n)
 }
 
 void
-mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n)
+uint512_add_n(uint512_t *x, mkw_limb_t n)
 {
     mkw_biglimb_t carry = n;
     int i;
@@ -156,19 +156,19 @@ mkw_bigint_add_n(mkw_bigint_t *x, mkw_limb_t n)
     }
 }
 
-void mkw_bigint_modadd(mkw_bigint_t *x,
-                       const mkw_bigint_t *a,
-                       const mkw_bigint_t *b,
-                       const mkw_bigint_t *p)
+void uint512_modadd(uint512_t *x,
+                       const uint512_t *a,
+                       const uint512_t *b,
+                       const uint512_t *p)
 {
-    mkw_bigint_add(mkw_bigint_set(x, a), b);
-    if (mkw_bigint_cmp(x, p) > 0) {
-        mkw_bigint_sub(x, p);
+    uint512_add(uint512_set(x, a), b);
+    if (uint512_cmp(x, p) > 0) {
+        uint512_sub(x, p);
     }
 }
 
 void
-mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
+uint512_mul_n(uint512_t *x, mkw_limb_t n)
 {
     mkw_biglimb_t carry = 0;
     int i;
@@ -198,22 +198,22 @@ mkw_bigint_mul_n(mkw_bigint_t *x, mkw_limb_t n)
 }
 
 void
-mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
-               const mkw_bigint_t *b)
+uint512_mul(uint512_t *x, const uint512_t *a,
+               const uint512_t *b)
 {
     int i;
     memset(x->digits, 0, sizeof(x->digits));
 
     for (i = 0; i < MKW_BIGINT_LIMBS / 2; i++) {
-        mkw_bigint_t tmp = { 0 };
+        uint512_t tmp = { 0 };
         memcpy(&tmp.digits[i], &a->digits[0], MKW_BIGINT_LIMBS / 2);
-        mkw_bigint_mul_n(&tmp, b->digits[i]);
-        mkw_bigint_add(x, &tmp);
+        uint512_mul_n(&tmp, b->digits[i]);
+        uint512_add(x, &tmp);
     }
 }
 
 void
-mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n)
+uint512_sub_n(uint512_t *x, mkw_limb_t n)
 {
     mkw_biglimb_t carry = n;
     int i;
@@ -236,7 +236,7 @@ mkw_bigint_sub_n(mkw_bigint_t *x, mkw_limb_t n)
 }
 
 void
-mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
+uint512_sub(uint512_t *x, const uint512_t *n)
 {
     mkw_biglimb_t borrow = 0;
     int i;
@@ -251,20 +251,20 @@ mkw_bigint_sub(mkw_bigint_t *x, const mkw_bigint_t *n)
     assert(borrow == 0); /* prevents the number from being negative */
 }
 
-void mkw_bigint_modsub(mkw_bigint_t *x,
-                       const mkw_bigint_t *a,
-                       const mkw_bigint_t *b,
-                       const mkw_bigint_t *p)
+void uint512_modsub(uint512_t *x,
+                       const uint512_t *a,
+                       const uint512_t *b,
+                       const uint512_t *p)
 {
-    if (mkw_bigint_cmp(a, b) > 0) {
-        mkw_bigint_sub(mkw_bigint_set(x, a), b);
+    if (uint512_cmp(a, b) > 0) {
+        uint512_sub(uint512_set(x, a), b);
     } else {
-        mkw_bigint_sub(mkw_bigint_set(x, b), a);
+        uint512_sub(uint512_set(x, b), a);
     }
 }
 
 int
-mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
+uint512_cmp(const uint512_t *a, const uint512_t *b)
 {
     int size, result = 0;
 
@@ -289,8 +289,8 @@ mkw_bigint_cmp(const mkw_bigint_t *a, const mkw_bigint_t *b)
 #define BIGLIMB(low, high) (((mkw_biglimb_t)low << MKW_BIGINT_LIMB_BITS) | (high))
 
 void
-mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
-               const mkw_bigint_t *x, const mkw_bigint_t *n)
+uint512_div(uint512_t *result, uint512_t *remainder,
+               const uint512_t *x, const uint512_t *n)
 {
     /* nsize is more like an index actually. it holds position of first
      * non-zero limb index of what we divide by. this is imprortant for the
@@ -318,7 +318,7 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
      * limb. substract one cuz it's an index. */
     for (i = countof(x->digits) - 1; i >= 0; i--) {
         mkw_biglimb_t xdword, quotient;
-        mkw_bigint_t product = { 0 };
+        uint512_t product = { 0 };
 
         /* leftshift and move new number into the newly emptied slot */
         memmove(&remainder->digits[1],
@@ -345,24 +345,24 @@ mkw_bigint_div(mkw_bigint_t *result, mkw_bigint_t *remainder,
          * are adjusted in process. */
 
         /* product = n * quotient */
-        mkw_bigint_mul_n(mkw_bigint_set(&product, n), quotient);
+        uint512_mul_n(uint512_set(&product, n), quotient);
         /* while [product > remainder] */
-        while (mkw_bigint_cmp(&product, remainder) > 0) {
-            mkw_bigint_sub(&product, n);
+        while (uint512_cmp(&product, remainder) > 0) {
+            uint512_sub(&product, n);
             quotient--;
         }
 
-        mkw_bigint_sub(remainder, &product);
+        uint512_sub(remainder, &product);
         result->digits[i] = quotient;
     }
 }
 
-void mkw_bigint_modmul(mkw_bigint_t *x, const mkw_bigint_t *a,
-                       const mkw_bigint_t *b, const mkw_bigint_t *p)
+void uint512_modmul(uint512_t *x, const uint512_t *a,
+                       const uint512_t *b, const uint512_t *p)
 {
-    mkw_bigint_t tmp, discard;
-    mkw_bigint_mul(&tmp, a, b);
-    mkw_bigint_div(x, &discard, &tmp, p);
+    uint512_t tmp, discard;
+    uint512_mul(&tmp, a, b);
+    uint512_div(x, &discard, &tmp, p);
 }
 
 /* Modular inverse using the Extended Euclidean Algorithm [1].
@@ -373,28 +373,28 @@ void mkw_bigint_modmul(mkw_bigint_t *x, const mkw_bigint_t *a,
  * a*t=1 mod n
  *
  * [1] https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers */
-void mkw_bigint_inv(mkw_bigint_t *x,
-                    const mkw_bigint_t *a,
-                    const mkw_bigint_t *n)
+void uint512_inv(uint512_t *x,
+                    const uint512_t *a,
+                    const uint512_t *n)
 {
-    mkw_bigint_t t = { 0 };
-    mkw_bigint_t r = { 0 };
-    mkw_bigint_t newt = { 0 };
-    mkw_bigint_t newr = { 0 };
+    uint512_t t = { 0 };
+    uint512_t r = { 0 };
+    uint512_t newt = { 0 };
+    uint512_t newr = { 0 };
     int sign = 1;
 
-    mkw_bigint_set(&r, n);
+    uint512_set(&r, n);
     newt.digits[0] = 1;
-    mkw_bigint_set(&newr, a);
+    uint512_set(&newr, a);
 
-    while (mkw_bigint_bitsize(&newr) != 0) {
-        mkw_bigint_t quotient, discard_remainder, tmp;
+    while (uint512_bitsize(&newr) != 0) {
+        uint512_t quotient, discard_remainder, tmp;
 
         MKW_BIGINT_TRACE(&t);
         MKW_BIGINT_TRACE(&r);
 
         /* quotient := r div newr */
-        mkw_bigint_div(&quotient, &discard_remainder, &r, &newr);
+        uint512_div(&quotient, &discard_remainder, &r, &newr);
 
         /* 
          * (t, newt) := (newt, t − quotient × newt) 
@@ -402,21 +402,21 @@ void mkw_bigint_inv(mkw_bigint_t *x,
          *
          * tmp = quotient * new##(t|r)##
          */
-        mkw_bigint_mul(&tmp, &quotient, &newt);
-        mkw_bigint_add(&t, &tmp);
-        mkw_bigint_swap(&t, &newt);
+        uint512_mul(&tmp, &quotient, &newt);
+        uint512_add(&t, &tmp);
+        uint512_swap(&t, &newt);
 
-        mkw_bigint_mul(&tmp, &quotient, &newr);
-        mkw_bigint_sub(&r, &tmp);
-        mkw_bigint_swap(&r, &newr);
+        uint512_mul(&tmp, &quotient, &newr);
+        uint512_sub(&r, &tmp);
+        uint512_swap(&r, &newr);
 
         sign = -sign;
     }
 
     if (sign > 0) {
-        mkw_bigint_set(x, n);
-        mkw_bigint_sub(x, &t);
+        uint512_set(x, n);
+        uint512_sub(x, &t);
     } else {
-        mkw_bigint_set(x, &t);
+        uint512_set(x, &t);
     }
 }
