@@ -205,10 +205,9 @@ mkw_bigint_mul(mkw_bigint_t *x, const mkw_bigint_t *a,
     memset(x->digits, 0, sizeof(x->digits));
 
     for (i = 0; i < MKW_BIGINT_LIMBS / 2; i++) {
-        mkw_bigint_t tmp;
-        mkw_bigint_set(&tmp, a);
+        mkw_bigint_t tmp = { 0 };
+        memcpy(&tmp.digits[i], &a->digits[0], MKW_BIGINT_LIMBS / 2);
         mkw_bigint_mul_n(&tmp, b->digits[i]);
-        mkw_bigint_limbshift(&tmp, i);
         mkw_bigint_add(x, &tmp);
     }
 }
